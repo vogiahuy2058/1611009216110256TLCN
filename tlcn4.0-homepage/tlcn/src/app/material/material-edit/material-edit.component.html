@@ -1,0 +1,34 @@
+<div class="container custom-container">
+  <div class="col-md-12">
+    
+    <h3 class="mb-3 text-center">Update material</h3>
+
+    <div class="form-group">
+      <input type="text" [(ngModel)]="employeetypeDetails.name" class="form-control" placeholder="Tên nguyên liệu">
+    </div>
+    <div class="form-group">
+            <label for="department1">Loại nguyên liệu</label>
+            <select style="font-size: 15px; height: 50px;" id="department1" name="department1"
+                [(ngModel)]="employeetypeDetails.materialType" class="form-control">
+                <option *ngFor="let materialtype of Content1.content" [value]="materialtype.name">
+                    {{materialtype.name}}
+                </option>
+            </select>
+        </div>
+    <div class="form-group">
+      <input type="text" [(ngModel)]="employeetypeDetails.inventory" class="form-control" placeholder="tồn kho">
+    </div>
+    <div class="form-group">
+      <input type="text" [(ngModel)]="employeetypeDetails.maxInventory" class="form-control" placeholder="tồn kho tối đa">
+    </div>
+    <div class="form-group">
+      <input type="text" [(ngModel)]="employeetypeDetails.minInventory" class="form-control" placeholder="tồn kho tối thiểu">
+    </div>
+
+    <div class="form-group">
+      <button class="btn btn-success btn-lg btn-block" (click)="updateEmployeetype()">Update material</button>
+    </div>
+    
+  </div>
+</div>
+

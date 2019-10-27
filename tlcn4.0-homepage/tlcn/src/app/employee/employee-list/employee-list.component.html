@@ -1,0 +1,39 @@
+<div class="container">
+    <h1>Danh sách nhân viên</h1>
+    
+    <table class="table table-hover" cellspacing="0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Tên nhân viên</th>
+          <th>Email</th>
+          <th>Chi nhánh</th>
+          <th>Loại nhân viên</th>
+          <th>Tác vụ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let employee of Content.content">
+            <td>{{employee.id}}</td>
+            <td>{{employee.name}}</td>
+            <td>{{employee.email}}</td>
+            <td>{{employee.branchShop}}</td>
+            <td>{{employee.employeeType}}</td>
+            <td>
+                <button class="btn btn-primary" 
+                routerLink="/employee-edit/{{employee.id}}">Edit</button> 
+                &nbsp;&nbsp;&nbsp;
+                <button class="btn btn-danger" (click)="deleteEmployeetype(employee.id)">Delete</button>
+              </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <button class="btn btn-primary" 
+    routerLink="/home">Back</button>
+  </div>
+  <div>
+    <button class="btn btn-dark" 
+    routerLink="/employee-create">Tạo mới</button>
+  </div>
