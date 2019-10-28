@@ -39,6 +39,9 @@ import { DrinktypeListComponent } from './drinktype/drinktype-list/drinktype-lis
 import { MaterialCreateComponent } from './material/material-create/material-create.component';
 import { MaterialEditComponent } from './material/material-edit/material-edit.component';
 import { MaterialListComponent } from './material/material-list/material-list.component';
+import { SupplycontractCreateComponent } from './supplycontract/supplycontract-create/supplycontract-create.component';
+import { SupplycontractEditComponent } from './supplycontract/supplycontract-edit/supplycontract-edit.component';
+import { SupplycontractListComponent } from './supplycontract/supplycontract-list/supplycontract-list.component';
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
   { path: 'employeetype-create', component: EmployeetypeCreateComponent },
@@ -80,6 +83,9 @@ const routes: Routes = [
   { path: 'material-list', component: MaterialListComponent },
   { path: 'material-create', component: MaterialCreateComponent },
   { path: 'material-edit/:id', component: MaterialEditComponent },
+  { path: 'supplycontract-list', component: SupplycontractListComponent },
+  { path: 'supplycontract-create', component: SupplycontractCreateComponent },
+  { path: 'supplycontract-edit/:id', component: SupplycontractEditComponent },
 ];
 
 @NgModule({

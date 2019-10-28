@@ -48,6 +48,9 @@ import { DrinktypeListComponent } from './drinktype/drinktype-list/drinktype-lis
 import { MaterialCreateComponent } from './material/material-create/material-create.component';
 import { MaterialEditComponent } from './material/material-edit/material-edit.component';
 import { MaterialListComponent } from './material/material-list/material-list.component';
+import { SupplycontractCreateComponent } from './supplycontract/supplycontract-create/supplycontract-create.component';
+import { SupplycontractEditComponent } from './supplycontract/supplycontract-edit/supplycontract-edit.component';
+import { SupplycontractListComponent } from './supplycontract/supplycontract-list/supplycontract-list.component';
 
 
 @NgModule({
@@ -91,7 +94,10 @@ import { MaterialListComponent } from './material/material-list/material-list.co
     DrinktypeListComponent,
     MaterialCreateComponent,
     MaterialEditComponent,
-    MaterialListComponent
+    MaterialListComponent,
+    SupplycontractCreateComponent,
+    SupplycontractEditComponent,
+    SupplycontractListComponent
   ],
   imports: [  
     BrowserModule,
