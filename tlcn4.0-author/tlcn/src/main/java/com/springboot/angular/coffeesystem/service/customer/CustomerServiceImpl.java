@@ -69,6 +69,7 @@ public class CustomerServiceImpl implements CustomerService{
         Page<Customer> customerPage = customerRepository.findAllByEnable(true, pageable);
         customerPage.forEach(element->{
             CustomerResponseDto customerResponseDto = mapperObject.CustomerEntityToDto(element);
+            customerResponseDto.setBirthDay(element.getBirthDay().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             customerResponseDto.setCustomerType(element.getCustomerType().getName());
             coffeeTableDtos.add(customerResponseDto);});
         Page<CustomerResponseDto> customerResponseDtos = new PageImpl<>(coffeeTableDtos, pageable, customerPage.getTotalElements() );

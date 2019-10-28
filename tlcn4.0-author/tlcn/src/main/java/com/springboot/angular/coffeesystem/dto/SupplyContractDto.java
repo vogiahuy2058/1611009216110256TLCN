@@ -17,7 +17,7 @@ import java.util.Set;
 @Setter
 public class SupplyContractDto {
     private Integer id;
-    private LocalDate date;
+    private String date;
     private float totalPrice;
     private String branchShop;
     private String supplier;

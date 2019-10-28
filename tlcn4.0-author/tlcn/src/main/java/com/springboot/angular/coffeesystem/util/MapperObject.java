@@ -107,6 +107,7 @@ public interface MapperObject {
 
     @Mapping(target="branchShop",source = "branchShop.name")
     @Mapping(target="supplier",source = "supplier.name")
+    @Mapping(target="date",source = "date")
     SupplyContractDto SupplyContractEntityToDto(SupplyContract supplyContract);
 
     @Mapping(target="material.name",source = "material")

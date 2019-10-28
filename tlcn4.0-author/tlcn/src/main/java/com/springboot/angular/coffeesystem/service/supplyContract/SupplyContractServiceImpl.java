@@ -17,10 +17,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,8 +54,9 @@ public class SupplyContractServiceImpl implements SupplyContractService{
         List<SupplyContractDto> supplyContractDtos = new ArrayList<>();
         supplyContracts.forEach(element->{
             SupplyContractDto supplyContractDto = mapperObject.SupplyContractEntityToDto(element);
+            supplyContractDto.setDate(element.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             supplyContractDto.setBranchShop(element.getBranchShop().getName());
-            supplyContractDto.setSupplier(element.getSupplier().getAddress());
+            supplyContractDto.setSupplier(element.getSupplier().getName());
             supplyContractDtos.add(supplyContractDto);
         });
         return new ResponseDto(HttpStatus.OK.value(), "All supply contract", supplyContractDtos);
@@ -65,6 +69,7 @@ public class SupplyContractServiceImpl implements SupplyContractService{
         Page<SupplyContract> supplyContractPage = supplyContractRepository.findAllByEnable(true, pageable);
         supplyContractPage.forEach(element->{
             SupplyContractDto supplyContractDto = mapperObject.SupplyContractEntityToDto(element);
+            supplyContractDto.setDate(element.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             supplyContractDto.setBranchShop(element.getBranchShop().getName());
             supplyContractDto.setSupplier(element.getSupplier().getName());
             supplyContractDtos.add(supplyContractDto);});
@@ -79,6 +84,7 @@ public class SupplyContractServiceImpl implements SupplyContractService{
         SupplyContract supplyContract = supplyContractRepository.findByIdAndEnable(id, true)
                 .orElseThrow(()-> new NotFoundException("Id not found"));
         SupplyContractDto supplyContractDto = mapperObject.SupplyContractEntityToDto(supplyContract);
+        supplyContractDto.setDate(supplyContract.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         supplyContractDto.setSupplier(supplyContract.getSupplier().getName());
         supplyContractDto.setBranchShop(supplyContract.getBranchShop().getName());
         return new ResponseDto(HttpStatus.OK.value(), "All supply contract", supplyContractDto );
@@ -91,6 +97,7 @@ public class SupplyContractServiceImpl implements SupplyContractService{
         return new ResponseDto(HttpStatus.OK.value(), "Delete supply successful", null);
     }
     public ResponseDto editSupplyContract(SupplyContractDto supplyContractDto){
+        final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         SupplyContract supplyContract = supplyContractRepository.findByIdAndEnable(supplyContractDto.getId(), true)
                 .orElseThrow(()-> new NotFoundException("Id not found!"));
         Supplier supplier = supplierRepository.findAllByNameAndEnable(supplyContractDto.getSupplier(), true)
@@ -100,7 +107,7 @@ public class SupplyContractServiceImpl implements SupplyContractService{
         supplyContract.setBranchShop(branchShop);
         supplyContract.setSupplier(supplier);
         supplyContract.setTotalPrice(supplyContractDto.getTotalPrice());
-        supplyContract.setDate(supplyContractDto.getDate());
+        supplyContract.setDate(LocalDate.parse(supplyContractDto.getDate(), dtf));
         supplyContractRepository.save(supplyContract);
         return new ResponseDto(HttpStatus.OK.value(), "Edit supply contract successful", null);
     }
