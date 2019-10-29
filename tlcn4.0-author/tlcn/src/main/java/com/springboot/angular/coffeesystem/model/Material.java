@@ -23,7 +23,7 @@ public class Material extends Auditable<String>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @NaturalId
+//    @NaturalId
     private String name;
     private boolean enable = true;
     private float inventory;

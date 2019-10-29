@@ -19,7 +19,7 @@ public class CoffeeTable extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @NaturalId
+//    @NaturalId
     private String name;
     private Integer numberOfChair;
     private boolean enable = true;

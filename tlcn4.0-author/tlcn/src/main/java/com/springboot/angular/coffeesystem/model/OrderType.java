@@ -20,7 +20,7 @@ public class OrderType extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @NaturalId
+//    @NaturalId
     private String name;
     private boolean enable = true;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "orderType", cascade = CascadeType.ALL)

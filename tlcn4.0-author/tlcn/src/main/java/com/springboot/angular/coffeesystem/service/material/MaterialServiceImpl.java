@@ -7,9 +7,11 @@ import com.springboot.angular.coffeesystem.exception.NotFoundException;
 import com.springboot.angular.coffeesystem.model.Material;
 import com.springboot.angular.coffeesystem.model.MaterialType;
 import com.springboot.angular.coffeesystem.model.Recipe;
+import com.springboot.angular.coffeesystem.model.Unit;
 import com.springboot.angular.coffeesystem.repository.MaterialRepository;
 import com.springboot.angular.coffeesystem.repository.MaterialTypeRepository;
 import com.springboot.angular.coffeesystem.repository.RecipeRepository;
+import com.springboot.angular.coffeesystem.repository.UnitRepository;
 import com.springboot.angular.coffeesystem.service.recipe.RecipeService;
 import com.springboot.angular.coffeesystem.util.MapperObject;
 import com.springboot.angular.coffeesystem.util.PageUtil;
@@ -34,6 +36,8 @@ public class MaterialServiceImpl implements MaterialService {
     @Autowired
     MaterialTypeRepository materialTypeRepository;
     @Autowired
+    UnitRepository unitRepository;
+    @Autowired
     RecipeRepository recipeRepository;
     @Autowired
     RecipeService recipeService;
@@ -41,8 +45,10 @@ public class MaterialServiceImpl implements MaterialService {
         Material material = this.mapperObject.MaterialDtoToEntity(materialDto);
         MaterialType materialType = materialTypeRepository.findByNameAndEnable(materialDto.getMaterialType(), true)
                 .orElseThrow(()-> new NotFoundException("Material type not found"));
-
+        Unit unit = unitRepository.findByNameAndEnable(materialDto.getUnit(), true)
+                .orElseThrow(()-> new NotFoundException("Unit not found"));
         material.setMaterialType(materialType);
+        material.setUnit(unit);
         materialRepository.save(material);
         return new ResponseDto(HttpStatus.OK.value(), "Create material successful", null);
     }
@@ -52,7 +58,7 @@ public class MaterialServiceImpl implements MaterialService {
         List<MaterialDto> materialDtos = new ArrayList<>();
         materials.forEach(element->{
             MaterialDto materialDto = mapperObject.MaterialEntityToDto(element);
-
+            materialDto.setUnit(element.getUnit().getName());
             materialDto.setMaterialType(element.getMaterialType().getName());
             materialDtos.add(materialDto);
         });
@@ -67,6 +73,7 @@ public class MaterialServiceImpl implements MaterialService {
         materialPage.forEach(element->{
             MaterialDto materialDto = mapperObject.MaterialEntityToDto(element);
             materialDto.setMaterialType(element.getMaterialType().getName());
+            materialDto.setUnit(element.getUnit().getName());
             materialDtos.add(materialDto);});
         Page<MaterialDto> materialDtoPage = new PageImpl<>(materialDtos, pageable,
                 materialPage.getTotalElements() );
@@ -79,6 +86,7 @@ public class MaterialServiceImpl implements MaterialService {
         Material material = materialRepository.findByIdAndEnable(id, true)
                 .orElseThrow(()-> new NotFoundException("Id not found"));
         MaterialDto materialDto = mapperObject.MaterialEntityToDto(material);
+        materialDto.setUnit(material.getUnit().getName());
         materialDto.setMaterialType(material.getMaterialType().getName());
         return new ResponseDto(HttpStatus.OK.value(), "Successful", materialDto);
     }
@@ -107,7 +115,10 @@ public class MaterialServiceImpl implements MaterialService {
         material.setMaxInventory(materialDto.getMaxInventory());
         MaterialType materialType = materialTypeRepository.findByNameAndEnable(materialDto.getMaterialType(), true)
                 .orElseThrow(()-> new NotFoundException("Material not found"));
+        Unit unit = unitRepository.findByNameAndEnable(materialDto.getUnit(), true)
+                .orElseThrow(()-> new NotFoundException("Unit not found"));
         material.setMaterialType(materialType);
+        material.setUnit(unit);
         materialRepository.save(material);
         return new ResponseDto(HttpStatus.OK.value(), "Edit material successful", null);
     }

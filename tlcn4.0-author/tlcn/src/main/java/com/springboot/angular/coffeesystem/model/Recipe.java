@@ -29,10 +29,7 @@ public class Recipe extends Auditable<String> {
 
     private boolean enable = true;
     private Integer amount;
-
-    @OneToOne
-    @JoinColumn(name = "unit_material")
-    private Unit unit;
+    private String unit;
 
 
 }

@@ -18,12 +18,10 @@ public class Unit extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @NaturalId
+//    @NaturalId
     private String name;
     private boolean enable = true;
     @OneToOne(fetch = FetchType.LAZY, mappedBy = "unit", cascade = CascadeType.ALL)
     private Material material;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "unit", cascade = CascadeType.ALL)
-    private Recipe recipe;
 }
