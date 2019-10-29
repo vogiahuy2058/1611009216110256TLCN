@@ -5,9 +5,11 @@ import com.springboot.angular.coffeesystem.dto.RecipeDto;
 import com.springboot.angular.coffeesystem.dto.ResponseDto;
 import com.springboot.angular.coffeesystem.exception.NotFoundException;
 import com.springboot.angular.coffeesystem.model.Drink;
+import com.springboot.angular.coffeesystem.model.DrinkPrice;
 import com.springboot.angular.coffeesystem.model.Material;
 import com.springboot.angular.coffeesystem.model.Recipe;
 import com.springboot.angular.coffeesystem.model.embedding.RecipeId;
+import com.springboot.angular.coffeesystem.repository.DrinkPriceRepository;
 import com.springboot.angular.coffeesystem.repository.DrinkRepository;
 import com.springboot.angular.coffeesystem.repository.MaterialRepository;
 import com.springboot.angular.coffeesystem.repository.RecipeRepository;
@@ -34,6 +36,8 @@ public class RecipeServiceImpl implements RecipeService{
     DrinkRepository drinkRepository;
     @Autowired
     MaterialRepository materialRepository;
+    @Autowired
+    DrinkPriceRepository drinkPriceRepository;
     public ResponseDto createRecipe(RecipeDto recipeDto){
         Recipe recipe = this.mapperObject.RecipeDtoToEntity(recipeDto);
         Drink drink = drinkRepository.findByNameAndEnable(recipeDto.getDrink(),true)
@@ -47,6 +51,9 @@ public class RecipeServiceImpl implements RecipeService{
         recipe.setMaterial(material);
         recipe.setDrink(drink);
         recipeRepository.save(recipe);
+//        DrinkPrice drinkPrice = drinkPriceRepository.findByDrinkPriceIdIdAndEnable(drink.getId(), true)
+//                .orElseThrow(()-> new NotFoundException("Drink not found"));
+//        drinkPrice.setInitialPrice(initialPrice);
         return new ResponseDto(HttpStatus.OK.value(), "Create recipe successful", null);
     }
     @Transactional

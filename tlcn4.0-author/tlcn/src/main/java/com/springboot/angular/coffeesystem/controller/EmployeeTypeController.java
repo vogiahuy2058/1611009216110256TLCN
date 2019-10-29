@@ -34,7 +34,7 @@ public class EmployeeTypeController {
         return  ResponseEntity.ok(this.employeeTypeService.getAllEmployeeType());
     }
     @GetMapping("/get")
-    public ResponseEntity<ResponseDto> getEmployeeTypeById(@RequestParam Integer id){
+    public ResponseEntity<ResponseDto> getEmployeeTypeId(@RequestParam Integer id){
         return  ResponseEntity.ok(this.employeeTypeService.getEmployeeTypeById(id));
     }
 

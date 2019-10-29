@@ -17,4 +17,5 @@ public interface MaterialTypeRepository extends JpaRepository<MaterialType, Inte
     Page<MaterialType> findAllByEnable(boolean enable, Pageable pageable);
     Optional<MaterialType> findByNameAndEnable(String name, boolean enable);
     Optional<MaterialType> findByIdAndEnable(Integer id, boolean enable);
+
 }

@@ -18,4 +18,5 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     Optional<Customer> findByIdAndEnable(Integer id, boolean enable);
     List<Customer> findByCustomerTypeId(Integer id);
 
+
 }

@@ -5,16 +5,15 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.time.LocalDate;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class InvoiceDetailDto {
-    private Integer amount;
-    private float price;
-    private float discount;
-    private float unitPrice;
-    private Integer invoiceId;
+public class DrinkPriceDto {
     private Integer drinkId;
-
+    private String date;
+    private float price;
+    private float initialPrice;
 }

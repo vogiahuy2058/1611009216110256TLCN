@@ -16,9 +16,10 @@ import javax.persistence.*;
 @Setter
 public class MaterialPrice {
     @EmbeddedId
-    private MaterialPriceId materialId;
+    private MaterialPriceId materialPriceId;
     private float price;
     @ManyToOne
     @JoinColumn(name = "material_material_id")
     private Material material;
+    private boolean enable = true;
 }
