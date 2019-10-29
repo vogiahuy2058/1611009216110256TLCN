@@ -37,6 +37,7 @@ public class SupplyContractServiceImpl implements SupplyContractService{
     SupplierRepository supplierRepository;
     @Autowired
     BranchShopRepository branchShopRepository;
+    final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public ResponseDto createSupplyContract(SupplyContractDto supplyContractDto){
         SupplyContract supplyContract = this.mapperObject.SupplyContractDtoToEntity(supplyContractDto);
         Supplier supplier = supplierRepository.findAllByNameAndEnable(supplyContractDto.getSupplier(), true)
@@ -45,6 +46,7 @@ public class SupplyContractServiceImpl implements SupplyContractService{
                 true).orElseThrow(()-> new NotFoundException("Branch shop not found"));
         supplyContract.setBranchShop(branchShop);
         supplyContract.setSupplier(supplier);
+        supplyContract.setDate(LocalDate.parse(supplyContractDto.getDate(), dtf));
         supplyContractRepository.save(supplyContract);
         return new ResponseDto(HttpStatus.OK.value(), "Create supply contract successful", null);
     }
@@ -97,7 +99,7 @@ public class SupplyContractServiceImpl implements SupplyContractService{
         return new ResponseDto(HttpStatus.OK.value(), "Delete supply successful", null);
     }
     public ResponseDto editSupplyContract(SupplyContractDto supplyContractDto){
-        final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
         SupplyContract supplyContract = supplyContractRepository.findByIdAndEnable(supplyContractDto.getId(), true)
                 .orElseThrow(()-> new NotFoundException("Id not found!"));
         Supplier supplier = supplierRepository.findAllByNameAndEnable(supplyContractDto.getSupplier(), true)
