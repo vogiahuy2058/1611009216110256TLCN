@@ -7,4 +7,5 @@ public interface MaterialPriceService {
     ResponseDto createPriceOfMaterial(MaterialPriceRequestDto materialPriceRequestDto);
     ResponseDto changePriceOfMaterial(MaterialPriceRequestDto materialPriceRequestDto);
     ResponseDto getPriceOfMaterial(Integer materialId);
+    ResponseDto getAllPriceOfMaterial();
 }

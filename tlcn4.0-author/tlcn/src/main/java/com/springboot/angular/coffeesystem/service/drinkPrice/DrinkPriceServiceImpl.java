@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class DrinkPriceServiceImpl implements DrinkPriceService{
@@ -65,6 +67,19 @@ public class DrinkPriceServiceImpl implements DrinkPriceService{
         drinkPriceResponseDto.setDate(drinkPrice.getDrinkPriceId().getDate()
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         return new ResponseDto(HttpStatus.OK.value(), "Successful", drinkPriceResponseDto);
+    }
+    @Transactional
+    public ResponseDto getAllPriceOfDrink(){
+        List<DrinkPrice> drinkPriceList = this.drinkPriceRepository.findAllByEnable(true);
+        List<DrinkPriceResponseDto> drinkPriceResponseDtos = new ArrayList<>();
+        drinkPriceList.forEach(element->{
+            DrinkPriceResponseDto drinkPriceResponseDto = mapperObject.DrinkPriceEntityToDto1(element);
+            drinkPriceResponseDto.setDrinkId(element.getDrinkPriceId().getId());
+            drinkPriceResponseDto.setDate(element.getDrinkPriceId().getDate()
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            drinkPriceResponseDtos.add(drinkPriceResponseDto);
+        });
+        return new ResponseDto(HttpStatus.OK.value(), "All drink price", drinkPriceResponseDtos);
     }
 
 

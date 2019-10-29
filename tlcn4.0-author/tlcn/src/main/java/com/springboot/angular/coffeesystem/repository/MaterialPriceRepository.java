@@ -5,6 +5,7 @@ import com.springboot.angular.coffeesystem.model.embedding.MaterialPriceId;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
 import java.util.Optional;
 
 public interface MaterialPriceRepository extends JpaRepository<MaterialPrice, MaterialPriceId> {
@@ -12,4 +13,5 @@ public interface MaterialPriceRepository extends JpaRepository<MaterialPrice, Ma
     Optional<MaterialPrice> findByMaterialPriceIdIdMaterialAndEnable(Integer idMaterial, boolean enable);
     @Query("select max(mp.materialPriceId.id) from MaterialPrice mp")
     Integer findMaxId();
+    List<MaterialPrice> findAllByEnable(boolean enable);
 }

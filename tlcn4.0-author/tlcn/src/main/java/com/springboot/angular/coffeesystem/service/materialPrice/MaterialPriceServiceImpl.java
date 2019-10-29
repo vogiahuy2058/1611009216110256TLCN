@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class MaterialPriceServiceImpl implements MaterialPriceService {
@@ -74,5 +76,19 @@ public class MaterialPriceServiceImpl implements MaterialPriceService {
         materialPriceResponseDto.setDate(materialPrice.getMaterialPriceId().getDate()
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         return new ResponseDto(HttpStatus.OK.value(), "Successful", materialPriceResponseDto);
+    }
+    @Transactional
+    public ResponseDto getAllPriceOfMaterial(){
+        List<MaterialPrice> materialPriceList = this.materialPriceRepository.findAllByEnable(true);
+        List<MaterialPriceResponseDto> materialPriceResponseDtos = new ArrayList<>();
+        materialPriceList.forEach(element->{
+            MaterialPriceResponseDto materialPriceResponseDto = mapperObject.MaterialPriceEntityToDto1(element);
+            materialPriceResponseDto.setId(element.getMaterialPriceId().getId());
+            materialPriceResponseDto.setMaterialId(element.getMaterialPriceId().getIdMaterial());
+            materialPriceResponseDto.setDate(element.getMaterialPriceId().getDate()
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            materialPriceResponseDtos.add(materialPriceResponseDto);
+        });
+        return new ResponseDto(HttpStatus.OK.value(), "All material price", materialPriceResponseDtos);
     }
 }

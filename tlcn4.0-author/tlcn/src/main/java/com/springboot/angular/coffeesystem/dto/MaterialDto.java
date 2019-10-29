@@ -20,6 +20,6 @@ public class MaterialDto {
     private float inventory;
     private float minInventory;
     private float maxInventory;
-
+    private String unit;
     private String materialType;
 }

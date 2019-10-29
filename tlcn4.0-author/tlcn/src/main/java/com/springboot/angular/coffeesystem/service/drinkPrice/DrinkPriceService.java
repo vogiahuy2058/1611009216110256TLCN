@@ -7,5 +7,6 @@ public interface DrinkPriceService {
     ResponseDto createPriceOfDrink(DrinkPriceRequestDto drinkPriceRequestDto);
     ResponseDto changePriceOrInitialPriceOfDrink(DrinkPriceRequestDto drinkPriceRequestDto);
     ResponseDto getPriceOfDrink(Integer drinkId);
+    ResponseDto getAllPriceOfDrink();
 
 }

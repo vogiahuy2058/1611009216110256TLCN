@@ -29,7 +29,7 @@ public class Material extends Auditable<String>{
     private float inventory;
     private float minInventory;
     private float maxInventory;
-
+    private String unit;
 
     @ManyToOne
     @JoinColumn(name = "material_type_id")
