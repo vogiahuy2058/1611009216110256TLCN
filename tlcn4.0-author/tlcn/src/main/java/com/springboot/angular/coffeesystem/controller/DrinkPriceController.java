@@ -1,8 +1,7 @@
 package com.springboot.angular.coffeesystem.controller;
 
-import com.springboot.angular.coffeesystem.dto.DrinkPriceDto;
+import com.springboot.angular.coffeesystem.dto.DrinkPriceRequestDto;
 import com.springboot.angular.coffeesystem.dto.ResponseDto;
-import com.springboot.angular.coffeesystem.model.DrinkPrice;
 import com.springboot.angular.coffeesystem.service.drinkPrice.DrinkPriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +14,12 @@ public class DrinkPriceController {
     @Autowired
     DrinkPriceService drinkPriceService;
     @PostMapping("/create")
-    public ResponseEntity<ResponseDto> createDrinkPrice(@RequestBody DrinkPriceDto drinkPriceDto){
-        return ResponseEntity.ok(drinkPriceService.createPriceOfDrink(drinkPriceDto));
+    public ResponseEntity<ResponseDto> createDrinkPrice(@RequestBody DrinkPriceRequestDto drinkPriceRequestDto){
+        return ResponseEntity.ok(drinkPriceService.createPriceOfDrink(drinkPriceRequestDto));
     }
     @PutMapping("/change")
-    public ResponseEntity<ResponseDto> changeDrinkPriceOrInitialPrice(@RequestBody DrinkPriceDto drinkPriceDto){
-        return ResponseEntity.ok(drinkPriceService.changePriceOrInitialPriceOfDrink(drinkPriceDto));
+    public ResponseEntity<ResponseDto> changeDrinkPriceOrInitialPrice(@RequestBody DrinkPriceRequestDto drinkPriceRequestDto){
+        return ResponseEntity.ok(drinkPriceService.changePriceOrInitialPriceOfDrink(drinkPriceRequestDto));
     }
     @GetMapping("/get")
     public ResponseEntity<ResponseDto> getDrinkByDrinkId(@RequestParam Integer drinkId){

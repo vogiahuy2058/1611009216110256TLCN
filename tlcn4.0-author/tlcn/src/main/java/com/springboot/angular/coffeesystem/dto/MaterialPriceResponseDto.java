@@ -5,13 +5,12 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class MaterialPriceDto {
+public class MaterialPriceResponseDto {
+    private Integer id;
     private Integer materialId;
     private String date;
     private float price;

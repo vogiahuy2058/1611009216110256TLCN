@@ -1,6 +1,7 @@
 package com.springboot.angular.coffeesystem.service.drinkPrice;
 
-import com.springboot.angular.coffeesystem.dto.DrinkPriceDto;
+import com.springboot.angular.coffeesystem.dto.DrinkPriceRequestDto;
+import com.springboot.angular.coffeesystem.dto.DrinkPriceResponseDto;
 import com.springboot.angular.coffeesystem.dto.ResponseDto;
 import com.springboot.angular.coffeesystem.exception.NotFoundException;
 import com.springboot.angular.coffeesystem.model.Drink;
@@ -25,33 +26,33 @@ public class DrinkPriceServiceImpl implements DrinkPriceService{
     MapperObject mapperObject;
     @Autowired
     DrinkRepository drinkRepository;
-    public ResponseDto createPriceOfDrink(DrinkPriceDto drinkPriceDto){
-        final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        DrinkPrice drinkPrice = mapperObject.DrinkPriceDtoToEntity(drinkPriceDto);
-        Drink drink = drinkRepository.findByIdAndEnable(drinkPriceDto.getDrinkId(), true)
+    final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    public ResponseDto createPriceOfDrink(DrinkPriceRequestDto drinkPriceRequestDto){
+
+        DrinkPrice drinkPrice = mapperObject.DrinkPriceDtoToEntity(drinkPriceRequestDto);
+        Drink drink = drinkRepository.findByIdAndEnable(drinkPriceRequestDto.getDrinkId(), true)
                 .orElseThrow(()-> new NotFoundException("Drink not found"));
         DrinkPriceId drinkPriceId = new DrinkPriceId();
-        drinkPriceId.setId(drinkPriceDto.getDrinkId());
-        drinkPriceId.setDate(LocalDate.parse(drinkPriceDto.getDate(), dtf));
+        drinkPriceId.setId(drinkPriceRequestDto.getDrinkId());
         drinkPrice.setDrinkPriceId(drinkPriceId);
         drinkPrice.setDrink(drink);
         drinkPriceRepository.save(drinkPrice);
         return new ResponseDto(HttpStatus.OK.value(), "Create successful", null);
 
     }
-    public ResponseDto changePriceOrInitialPriceOfDrink(DrinkPriceDto drinkPriceDto){
-        DrinkPrice drinkPrice = drinkPriceRepository.findByDrinkPriceIdIdAndEnable(drinkPriceDto.getDrinkId(), true)
+    public ResponseDto changePriceOrInitialPriceOfDrink(DrinkPriceRequestDto drinkPriceRequestDto){
+        DrinkPrice drinkPrice = drinkPriceRepository.findByDrinkPriceIdIdAndEnable(drinkPriceRequestDto.getDrinkId(), true)
                 .orElseThrow(()-> new NotFoundException("Id drink not found"));
         drinkPrice.setEnable(false);
         drinkPriceRepository.save(drinkPrice);
 
-        if(drinkPriceDto.getInitialPrice() == 0){
-            drinkPriceDto.setInitialPrice(drinkPrice.getInitialPrice());
+        if(drinkPriceRequestDto.getInitialPrice() == 0){
+            drinkPriceRequestDto.setInitialPrice(drinkPrice.getInitialPrice());
         }
-        if(drinkPriceDto.getPrice() == 0){
-            drinkPriceDto.setPrice(drinkPrice.getPrice());
+        if(drinkPriceRequestDto.getPrice() == 0){
+            drinkPriceRequestDto.setPrice(drinkPrice.getPrice());
         }
-        createPriceOfDrink(drinkPriceDto);
+        createPriceOfDrink(drinkPriceRequestDto);
         return new ResponseDto(HttpStatus.OK.value(), "Change price successful", null);
 
     }
@@ -59,11 +60,11 @@ public class DrinkPriceServiceImpl implements DrinkPriceService{
     public ResponseDto getPriceOfDrink(Integer drinkId){
         DrinkPrice drinkPrice = drinkPriceRepository.findByDrinkPriceIdIdAndEnable(drinkId, true)
                 .orElseThrow(()-> new NotFoundException("Id drink not found"));
-        DrinkPriceDto drinkPriceDto = mapperObject.DrinkPriceEntityToDto(drinkPrice);
-        drinkPriceDto.setDrinkId(drinkPrice.getDrinkPriceId().getId());
-        drinkPriceDto.setDate(drinkPrice.getDrinkPriceId().getDate()
+        DrinkPriceResponseDto drinkPriceResponseDto = mapperObject.DrinkPriceEntityToDto1(drinkPrice);
+        drinkPriceResponseDto.setDrinkId(drinkPrice.getDrinkPriceId().getId());
+        drinkPriceResponseDto.setDate(drinkPrice.getDrinkPriceId().getDate()
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        return new ResponseDto(HttpStatus.OK.value(), "Successful", drinkPriceDto);
+        return new ResponseDto(HttpStatus.OK.value(), "Successful", drinkPriceResponseDto);
     }
 
 

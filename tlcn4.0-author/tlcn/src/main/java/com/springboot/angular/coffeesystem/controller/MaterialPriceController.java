@@ -1,8 +1,7 @@
 package com.springboot.angular.coffeesystem.controller;
 
-import com.springboot.angular.coffeesystem.dto.MaterialPriceDto;
+import com.springboot.angular.coffeesystem.dto.MaterialPriceRequestDto;
 import com.springboot.angular.coffeesystem.dto.ResponseDto;
-import com.springboot.angular.coffeesystem.service.drinkPrice.DrinkPriceService;
 import com.springboot.angular.coffeesystem.service.materialPrice.MaterialPriceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,12 +14,12 @@ public class MaterialPriceController {
     @Autowired
     MaterialPriceService materialPriceService;
     @PostMapping("/create")
-    public ResponseEntity<ResponseDto> createMaterialPrice(@RequestBody MaterialPriceDto materialPriceDto){
-        return ResponseEntity.ok(materialPriceService.createPriceOfMaterial(materialPriceDto));
+    public ResponseEntity<ResponseDto> createMaterialPrice(@RequestBody MaterialPriceRequestDto materialPriceRequestDto){
+        return ResponseEntity.ok(materialPriceService.createPriceOfMaterial(materialPriceRequestDto));
     }
     @PutMapping("/change")
-    public ResponseEntity<ResponseDto> changeMaterialPrice(@RequestBody MaterialPriceDto materialPriceDto){
-        return ResponseEntity.ok(materialPriceService.changePriceOfMaterial(materialPriceDto));
+    public ResponseEntity<ResponseDto> changeMaterialPrice(@RequestBody MaterialPriceRequestDto materialPriceRequestDto){
+        return ResponseEntity.ok(materialPriceService.changePriceOfMaterial(materialPriceRequestDto));
     }
     @GetMapping("/get")
     public ResponseEntity<ResponseDto> getMaterialByMaterialId(@RequestParam Integer materialId){

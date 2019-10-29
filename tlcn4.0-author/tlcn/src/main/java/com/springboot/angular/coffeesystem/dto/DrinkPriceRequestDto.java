@@ -11,9 +11,9 @@ import java.time.LocalDate;
 @AllArgsConstructor
 @Getter
 @Setter
-public class DrinkPriceDto {
+public class DrinkPriceRequestDto {
     private Integer drinkId;
-    private String date;
+    private LocalDate date;
     private float price;
     private float initialPrice;
 }

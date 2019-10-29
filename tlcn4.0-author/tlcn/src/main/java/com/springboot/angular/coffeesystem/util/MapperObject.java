@@ -126,17 +126,27 @@ public interface MapperObject {
 
     @Mapping(target="drinkPriceId.id",source = "drinkId")
     @Mapping(target="drinkPriceId.date",source = "date")
-    DrinkPrice DrinkPriceDtoToEntity(DrinkPriceDto drinkPriceDto);
+    DrinkPrice DrinkPriceDtoToEntity(DrinkPriceRequestDto drinkPriceRequestDto);
+
+    @Mapping(target="drinkId",source = "drinkPriceId.id")
+    DrinkPriceRequestDto DrinkPriceEntityToDto(DrinkPrice drinkPrice);
 
     @Mapping(target="drinkId",source = "drinkPriceId.id")
     @Mapping(target="date",source = "drinkPriceId.date")
-    DrinkPriceDto DrinkPriceEntityToDto(DrinkPrice drinkPrice);
+    DrinkPriceResponseDto DrinkPriceEntityToDto1(DrinkPrice drinkPrice);
 
-    @Mapping(target="materialPriceId.id",source = "materialId")
+    @Mapping(target="materialPriceId.idMaterial",source = "materialId")
     @Mapping(target="materialPriceId.date",source = "date")
-    MaterialPrice MaterialPriceDtoToEntity(MaterialPriceDto materialPriceDto);
+    @Mapping(target="materialPriceId.id",source = "id")
+    MaterialPrice MaterialPriceDtoToEntity(MaterialPriceRequestDto materialPriceRequestDto);
 
-    @Mapping(target="materialId",source = "materialPriceId.id")
+    @Mapping(target="materialId",source = "materialPriceId.idMaterial")
     @Mapping(target="date",source = "materialPriceId.date")
-    MaterialPriceDto MaterialPriceEntityToDto(MaterialPrice materialPrice);
+    @Mapping(target="id",source = "materialPriceId.id")
+    MaterialPriceRequestDto MaterialPriceEntityToDto(MaterialPrice materialPrice);
+
+    @Mapping(target="materialId",source = "materialPriceId.idMaterial")
+    @Mapping(target="date",source = "materialPriceId.date")
+    @Mapping(target="id",source = "materialPriceId.id")
+    MaterialPriceResponseDto MaterialPriceEntityToDto1(MaterialPrice materialPrice);
 }

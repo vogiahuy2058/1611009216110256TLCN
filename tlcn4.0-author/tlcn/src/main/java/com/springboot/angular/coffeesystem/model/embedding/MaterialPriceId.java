@@ -11,8 +11,9 @@ import java.util.Objects;
 @Embeddable
 @NoArgsConstructor
 public class MaterialPriceId implements Serializable {
-    @Column(name = "id_material")
     private Integer id;
+    @Column(name = "id_material")
+    private Integer idMaterial;
     @Column(name = "date_material")
     private LocalDate date;
 
@@ -22,6 +23,14 @@ public class MaterialPriceId implements Serializable {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getIdMaterial() {
+        return idMaterial;
+    }
+
+    public void setIdMaterial(Integer idMaterial) {
+        this.idMaterial = idMaterial;
     }
 
     public LocalDate getDate() {
@@ -38,11 +47,12 @@ public class MaterialPriceId implements Serializable {
         if (o == null || getClass() != o.getClass()) return false;
         MaterialPriceId that = (MaterialPriceId) o;
         return id.equals(that.id) &&
+                idMaterial.equals(that.idMaterial) &&
                 date.equals(that.date);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, date);
+        return Objects.hash(id, idMaterial, date);
     }
 }
