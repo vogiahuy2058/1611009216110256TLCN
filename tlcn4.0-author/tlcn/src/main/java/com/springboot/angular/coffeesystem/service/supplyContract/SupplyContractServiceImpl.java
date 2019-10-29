@@ -46,7 +46,6 @@ public class SupplyContractServiceImpl implements SupplyContractService{
                 true).orElseThrow(()-> new NotFoundException("Branch shop not found"));
         supplyContract.setBranchShop(branchShop);
         supplyContract.setSupplier(supplier);
-        supplyContract.setDate(LocalDate.parse(supplyContractDto.getDate(), dtf));
         supplyContractRepository.save(supplyContract);
         return new ResponseDto(HttpStatus.OK.value(), "Create supply contract successful", null);
     }
