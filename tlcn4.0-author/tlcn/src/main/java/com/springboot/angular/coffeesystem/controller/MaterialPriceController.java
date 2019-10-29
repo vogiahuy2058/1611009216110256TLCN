@@ -26,7 +26,7 @@ public class MaterialPriceController {
         return ResponseEntity.ok(this.materialPriceService.getPriceOfMaterial(materialId));
     }
     @GetMapping("/get-all")
-    public ResponseEntity<ResponseDto> geAlltMaterialByMaterial(){
+    public ResponseEntity<ResponseDto> geAllMaterialByMaterial(){
         return ResponseEntity.ok(this.materialPriceService.getAllPriceOfMaterial());
     }
 }

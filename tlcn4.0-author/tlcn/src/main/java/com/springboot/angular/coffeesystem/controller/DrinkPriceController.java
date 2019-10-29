@@ -25,5 +25,9 @@ public class DrinkPriceController {
     public ResponseEntity<ResponseDto> getDrinkByDrinkId(@RequestParam Integer drinkId){
         return ResponseEntity.ok(this.drinkPriceService.getPriceOfDrink(drinkId));
     }
+    @GetMapping("/get-all")
+    public ResponseEntity<ResponseDto> getAllDrinkByDrinkId(){
+        return ResponseEntity.ok(this.drinkPriceService.getAllPriceOfDrink());
+    }
 
 }
