@@ -7,8 +7,6 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
 @Mapper(componentModel = "spring")
 public interface MapperObject {
@@ -103,12 +101,16 @@ public interface MapperObject {
 
     @Mapping(target="branchShop.name",source = "branchShop")
     @Mapping(target="supplier.name",source = "supplier")
-    SupplyContract SupplyContractDtoToEntity(SupplyContractDto supplyContractDto);
+    SupplyContract SupplyContractDtoToEntity(SupplyContractRequestDto supplyContractRequestDto);
+
+    @Mapping(target="branchShop",source = "branchShop.name")
+    @Mapping(target="supplier",source = "supplier.name")
+    SupplyContractRequestDto SupplyContractEntityToDto(SupplyContract supplyContract);
 
     @Mapping(target="branchShop",source = "branchShop.name")
     @Mapping(target="supplier",source = "supplier.name")
     @Mapping(target="date",source = "date")
-    SupplyContractDto SupplyContractEntityToDto(SupplyContract supplyContract);
+    SupplyContractResponseDto SupplyContractEntityToDto1(SupplyContract supplyContract);
 
     @Mapping(target="material.name",source = "material")
     @Mapping(target="drink.name",source = "drink")

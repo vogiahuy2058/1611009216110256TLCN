@@ -1,8 +1,7 @@
 package com.springboot.angular.coffeesystem.controller;
 
-import com.springboot.angular.coffeesystem.dto.PagingResponseDto;
 import com.springboot.angular.coffeesystem.dto.ResponseDto;
-import com.springboot.angular.coffeesystem.dto.SupplyContractDto;
+import com.springboot.angular.coffeesystem.dto.SupplyContractRequestDto;
 import com.springboot.angular.coffeesystem.service.supplyContract.SupplyContractService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,8 +14,8 @@ public class SupplyContractController {
     @Autowired
     SupplyContractService supplyContractService;
     @PostMapping("/create")
-    public ResponseEntity<ResponseDto> createSupplyContract(@RequestBody SupplyContractDto supplyContractDto){
-        return ResponseEntity.ok(supplyContractService.createSupplyContract(supplyContractDto));
+    public ResponseEntity<ResponseDto> createSupplyContract(@RequestBody SupplyContractRequestDto supplyContractRequestDto){
+        return ResponseEntity.ok(supplyContractService.createSupplyContract(supplyContractRequestDto));
     }
 //    @GetMapping("/get-all")
 //    public ResponseEntity<PagingResponseDto> getAllSupplyContractPaging(
@@ -41,7 +40,7 @@ public class SupplyContractController {
         return ResponseEntity.ok(supplyContractService.deleteSupplyContract(id));
     }
     @PutMapping("/edit")
-    public ResponseEntity<ResponseDto> editSupplyContract(@RequestBody SupplyContractDto supplyContractDto){
-        return ResponseEntity.ok(supplyContractService.editSupplyContract(supplyContractDto));
+    public ResponseEntity<ResponseDto> editSupplyContract(@RequestBody SupplyContractRequestDto supplyContractRequestDto){
+        return ResponseEntity.ok(supplyContractService.editSupplyContract(supplyContractRequestDto));
     }
 }
