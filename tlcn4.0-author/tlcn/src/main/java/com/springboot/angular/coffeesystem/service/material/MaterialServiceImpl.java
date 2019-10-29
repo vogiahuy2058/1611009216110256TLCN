@@ -41,6 +41,7 @@ public class MaterialServiceImpl implements MaterialService {
         Material material = this.mapperObject.MaterialDtoToEntity(materialDto);
         MaterialType materialType = materialTypeRepository.findByNameAndEnable(materialDto.getMaterialType(), true)
                 .orElseThrow(()-> new NotFoundException("Material type not found"));
+
         material.setMaterialType(materialType);
         materialRepository.save(material);
         return new ResponseDto(HttpStatus.OK.value(), "Create material successful", null);

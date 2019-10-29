@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
-@RequestMapping("/api/v1/suppy-contract-detail")
+@RequestMapping("/api/v1/supply-contract-detail")
 public class SupplyContractDetailController {
     @Autowired
     SupplyContractDetailService detailService;

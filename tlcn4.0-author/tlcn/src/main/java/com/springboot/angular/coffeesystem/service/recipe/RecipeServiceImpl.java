@@ -105,8 +105,7 @@ public class RecipeServiceImpl implements RecipeService{
         Recipe recipe = recipeRepository.findByDrinkAndMaterial(drink, material)
                 .orElseThrow(()-> new NotFoundException("Recipe not found"));
         recipe.setAmount(recipeDto.getAmount());
-        recipe.setUnit(recipeDto.getUnit());
-        recipe.setDrink(drink);
+//        recipe.setUnit(recipeDto.getUnit());
         recipe.setMaterial(material);
         recipeRepository.save(recipe);
         return new ResponseDto(HttpStatus.OK.value(), "Edit recipe successful", null);
