@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "unit")
@@ -21,7 +22,7 @@ public class Unit extends Auditable<String> {
 //    @NaturalId
     private String name;
     private boolean enable = true;
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "unit", cascade = CascadeType.ALL)
-    private Material material;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "unit", cascade = CascadeType.ALL)
+    private Set<Material> materials;
 
 }

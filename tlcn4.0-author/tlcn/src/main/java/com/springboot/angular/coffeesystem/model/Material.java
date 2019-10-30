@@ -43,7 +43,7 @@ public class Material extends Auditable<String>{
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "material", cascade = CascadeType.ALL)
     private Set<MaterialPrice> materialPrices;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "unit_id")
     private Unit unit;
 }
