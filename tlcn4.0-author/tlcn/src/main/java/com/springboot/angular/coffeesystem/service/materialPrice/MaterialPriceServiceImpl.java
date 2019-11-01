@@ -70,11 +70,14 @@ public class MaterialPriceServiceImpl implements MaterialPriceService {
     public ResponseDto getPriceOfMaterial(Integer materialId){
         MaterialPrice materialPrice = materialPriceRepository.findByMaterialPriceIdIdMaterialAndEnable(materialId, true)
                 .orElseThrow(()-> new NotFoundException("Id material not found"));
+        Material material = materialRepository.findByIdAndEnable(materialId, true)
+                .orElseThrow(()-> new NotFoundException("Material id not found"));
         MaterialPriceResponseDto materialPriceResponseDto = mapperObject.MaterialPriceEntityToDto1(materialPrice);
         materialPriceResponseDto.setId(materialPrice.getMaterialPriceId().getId());
         materialPriceResponseDto.setMaterialId(materialPrice.getMaterialPriceId().getIdMaterial());
         materialPriceResponseDto.setDate(materialPrice.getMaterialPriceId().getDate()
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        materialPriceResponseDto.setMaterialName(material.getName());
         return new ResponseDto(HttpStatus.OK.value(), "Successful", materialPriceResponseDto);
     }
     @Transactional
@@ -83,10 +86,13 @@ public class MaterialPriceServiceImpl implements MaterialPriceService {
         List<MaterialPriceResponseDto> materialPriceResponseDtos = new ArrayList<>();
         materialPriceList.forEach(element->{
             MaterialPriceResponseDto materialPriceResponseDto = mapperObject.MaterialPriceEntityToDto1(element);
+            Material material = materialRepository.findByIdAndEnable(element.getMaterialPriceId().getIdMaterial(), true)
+                    .orElseThrow(()-> new NotFoundException("Material id not found"));
             materialPriceResponseDto.setId(element.getMaterialPriceId().getId());
             materialPriceResponseDto.setMaterialId(element.getMaterialPriceId().getIdMaterial());
             materialPriceResponseDto.setDate(element.getMaterialPriceId().getDate()
                     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            materialPriceResponseDto.setMaterialName(material.getName());
             materialPriceResponseDtos.add(materialPriceResponseDto);
         });
         return new ResponseDto(HttpStatus.OK.value(), "All material price", materialPriceResponseDtos);

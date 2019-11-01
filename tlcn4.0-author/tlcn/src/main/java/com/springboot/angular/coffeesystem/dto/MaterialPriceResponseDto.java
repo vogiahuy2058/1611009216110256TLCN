@@ -12,6 +12,7 @@ import lombok.Setter;
 public class MaterialPriceResponseDto {
     private Integer id;
     private Integer materialId;
+    private String materialName;
     private String date;
     private float price;
 }
