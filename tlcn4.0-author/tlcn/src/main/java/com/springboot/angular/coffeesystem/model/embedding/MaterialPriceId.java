@@ -11,6 +11,7 @@ import java.util.Objects;
 @Embeddable
 @NoArgsConstructor
 public class MaterialPriceId implements Serializable {
+    @Column(name = "id")
     private Integer id;
     @Column(name = "id_material")
     private Integer idMaterial;

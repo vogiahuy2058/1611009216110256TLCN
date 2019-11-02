@@ -29,13 +29,29 @@ public class DrinkPriceServiceImpl implements DrinkPriceService{
     @Autowired
     DrinkRepository drinkRepository;
     final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    @Transactional
     public ResponseDto createPriceOfDrink(DrinkPriceRequestDto drinkPriceRequestDto){
 
+        //neu material price do da ton tai thì enable=false
+        if(drinkPriceRepository.findByDrinkPriceIdIdDrinkAndEnable(drinkPriceRequestDto.getDrinkId(),
+                true).isPresent()){
+            DrinkPrice drinkPriceOld =
+                    drinkPriceRepository.findByDrinkPriceIdIdDrinkAndEnable(drinkPriceRequestDto.getDrinkId(), true)
+                    .orElseThrow(()-> new NotFoundException("Id Drink not found"));
+            drinkPriceOld.setEnable(false);
+            drinkPriceRepository.save(drinkPriceOld);
+        }
         DrinkPrice drinkPrice = mapperObject.DrinkPriceDtoToEntity(drinkPriceRequestDto);
         Drink drink = drinkRepository.findByIdAndEnable(drinkPriceRequestDto.getDrinkId(), true)
                 .orElseThrow(()-> new NotFoundException("Drink not found"));
         DrinkPriceId drinkPriceId = new DrinkPriceId();
-        drinkPriceId.setId(drinkPriceRequestDto.getDrinkId());
+        drinkPriceId.setIdDrink(drinkPriceRequestDto.getDrinkId());
+        Integer idOld = drinkPriceRepository.findMaxId();
+        if(idOld == null){
+            idOld = 0;
+        }
+        drinkPriceId.setId(idOld + 1);
+        drinkPriceId.setDate(drinkPriceRequestDto.getDate());
         drinkPrice.setDrinkPriceId(drinkPriceId);
         drinkPrice.setDrink(drink);
         drinkPriceRepository.save(drinkPrice);
@@ -43,10 +59,10 @@ public class DrinkPriceServiceImpl implements DrinkPriceService{
 
     }
     public ResponseDto changePriceOrInitialPriceOfDrink(DrinkPriceRequestDto drinkPriceRequestDto){
-        DrinkPrice drinkPrice = drinkPriceRepository.findByDrinkPriceIdIdAndEnable(drinkPriceRequestDto.getDrinkId(), true)
+        DrinkPrice drinkPrice = drinkPriceRepository.findByDrinkPriceIdIdDrinkAndEnable(drinkPriceRequestDto.getDrinkId(), true)
                 .orElseThrow(()-> new NotFoundException("Id drink not found"));
-        drinkPrice.setEnable(false);
-        drinkPriceRepository.save(drinkPrice);
+//        drinkPrice.setEnable(false);
+//        drinkPriceRepository.save(drinkPrice);
 
         if(drinkPriceRequestDto.getInitialPrice() == 0){
             drinkPriceRequestDto.setInitialPrice(drinkPrice.getInitialPrice());
@@ -60,12 +76,16 @@ public class DrinkPriceServiceImpl implements DrinkPriceService{
     }
     @Transactional
     public ResponseDto getPriceOfDrink(Integer drinkId){
-        DrinkPrice drinkPrice = drinkPriceRepository.findByDrinkPriceIdIdAndEnable(drinkId, true)
+        DrinkPrice drinkPrice = drinkPriceRepository.findByDrinkPriceIdIdDrinkAndEnable(drinkId, true)
                 .orElseThrow(()-> new NotFoundException("Id drink not found"));
+        Drink drink = drinkRepository.findByIdAndEnable(drinkId, true)
+                .orElseThrow(()-> new NotFoundException("Dink id not found"));
         DrinkPriceResponseDto drinkPriceResponseDto = mapperObject.DrinkPriceEntityToDto1(drinkPrice);
-        drinkPriceResponseDto.setDrinkId(drinkPrice.getDrinkPriceId().getId());
+        drinkPriceResponseDto.setId(drinkPrice.getDrinkPriceId().getId());
+        drinkPriceResponseDto.setDrinkId(drinkPrice.getDrinkPriceId().getIdDrink());
         drinkPriceResponseDto.setDate(drinkPrice.getDrinkPriceId().getDate()
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        drinkPriceResponseDto.setDrinkName(drink.getName());
         return new ResponseDto(HttpStatus.OK.value(), "Successful", drinkPriceResponseDto);
     }
     @Transactional
@@ -74,9 +94,13 @@ public class DrinkPriceServiceImpl implements DrinkPriceService{
         List<DrinkPriceResponseDto> drinkPriceResponseDtos = new ArrayList<>();
         drinkPriceList.forEach(element->{
             DrinkPriceResponseDto drinkPriceResponseDto = mapperObject.DrinkPriceEntityToDto1(element);
-            drinkPriceResponseDto.setDrinkId(element.getDrinkPriceId().getId());
+            Drink drink = drinkRepository.findByIdAndEnable(element.getDrinkPriceId().getIdDrink(), true)
+                    .orElseThrow(()-> new NotFoundException("Dink id not found"));
+            drinkPriceResponseDto.setId(element.getDrinkPriceId().getId());
+            drinkPriceResponseDto.setDrinkId(element.getDrinkPriceId().getIdDrink());
             drinkPriceResponseDto.setDate(element.getDrinkPriceId().getDate()
                     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            drinkPriceResponseDto.setDrinkName(drink.getName());
             drinkPriceResponseDtos.add(drinkPriceResponseDto);
         });
         return new ResponseDto(HttpStatus.OK.value(), "All drink price", drinkPriceResponseDtos);

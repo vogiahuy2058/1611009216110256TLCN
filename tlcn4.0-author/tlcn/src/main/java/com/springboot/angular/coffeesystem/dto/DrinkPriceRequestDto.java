@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class DrinkPriceRequestDto {
+    private Integer id;
     private Integer drinkId;
     private LocalDate date;
     private float price;
