@@ -8,4 +8,5 @@ public interface InvoiceDetailService {
     ResponseDto createInvoiceDetail(InvoiceDetailDto invoiceDetailDto);
 //    ResponseDto deleteInvoiceDetail(Integer id);
     ResponseDto editInvoiceDetail(InvoiceDetailDto invoiceDetailDto);
+    ResponseDto deleteInvoiceDetail(Integer invoiceId, Integer drinkId);
 }

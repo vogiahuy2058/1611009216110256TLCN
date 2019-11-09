@@ -90,4 +90,12 @@ public class TableTypeServiceImpl implements TableTypeService{
         return new ResponseDto(HttpStatus.OK.value(), "Edit table type successful",
                 null);
     }
+    public ResponseDto createTableTypeList(List<TableTypeDto> tableTypeDtoList){
+        tableTypeDtoList.forEach(element->{
+            TableType tableType = this.mapperObject.TableTypeDtoToEntity(element);
+            tableTypeRepository.save(tableType);
+        });
+        return new ResponseDto(HttpStatus.OK.value(), "create list table type successful",
+                null);
+    }
 }

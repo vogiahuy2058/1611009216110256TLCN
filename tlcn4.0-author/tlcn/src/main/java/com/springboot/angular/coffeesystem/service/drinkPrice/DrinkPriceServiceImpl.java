@@ -32,7 +32,7 @@ public class DrinkPriceServiceImpl implements DrinkPriceService{
     @Transactional
     public ResponseDto createPriceOfDrink(DrinkPriceRequestDto drinkPriceRequestDto){
 
-        //neu material price do da ton tai thì enable=false
+        //neu drink price do da ton tai thì enable=false
         if(drinkPriceRepository.findByDrinkPriceIdIdDrinkAndEnable(drinkPriceRequestDto.getDrinkId(),
                 true).isPresent()){
             DrinkPrice drinkPriceOld =

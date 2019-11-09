@@ -25,7 +25,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String username)
             throws UsernameNotFoundException {
 
-        Account account = accountRepository.findRoleUsername(username);
+        Account account = accountRepository.findRoleUsername(username)
+                .orElseThrow(()-> new UsernameNotFoundException("Username not found"));
         return UserPrinciple.build(account);
     }
 }

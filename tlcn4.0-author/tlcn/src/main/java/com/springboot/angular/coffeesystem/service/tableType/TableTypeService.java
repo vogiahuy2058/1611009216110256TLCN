@@ -4,6 +4,8 @@ import com.springboot.angular.coffeesystem.dto.PagingResponseDto;
 import com.springboot.angular.coffeesystem.dto.ResponseDto;
 import com.springboot.angular.coffeesystem.dto.TableTypeDto;
 
+import java.util.List;
+
 public interface TableTypeService {
     ResponseDto createTableType(TableTypeDto tableTypeDto);
     ResponseDto getAllTableType();
@@ -11,4 +13,5 @@ public interface TableTypeService {
     ResponseDto editTableType(TableTypeDto tableTypeDto);
     ResponseDto getTableTypeById(Integer id);
     PagingResponseDto getAllTableTypePaging(int page, int size, String sort, String sortColumn);
+    ResponseDto createTableTypeList(List<TableTypeDto> tableTypeDtoList);
 }

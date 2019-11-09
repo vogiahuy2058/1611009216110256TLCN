@@ -16,7 +16,7 @@ import java.util.Optional;
 @Transactional(rollbackFor = Exception.class)
 public interface AccountRepository extends JpaRepository<Account, Integer> {
     @Query("select a from Account a join fetch a.role where a.username = ?1")
-    Account findRoleUsername(String username);
+    Optional<Account> findRoleUsername(String username);
     @Query("select case when count(a) > 0 then true else false end from Account a where a.username = ?1 or a.email = ?1")
     Boolean isExists(String value);
     Optional<Account> findByUsernameAndEnable(String username, boolean enable);

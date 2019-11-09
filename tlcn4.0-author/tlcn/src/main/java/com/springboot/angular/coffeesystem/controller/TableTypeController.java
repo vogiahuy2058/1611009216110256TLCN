@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/v1/table-type")
@@ -44,5 +46,9 @@ public class TableTypeController {
     @PutMapping("/edit")
     public ResponseEntity<ResponseDto> editTableType(@RequestBody TableTypeDto tableTypeDto){
         return ResponseEntity.ok(tableTypeService.editTableType(tableTypeDto));
+    }
+    @PostMapping("/create-list")
+    public ResponseEntity<ResponseDto> createTableTypeList(@RequestBody List<TableTypeDto> tableTypeDtoList){
+        return ResponseEntity.ok(tableTypeService.createTableTypeList(tableTypeDtoList));
     }
 }

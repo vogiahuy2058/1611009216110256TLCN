@@ -55,7 +55,17 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
         invoiceDetail.setAmount(invoiceDetailDto.getAmount());
         invoiceDetail.setDiscount(invoiceDetailDto.getDiscount());
         invoiceDetailRepository.save(invoiceDetail);
-        return new ResponseDto(HttpStatus.OK.value(), "Successful", null);
+        return new ResponseDto(HttpStatus.OK.value(), "edit successful", null);
     }
 
+    public ResponseDto deleteInvoiceDetail(Integer invoiceId, Integer drinkId){
+        Drink drink = drinkRepository.findByIdAndEnable(drinkId, true)
+                .orElseThrow(()-> new NotFoundException("Drink not found"));
+        Invoice invoice = invoiceRepository.findByIdAndEnable(invoiceId, true)
+                .orElseThrow(()-> new NotFoundException("Invoice not found"));
+        InvoiceDetail invoiceDetail = invoiceDetailRepository.findByDrinkAndInvoice(drink, invoice)
+                .orElseThrow(()-> new NotFoundException("Invoice detail not found"));
+        invoiceDetailRepository.delete(invoiceDetail);
+        return new ResponseDto(HttpStatus.OK.value(), "Delete invoice detail successful", null);
+    }
 }

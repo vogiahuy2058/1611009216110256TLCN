@@ -24,4 +24,9 @@ public class InvoiceDetailController {
     public ResponseEntity<ResponseDto> editInvoiceDetail(@RequestBody InvoiceDetailDto invoiceDetailDto){
         return ResponseEntity.ok(invoiceDetailService.editInvoiceDetail(invoiceDetailDto));
     }
+    @DeleteMapping("/delete")
+    public ResponseEntity<ResponseDto> deleteInvoiceDetail(@RequestParam Integer invoiceId,
+                                                           @RequestParam Integer drinkId){
+        return ResponseEntity.ok(invoiceDetailService.deleteInvoiceDetail(invoiceId, drinkId));
+    }
 }
