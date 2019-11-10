@@ -94,6 +94,8 @@ public class DrinkServiceImpl implements DrinkService {
         DrinkType drinkType = drinkTypeRepository.findByNameAndEnable(drinkDto.getDrinkType(), true)
                 .orElseThrow(()-> new NotFoundException("Drink type not found"));
         drink.setDrinkType(drinkType);
+        drink.setName(drinkDto.getName());
+        drink.setDescription(drinkDto.getDescription());
         drinkRepository.save(drink);
         return new ResponseDto(HttpStatus.OK.value(), "Edit drink successful", null);
     }
@@ -110,23 +112,4 @@ public class DrinkServiceImpl implements DrinkService {
         drinkRepository.save(drink);
         return new ResponseDto(HttpStatus.OK.value(), "Delete drink successful", null);
     }
-//    public ResponseDto changePrice(Integer id, float newPrice){
-//        Drink drink = drinkRepository.findByDrinkIdIdAndEnable(id, true)
-//                .orElseThrow(()-> new NotFoundException("Drink not found"));
-//        drink.setEnable(false);
-//        drinkRepository.save(drink);
-//
-//        DrinkDto drinkDto = mapperObject.DrinkEntityToDrinkDTO(drink);
-//        drinkDto.setId(drink.getDrinkId().getId());
-//        drinkDto.setDate(LocalDate.now());
-//        drinkDto.setDrinkType(drink.getDrinkType().getName());
-//        drinkDto.setPrice(newPrice);
-//        createDrink(drinkDto);
-//        return new ResponseDto(HttpStatus.OK.value(), "Price is changed successfully", null);
-//    }
-
-
-
-
-
 }
