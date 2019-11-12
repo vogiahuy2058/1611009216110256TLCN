@@ -1,0 +1,43 @@
+<div class="container custom-container">
+    <div class="col-md-12">
+        <h3 class="mb-3 text-center">Create supply contract detail</h3>
+        <div class="form-group">
+            <ejs-datepicker id='datepicker' placeholder='Ngày vận chuyển' [value]='dateValue'
+                [(ngModel)]="employeetypeDetails.deliveryTime" format='yyyy-MM-dd'></ejs-datepicker>
+        </div>
+        <div class="form-group">
+            <ejs-datepicker id='datepicker' placeholder='Ngày thanh toán' [value]='dateValue' 
+                [(ngModel)]="employeetypeDetails.paymentTime" format='yyyy-MM-dd'></ejs-datepicker>
+        </div>
+        <div class="form-group">
+            <label for="department1">Nguyên liệu</label>
+            <select style="font-size: 15px; height: 50px;" id="department1" name="department1" (change)="loadlaitrang()"
+                [(ngModel)]="employeetypeDetails.materialId" class="form-control">
+                <option *ngFor="let materialprice of Content1.content" [value]="materialprice.materialId">
+                    {{materialprice.materialName}}
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="department">Supplycontract</label>
+            <select style="font-size: 15px; height: 50px;" id="department" name="department"
+                [(ngModel)]="employeetypeDetails.supplyContractId" class="form-control">
+                <option *ngFor="let supplycontract of Content.content" [value]="supplycontract.id">
+                    {{supplycontract.id}} - {{supplycontract.branchShop}} - {{supplycontract.supplier}}
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <input style="height: 50px;" type="text" [(ngModel)]="employeetypeDetails.unitPrice" readonly="readonly" class="form-control"
+                placeholder="unit price">
+        </div>
+        <div class="form-group">
+            <input style="height: 50px;" type="text" [(ngModel)]="employeetypeDetails.amount" class="form-control"
+                placeholder="số lượng">
+        </div>
+
+        <div class="form-group">
+            <button class="btn btn-success btn-lg btn-block" (click)="addEmployeetype()">Create supply contract</button>
+        </div>
+    </div>
+</div>

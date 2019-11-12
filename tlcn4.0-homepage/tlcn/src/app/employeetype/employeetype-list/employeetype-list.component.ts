@@ -38,6 +38,7 @@ export class EmployeetypeListComponent implements OnInit,AfterViewInit{
   loadEmployeetype() {
     return this.restApi.getEmployeetypes().subscribe((data: {}) => {
       this.Content = data;
+      console.log(JSON.stringify(this.Content.content))
       this.chRef.detectChanges();
       const table: any = $('table');
       this.dataTable = table.DataTable();

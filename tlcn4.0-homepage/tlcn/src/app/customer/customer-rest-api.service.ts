@@ -46,6 +46,7 @@ export class CustomerRestApiService {
 
   // HttpClient API post() method => Create employee
   createEmployeetype(employee): Observable<Contentcustomer> {
+    console.log('haha' + JSON.stringify(employee));
     return this.http.post<Contentcustomer>(this.apiURL + '/create', JSON.stringify(employee), this.httpOptions)
     .pipe(
       retry(1),

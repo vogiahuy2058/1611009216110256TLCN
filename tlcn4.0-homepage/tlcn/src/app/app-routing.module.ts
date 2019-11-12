@@ -42,6 +42,19 @@ import { MaterialListComponent } from './material/material-list/material-list.co
 import { SupplycontractCreateComponent } from './supplycontract/supplycontract-create/supplycontract-create.component';
 import { SupplycontractEditComponent } from './supplycontract/supplycontract-edit/supplycontract-edit.component';
 import { SupplycontractListComponent } from './supplycontract/supplycontract-list/supplycontract-list.component';
+import { SupplycontractdetailCreateComponent } from './supplycontractdetail/supplycontractdetail-create/supplycontractdetail-create.component';
+import { SupplycontractdetailEditComponent } from './supplycontractdetail/supplycontractdetail-edit/supplycontractdetail-edit.component';
+import { SupplycontractdetailListComponent } from './supplycontractdetail/supplycontractdetail-list/supplycontractdetail-list.component';
+import { MaterialpriceCreateComponent } from './materialprice//materialprice-create/materialprice-create.component';
+import { MaterialpriceEditComponent } from './materialprice/materialprice-edit/materialprice-edit.component';
+import { MaterialpriceListComponent } from './materialprice/materialprice-list/materialprice-list.component';
+import { UnitCreateComponent } from './unit/unit-create/unit-create.component';
+import { UnitEditComponent } from './unit/unit-edit/unit-edit.component';
+import { UnitListComponent } from './unit/unit-list/unit-list.component';
+import { DrinkCreateComponent } from './drink/drink-create/drink-create.component';
+import { DrinkListComponent } from './drink/drink-list/drink-list.component';
+import { DrinkEditComponent } from './drink/drink-edit/drink-edit.component';
+
 const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
   { path: 'employeetype-create', component: EmployeetypeCreateComponent },
@@ -86,6 +99,18 @@ const routes: Routes = [
   { path: 'supplycontract-list', component: SupplycontractListComponent },
   { path: 'supplycontract-create', component: SupplycontractCreateComponent },
   { path: 'supplycontract-edit/:id', component: SupplycontractEditComponent },
+  { path: 'supplycontractdetail-list', component: SupplycontractdetailListComponent },
+  { path: 'supplycontractdetail-create', component: SupplycontractdetailCreateComponent },
+  { path: 'supplycontractdetail-edit/:id', component: SupplycontractdetailEditComponent },
+  { path: 'materialprice-list', component: MaterialpriceListComponent },
+  { path: 'materialprice-create', component: MaterialpriceCreateComponent },
+  { path: 'materialprice-edit/:id', component: MaterialpriceEditComponent },
+  { path: 'unit-list', component: UnitListComponent },
+  { path: 'unit-create', component: UnitCreateComponent },
+  { path: 'unit-edit/:id', component: UnitEditComponent },
+  { path: 'drink-list', component: DrinkListComponent },
+  { path: 'drink-create', component: DrinkCreateComponent },
+  { path: 'drink-edit/:id', component: DrinkEditComponent },
 ];
 
 @NgModule({

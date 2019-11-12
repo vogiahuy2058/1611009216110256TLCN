@@ -1,0 +1,33 @@
+<div class="container">
+    <h1>Danh sách đơn vị</h1>
+    
+    <table class="table table-hover" cellspacing="0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Tên đơn vị</th>
+          <th>Tác vụ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let unit of Content.content">
+            <td>{{unit.id}}</td>
+            <td>{{unit.name}}</td>
+            <td>
+                <button class="btn btn-primary" 
+                routerLink="/unit-edit/{{unit.id}}">Edit</button> 
+                &nbsp;&nbsp;&nbsp;
+                <button class="btn btn-danger" (click)="deleteEmployeetype(unit.id)">Delete</button>
+              </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <button class="btn btn-primary" 
+    routerLink="/home">Back</button>
+  </div>
+  <div>
+    <button class="btn btn-dark" 
+    routerLink="/unit-create">Tạo mới</button>
+  </div>

@@ -47,7 +47,9 @@ export class CustomerCreateComponent implements OnInit {
   }
 
   addEmployeetype(dataEmployeetype) {
-
+    var d = new Date(this.employeetypeDetails.birthDay);
+    d.setHours(0, -d.getTimezoneOffset(), 0 , 0)
+    this.employeetypeDetails.birthDay = d.toISOString();
     this.restApi.createEmployeetype(this.employeetypeDetails).subscribe((data: {}) => {
       this.router.navigate(['/customer-list'])
     })

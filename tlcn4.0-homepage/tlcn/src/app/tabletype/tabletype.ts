@@ -1,4 +1,4 @@
 export class Tabletype {
-    id: Int32Array;
+    id: number;
     name: string;
 }

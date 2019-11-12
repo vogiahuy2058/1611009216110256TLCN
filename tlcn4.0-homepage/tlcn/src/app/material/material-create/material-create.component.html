@@ -23,6 +23,15 @@
     <div class="form-group">
       <input type="text" [(ngModel)]="employeetypeDetails.minInventory" class="form-control" placeholder="tồn kho tối thiểu">
     </div>
+    <div class="form-group">
+            <label for="department2">UNIT</label>
+            <select style="font-size: 15px; height: 50px;" id="department1" name="department2"
+                [(ngModel)]="employeetypeDetails.unit" class="form-control">
+                <option *ngFor="let unit of Content1.content" [value]="unit.name">
+                    {{unit.name}}
+                </option>
+            </select>
+        </div>
     
 
     <div class="form-group">

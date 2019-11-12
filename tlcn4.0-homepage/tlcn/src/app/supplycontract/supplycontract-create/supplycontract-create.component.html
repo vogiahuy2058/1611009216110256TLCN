@@ -27,9 +27,38 @@
             <input style="height: 50px;" type="text" [(ngModel)]="employeetypeDetails.totalPrice" class="form-control"
                 placeholder="Tổng tiền">
         </div>
-
-        <div class="form-group">
-            <button class="btn btn-success btn-lg btn-block" (click)="addEmployeetype()">Create supply contract</button>
-        </div>
     </div>
 </div>
+<div class="container">
+    <h6>Danh sách nguyên liệu</h6>
+    
+    <table cellspacing="0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Ngày</th>
+          <th>Chi nhánh</th>
+          <th>Nhà cung cấp</th>
+          <th>Tổng tiền</th>
+          <th>Tác vụ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let supplier of Content.content">
+            <td><ejs-datepicker id='datepicker' placeholder='Ngày vận chuyển' [value]='dateValue'
+                [(ngModel)]="employeetypeDetails.deliveryTime" format='yyyy-MM-dd'></ejs-datepicker></td>
+            <td><input type="text" [id]="tongtien" class="form-control"
+                placeholder="Tổng tiền"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="form-group">
+            <button class="btn btn-success btn-lg btn-block" (click)="addEmployeetype()">Save</button>
+        </div>
+  </div>
+  
