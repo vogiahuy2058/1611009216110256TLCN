@@ -91,7 +91,7 @@ public class InvoiceServiceImpl implements InvoiceService{
             invoiceResponseDto.setBranchShop(invoice.getBranchShop().getName());
             invoiceResponseDto.setOrderType(invoice.getOrderType().getName());
             invoiceResponseDto.setDate(invoice.getDate().
-                    format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")));
+                    format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
             invoiceResponseDtos.add(invoiceResponseDto);
         });
         return new ResponseDto(HttpStatus.OK.value(), "All invoice", invoiceResponseDtos);
@@ -116,7 +116,7 @@ public class InvoiceServiceImpl implements InvoiceService{
             invoiceResponseDto.setBranchShop(element.getBranchShop().getName());
             invoiceResponseDto.setOrderType(element.getOrderType().getName());
             invoiceResponseDto.setDate(element.getDate().
-                    format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")));
+                    format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
             invoiceResponseDtos.add(invoiceResponseDto);});
         Page<InvoiceResponseDto> invoiceResponseDtoPage = new PageImpl<>(invoiceResponseDtos, pageable,
                 invoicePage.getTotalElements() );
