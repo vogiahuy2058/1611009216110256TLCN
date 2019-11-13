@@ -84,10 +84,10 @@ public class CoffeeTableServiceImpl implements CoffeeTableService{
         CoffeeTable coffeeTable = coffeeTableRepository.findByIdAndEnable(id, true)
                 .orElseThrow(()-> new NotFoundException("Id not found!"));
         //delete invoice when coffee table was deleted
-        List<Invoice> invoices = invoiceRepository.findByCoffeeTableId(id);
-        invoices.forEach(element->{
-            invoiceService.deleteInvoice(element.getId());
-        });
+//        List<Invoice> invoices = invoiceRepository.findByCoffeeTableId(id);
+//        invoices.forEach(element->{
+//            invoiceService.deleteInvoice(element.getId());
+//        });
         coffeeTable.setEnable(false);
         coffeeTableRepository.save(coffeeTable);
         return new ResponseDto(HttpStatus.OK.value(), "Delete table successful", null);

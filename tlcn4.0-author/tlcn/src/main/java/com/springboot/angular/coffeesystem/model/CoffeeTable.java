@@ -27,7 +27,7 @@ public class CoffeeTable extends Auditable<String> {
     @ManyToOne
     @JoinColumn
     private TableType tableType;
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "coffeeTable", cascade = CascadeType.ALL)
-    private Set<Invoice> invoices;
+//
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "coffeeTable", cascade = CascadeType.ALL)
+//    private Set<Invoice> invoices;
 }

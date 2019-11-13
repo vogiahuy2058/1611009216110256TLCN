@@ -8,6 +8,7 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.Set;
 
 @Entity
@@ -23,10 +24,14 @@ public class Invoice extends Auditable<String> {
     private float VAT;
     private float totalPrice;
     private float totalDiscount;
-    private LocalDateTime date;
+//    private LocalDateTime date;
+    private ZonedDateTime date;
     private boolean enable = true;
+    private boolean paymentStatus = false;
+    private Integer numberPosition;
+
     @ManyToOne
-    @JoinColumn(name = "customer_id")
+    @JoinColumn(name = "customer_id", nullable = true)
     private Customer customer;
 
     @ManyToOne
@@ -35,10 +40,10 @@ public class Invoice extends Auditable<String> {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "invoice", cascade = CascadeType.ALL)
     private Set<InvoiceDetail> invoiceDetails;
-
-    @ManyToOne
-    @JoinColumn(name = "table_id")
-    private CoffeeTable coffeeTable;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "table_id", nullable = true)
+//    private CoffeeTable coffeeTable;
 
 
     @ManyToOne

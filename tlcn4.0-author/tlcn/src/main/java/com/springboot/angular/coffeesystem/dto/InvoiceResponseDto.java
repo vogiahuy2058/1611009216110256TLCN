@@ -15,14 +15,15 @@ public class InvoiceResponseDto {
     private Integer id;
     private float VAT;
     private float totalPrice;
-    private LocalDateTime date;
+    private String date;
     private float totalDiscount;
+    private Integer numberPosition;
     private String customerPhone;
     private String customerName;
 
     private String branchShop;
 
-    private String coffeeTable;
+//    private String coffeeTable;
 
     private String orderType;
 }

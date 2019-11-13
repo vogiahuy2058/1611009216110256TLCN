@@ -71,14 +71,14 @@ public interface MapperObject {
 
     @Mapping(target="customer.phone",source = "customerPhone")
     @Mapping(target="branchShop.name",source = "branchShop")
-    @Mapping(target="coffeeTable.name",source = "coffeeTable")
+//    @Mapping(target="coffeeTable.name",source = "coffeeTable")
     @Mapping(target="orderType.name",source = "orderType")
     Invoice InvoiceDtoToEntity(InvoiceRequestDto invoiceRequestDto);
 
-    @Mapping(target="customerPhone",source = "customer.name")
-    @Mapping(target="customerName",source = "customer.phone")
+    @Mapping(target="customerPhone",source = "customer.phone")
+    @Mapping(target="customerName",source = "customer.name")
     @Mapping(target="branchShop",source = "branchShop.name")
-    @Mapping(target="coffeeTable",source = "coffeeTable.name")
+//    @Mapping(target="coffeeTable",source = "coffeeTable.name")
     @Mapping(target="orderType",source = "orderType.name")
     InvoiceResponseDto InvoiceEntityToDto(Invoice invoice);
 

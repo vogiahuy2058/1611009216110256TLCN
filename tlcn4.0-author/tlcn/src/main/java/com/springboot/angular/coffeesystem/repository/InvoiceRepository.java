@@ -16,6 +16,6 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Integer> {
     List<Invoice> findByBranchShopId(Integer id);
     List<Invoice> findByOrderTypeId(Integer id);
     List<Invoice> findByCustomerId(Integer id);
-    List<Invoice> findByCoffeeTableId(Integer id);
+//    List<Invoice> findByCoffeeTableId(Integer id);
     Page<Invoice> findAllByEnable(boolean enable, Pageable pageable);
 }

@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-
+import java.time.ZonedDateTime;
 
 
 @NoArgsConstructor
@@ -18,13 +18,16 @@ public class InvoiceRequestDto {
     private Integer id;
     private float VAT;
     private float totalPrice;
-    private LocalDateTime date;
+//    private LocalDateTime date;
+    private ZonedDateTime date;
     private float totalDiscount;
+    private Integer numberPosition;
     private String customerPhone;
+    private boolean paymentStatus;
 
     private String branchShop;
 
-    private String coffeeTable;
+//    private String coffeeTable;
 
     private String orderType;
 

@@ -17,6 +17,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,20 +37,34 @@ public class InvoiceServiceImpl implements InvoiceService{
     BranchShopRepository branchShopRepository;
     @Autowired
     OrderTypeRepository orderTypeRepository;
+    ZoneId zoneId = ZoneId.of("Asia/Ho_Chi_Minh");
     public ResponseDto createInvoice(InvoiceRequestDto invoiceRequestDto){
         Invoice invoice = this.mapperObject.InvoiceDtoToEntity(invoiceRequestDto);
-        Customer customer = customerRepository.findByPhone(invoiceRequestDto.getCustomerPhone())
-                .orElseThrow(()-> new NotFoundException("Customer not found"));
-        CoffeeTable coffeeTable = coffeeTableRepository.findByName(invoiceRequestDto.getCoffeeTable())
-                .orElseThrow(()-> new NotFoundException("Table not found"));
+        Customer customer = new Customer();
+        if(invoiceRequestDto.getCustomerPhone() != null)
+        {
+            customer = customerRepository.findByPhone(invoiceRequestDto.getCustomerPhone())
+                    .orElseThrow(()-> new NotFoundException("Customer not found"));
+        }else {
+            customer = null;
+        }
+
+//        CoffeeTable coffeeTable = new CoffeeTable();
+//        if(invoiceRequestDto.getCoffeeTable() != null){
+//            coffeeTable = coffeeTableRepository.findByName(invoiceRequestDto.getCoffeeTable())
+//                    .orElseThrow(()-> new NotFoundException("Table not found"));
+//        }
+//        else coffeeTable = null;
         BranchShop branchShop = branchShopRepository.findByNameAndEnable(invoiceRequestDto.getBranchShop(), true)
                 .orElseThrow(()-> new NotFoundException("Branch shop not found"));
         OrderType orderType = orderTypeRepository.findByNameAndEnable(invoiceRequestDto.getOrderType(), true)
                 .orElseThrow(()-> new NotFoundException("Order type not found"));
         invoice.setCustomer(customer);
-        invoice.setCoffeeTable(coffeeTable);
+//        invoice.setCoffeeTable(coffeeTable);
         invoice.setBranchShop(branchShop);
         invoice.setOrderType(orderType);
+        invoice.setDate(ZonedDateTime.parse(
+                invoiceRequestDto.getDate().withZoneSameInstant(zoneId).toString()));
         invoiceRepository.save(invoice);
         return new ResponseDto(HttpStatus.OK.value(), "Create invoice successful", null);
     }
@@ -57,11 +74,24 @@ public class InvoiceServiceImpl implements InvoiceService{
         List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
         invoices.forEach(invoice -> {
             InvoiceResponseDto invoiceResponseDto = mapperObject.InvoiceEntityToDto(invoice);
-            invoiceResponseDto.setCustomerName(invoice.getCustomer().getName());
-            invoiceResponseDto.setCustomerPhone(invoice.getCustomer().getPhone());
-            invoiceResponseDto.setCoffeeTable(invoice.getCoffeeTable().getName());
+
+//            if(invoice.getCoffeeTable()==null){
+//                invoiceResponseDto.setCoffeeTable(null);
+//            }else {
+//                invoiceResponseDto.setCoffeeTable(invoice.getCoffeeTable().getName());
+//            }
+
+            if(invoice.getCustomer() == null){
+                invoiceResponseDto.setCustomerName(null);
+                invoiceResponseDto.setCustomerPhone(null);
+            }else {
+                invoiceResponseDto.setCustomerName(invoice.getCustomer().getName());
+                invoiceResponseDto.setCustomerPhone(invoice.getCustomer().getPhone());
+            }
             invoiceResponseDto.setBranchShop(invoice.getBranchShop().getName());
             invoiceResponseDto.setOrderType(invoice.getOrderType().getName());
+            invoiceResponseDto.setDate(invoice.getDate().
+                    format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")));
             invoiceResponseDtos.add(invoiceResponseDto);
         });
         return new ResponseDto(HttpStatus.OK.value(), "All invoice", invoiceResponseDtos);
@@ -74,11 +104,19 @@ public class InvoiceServiceImpl implements InvoiceService{
         Page<Invoice> invoicePage = invoiceRepository.findAllByEnable(true, pageable);
         invoicePage.forEach(element->{
             InvoiceResponseDto invoiceResponseDto = mapperObject.InvoiceEntityToDto(element);
-            invoiceResponseDto.setCustomerName(element.getCustomer().getName());
-            invoiceResponseDto.setCustomerPhone(element.getCustomer().getPhone());
-            invoiceResponseDto.setCoffeeTable(element.getCoffeeTable().getName());
+
+            if(element.getCustomer() == null){
+                invoiceResponseDto.setCustomerName(null);
+                invoiceResponseDto.setCustomerPhone(null);
+            }else {
+                invoiceResponseDto.setCustomerName(element.getCustomer().getName());
+                invoiceResponseDto.setCustomerPhone(element.getCustomer().getPhone());
+            }
+//            invoiceResponseDto.setCoffeeTable(element.getCoffeeTable().getName());
             invoiceResponseDto.setBranchShop(element.getBranchShop().getName());
             invoiceResponseDto.setOrderType(element.getOrderType().getName());
+            invoiceResponseDto.setDate(element.getDate().
+                    format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")));
             invoiceResponseDtos.add(invoiceResponseDto);});
         Page<InvoiceResponseDto> invoiceResponseDtoPage = new PageImpl<>(invoiceResponseDtos, pageable,
                 invoicePage.getTotalElements() );
@@ -91,32 +129,49 @@ public class InvoiceServiceImpl implements InvoiceService{
         Invoice invoice = invoiceRepository.findByIdAndEnable(id, true)
                 .orElseThrow(()-> new NotFoundException("Id not found"));
         InvoiceResponseDto invoiceResponseDto = mapperObject.InvoiceEntityToDto(invoice);
-        invoiceResponseDto.setCustomerName(invoice.getCustomer().getName());
-        invoiceResponseDto.setCustomerPhone(invoice.getCustomer().getPhone());
-        invoiceResponseDto.setCoffeeTable(invoice.getCoffeeTable().getName());
+
+        if(invoice.getCustomer() == null){
+            invoiceResponseDto.setCustomerName(null);
+            invoiceResponseDto.setCustomerPhone(null);
+        }else {
+            invoiceResponseDto.setCustomerName(invoice.getCustomer().getName());
+            invoiceResponseDto.setCustomerPhone(invoice.getCustomer().getPhone());
+        }
+//        invoiceResponseDto.setCoffeeTable(invoice.getCoffeeTable().getName());
         invoiceResponseDto.setBranchShop(invoice.getBranchShop().getName());
         invoiceResponseDto.setOrderType(invoice.getOrderType().getName());
+//        invoiceResponseDto.setDate(DateTimeFormatter.ofPattern("yyyy-MM-dd - HH:mm:ss Z").format(invoice.getDate()));
+        invoiceResponseDto.setDate(invoice.getDate().
+                format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")));
         return new ResponseDto(HttpStatus.OK.value(), "All invoice", invoiceResponseDto );
     }
     public ResponseDto editInvoice(InvoiceRequestDto invoiceRequestDto){
         Invoice invoice = invoiceRepository.findByIdAndEnable(invoiceRequestDto.getId(), true)
                 .orElseThrow(()-> new NotFoundException("Id not found!"));
-        Customer customer = customerRepository.findByPhone(invoiceRequestDto.getCustomerPhone())
-                .orElseThrow(()-> new NotFoundException("Customer not found"));
-        CoffeeTable coffeeTable = coffeeTableRepository.findByName(invoiceRequestDto.getCoffeeTable())
-                .orElseThrow(()-> new NotFoundException("Table not found"));
+        Customer customer = new Customer();
+        if(invoiceRequestDto.getCustomerPhone() != null)
+        {
+            customer = customerRepository.findByPhone(invoiceRequestDto.getCustomerPhone())
+                    .orElseThrow(()-> new NotFoundException("Customer not found"));
+        }else {
+            customer = null;
+        }
+//        CoffeeTable coffeeTable = coffeeTableRepository.findByName(invoiceRequestDto.getCoffeeTable())
+//                .orElseThrow(()-> new NotFoundException("Table not found"));
         BranchShop branchShop = branchShopRepository.findByNameAndEnable(invoiceRequestDto.getBranchShop(), true)
                 .orElseThrow(()-> new NotFoundException("Branch shop not found"));
         OrderType orderType = orderTypeRepository.findByNameAndEnable(invoiceRequestDto.getOrderType(), true)
                 .orElseThrow(()-> new NotFoundException("Order type not found"));
         invoice.setCustomer(customer);
-        invoice.setCoffeeTable(coffeeTable);
+//        invoice.setCoffeeTable(coffeeTable);
         invoice.setBranchShop(branchShop);
         invoice.setOrderType(orderType);
         invoice.setVAT(invoiceRequestDto.getVAT());
         invoice.setTotalPrice(invoiceRequestDto.getTotalPrice());
         invoice.setTotalDiscount(invoiceRequestDto.getTotalDiscount());
-        invoice.setDate(invoiceRequestDto.getDate());
+        invoice.setDate(ZonedDateTime.parse(invoiceRequestDto.getDate().withZoneSameInstant(zoneId).toString()));
+        invoice.setNumberPosition(invoiceRequestDto.getNumberPosition());
+        invoice.setPaymentStatus(invoiceRequestDto.isPaymentStatus());
         invoiceRepository.save(invoice);
         return new ResponseDto(HttpStatus.OK.value(), "Edit invoice successful", null);
     }
