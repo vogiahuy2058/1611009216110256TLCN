@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 const TOKEN_KEY = 'AuthToken';
 const USERNAME_KEY = 'AuthUsername';
 const AUTHORITIES_KEY = 'AuthAuthorities';
+const DATE = '';
 @Injectable({
   providedIn: 'root'
 })
@@ -39,4 +40,12 @@ export class TokenStorageService {
       return this.roles;
     }
   }
+  public savedate(date: string){
+    window.sessionStorage.removeItem(DATE);
+    window.sessionStorage.setItem(DATE, date);
+  }
+  public getdate(): string{
+    return sessionStorage.getItem(DATE);
+  }
+
 }

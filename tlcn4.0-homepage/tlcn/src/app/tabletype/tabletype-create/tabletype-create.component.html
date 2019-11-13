@@ -1,14 +1,47 @@
-<div class="container custom-container">
+<!-- <div class="container custom-container">
   <div class="col-md-12">
     <h3 class="mb-3 text-center">Create Tabletype</h3>
 
     <div class="form-group">
       <input type="text" [(ngModel)]="employeetypeDetails.name" class="form-control" placeholder="Loại bàn">
     </div>
+    <div class="form-group">
+      <input type="text" [(ngModel)]="employeetypeDetails.id" class="form-control" placeholder="ID">
+    </div>
 
     <div class="form-group">
       <button class="btn btn-success btn-lg btn-block" (click)="addEmployeetype()">Create Tabletype</button>
     </div>
   </div>
+</div> -->
+<h2>My Heroes</h2>
+
+<div>
+  <label>Hero name:
+    <input #heroName />
+  </label>
+  <!-- (click) passes input value to add() and then clears the input -->
+  <button (click)="add(heroName.value); heroName.value=''">
+    add
+  </button>
+  <button (click)="savetable()">
+    create
+  </button>
+  <button (click)="savetable1()">
+    create1
+  </button>
 </div>
+
+<ul class="empList">
+  <li *ngFor="let hero of empList">
+    
+      <span class="badge">{{hero.id}}</span> {{hero.name}}
+    <br>
+    
+    <button class="delete" title="delete hero"
+      (click)="delete(hero)">x</button>
+  </li>
+</ul>
+
+
 

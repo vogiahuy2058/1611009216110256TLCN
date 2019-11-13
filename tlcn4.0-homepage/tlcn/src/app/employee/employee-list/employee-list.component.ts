@@ -17,6 +17,7 @@ export class EmployeeListComponent implements OnInit{
   dataTable: any;
   Content:any = [];
   info: any;
+  
   constructor(public restApi: EmployeeRestApiService, private chRef: ChangeDetectorRef,private token: TokenStorageService,
     public router: Router) { }
   ngOnInit() {
@@ -29,7 +30,7 @@ export class EmployeeListComponent implements OnInit{
       this.router.navigate(['login'])
     }
      this.loadEmployeetype()
-  }
+    }
 
   loadEmployeetype() {
     return this.restApi.getEmployeetypes().subscribe((data: {}) => {
@@ -37,6 +38,7 @@ export class EmployeeListComponent implements OnInit{
       this.chRef.detectChanges();
       const table: any = $('table');
       this.dataTable = table.DataTable();
+      
     })
   }
   

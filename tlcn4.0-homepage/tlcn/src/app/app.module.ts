@@ -51,6 +51,23 @@ import { MaterialListComponent } from './material/material-list/material-list.co
 import { SupplycontractCreateComponent } from './supplycontract/supplycontract-create/supplycontract-create.component';
 import { SupplycontractEditComponent } from './supplycontract/supplycontract-edit/supplycontract-edit.component';
 import { SupplycontractListComponent } from './supplycontract/supplycontract-list/supplycontract-list.component';
+import { SupplycontractdetailCreateComponent } from './supplycontractdetail/supplycontractdetail-create/supplycontractdetail-create.component';
+import { SupplycontractdetailEditComponent } from './supplycontractdetail/supplycontractdetail-edit/supplycontractdetail-edit.component';
+import { SupplycontractdetailListComponent } from './supplycontractdetail/supplycontractdetail-list/supplycontractdetail-list.component';
+import { RecipeCreateComponent } from './recipe/recipe-create/recipe-create.component';
+import { RecipeEditComponent } from './recipe/recipe-edit/recipe-edit.component';
+import { RecipeListComponent } from './recipe/recipe-list/recipe-list.component';
+import { MaterialpriceCreateComponent } from './materialprice//materialprice-create/materialprice-create.component';
+import { MaterialpriceEditComponent } from './materialprice/materialprice-edit/materialprice-edit.component';
+import { MaterialpriceListComponent } from './materialprice/materialprice-list/materialprice-list.component';
+import { UnitCreateComponent } from './unit/unit-create/unit-create.component';
+import { UnitEditComponent } from './unit/unit-edit/unit-edit.component';
+import { UnitListComponent } from './unit/unit-list/unit-list.component';
+import { DrinkCreateComponent } from './drink/drink-create/drink-create.component';
+import { DrinkListComponent } from './drink/drink-list/drink-list.component';
+import { DrinkEditComponent } from './drink/drink-edit/drink-edit.component';
+import { HttpClientInMemoryWebApiModule } from 'angular-in-memory-web-api';
+import { InMemoryDataService } from './tabletype/in-memory-data.service';
 
 
 @NgModule({
@@ -97,7 +114,22 @@ import { SupplycontractListComponent } from './supplycontract/supplycontract-lis
     MaterialListComponent,
     SupplycontractCreateComponent,
     SupplycontractEditComponent,
-    SupplycontractListComponent
+    SupplycontractListComponent,
+    SupplycontractdetailCreateComponent,
+    SupplycontractdetailEditComponent,
+    SupplycontractdetailListComponent,
+    RecipeCreateComponent,
+    RecipeEditComponent,
+    RecipeListComponent,
+    MaterialpriceCreateComponent,
+    MaterialpriceEditComponent,
+    MaterialpriceListComponent,
+    UnitCreateComponent,
+    UnitEditComponent,
+    UnitListComponent,
+    DrinkCreateComponent,
+    DrinkListComponent,
+    DrinkEditComponent
   ],
   imports: [  
     BrowserModule,
@@ -107,7 +139,9 @@ import { SupplycontractListComponent } from './supplycontract/supplycontract-lis
     NgbModule,
     ReactiveFormsModule,
     DatePickerModule,
-    FormsModule
+    FormsModule,
+    
+    
   ],
   providers: [httpInterceptorProviders],
   bootstrap: [

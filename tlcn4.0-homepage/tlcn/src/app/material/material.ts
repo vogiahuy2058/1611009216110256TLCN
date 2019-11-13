@@ -5,4 +5,5 @@ export class Material {
     maxInventory: Int32Array;
     minInventory: Int32Array;
     name: string;
+    unit: string;
 }

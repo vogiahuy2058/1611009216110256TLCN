@@ -10,6 +10,7 @@
           <th>Tồn kho</th>
           <th>Tồn kho tối thiểu</th>
           <th>Tồn kho tối đa</th>
+          <th>Đơn vị</th>
           <th>Tác vụ</th>
         </tr>
       </thead>
@@ -21,6 +22,7 @@
             <td>{{material.inventory}}</td>
             <td>{{material.minInventory}}</td>
             <td>{{material.maxInventory}}</td>
+            <td>{{material.unit}}</td>
             <td>
                 <button class="btn btn-primary" 
                 routerLink="/material-edit/{{material.id}}">Edit</button> 

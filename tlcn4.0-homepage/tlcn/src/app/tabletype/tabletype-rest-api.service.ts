@@ -5,6 +5,7 @@ import { Observable,throwError  } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { Contenttabletype } from './contenttabletype';
+import { Tabletype } from './tabletype';
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +45,14 @@ export class TabletypeRestApiService {
       catchError(this.handleError)
     )
   }  
-
+  createEmployeetypelist(employee: Tabletype[]): Observable<Contenttabletype> {
+    console.log('tao ne: ' + JSON.stringify(employee));
+    return this.http.post<Contenttabletype>(this.apiURL + '/create-list', JSON.stringify(employee), this.httpOptions)
+    .pipe(
+      retry(1),
+      catchError(this.handleError)
+    )
+  }  
   // HttpClient API post() method => Create employee
   createEmployeetype(employee): Observable<Contenttabletype> {
     return this.http.post<Contenttabletype>(this.apiURL + '/create', JSON.stringify(employee), this.httpOptions)
