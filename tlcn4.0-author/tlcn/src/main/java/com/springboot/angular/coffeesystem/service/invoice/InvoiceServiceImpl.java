@@ -69,8 +69,36 @@ public class InvoiceServiceImpl implements InvoiceService{
         return new ResponseDto(HttpStatus.OK.value(), "Create invoice successful", null);
     }
     @Transactional
-    public ResponseDto getAllInvoice(){
-        List<Invoice> invoices = invoiceRepository.findAll();
+    public ResponseDto getAllInvoiceStatusTrue(){
+        List<Invoice> invoices = invoiceRepository.findAllByEnableAndPaymentStatus(true, true);
+        List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
+        invoices.forEach(invoice -> {
+            InvoiceResponseDto invoiceResponseDto = mapperObject.InvoiceEntityToDto(invoice);
+
+//            if(invoice.getCoffeeTable()==null){
+//                invoiceResponseDto.setCoffeeTable(null);
+//            }else {
+//                invoiceResponseDto.setCoffeeTable(invoice.getCoffeeTable().getName());
+//            }
+
+            if(invoice.getCustomer() == null){
+                invoiceResponseDto.setCustomerName(null);
+                invoiceResponseDto.setCustomerPhone(null);
+            }else {
+                invoiceResponseDto.setCustomerName(invoice.getCustomer().getName());
+                invoiceResponseDto.setCustomerPhone(invoice.getCustomer().getPhone());
+            }
+            invoiceResponseDto.setBranchShop(invoice.getBranchShop().getName());
+            invoiceResponseDto.setOrderType(invoice.getOrderType().getName());
+            invoiceResponseDto.setDate(invoice.getDate().
+                    format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+            invoiceResponseDtos.add(invoiceResponseDto);
+        });
+        return new ResponseDto(HttpStatus.OK.value(), "All invoice", invoiceResponseDtos);
+    }
+    @Transactional
+    public ResponseDto getAllInvoiceStatusFalse(){
+        List<Invoice> invoices = invoiceRepository.findAllByEnableAndPaymentStatus(true, false);
         List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
         invoices.forEach(invoice -> {
             InvoiceResponseDto invoiceResponseDto = mapperObject.InvoiceEntityToDto(invoice);

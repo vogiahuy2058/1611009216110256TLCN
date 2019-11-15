@@ -18,4 +18,5 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Integer> {
     List<Invoice> findByCustomerId(Integer id);
 //    List<Invoice> findByCoffeeTableId(Integer id);
     Page<Invoice> findAllByEnable(boolean enable, Pageable pageable);
+    List<Invoice> findAllByEnableAndPaymentStatus(boolean enable, boolean paymentStatus);
 }

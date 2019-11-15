@@ -6,7 +6,8 @@ import com.springboot.angular.coffeesystem.dto.ResponseDto;
 
 public interface InvoiceService {
     ResponseDto createInvoice(InvoiceRequestDto invoiceRequestDto);
-    ResponseDto getAllInvoice();
+    ResponseDto getAllInvoiceStatusTrue();
+    ResponseDto getAllInvoiceStatusFalse();
     ResponseDto getInvoiceById(Integer id);
     ResponseDto editInvoice(InvoiceRequestDto invoiceRequestDto);
     ResponseDto deleteInvoice(Integer id);

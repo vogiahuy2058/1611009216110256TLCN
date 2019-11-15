@@ -28,9 +28,14 @@ public class InvoiceController {
 //        return ResponseEntity.ok(this.invoiceService.getAllInvoicePaging(page, size, sort, sortColumn));
 //    }
 
-    @GetMapping("/get-all")
-    public ResponseEntity<ResponseDto> getAllInvoice(){
-        return  ResponseEntity.ok(this.invoiceService.getAllInvoice());
+    @GetMapping("/get-all-true")
+    public ResponseEntity<ResponseDto> getAllInvoiceStatusTrue(){
+        return  ResponseEntity.ok(this.invoiceService.getAllInvoiceStatusTrue());
+    }
+
+    @GetMapping("/get-all-false")
+    public ResponseEntity<ResponseDto> getAllInvoiceStatusFalse(){
+        return  ResponseEntity.ok(this.invoiceService.getAllInvoiceStatusFalse());
     }
 
     @GetMapping("/get")
