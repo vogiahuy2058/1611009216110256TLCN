@@ -1,0 +1,32 @@
+<div class="container">
+    <h1>Danh sách Hóa đơn</h1>
+    
+    <table class="table table-hover" cellspacing="0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Chi nhánh</th>
+          <th>Số điện thoại khách hàng</th>
+          <th>Loại đặt hàng</th>
+          <th>Tổng khuyến mãi</th>
+          <th>VAT</th>
+          <th>Tổng tiền</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let invoice of Content.content">
+            <td>{{invoice.id}}</td>
+            <td>{{invoice.branchShop}}</td>
+            <td>{{invoice.customerPhone}}</td>
+            <td>{{invoice.orderType}}</td>
+            <td>{{invoice.totalDiscount}}</td>
+            <td>{{invoice.vat}}</td>
+            <td>{{invoice.totalPrice}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <button class="btn btn-primary" 
+    routerLink="/home">Back</button>
+  </div>
