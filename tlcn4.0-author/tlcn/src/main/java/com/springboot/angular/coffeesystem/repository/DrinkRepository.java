@@ -16,4 +16,5 @@ public interface DrinkRepository extends JpaRepository<Drink, Integer> {
     Optional<Drink> findByNameAndEnable(String name, boolean enable);
     Optional<Drink> findByIdAndEnable(Integer id, boolean enable);
     List<Drink> findByDrinkTypeId(Integer id);
+    List<Drink> findByDrinkTypeNameAndEnable(String name, boolean enable);
 }

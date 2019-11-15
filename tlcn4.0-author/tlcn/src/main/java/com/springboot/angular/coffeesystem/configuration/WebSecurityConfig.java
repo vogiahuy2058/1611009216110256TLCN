@@ -34,6 +34,7 @@ import java.util.Arrays;
 @EnableWebSecurity
 @EnableJpaAuditing
 @EnableAsync
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired

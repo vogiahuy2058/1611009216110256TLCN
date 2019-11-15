@@ -14,6 +14,6 @@ public interface DrinkService {
     ResponseDto deleteDrink(Integer id);
     ResponseDto getDrinkById(Integer id);
 //    ResponseDto changePrice(Integer id, float newPrice);
-
+    ResponseDto getAllDrinkByDrinkType(String name);
 
 }

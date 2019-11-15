@@ -66,7 +66,17 @@ public class DrinkServiceImpl implements DrinkService {
                 drinkDtoPage.getContent(), drinkDtoPage.getTotalElements(), drinkDtoPage.getTotalPages(),
                 drinkDtoPage.getPageable());
     }
-
+    @Transactional
+    public ResponseDto getAllDrinkByDrinkType(String name){
+        List<Drink> drinkList = this.drinkRepository.findByDrinkTypeNameAndEnable(name,true);
+        List<DrinkDto> drinkDtos = new ArrayList<>();
+        drinkList.forEach(element->{
+            DrinkDto drinkDto = mapperObject.DrinkEntityToDrinkDTO(element);
+            drinkDto.setDrinkType(element.getDrinkType().getName());
+            drinkDtos.add(drinkDto);
+        });
+        return new ResponseDto(HttpStatus.OK.value(), "All drink", drinkDtos);
+    }
 
     public ResponseDto createDrink(DrinkDto drinkDto){
 
