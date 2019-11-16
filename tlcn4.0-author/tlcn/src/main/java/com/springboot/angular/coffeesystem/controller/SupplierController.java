@@ -35,7 +35,7 @@ public class SupplierController {
 
     @GetMapping("/get")
     public ResponseEntity<ResponseDto> getSupplierById(@RequestParam Integer id){
-        return ResponseEntity.ok(supplierService.getSuppierById(id));
+        return ResponseEntity.ok(supplierService.getSupplierById(id));
     }
     @PutMapping("/delete")
     public ResponseEntity<ResponseDto> deleteSupplier(@RequestParam Integer id){

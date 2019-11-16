@@ -64,7 +64,7 @@ public class SupplierServiceImpl implements SupplierService {
                 supplierDtoPage.getPageable());
     }
     @Transactional
-    public ResponseDto getSuppierById(Integer id){
+    public ResponseDto getSupplierById(Integer id){
         Supplier supplier = supplierRepository.findByIdAndEnable(id, true)
                 .orElseThrow(()-> new NotFoundException("Id not found"));
         SupplierDto supplierDto = mapperObject.SupplierEntityToDto(supplier);
