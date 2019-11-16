@@ -1,0 +1,47 @@
+<div class="container custom-container">
+    <div class="col-md-12">
+        <h3 class="mb-3 text-center">Create supply contract</h3>
+        <!-- <div class="form-group">
+            <ejs-datepicker id='datepicker' placeholder='Select a date' [value]='dateValue'
+                [(ngModel)]="employeetypeDetails.date" format='yyyy-MM-dd'></ejs-datepicker>
+        </div> -->
+        <div class="form-group">
+            <label for="department1">Loại thức uống</label>
+            <select style="font-size: 15px; height: 50px;"  id="department1" name="department1"  (change)="loadlaitrang()"
+                [(ngModel)]="employeetypeDetails.branchShop" class="form-control"  >
+                <option [value]="1" >
+                    Tất cả loại
+                </option>
+                <option *ngFor="let drinktype of ContentDrinktype.content" [value]="drinktype.name">
+                    {{drinktype.name}}
+                </option>
+            </select>
+        </div>
+        <div class="page-title-area" >
+            <div  class="col-sm-12"><button  class="col-sm-4 btn btn-primary" style="margin-top: 10px; margin-right: 10px;"
+                  *ngFor="let drink of ContentDrink.content">{{drink.name}} </button> </div>
+        </div>
+        
+        <!-- <div class="form-group">
+            <label for="department">Nhà cung cấp</label>
+            <select style="font-size: 15px; height: 50px;" id="department" name="department"
+                [(ngModel)]="employeetypeDetails.supplier" class="form-control">
+                <option *ngFor="let supplier of Content.content" [value]="supplier.name">
+                    {{supplier.name}}
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <input style="height: 50px;" type="text" [(ngModel)]="employeetypeDetails.totalPrice" class="form-control"
+                placeholder="Tổng tiền">
+        </div>
+        <div class="form-group">
+            <button class="btn btn-success btn-lg btn-block" (click)="addEmployeetype()">Save</button>
+        </div> -->
+    </div>
+</div>
+
+
+    
+
+  

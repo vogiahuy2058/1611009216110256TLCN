@@ -1,0 +1,44 @@
+<div class="container">
+    <h1>Danh sách nguyên liệu </h1>
+    
+    <table class="table table-hover" cellspacing="0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Tên nguyên liệu</th>
+          <th>Loại nguyên liệu</th>
+          <th>Tồn kho</th>
+          <th>Tồn kho tối thiểu</th>
+          <th>Tồn kho tối đa</th>
+          <th>Đơn vị</th>
+          <th>Tác vụ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let material of Content.content">
+            <td>{{material.id}}</td>
+            <td>{{material.name}}</td>
+            <td>{{material.materialType}}</td>
+            <td>{{material.inventory}}</td>
+            <td>{{material.minInventory}}</td>
+            <td>{{material.maxInventory}}</td>
+            <td>{{material.unit}}</td>
+            <td>
+                <button class="btn btn-primary" 
+                routerLink="/material-edit/{{material.id}}">Edit</button> 
+                &nbsp;&nbsp;&nbsp;
+                <button class="btn btn-danger" (click)="deleteEmployeetype(material.id)">Delete</button>
+              </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <button class="btn btn-primary" 
+    routerLink="/home">Back</button>
+  </div>
+  <div>
+    <button class="btn btn-dark" 
+    routerLink="/material-create">Tạo mới</button>
+  </div>
+

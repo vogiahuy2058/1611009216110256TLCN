@@ -1,0 +1,33 @@
+<div class="container">
+    <h1>Danh sách loại thức uống</h1>
+    
+    <table class="table table-hover" cellspacing="0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Loại thức uống</th>
+          <th>Tác vụ</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let drinktype of Content.content">
+            <td>{{drinktype.id}}</td>
+            <td>{{drinktype.name}}</td>
+            <td>
+                <button class="btn btn-primary" 
+                routerLink="/drinktype-edit/{{drinktype.id}}">Edit</button> 
+                &nbsp;&nbsp;&nbsp;
+                <button class="btn btn-danger" (click)="deleteEmployeetype(drinktype.id)">Delete</button>
+              </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div>
+    <button class="btn btn-primary" 
+    routerLink="/home">Back</button>
+  </div>
+  <div>
+    <button class="btn btn-dark" 
+    routerLink="/drinktype-create">Tạo mới</button>
+  </div>
