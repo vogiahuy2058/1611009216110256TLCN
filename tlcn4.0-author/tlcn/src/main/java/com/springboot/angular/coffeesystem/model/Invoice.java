@@ -21,7 +21,7 @@ public class Invoice extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    private float VAT;
+    private float vat;
     private float totalPrice;
     private float totalDiscount;
 //    private LocalDateTime date;

@@ -18,4 +18,6 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     List<Employee> findByBranchShopId(Integer id);
     List<Employee> findByEmployeeTypeId(Integer id);
     Optional<Employee> findByAccountId(Integer id);
+    Optional<Employee> findByAccountUsername(String username);
+
 }

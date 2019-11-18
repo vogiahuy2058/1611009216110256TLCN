@@ -4,6 +4,7 @@ import com.springboot.angular.coffeesystem.model.Invoice;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,5 +19,6 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Integer> {
     List<Invoice> findByCustomerId(Integer id);
 //    List<Invoice> findByCoffeeTableId(Integer id);
     Page<Invoice> findAllByEnable(boolean enable, Pageable pageable);
+//    @Query("select i.customer as customer from Invoice i where i.enable=?1 and i.paymentStatus=?2")
     List<Invoice> findAllByEnableAndPaymentStatus(boolean enable, boolean paymentStatus);
 }

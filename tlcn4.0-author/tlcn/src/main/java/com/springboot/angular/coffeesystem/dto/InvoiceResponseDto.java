@@ -13,17 +13,23 @@ import java.time.LocalDateTime;
 @Setter
 public class InvoiceResponseDto {
     private Integer id;
-    private float VAT;
-    private float totalPrice;
     private String date;
-    private float totalDiscount;
-    private Integer numberPosition;
     private String customerPhone;
     private String customerName;
-
     private String branchShop;
+    private String cashierName;
+    private String orderType;
+    private Integer numberPosition;
+    private float vat;
+    private float totalDiscount;
+    private float totalPrice;
+
+
+
+
+
+
 
 //    private String coffeeTable;
 
-    private String orderType;
 }
