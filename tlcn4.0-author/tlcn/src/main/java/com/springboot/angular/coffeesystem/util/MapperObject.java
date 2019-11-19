@@ -153,5 +153,5 @@ public interface MapperObject {
     @Mapping(target="date",source = "materialPriceId.date")
     @Mapping(target="id",source = "materialPriceId.id")
     MaterialPriceResponseDto MaterialPriceEntityToDto1(MaterialPrice materialPrice);
-    
+
 }

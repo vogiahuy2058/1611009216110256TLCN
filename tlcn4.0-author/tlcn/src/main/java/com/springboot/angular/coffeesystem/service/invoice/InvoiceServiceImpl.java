@@ -17,6 +17,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -40,6 +41,7 @@ public class InvoiceServiceImpl implements InvoiceService{
     @Autowired
     EmployeeRepository employeeRepository;
     ZoneId zoneId = ZoneId.of("Asia/Ho_Chi_Minh");
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public ResponseDto createInvoice(InvoiceRequestDto invoiceRequestDto){
         Invoice invoice = this.mapperObject.InvoiceDtoToEntity(invoiceRequestDto);
         Customer customer = new Customer();
@@ -100,6 +102,43 @@ public class InvoiceServiceImpl implements InvoiceService{
             invoiceResponseDtos.add(invoiceResponseDto);
         });
         return new ResponseDto(HttpStatus.OK.value(), "All invoice", invoiceResponseDtos);
+    }
+    @Transactional
+    public ResponseDto getAllInvoiceDateToDate(String fromDate, String toDate){
+        LocalDate newFromDate = LocalDate.parse(fromDate, dtf);
+        LocalDate newToDate = LocalDate.parse(toDate, dtf);
+        List<Invoice> invoices = invoiceRepository.findAllByEnableAndPaymentStatus(true, true);
+        List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
+        invoices.forEach(invoice -> {
+            LocalDate dateInvoice = invoice.getDate().toLocalDate();
+            if(dateInvoice.isBefore(newToDate) && dateInvoice.isAfter(newFromDate)){
+                InvoiceResponseDto invoiceResponseDto = mapperObject.InvoiceEntityToDto(invoice);
+
+//            if(invoice.getCoffeeTable()==null){
+//                invoiceResponseDto.setCoffeeTable(null);
+//            }else {
+//                invoiceResponseDto.setCoffeeTable(invoice.getCoffeeTable().getName());
+//            }
+
+                if(invoice.getCustomer() == null){
+                    invoiceResponseDto.setCustomerName(null);
+                    invoiceResponseDto.setCustomerPhone(null);
+                }else {
+                    invoiceResponseDto.setCustomerName(invoice.getCustomer().getName());
+                    invoiceResponseDto.setCustomerPhone(invoice.getCustomer().getPhone());
+                }
+                invoiceResponseDto.setBranchShop(invoice.getBranchShop().getName());
+                invoiceResponseDto.setOrderType(invoice.getOrderType().getName());
+                invoiceResponseDto.setDate(invoice.getDate().
+                        format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+                Employee employee = employeeRepository.findByAccountUsername(invoice.getCreatedBy())
+                        .orElseThrow(()-> new NotFoundException("Username not found"));
+                invoiceResponseDto.setCashierName(employee.getName());
+                invoiceResponseDtos.add(invoiceResponseDto);
+            }
+
+        });
+        return new ResponseDto(HttpStatus.OK.value(), "All invoice from date to date", invoiceResponseDtos);
     }
     @Transactional
     public ResponseDto getAllInvoiceStatusFalse(){

@@ -9,6 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/v1/invoice")
@@ -31,6 +35,11 @@ public class InvoiceController {
     @GetMapping("/get-all-true")
     public ResponseEntity<ResponseDto> getAllInvoiceStatusTrue(){
         return  ResponseEntity.ok(this.invoiceService.getAllInvoiceStatusTrue());
+    }
+    @GetMapping("/get-all-date-to-date")
+    public ResponseEntity<ResponseDto> getAllInvoiceDateToDate(@RequestParam String fromDate,
+                                                               @RequestParam String toDate){
+        return  ResponseEntity.ok(this.invoiceService.getAllInvoiceDateToDate(fromDate, toDate));
     }
 
     @GetMapping("/get-all-false")
