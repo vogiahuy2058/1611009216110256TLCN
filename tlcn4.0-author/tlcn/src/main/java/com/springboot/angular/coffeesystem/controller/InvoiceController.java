@@ -52,6 +52,13 @@ public class InvoiceController {
 
         return ResponseEntity.ok(invoiceService.getInvoiceById(id));
     }
+
+    @GetMapping("/get-max-id")
+    public ResponseEntity<ResponseDto> getMaxInvoiceId(){
+
+        return ResponseEntity.ok(invoiceService.getMaxIdInvoice());
+    }
+
     @PutMapping("/edit")
     public ResponseEntity<ResponseDto> editInvoice(@RequestBody InvoiceRequestDto invoiceRequestDto){
         return ResponseEntity.ok(invoiceService.editInvoice(invoiceRequestDto));

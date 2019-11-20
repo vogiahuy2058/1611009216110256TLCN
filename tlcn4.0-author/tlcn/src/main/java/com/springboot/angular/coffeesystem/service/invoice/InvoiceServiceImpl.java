@@ -263,4 +263,12 @@ public class InvoiceServiceImpl implements InvoiceService{
         invoiceRepository.save(invoice);
         return new ResponseDto(HttpStatus.OK.value(), "Delete invoice successful", null);
     }
+
+    public ResponseDto getMaxIdInvoice(){
+        Integer idOld = invoiceRepository.findMaxId();
+        if(idOld == null){
+            idOld = 0;
+        }
+        return new ResponseDto(HttpStatus.OK.value(), "Max id", idOld);
+    }
 }
