@@ -56,7 +56,7 @@ public class AccountServiceImpl implements AccountService{
                             .orElseThrow(() -> new NotFoundException("Fail! -> Cause: Role not found."));
                     roleSet.add(adminRole);
                     break;
-                case "branch_manager":
+                case "branch manager":
                     Role bmRole = roleRepository.findByNameAndEnable(RoleName.ROLE_BRANCH_MANAGER, true)
                             .orElseThrow(() -> new NotFoundException("Fail! -> Cause: Role not found."));
                     roleSet.add(bmRole);
