@@ -13,4 +13,6 @@ public interface InvoiceDetailService {
     //    ResponseDto deleteInvoiceDetail(Integer id);
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER')")
     ResponseDto editInvoiceDetail(InvoiceDetailDto invoiceDetailDto);
+    //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER')")
+    ResponseDto getInvoiceDetailByInvoiceId(Integer invoiceId);
 }

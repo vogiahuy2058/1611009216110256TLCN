@@ -15,6 +15,10 @@ import com.springboot.angular.coffeesystem.util.MapperObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class InvoiceDetailServiceImpl implements InvoiceDetailService {
@@ -67,5 +71,19 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
                 .orElseThrow(()-> new NotFoundException("Invoice detail not found"));
         invoiceDetailRepository.delete(invoiceDetail);
         return new ResponseDto(HttpStatus.OK.value(), "Delete invoice detail successful", null);
+    }
+    @Transactional
+    public ResponseDto getInvoiceDetailByInvoiceId(Integer invoiceId){
+        Invoice invoice = invoiceRepository.findByIdAndEnable(invoiceId, true)
+                .orElseThrow(()-> new NotFoundException("Invoice not found"));
+        List<InvoiceDetail> invoiceDetailList = invoiceDetailRepository.findByInvoice(invoice);
+        List<InvoiceDetailDto> invoiceDetailDtos = new ArrayList<>();
+        invoiceDetailList.forEach(element->{
+            InvoiceDetailDto invoiceDetailDto = mapperObject.InvoiceDetailEntityToDto(element);
+            invoiceDetailDto.setDrinkId(element.getInvoiceDetailId().getDrinkId());
+            invoiceDetailDto.setInvoiceId(element.getInvoiceDetailId().getInvoiceId());
+            invoiceDetailDtos.add(invoiceDetailDto);
+        });
+        return new ResponseDto(HttpStatus.OK.value(), "Successful", invoiceDetailDtos);
     }
 }

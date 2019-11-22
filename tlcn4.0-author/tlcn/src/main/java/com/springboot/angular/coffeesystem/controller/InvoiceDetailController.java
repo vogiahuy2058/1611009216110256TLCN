@@ -29,4 +29,9 @@ public class InvoiceDetailController {
                                                            @RequestParam Integer drinkId){
         return ResponseEntity.ok(invoiceDetailService.deleteInvoiceDetail(invoiceId, drinkId));
     }
+    @GetMapping("/get-by-id-invoice")
+    public ResponseEntity<ResponseDto> getInvoiceDetailByInvoiceId(@RequestParam Integer invoiceId){
+
+        return ResponseEntity.ok(invoiceDetailService.getInvoiceDetailByInvoiceId(invoiceId));
+    }
 }

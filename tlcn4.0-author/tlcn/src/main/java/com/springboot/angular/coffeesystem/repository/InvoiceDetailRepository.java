@@ -15,4 +15,5 @@ import java.util.Optional;
 @Transactional(rollbackFor = Exception.class)
 public interface InvoiceDetailRepository extends JpaRepository<InvoiceDetail, InvoiceDetailId> {
     Optional<InvoiceDetail> findByDrinkAndInvoice(Drink drink, Invoice invoice);
+    List<InvoiceDetail> findByInvoice(Invoice invoice);
 }
