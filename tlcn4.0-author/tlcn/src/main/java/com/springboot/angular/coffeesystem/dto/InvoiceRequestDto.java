@@ -18,7 +18,6 @@ public class InvoiceRequestDto {
     private Integer id;
     private float vat;
     private float totalPrice;
-//    private LocalDateTime date;
     private ZonedDateTime date;
     private float totalDiscount;
     private Integer numberPosition;

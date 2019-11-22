@@ -72,8 +72,8 @@ public class InvoiceServiceImpl implements InvoiceService{
 //        invoice.setCoffeeTable(coffeeTable);
         invoice.setBranchShop(branchShop);
         invoice.setOrderType(orderType);
-        invoice.setDate(ZonedDateTime.parse(
-                invoiceRequestDto.getDate().withZoneSameInstant(zoneId).toString()));
+        ZonedDateTime now = ZonedDateTime.now();
+        invoice.setDate(now.withZoneSameInstant(zoneId));
         invoiceRepository.save(invoice);
         return new ResponseDto(HttpStatus.OK.value(), "Create invoice successful", null);
     }
@@ -255,7 +255,7 @@ public class InvoiceServiceImpl implements InvoiceService{
         invoice.setVat(invoiceRequestDto.getVat());
         invoice.setTotalPrice(invoiceRequestDto.getTotalPrice());
         invoice.setTotalDiscount(invoiceRequestDto.getTotalDiscount());
-        invoice.setDate(ZonedDateTime.parse(invoiceRequestDto.getDate().withZoneSameInstant(zoneId).toString()));
+//        invoice.setDate(ZonedDateTime.parse(invoiceRequestDto.getDate().withZoneSameInstant(zoneId).toString()));
         invoice.setNumberPosition(invoiceRequestDto.getNumberPosition());
         invoice.setPaymentStatus(invoiceRequestDto.isPaymentStatus());
         invoiceRepository.save(invoice);
