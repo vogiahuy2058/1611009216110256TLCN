@@ -70,7 +70,7 @@ public interface MapperObject {
     CustomerRequestDto CustomerEntityToDt1(Customer customer);
 
     @Mapping(target="customer.phone",source = "customerPhone")
-    @Mapping(target="branchShop.name",source = "branchShop")
+//    @Mapping(target="branchShop.name",source = "branchShop")
 //    @Mapping(target="coffeeTable.name",source = "coffeeTable")
     @Mapping(target="orderType.name",source = "orderType")
     Invoice InvoiceDtoToEntity(InvoiceRequestDto invoiceRequestDto);

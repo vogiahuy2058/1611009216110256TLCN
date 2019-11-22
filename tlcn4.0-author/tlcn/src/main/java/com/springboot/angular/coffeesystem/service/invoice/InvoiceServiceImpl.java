@@ -14,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,7 +60,11 @@ public class InvoiceServiceImpl implements InvoiceService{
 //                    .orElseThrow(()-> new NotFoundException("Table not found"));
 //        }
 //        else coffeeTable = null;
-        BranchShop branchShop = branchShopRepository.findByNameAndEnable(invoiceRequestDto.getBranchShop(), true)
+        //get current username
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Employee employee = employeeRepository.findByAccountUsername(username)
+                .orElseThrow(()-> new NotFoundException("Username not found"));
+        BranchShop branchShop = branchShopRepository.findByEmployees(employee)
                 .orElseThrow(()-> new NotFoundException("Branch shop not found"));
         OrderType orderType = orderTypeRepository.findByNameAndEnable(invoiceRequestDto.getOrderType(), true)
                 .orElseThrow(()-> new NotFoundException("Order type not found"));
@@ -239,13 +244,13 @@ public class InvoiceServiceImpl implements InvoiceService{
         }
 //        CoffeeTable coffeeTable = coffeeTableRepository.findByName(invoiceRequestDto.getCoffeeTable())
 //                .orElseThrow(()-> new NotFoundException("Table not found"));
-        BranchShop branchShop = branchShopRepository.findByNameAndEnable(invoiceRequestDto.getBranchShop(), true)
-                .orElseThrow(()-> new NotFoundException("Branch shop not found"));
+//        BranchShop branchShop = branchShopRepository.findByNameAndEnable(invoiceRequestDto.getBranchShop(), true)
+//                .orElseThrow(()-> new NotFoundException("Branch shop not found"));
         OrderType orderType = orderTypeRepository.findByNameAndEnable(invoiceRequestDto.getOrderType(), true)
                 .orElseThrow(()-> new NotFoundException("Order type not found"));
         invoice.setCustomer(customer);
 //        invoice.setCoffeeTable(coffeeTable);
-        invoice.setBranchShop(branchShop);
+//        invoice.setBranchShop(branchShop);
         invoice.setOrderType(orderType);
         invoice.setVat(invoiceRequestDto.getVat());
         invoice.setTotalPrice(invoiceRequestDto.getTotalPrice());

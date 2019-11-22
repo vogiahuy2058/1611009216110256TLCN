@@ -2,6 +2,7 @@ package com.springboot.angular.coffeesystem.repository;
 
 import com.springboot.angular.coffeesystem.controller.BranchShopController;
 import com.springboot.angular.coffeesystem.model.BranchShop;
+import com.springboot.angular.coffeesystem.model.Employee;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,4 +19,5 @@ public interface BranchShopRepository extends JpaRepository<BranchShop, Integer>
     Page<BranchShop> findAllByEnable(boolean enable, Pageable pageable);
     Optional<BranchShop> findByNameAndEnable(String name, boolean enable);
     Optional<BranchShop> findByIdAndEnable(Integer id, boolean enable);
+    Optional<BranchShop> findByEmployees(Employee employee);
 }

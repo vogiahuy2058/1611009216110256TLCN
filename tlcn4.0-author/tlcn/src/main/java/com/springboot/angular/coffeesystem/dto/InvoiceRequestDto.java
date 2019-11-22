@@ -25,7 +25,7 @@ public class InvoiceRequestDto {
     private String customerPhone;
     private boolean paymentStatus;
 
-    private String branchShop;
+//    private String branchShop;
 
 //    private String coffeeTable;
 
