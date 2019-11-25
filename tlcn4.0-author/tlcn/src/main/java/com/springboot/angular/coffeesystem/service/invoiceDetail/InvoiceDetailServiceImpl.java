@@ -1,6 +1,7 @@
 package com.springboot.angular.coffeesystem.service.invoiceDetail;
 
 import com.springboot.angular.coffeesystem.dto.InvoiceDetailDto;
+import com.springboot.angular.coffeesystem.dto.InvoiceDetailResponseDto;
 import com.springboot.angular.coffeesystem.dto.InvoiceResponseDto;
 import com.springboot.angular.coffeesystem.dto.ResponseDto;
 import com.springboot.angular.coffeesystem.exception.NotFoundException;
@@ -83,13 +84,14 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
         Invoice invoice = invoiceRepository.findByIdAndEnable(invoiceId, true)
                 .orElseThrow(()-> new NotFoundException("Invoice not found"));
         List<InvoiceDetail> invoiceDetailList = invoiceDetailRepository.findByInvoice(invoice);
-        List<InvoiceDetailDto> invoiceDetailDtos = new ArrayList<>();
+        List<InvoiceDetailResponseDto> invoiceDetailResponseDtos = new ArrayList<>();
         invoiceDetailList.forEach(element->{
-            InvoiceDetailDto invoiceDetailDto = mapperObject.InvoiceDetailEntityToDto(element);
-            invoiceDetailDto.setDrinkId(element.getInvoiceDetailId().getDrinkId());
-            invoiceDetailDto.setInvoiceId(element.getInvoiceDetailId().getInvoiceId());
-            invoiceDetailDtos.add(invoiceDetailDto);
+            InvoiceDetailResponseDto invoiceDetailResponseDto = mapperObject.InvoiceDetailEntityToDto(element);
+            invoiceDetailResponseDto.setDrinkId(element.getInvoiceDetailId().getDrinkId());
+            invoiceDetailResponseDto.setInvoiceId(element.getInvoiceDetailId().getInvoiceId());
+            invoiceDetailResponseDto.setDrinkName(element.getDrink().getName());
+            invoiceDetailResponseDtos.add(invoiceDetailResponseDto);
         });
-        return new ResponseDto(HttpStatus.OK.value(), "Successful", invoiceDetailDtos);
+        return new ResponseDto(HttpStatus.OK.value(), "Successful", invoiceDetailResponseDtos);
     }
 }
