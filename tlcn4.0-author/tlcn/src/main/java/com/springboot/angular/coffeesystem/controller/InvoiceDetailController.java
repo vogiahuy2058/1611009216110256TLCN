@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
 @RequestMapping("/api/v1/invoice-detail")
@@ -24,6 +26,12 @@ public class InvoiceDetailController {
     public ResponseEntity<ResponseDto> editInvoiceDetail(@RequestBody InvoiceDetailDto invoiceDetailDto){
         return ResponseEntity.ok(invoiceDetailService.editInvoiceDetail(invoiceDetailDto));
     }
+
+    @PutMapping("/edit-list")
+    public ResponseEntity<ResponseDto> editListInvoiceDetail(@RequestBody List<InvoiceDetailDto> invoiceDetailDtoList){
+        return ResponseEntity.ok(invoiceDetailService.editListInvoiceDetail(invoiceDetailDtoList));
+    }
+
     @DeleteMapping("/delete")
     public ResponseEntity<ResponseDto> deleteInvoiceDetail(@RequestParam Integer invoiceId,
                                                            @RequestParam Integer drinkId){

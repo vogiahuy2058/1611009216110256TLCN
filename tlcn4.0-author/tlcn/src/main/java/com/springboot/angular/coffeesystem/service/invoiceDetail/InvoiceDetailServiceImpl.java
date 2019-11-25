@@ -62,6 +62,12 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
         return new ResponseDto(HttpStatus.OK.value(), "edit successful", null);
     }
 
+    public ResponseDto editListInvoiceDetail(List<InvoiceDetailDto> invoiceDetailDtoList){
+        invoiceDetailDtoList.forEach(element->{
+            editInvoiceDetail(element);
+        });
+        return new ResponseDto(HttpStatus.OK.value(), "edit list successful", null);
+    }
     public ResponseDto deleteInvoiceDetail(Integer invoiceId, Integer drinkId){
         Drink drink = drinkRepository.findByIdAndEnable(drinkId, true)
                 .orElseThrow(()-> new NotFoundException("Drink not found"));

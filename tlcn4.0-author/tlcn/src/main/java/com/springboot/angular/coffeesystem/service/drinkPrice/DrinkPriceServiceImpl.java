@@ -31,16 +31,16 @@ public class DrinkPriceServiceImpl implements DrinkPriceService{
     final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     @Transactional
     public ResponseDto createPriceOfDrink(DrinkPriceRequestDto drinkPriceRequestDto){
-
         //neu drink price do da ton tai thì enable=false
         if(drinkPriceRepository.findByDrinkPriceIdIdDrinkAndEnable(drinkPriceRequestDto.getDrinkId(),
                 true).isPresent()){
             DrinkPrice drinkPriceOld =
                     drinkPriceRepository.findByDrinkPriceIdIdDrinkAndEnable(drinkPriceRequestDto.getDrinkId(), true)
-                    .orElseThrow(()-> new NotFoundException("Id Drink not found"));
+                            .orElseThrow(()-> new NotFoundException("Id Drink not found"));
             drinkPriceOld.setEnable(false);
             drinkPriceRepository.save(drinkPriceOld);
         }
+
         DrinkPrice drinkPrice = mapperObject.DrinkPriceDtoToEntity(drinkPriceRequestDto);
         Drink drink = drinkRepository.findByIdAndEnable(drinkPriceRequestDto.getDrinkId(), true)
                 .orElseThrow(()-> new NotFoundException("Drink not found"));
