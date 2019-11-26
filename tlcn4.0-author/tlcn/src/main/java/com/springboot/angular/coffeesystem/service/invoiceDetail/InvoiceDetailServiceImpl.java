@@ -85,13 +85,16 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
                 .orElseThrow(()-> new NotFoundException("Invoice not found"));
         List<InvoiceDetail> invoiceDetailList = invoiceDetailRepository.findByInvoice(invoice);
         List<InvoiceDetailResponseDto> invoiceDetailResponseDtos = new ArrayList<>();
-        invoiceDetailList.forEach(element->{
+        Integer serial = 0;
+        for (InvoiceDetail element : invoiceDetailList) {
             InvoiceDetailResponseDto invoiceDetailResponseDto = mapperObject.InvoiceDetailEntityToDto(element);
             invoiceDetailResponseDto.setDrinkId(element.getInvoiceDetailId().getDrinkId());
             invoiceDetailResponseDto.setInvoiceId(element.getInvoiceDetailId().getInvoiceId());
             invoiceDetailResponseDto.setDrinkName(element.getDrink().getName());
+            invoiceDetailResponseDto.setSerial(serial + 1);
+            serial = serial + 1;
             invoiceDetailResponseDtos.add(invoiceDetailResponseDto);
-        });
+        }
         return new ResponseDto(HttpStatus.OK.value(), "Successful", invoiceDetailResponseDtos);
     }
 }

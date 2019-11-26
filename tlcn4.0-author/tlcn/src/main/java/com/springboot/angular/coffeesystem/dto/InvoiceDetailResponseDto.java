@@ -14,6 +14,7 @@ public class InvoiceDetailResponseDto {
     private float price;
     private float discount;
     private float unitPrice;
+    private Integer serial;
     private Integer invoiceId;
     private Integer drinkId;
     private String drinkName;
