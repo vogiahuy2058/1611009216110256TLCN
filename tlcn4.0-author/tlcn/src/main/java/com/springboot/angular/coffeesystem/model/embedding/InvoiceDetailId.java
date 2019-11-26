@@ -13,6 +13,8 @@ import java.util.Objects;
 @Getter
 @Setter
 public class InvoiceDetailId implements Serializable {
+    @Column(name = "id")
+    private Integer id;
     @Column(name = "invoice_id")
     private Integer invoiceId;
     @Column(name = "drink_id")

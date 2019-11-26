@@ -34,8 +34,9 @@ public class InvoiceDetailController {
 
     @DeleteMapping("/delete")
     public ResponseEntity<ResponseDto> deleteInvoiceDetail(@RequestParam Integer invoiceId,
-                                                           @RequestParam Integer drinkId){
-        return ResponseEntity.ok(invoiceDetailService.deleteInvoiceDetail(invoiceId, drinkId));
+                                                           @RequestParam Integer drinkId,
+                                                           @RequestParam Integer id){
+        return ResponseEntity.ok(invoiceDetailService.deleteInvoiceDetail(invoiceId, drinkId, id));
     }
     @GetMapping("/get-by-id-invoice")
     public ResponseEntity<ResponseDto> getInvoiceDetailByInvoiceId(@RequestParam Integer invoiceId){

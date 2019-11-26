@@ -14,6 +14,8 @@ import java.util.Optional;
 
 @Transactional(rollbackFor = Exception.class)
 public interface InvoiceDetailRepository extends JpaRepository<InvoiceDetail, InvoiceDetailId> {
-    Optional<InvoiceDetail> findByDrinkAndInvoice(Drink drink, Invoice invoice);
+    Optional<InvoiceDetail> findByDrinkAndInvoiceAndInvoiceDetailIdId(Drink drink, Invoice invoice, Integer id);
     List<InvoiceDetail> findByInvoice(Invoice invoice);
+    @Query("select max(ind.invoiceDetailId.id) from InvoiceDetail ind")
+    Integer findMaxId();
 }

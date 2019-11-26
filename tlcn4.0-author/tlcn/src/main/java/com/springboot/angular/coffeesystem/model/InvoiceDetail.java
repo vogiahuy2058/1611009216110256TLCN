@@ -29,5 +29,6 @@ public class InvoiceDetail extends Auditable<String> {
     private float price;//total price for each drink
     private float unitPrice;
     private float discount;
+    private String note;
 
 }

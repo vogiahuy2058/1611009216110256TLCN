@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface InvoiceDetailService {
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER')")
-    ResponseDto deleteInvoiceDetail(Integer invoiceId, Integer drinkId);
+    ResponseDto deleteInvoiceDetail(Integer invoiceId, Integer drinkId, Integer id);
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER')")
     ResponseDto createInvoiceDetail(InvoiceDetailDto invoiceDetailDto);
     //    ResponseDto deleteInvoiceDetail(Integer id);

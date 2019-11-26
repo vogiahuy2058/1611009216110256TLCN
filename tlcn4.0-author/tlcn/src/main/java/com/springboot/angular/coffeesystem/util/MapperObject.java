@@ -84,6 +84,7 @@ public interface MapperObject {
 
     @Mapping(target="invoice.id",source = "invoiceId")
     @Mapping(target="drink.id",source = "drinkId")
+    @Mapping(target="invoiceDetailId.id",source = "id")
     InvoiceDetail InvoiceDetailDtoToEntity(InvoiceDetailDto invoiceDetailDto);
 
 //    @Mapping(target="invoiceId",source = "invoice.id")
@@ -92,6 +93,7 @@ public interface MapperObject {
 
     @Mapping(target="invoiceId",source = "invoice.id")
     @Mapping(target="drinkId",source = "drink.id")
+    @Mapping(target="id",source = "invoiceDetailId.id")
     InvoiceDetailResponseDto InvoiceDetailEntityToDto(InvoiceDetail invoiceDetail);
 
     @Mapping(target="tableType.name",source = "tableType")

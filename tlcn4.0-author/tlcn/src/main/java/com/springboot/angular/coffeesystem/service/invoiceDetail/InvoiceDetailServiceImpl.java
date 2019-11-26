@@ -40,7 +40,11 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
         InvoiceDetailId invoiceDetailId = new InvoiceDetailId();
         invoiceDetailId.setDrinkId(drink.getId());
         invoiceDetailId.setInvoiceId(invoice.getId());
-//        invoiceDetail.setUnitPrice(drink.getPrice());
+        Integer idOld = invoiceDetailRepository.findMaxId();
+        if(idOld == null){
+            idOld = 0;
+        }
+        invoiceDetailId.setId(idOld+1);
         invoiceDetail.setDrink(drink);
         invoiceDetail.setInvoice(invoice);
         invoiceDetail.setInvoiceDetailId(invoiceDetailId);
@@ -53,12 +57,14 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
                 .orElseThrow(()-> new NotFoundException("Drink not found"));
         Invoice invoice = invoiceRepository.findByIdAndEnable(invoiceDetailDto.getInvoiceId(), true)
                 .orElseThrow(()-> new NotFoundException("Invoice not found"));
-        InvoiceDetail invoiceDetail = invoiceDetailRepository.findByDrinkAndInvoice(drink, invoice)
+        InvoiceDetail invoiceDetail = invoiceDetailRepository.findByDrinkAndInvoiceAndInvoiceDetailIdId(
+                drink, invoice, invoiceDetailDto.getId())
                 .orElseThrow(()-> new NotFoundException("Invoice detail not found"));
-//        invoiceDetail.setUnitPrice(drink.getPrice());
+        invoiceDetail.setUnitPrice(invoiceDetailDto.getPrice());
         invoiceDetail.setPrice(invoiceDetailDto.getPrice());
         invoiceDetail.setAmount(invoiceDetailDto.getAmount());
         invoiceDetail.setDiscount(invoiceDetailDto.getDiscount());
+        invoiceDetail.setNote(invoiceDetailDto.getNote());
         invoiceDetailRepository.save(invoiceDetail);
         return new ResponseDto(HttpStatus.OK.value(), "edit successful", null);
     }
@@ -69,12 +75,13 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
         });
         return new ResponseDto(HttpStatus.OK.value(), "edit list successful", null);
     }
-    public ResponseDto deleteInvoiceDetail(Integer invoiceId, Integer drinkId){
+    public ResponseDto deleteInvoiceDetail(Integer invoiceId, Integer drinkId, Integer id){
         Drink drink = drinkRepository.findByIdAndEnable(drinkId, true)
                 .orElseThrow(()-> new NotFoundException("Drink not found"));
         Invoice invoice = invoiceRepository.findByIdAndEnable(invoiceId, true)
                 .orElseThrow(()-> new NotFoundException("Invoice not found"));
-        InvoiceDetail invoiceDetail = invoiceDetailRepository.findByDrinkAndInvoice(drink, invoice)
+        InvoiceDetail invoiceDetail = invoiceDetailRepository.findByDrinkAndInvoiceAndInvoiceDetailIdId(
+                drink, invoice, id)
                 .orElseThrow(()-> new NotFoundException("Invoice detail not found"));
         invoiceDetailRepository.delete(invoiceDetail);
         return new ResponseDto(HttpStatus.OK.value(), "Delete invoice detail successful", null);

@@ -10,12 +10,14 @@ import lombok.Setter;
 @Getter
 @Setter
 public class InvoiceDetailResponseDto {
+    private Integer id;
+    private Integer serial;
+    private Integer invoiceId;
+    private Integer drinkId;
     private Integer amount;
     private float price;
     private float discount;
     private float unitPrice;
-    private Integer serial;
-    private Integer invoiceId;
-    private Integer drinkId;
     private String drinkName;
+    private String note;
 }
