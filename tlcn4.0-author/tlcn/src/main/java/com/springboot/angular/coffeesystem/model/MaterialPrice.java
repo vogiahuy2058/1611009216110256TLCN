@@ -14,7 +14,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Getter
 @Setter
-public class MaterialPrice {
+public class MaterialPrice extends Auditable<String>{
     @EmbeddedId
     private MaterialPriceId materialPriceId;
     private float price;

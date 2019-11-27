@@ -110,7 +110,7 @@ public class MaterialServiceImpl implements MaterialService {
         Material material = materialRepository.findByIdAndEnable(materialDto.getId(), true)
                 .orElseThrow(()-> new NotFoundException("Id not found!"));
         material.setName(materialDto.getName());
-        material.setInventory(materialDto.getInventory());
+//        material.setInventory(materialDto.getInventory());
         material.setMinInventory(materialDto.getMinInventory());
         material.setMaxInventory(materialDto.getMaxInventory());
         MaterialType materialType = materialTypeRepository.findByNameAndEnable(materialDto.getMaterialType(), true)
@@ -122,20 +122,5 @@ public class MaterialServiceImpl implements MaterialService {
         materialRepository.save(material);
         return new ResponseDto(HttpStatus.OK.value(), "Edit material successful", null);
     }
-//    public ResponseDto changePrice(Integer id, float newPrice){
-//        Material material = materialRepository.findByMaterialIdIdAndEnable(id, true)
-//                .orElseThrow(()-> new NotFoundException("Material not found"));
-//        material.setEnable(false);
-//        materialRepository.save(material);
-//
-//        MaterialDto materialDto = mapperObject.MaterialEntityToDto(material);
-//        materialDto.setId(material.getMaterialId().getId());
-//        materialDto.setDate(LocalDate.now());
-//        materialDto.setMaterialType(material.getMaterialType().getName());
-//        materialDto.setPrice(newPrice);
-//        createMaterial(materialDto);
-//        return new ResponseDto(HttpStatus.OK.value(), "Price is changed successfully", null);
-//    }
-
 
 }

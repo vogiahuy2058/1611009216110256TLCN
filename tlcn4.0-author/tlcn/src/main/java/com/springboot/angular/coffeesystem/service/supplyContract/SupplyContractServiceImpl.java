@@ -36,7 +36,7 @@ public class SupplyContractServiceImpl implements SupplyContractService{
     SupplierRepository supplierRepository;
     @Autowired
     BranchShopRepository branchShopRepository;
-    final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public ResponseDto createSupplyContract(SupplyContractRequestDto supplyContractRequestDto){
         SupplyContract supplyContract = this.mapperObject.SupplyContractDtoToEntity(supplyContractRequestDto);
         Supplier supplier = supplierRepository.findAllByNameAndEnable(supplyContractRequestDto.getSupplier(), true)
@@ -91,6 +91,26 @@ public class SupplyContractServiceImpl implements SupplyContractService{
         supplyContractResponseDto.setSupplier(supplyContract.getSupplier().getName());
         supplyContractResponseDto.setBranchShop(supplyContract.getBranchShop().getName());
         return new ResponseDto(HttpStatus.OK.value(), "All supply contract", supplyContractResponseDto);
+    }
+    @Transactional
+    public ResponseDto getAllInvoiceDateToDate(String fromDate, String toDate){
+        LocalDate newFromDate = LocalDate.parse(fromDate, dtf);
+        LocalDate newToDate = LocalDate.parse(toDate, dtf);
+        List<SupplyContract> supplyContracts = supplyContractRepository.findAllByEnable(true);
+        List<SupplyContractResponseDto> supplyContractResponseDtos = new ArrayList<>();
+        supplyContracts.forEach(element->{
+            LocalDate supplyContractDate = element.getDate();
+            if(supplyContractDate.isBefore(newToDate) && supplyContractDate.isAfter(newFromDate)){
+                SupplyContractResponseDto supplyContractResponseDto =
+                        mapperObject.SupplyContractEntityToDto1(element);
+                supplyContractResponseDto.setDate(element.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                supplyContractResponseDto.setBranchShop(element.getBranchShop().getName());
+                supplyContractResponseDto.setSupplier(element.getSupplier().getName());
+                supplyContractResponseDtos.add(supplyContractResponseDto);
+            }
+
+        });
+        return new ResponseDto(HttpStatus.OK.value(), "All supply contract date to date", supplyContractResponseDtos);
     }
     public ResponseDto deleteSupplyContract(Integer id){
         SupplyContract supplyContract = supplyContractRepository.findByIdAndEnable(id, true)

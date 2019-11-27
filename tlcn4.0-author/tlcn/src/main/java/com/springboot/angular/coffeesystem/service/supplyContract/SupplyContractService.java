@@ -18,4 +18,6 @@ public interface SupplyContractService {
     ResponseDto getSupplyContractById(Integer id);
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER')")
     PagingResponseDto getAllSupplyContractPaging(int page, int size, String sort, String sortColumn);
+    //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER')")
+    ResponseDto getAllInvoiceDateToDate(String fromDate, String toDate);
 }

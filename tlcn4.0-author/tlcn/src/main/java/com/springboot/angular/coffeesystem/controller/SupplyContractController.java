@@ -35,6 +35,11 @@ public class SupplyContractController {
     public ResponseEntity<ResponseDto> getSupplyContractId(@RequestParam Integer id){
         return ResponseEntity.ok(supplyContractService.getSupplyContractById(id));
     }
+    @GetMapping("/get-all-date-to-date")
+    public ResponseEntity<ResponseDto> getAllSupplyContractDateToDate(@RequestParam String fromDate,
+                                                                      @RequestParam String toDate){
+        return  ResponseEntity.ok(this.supplyContractService.getAllInvoiceDateToDate(fromDate, toDate));
+    }
     @PutMapping("/delete")
     public ResponseEntity<ResponseDto> deleteSupplyContract(@RequestParam Integer id){
         return ResponseEntity.ok(supplyContractService.deleteSupplyContract(id));

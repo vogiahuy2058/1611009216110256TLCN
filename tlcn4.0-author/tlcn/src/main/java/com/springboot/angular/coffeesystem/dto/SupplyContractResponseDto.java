@@ -13,8 +13,7 @@ import java.time.LocalDate;
 public class SupplyContractResponseDto {
     private Integer id;
     private String date;
-    private float totalPrice;
     private String branchShop;
     private String supplier;
-
+    private float totalPrice;
 }
