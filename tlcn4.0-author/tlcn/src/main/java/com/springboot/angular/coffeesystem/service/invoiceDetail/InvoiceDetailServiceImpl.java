@@ -104,4 +104,15 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
         }
         return new ResponseDto(HttpStatus.OK.value(), "Successful", invoiceDetailResponseDtos);
     }
+    @Transactional
+    public ResponseDto getInvoiceDetailByID(Integer id){
+        InvoiceDetail invoiceDetail = invoiceDetailRepository.findByInvoiceDetailIdId(id)
+                .orElseThrow(()-> new NotFoundException("Id not found"));
+        InvoiceDetailResponseDto invoiceDetailResponseDto = mapperObject.InvoiceDetailEntityToDto(invoiceDetail);
+        invoiceDetailResponseDto.setDrinkId(invoiceDetail.getInvoiceDetailId().getDrinkId());
+        invoiceDetailResponseDto.setInvoiceId(invoiceDetail.getInvoiceDetailId().getInvoiceId());
+        invoiceDetailResponseDto.setDrinkName(invoiceDetail.getDrink().getName());
+        invoiceDetailResponseDto.setSerial(1);
+        return new ResponseDto(HttpStatus.OK.value(), "Successful", invoiceDetailResponseDto );
+    }
 }

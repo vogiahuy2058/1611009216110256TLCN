@@ -43,4 +43,9 @@ public class InvoiceDetailController {
 
         return ResponseEntity.ok(invoiceDetailService.getInvoiceDetailByInvoiceId(invoiceId));
     }
+    @GetMapping("/get-by-id")
+    public ResponseEntity<ResponseDto> getInvoiceDetailById(@RequestParam Integer id){
+
+        return ResponseEntity.ok(invoiceDetailService.getInvoiceDetailByID(id));
+    }
 }

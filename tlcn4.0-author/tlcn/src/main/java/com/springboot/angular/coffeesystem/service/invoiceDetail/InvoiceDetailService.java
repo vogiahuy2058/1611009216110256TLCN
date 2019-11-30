@@ -18,5 +18,7 @@ public interface InvoiceDetailService {
     //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER')")
     ResponseDto getInvoiceDetailByInvoiceId(Integer invoiceId);
     //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER')")
+    ResponseDto getInvoiceDetailByID(Integer id);
+    //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER')")
     ResponseDto editListInvoiceDetail(List<InvoiceDetailDto> invoiceDetailDtoList);
 }

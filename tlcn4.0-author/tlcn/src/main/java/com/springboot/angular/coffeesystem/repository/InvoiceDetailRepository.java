@@ -18,4 +18,5 @@ public interface InvoiceDetailRepository extends JpaRepository<InvoiceDetail, In
     List<InvoiceDetail> findByInvoice(Invoice invoice);
     @Query("select max(ind.invoiceDetailId.id) from InvoiceDetail ind")
     Integer findMaxId();
+    Optional<InvoiceDetail> findByInvoiceDetailIdId(Integer id);
 }
