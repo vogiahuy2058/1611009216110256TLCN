@@ -125,10 +125,12 @@ public interface MapperObject {
 
     @Mapping(target="material.name",source = "material")
     @Mapping(target="drink.name",source = "drink")
+    @Mapping(target="unit.name",source = "unit")
     Recipe RecipeDtoToEntity(RecipeDto recipeDto);
 
     @Mapping(target="material",source = "material.name")
     @Mapping(target="drink",source = "drink.name")
+    @Mapping(target="unit",source = "unit.name")
     RecipeDto RecipeEntityToDto(Recipe recipe);
 
     @Mapping(target="material.id",source = "materialId")
