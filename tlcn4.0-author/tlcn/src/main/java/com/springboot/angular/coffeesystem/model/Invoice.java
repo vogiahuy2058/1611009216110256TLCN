@@ -23,6 +23,7 @@ public class Invoice extends Auditable<String> {
     private Integer id;
     private float vat;
     private float totalPrice;
+    private float realPay;
     private float totalDiscount;
 //    private LocalDateTime date;
     private ZonedDateTime date;

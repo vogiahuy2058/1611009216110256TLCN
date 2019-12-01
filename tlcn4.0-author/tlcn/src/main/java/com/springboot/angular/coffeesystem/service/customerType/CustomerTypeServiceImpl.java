@@ -42,8 +42,10 @@ public class CustomerTypeServiceImpl implements CustomerTypeService{
         List<CustomerType> customerTypes = customerTypeRepository.findAllByEnable(true);
         List<CustomerTypeDto> customerTypeDtos = new ArrayList<>();
         customerTypes.forEach(element -> {
-            CustomerTypeDto employeeResponseDto = mapperObject.CustomerTypeEntityToDto(element);
-            customerTypeDtos.add(employeeResponseDto);
+            CustomerTypeDto customerTypeDto = mapperObject.CustomerTypeEntityToDto(element);
+            customerTypeDto.setDiscountName(element.getDiscountName());
+            customerTypeDto.setDiscountValue(element.getDiscountValue());
+            customerTypeDtos.add(customerTypeDto);
         });
         return new ResponseDto(HttpStatus.OK.value(), "All customer type", customerTypeDtos);
     }
@@ -54,8 +56,10 @@ public class CustomerTypeServiceImpl implements CustomerTypeService{
         List<CustomerTypeDto> customerTypeDtos = new ArrayList<>();
         Page<CustomerType> customerTypePage = customerTypeRepository.findAllByEnable(true, pageable);
         customerTypePage.forEach(element->{
-            CustomerTypeDto employeeResponseDto = mapperObject.CustomerTypeEntityToDto(element);
-            customerTypeDtos.add(employeeResponseDto);});
+            CustomerTypeDto customerTypeDto = mapperObject.CustomerTypeEntityToDto(element);
+            customerTypeDto.setDiscountName(element.getDiscountName());
+            customerTypeDto.setDiscountValue(element.getDiscountValue());
+            customerTypeDtos.add(customerTypeDto);});
         Page<CustomerTypeDto> customerTypeDtoPage = new PageImpl<>(customerTypeDtos, pageable,
                 customerTypePage.getTotalElements() );
         return new PagingResponseDto<>(
@@ -67,12 +71,16 @@ public class CustomerTypeServiceImpl implements CustomerTypeService{
         CustomerType customerType = customerTypeRepository.findByIdAndEnable(id, true)
                 .orElseThrow(()-> new NotFoundException("Id not found"));
         CustomerTypeDto customerTypeDto = mapperObject.CustomerTypeEntityToDto(customerType);
+        customerTypeDto.setDiscountName(customerType.getDiscountName());
+        customerTypeDto.setDiscountValue(customerType.getDiscountValue());
         return new ResponseDto(HttpStatus.OK.value(), "Successful", customerTypeDto);
     }
     public ResponseDto editCustomerType(CustomerTypeDto customerTypeDto){
         CustomerType customerType = customerTypeRepository.findByIdAndEnable(customerTypeDto.getId(), true)
                 .orElseThrow(()-> new NotFoundException("Id not found!"));
         customerType.setName(customerTypeDto.getName());
+        customerType.setDiscountName(customerTypeDto.getDiscountName());
+        customerType.setDiscountValue(customerTypeDto.getDiscountValue());
         customerTypeRepository.save(customerType);
         return new ResponseDto(HttpStatus.OK.value(), "Edit customer successful", null);
     }

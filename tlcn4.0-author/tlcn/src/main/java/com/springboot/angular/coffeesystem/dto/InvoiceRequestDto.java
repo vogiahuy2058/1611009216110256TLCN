@@ -17,6 +17,7 @@ import java.time.ZonedDateTime;
 public class InvoiceRequestDto {
     private Integer id;
     private float vat;
+    private float realPay;
     private float totalPrice;
     private ZonedDateTime date;
     private float totalDiscount;

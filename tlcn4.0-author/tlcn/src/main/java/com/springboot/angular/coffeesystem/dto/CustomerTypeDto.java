@@ -12,4 +12,6 @@ import lombok.Setter;
 public class CustomerTypeDto {
     private Integer id;
     private String name;
+    private String discountName;
+    private double discountValue;
 }

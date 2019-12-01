@@ -23,6 +23,7 @@ public class InvoiceResponseDto {
     private float vat;
     private float totalDiscount;
     private float totalPrice;
+    private float realPay;
 
 
 

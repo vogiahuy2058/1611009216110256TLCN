@@ -23,6 +23,8 @@ public class CustomerType extends Auditable<String> {
 //    @NaturalId
     private String name;
     private boolean enable = true;
+    private String discountName;
+    private double discountValue;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "customerType", cascade = CascadeType.ALL)
     private Set<Customer> customers = new HashSet<>();
 

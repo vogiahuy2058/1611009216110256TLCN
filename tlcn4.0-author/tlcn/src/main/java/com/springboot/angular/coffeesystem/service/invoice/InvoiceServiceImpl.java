@@ -258,6 +258,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 //        invoice.setDate(ZonedDateTime.parse(invoiceRequestDto.getDate().withZoneSameInstant(zoneId).toString()));
         invoice.setNumberPosition(invoiceRequestDto.getNumberPosition());
         invoice.setPaymentStatus(invoiceRequestDto.isPaymentStatus());
+        invoice.setRealPay(invoiceRequestDto.getRealPay());
         invoiceRepository.save(invoice);
         return new ResponseDto(HttpStatus.OK.value(), "Edit invoice successful", null);
     }
