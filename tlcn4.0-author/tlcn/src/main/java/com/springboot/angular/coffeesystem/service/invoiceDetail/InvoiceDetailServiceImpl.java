@@ -60,7 +60,7 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
         InvoiceDetail invoiceDetail = invoiceDetailRepository.findByDrinkAndInvoiceAndInvoiceDetailIdId(
                 drink, invoice, invoiceDetailDto.getId())
                 .orElseThrow(()-> new NotFoundException("Invoice detail not found"));
-        invoiceDetail.setUnitPrice(invoiceDetailDto.getPrice());
+        invoiceDetail.setUnitPrice(invoiceDetailDto.getUnitPrice());
         invoiceDetail.setPrice(invoiceDetailDto.getPrice());
         invoiceDetail.setAmount(invoiceDetailDto.getAmount());
         invoiceDetail.setDiscount(invoiceDetailDto.getDiscount());
