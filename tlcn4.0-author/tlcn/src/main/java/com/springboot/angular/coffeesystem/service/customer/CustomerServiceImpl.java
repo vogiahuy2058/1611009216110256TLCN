@@ -113,4 +113,10 @@ public class CustomerServiceImpl implements CustomerService{
         customerRepository.save(customer);
         return new ResponseDto(HttpStatus.OK.value(), "Edit customer successful", null);
     }
+    public ResponseDto editListCustomer(List<CustomerRequestDto> customerRequestDtoList){
+        customerRequestDtoList.forEach(element->{
+            editCustomer(element);
+        });
+        return new ResponseDto(HttpStatus.OK.value(), "Edit list customer successful", null);
+    }
 }
