@@ -38,6 +38,12 @@ public class EmployeeTypeController {
         return  ResponseEntity.ok(this.employeeTypeService.getEmployeeTypeById(id));
     }
 
+    @GetMapping("/get-max-id")
+    public ResponseEntity<ResponseDto> getMaxEmployeeType(){
+
+        return ResponseEntity.ok(employeeTypeService.getMaxIdEmployeeType());
+    }
+
     @PutMapping("/delete")
     public ResponseEntity<ResponseDto> deleteEmployeeType(@RequestParam Integer id){
         return ResponseEntity.ok(employeeTypeService.deleteEmployeeType(id));

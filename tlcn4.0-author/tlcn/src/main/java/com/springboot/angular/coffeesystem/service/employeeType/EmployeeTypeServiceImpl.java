@@ -90,4 +90,11 @@ public class EmployeeTypeServiceImpl implements EmployeeTypeService{
         employeeTypeRepository.save(employeeType);
         return new ResponseDto(HttpStatus.OK.value(), "Edit drink type successful", null);
     }
+    public ResponseDto getMaxIdEmployeeType(){
+        Integer idOld = employeeTypeRepository.findMaxId();
+        if(idOld == null){
+            idOld = 0;
+        }
+        return new ResponseDto(HttpStatus.OK.value(), "Max id", idOld);
+    }
 }

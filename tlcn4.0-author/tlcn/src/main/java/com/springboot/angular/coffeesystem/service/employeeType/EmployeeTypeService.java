@@ -18,4 +18,6 @@ public interface EmployeeTypeService {
     ResponseDto getEmployeeTypeById(Integer id);
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR')")
     PagingResponseDto getAllEmployeeTypePaging(int page, int size, String sort, String sortColumn);
+    //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR')")
+    ResponseDto getMaxIdEmployeeType();
 }

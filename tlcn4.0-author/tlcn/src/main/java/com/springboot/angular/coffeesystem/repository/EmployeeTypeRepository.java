@@ -17,4 +17,6 @@ public interface EmployeeTypeRepository extends JpaRepository<EmployeeType, Inte
     Page<EmployeeType> findAllByEnable(boolean enable, Pageable pageable);
     Optional<EmployeeType> findByNameAndEnable(String name, boolean enable);
     Optional<EmployeeType> findByIdAndEnable(Integer id, boolean enable);
+    @Query("select max(e.id) from EmployeeType e")
+    Integer findMaxId();
 }
