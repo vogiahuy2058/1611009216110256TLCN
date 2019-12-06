@@ -48,4 +48,9 @@ public class InvoiceDetailController {
 
         return ResponseEntity.ok(invoiceDetailService.getInvoiceDetailByID(id));
     }
+    @GetMapping("/get-max-id")
+    public ResponseEntity<ResponseDto> getMaxInvoiceDetailId(){
+
+        return ResponseEntity.ok(invoiceDetailService.getMaxIdInvoiceDetail());
+    }
 }

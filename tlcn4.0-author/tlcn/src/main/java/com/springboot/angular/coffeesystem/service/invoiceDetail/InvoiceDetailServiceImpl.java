@@ -115,4 +115,11 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
         invoiceDetailResponseDto.setSerial(1);
         return new ResponseDto(HttpStatus.OK.value(), "Successful", invoiceDetailResponseDto );
     }
+    public ResponseDto getMaxIdInvoiceDetail(){
+        Integer idOld = invoiceDetailRepository.findMaxId();
+        if(idOld == null){
+            idOld = 0;
+        }
+        return new ResponseDto(HttpStatus.OK.value(), "Max id", idOld);
+    }
 }

@@ -21,4 +21,6 @@ public interface InvoiceDetailService {
     ResponseDto getInvoiceDetailByID(Integer id);
     //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER')")
     ResponseDto editListInvoiceDetail(List<InvoiceDetailDto> invoiceDetailDtoList);
+    //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER')")
+    ResponseDto getMaxIdInvoiceDetail();
 }
