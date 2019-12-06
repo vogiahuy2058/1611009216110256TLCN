@@ -25,8 +25,9 @@ public class Material extends Auditable<String>{
     private Integer id;
 //    @NaturalId
     private String name;
+    private float inventory;
     private boolean enable = true;
-//    private float inventory;
+
     private float minInventory;
     private float maxInventory;
 
