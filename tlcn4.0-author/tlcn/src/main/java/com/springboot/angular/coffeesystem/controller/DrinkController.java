@@ -47,7 +47,7 @@ public class DrinkController {
         return ResponseEntity.ok(drinkService.editDrink(drinkDto));
     }
     @PutMapping("/delete")
-    public ResponseEntity<ResponseDto> deleteDrink(@RequestBody Integer id){
+    public ResponseEntity<ResponseDto> deleteDrink(@RequestParam Integer id){
         return ResponseEntity.ok(drinkService.deleteDrink(id));
     }
 //    @PostMapping("change-price")
