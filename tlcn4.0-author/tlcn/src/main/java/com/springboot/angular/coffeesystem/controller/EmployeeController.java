@@ -32,8 +32,9 @@ public class EmployeeController {
         return  ResponseEntity.ok(this.employeeService.getAllEmployee());
     }
     @GetMapping("/get-all-not-account")
-    public ResponseEntity<ResponseDto> getAllEmployeeNotHaveAccount(){
-        return  ResponseEntity.ok(this.employeeService.getEmployeeNotHaveAccount());
+    public ResponseEntity<ResponseDto> getEmployeeNotHaveAccountByEmployeeType(@RequestParam String name){
+        return  ResponseEntity.ok(
+                this.employeeService.getEmployeeNotHaveAccountByEmployeeType(name));
     }
 
     @GetMapping("/get")

@@ -21,7 +21,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     Optional<Employee> findByAccountId(Integer id);
     Optional<Employee> findByAccountUsername(String username);
     @Query("select e from Employee e where e not in " +
-            "(SELECT a.employee FROM Account a) and e.enable=true")
-    List<Employee> getEmployeeNotHaveAccount();
+            "(SELECT a.employee FROM Account a) " +
+            "and e.employeeType.name=?1 and e.enable=true")
+    List<Employee> findEmployeeNotHaveAccountByEmployeeType(String name);
 
 }

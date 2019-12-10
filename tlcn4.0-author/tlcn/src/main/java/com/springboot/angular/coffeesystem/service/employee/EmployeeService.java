@@ -11,7 +11,7 @@ public interface EmployeeService {
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR', 'ROLE_BRANCH_MANAGER')")
     ResponseDto getAllEmployee();
     //    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    ResponseDto getEmployeeNotHaveAccount();
+    ResponseDto getEmployeeNotHaveAccountByEmployeeType(String name);
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR')")
     ResponseDto deleteEmployee(Integer id);
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR')")

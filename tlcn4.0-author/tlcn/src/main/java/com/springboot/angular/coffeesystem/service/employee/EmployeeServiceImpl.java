@@ -94,8 +94,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Transactional
-    public ResponseDto getEmployeeNotHaveAccount(){
-        List<Employee> employeeList = employeeRepository.getEmployeeNotHaveAccount();
+    public ResponseDto getEmployeeNotHaveAccountByEmployeeType(String name){
+        List<Employee> employeeList = employeeRepository.findEmployeeNotHaveAccountByEmployeeType(name);
         List<EmployeeResponseDto> employeeResponseDtos = new ArrayList<>();
         employeeList.forEach(employee -> {
             EmployeeResponseDto employeeResponseDto = mapperObject.EmployeeEntityToDto(employee);
