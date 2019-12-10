@@ -35,10 +35,18 @@ public class DrinkServiceImpl implements DrinkService {
     RecipeRepository recipeRepository;
     @Autowired
     RecipeService recipeService;
+    public ResponseDto createDrink(DrinkDto drinkDto){
 
+        Drink drink = this.mapperObject.DrinkDTOToDrinkEntity(drinkDto);
+        DrinkType drinkType = drinkTypeRepository.findByNameAndEnable(drinkDto.getDrinkType(), true)
+                .orElseThrow(()-> new NotFoundException("Drink type not found"));
+        drink.setDrinkType(drinkType);
+        this.drinkRepository.save(drink);
+
+        return new ResponseDto(HttpStatus.OK.value(), "Create drink successful", null);
+    }
     @Transactional
     public ResponseDto getAllDrink(){
-
         List<Drink> drinkList = this.drinkRepository.findAllByEnable(true);
         List<DrinkDto> drinkDtos = new ArrayList<>();
         drinkList.forEach(element->{
@@ -67,8 +75,10 @@ public class DrinkServiceImpl implements DrinkService {
                 drinkDtoPage.getPageable());
     }
     @Transactional
-    public ResponseDto getAllDrinkByDrinkType(String name){
-        List<Drink> drinkList = this.drinkRepository.findByDrinkTypeNameAndEnable(name,true);
+    public ResponseDto getAllDrinkByDrinkType(String drinkTypeName){
+        DrinkType drinkType = drinkTypeRepository.findByNameAndEnable(drinkTypeName, true)
+                .orElseThrow(()-> new NotFoundException("Drink type not found"));
+        List<Drink> drinkList = this.drinkRepository.findByDrinkTypeNameAndEnable(drinkTypeName,true);
         List<DrinkDto> drinkDtos = new ArrayList<>();
         drinkList.forEach(element->{
             DrinkDto drinkDto = mapperObject.DrinkEntityToDrinkDTO(element);
@@ -77,16 +87,29 @@ public class DrinkServiceImpl implements DrinkService {
         });
         return new ResponseDto(HttpStatus.OK.value(), "All drink", drinkDtos);
     }
-
-    public ResponseDto createDrink(DrinkDto drinkDto){
-
-        Drink drink = this.mapperObject.DrinkDTOToDrinkEntity(drinkDto);
-        DrinkType drinkType = drinkTypeRepository.findByNameAndEnable(drinkDto.getDrinkType(), true)
+    @Transactional
+    public ResponseDto getDrinkHavePriceByDrinkType(String nameDrinkType){
+        DrinkType drinkType = drinkTypeRepository.findByNameAndEnable(nameDrinkType, true)
                 .orElseThrow(()-> new NotFoundException("Drink type not found"));
-        drink.setDrinkType(drinkType);
-        this.drinkRepository.save(drink);
-
-        return new ResponseDto(HttpStatus.OK.value(), "Create drink successful", null);
+        List<Drink> drinkList = this.drinkRepository.findDrinkHavePriceByDrinkType(nameDrinkType);
+        List<DrinkDto> drinkDtos = new ArrayList<>();
+        drinkList.forEach(element->{
+            DrinkDto drinkDto = mapperObject.DrinkEntityToDrinkDTO(element);
+            drinkDto.setDrinkType(element.getDrinkType().getName());
+            drinkDtos.add(drinkDto);
+        });
+        return new ResponseDto(HttpStatus.OK.value(), "All drink", drinkDtos);
+    }
+    @Transactional
+    public ResponseDto getAllDrinkHavePrice(){
+        List<Drink> drinkList = this.drinkRepository.findAllDrinkHavePrice();
+        List<DrinkDto> drinkDtos = new ArrayList<>();
+        drinkList.forEach(element->{
+            DrinkDto drinkDto = mapperObject.DrinkEntityToDrinkDTO(element);
+            drinkDto.setDrinkType(element.getDrinkType().getName());
+            drinkDtos.add(drinkDto);
+        });
+        return new ResponseDto(HttpStatus.OK.value(), "All drink", drinkDtos);
     }
     @Transactional
     public ResponseDto getDrinkById(Integer id){

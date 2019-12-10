@@ -99,9 +99,9 @@ public class AccountServiceImpl implements AccountService{
     public ResponseDto deleteAccount(Integer id){
         Account account = accountRepository.findById(id)
                 .orElseThrow(()-> new NotFoundException("Id not found!"));
-        Employee employee = employeeRepository.findByAccountId(id)
-                .orElseThrow(()-> new NotFoundException("Employee not found"));
-        employeeService.deleteEmployee(employee.getId());
+//        Employee employee = employeeRepository.findByAccountId(id)
+//                .orElseThrow(()-> new NotFoundException("Employee not found"));
+//        employeeService.deleteEmployee(employee.getId());
         account.setEnable(false);
         accountRepository.save(account);
         return new ResponseDto(HttpStatus.OK.value(), "Delete account successful", null);

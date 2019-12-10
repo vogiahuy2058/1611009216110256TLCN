@@ -95,6 +95,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Transactional
     public ResponseDto getEmployeeNotHaveAccountByEmployeeType(String nameEmployeeType){
+        EmployeeType employeeType = employeeTypeRepository.findByNameAndEnable(nameEmployeeType, true)
+                .orElseThrow(()-> new NotFoundException("Employee type not found"));
         List<Employee> employeeList = employeeRepository.findEmployeeNotHaveAccountByEmployeeType(nameEmployeeType);
         List<EmployeeResponseDto> employeeResponseDtos = new ArrayList<>();
         employeeList.forEach(employee -> {

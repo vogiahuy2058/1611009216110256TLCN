@@ -12,6 +12,10 @@ public interface DrinkService {
     ResponseDto getAllDrink();
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CHEF', 'ROLE_CASHIER')")
     PagingResponseDto getAllDrinkPaging(int page,int size,String sort,String sortColumn);
+    //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER')")
+    ResponseDto getDrinkHavePriceByDrinkType(String nameDrinkType);
+    //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER')")
+    ResponseDto getAllDrinkHavePrice();
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT')")
     ResponseDto createDrink(DrinkDto drinkDTO);
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT')")

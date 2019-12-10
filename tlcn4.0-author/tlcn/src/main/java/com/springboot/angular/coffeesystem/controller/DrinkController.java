@@ -28,11 +28,18 @@ public class DrinkController {
         return  ResponseEntity.ok(this.drinkService.getAllDrink());
     }
 
+    @GetMapping("/get-by-drinkType-haveprice")
+    public ResponseEntity<ResponseDto> getDrinkHavePriceByDrinkType(@RequestParam String drinkTypeName){
+        return  ResponseEntity.ok(this.drinkService.getDrinkHavePriceByDrinkType(drinkTypeName));
+    }
+    @GetMapping("/get-haveprice")
+    public ResponseEntity<ResponseDto> getAllDrinkHavePrice(){
+        return  ResponseEntity.ok(this.drinkService.getAllDrinkHavePrice());
+    }
     @GetMapping("/get-by-drinkType")
     public ResponseEntity<ResponseDto> getDrinkByDrinkType(@RequestParam String drinkTypeName){
         return  ResponseEntity.ok(this.drinkService.getAllDrinkByDrinkType(drinkTypeName));
     }
-
     @PostMapping("/create")
     public ResponseEntity<ResponseDto> createDrink(@RequestBody DrinkDto drinkDTO) {
 
