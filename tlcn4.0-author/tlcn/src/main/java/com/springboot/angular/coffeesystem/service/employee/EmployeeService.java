@@ -10,6 +10,8 @@ public interface EmployeeService {
     ResponseDto createEmployee(EmployeeRequestDto employeeRequestDto);
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR', 'ROLE_BRANCH_MANAGER')")
     ResponseDto getAllEmployee();
+    //    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    ResponseDto getEmployeeNotHaveAccount();
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR')")
     ResponseDto deleteEmployee(Integer id);
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR')")

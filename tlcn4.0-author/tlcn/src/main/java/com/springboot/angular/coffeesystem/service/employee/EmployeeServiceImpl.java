@@ -61,6 +61,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             employeeResponseDto.setEmployeeType(employee.getEmployeeType().getName());
             employeeResponseDtos.add(employeeResponseDto);
         });
+
         return new ResponseDto(HttpStatus.OK.value(), "All employee",employeeResponseDtos);
     }
 
@@ -90,6 +91,20 @@ public class EmployeeServiceImpl implements EmployeeService {
         EmployeeResponseDto employeeResponseDto = mapperObject.EmployeeEntityToDto(employee);
         employeeResponseDto.setEmployeeType(employee.getEmployeeType().getName());
         return new ResponseDto(HttpStatus.OK.value(), "Successful", employeeResponseDto);
+    }
+
+    @Transactional
+    public ResponseDto getEmployeeNotHaveAccount(){
+        List<Employee> employeeList = employeeRepository.getEmployeeNotHaveAccount();
+        List<EmployeeResponseDto> employeeResponseDtos = new ArrayList<>();
+        employeeList.forEach(employee -> {
+            EmployeeResponseDto employeeResponseDto = mapperObject.EmployeeEntityToDto(employee);
+            employeeResponseDto.setBranchShop(employee.getBranchShop().getName());
+            employeeResponseDto.setEmployeeType(employee.getEmployeeType().getName());
+            employeeResponseDtos.add(employeeResponseDto);
+        });
+        return new ResponseDto(HttpStatus.OK.value(),
+            "All employee don't have account",employeeResponseDtos);
     }
     public ResponseDto deleteEmployee(Integer id){
         Employee employee = employeeRepository.findByIdAndEnable(id, true)

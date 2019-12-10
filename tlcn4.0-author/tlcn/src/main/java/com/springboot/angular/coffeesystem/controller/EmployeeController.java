@@ -31,6 +31,10 @@ public class EmployeeController {
     public ResponseEntity<ResponseDto> getAllEmployee(){
         return  ResponseEntity.ok(this.employeeService.getAllEmployee());
     }
+    @GetMapping("/get-all-not-account")
+    public ResponseEntity<ResponseDto> getAllEmployeeNotHaveAccount(){
+        return  ResponseEntity.ok(this.employeeService.getEmployeeNotHaveAccount());
+    }
 
     @GetMapping("/get")
     public ResponseEntity<ResponseDto> getEmployeeById(@RequestParam Integer id){
