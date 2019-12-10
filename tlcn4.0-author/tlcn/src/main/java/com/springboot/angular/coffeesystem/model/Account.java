@@ -33,8 +33,8 @@ public class Account extends Auditable<String>{
     )
     private Set<Role> role = new HashSet<>();
 
-    @OneToOne
-    @JoinColumn(name = "employee_id")
+    @ManyToOne
+    @JoinColumn(name="employee_id")
     private Employee employee;
 
     public Account(String username, String password, String email){

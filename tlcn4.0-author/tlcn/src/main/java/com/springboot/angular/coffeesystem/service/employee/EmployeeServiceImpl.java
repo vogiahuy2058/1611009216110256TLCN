@@ -111,6 +111,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     public ResponseDto deleteEmployee(Integer id){
         Employee employee = employeeRepository.findByIdAndEnable(id, true)
                 .orElseThrow(()-> new NotFoundException("Id not found!"));
+        //delete account when employee  was deleted
+        List<Account> accounts = accountRepository.findByEmployeeId(id);
+        accounts.forEach(element->{
+            accountService.deleteAccount(element.getId());
+        });
         employee.setEnable(false);
         employeeRepository.save(employee);
         return new ResponseDto(HttpStatus.OK.value(), "Delete employee successful", null);

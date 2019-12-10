@@ -4,14 +4,8 @@ import com.springboot.angular.coffeesystem.dto.MaterialDto;
 import com.springboot.angular.coffeesystem.dto.PagingResponseDto;
 import com.springboot.angular.coffeesystem.dto.ResponseDto;
 import com.springboot.angular.coffeesystem.exception.NotFoundException;
-import com.springboot.angular.coffeesystem.model.Material;
-import com.springboot.angular.coffeesystem.model.MaterialType;
-import com.springboot.angular.coffeesystem.model.Recipe;
-import com.springboot.angular.coffeesystem.model.Unit;
-import com.springboot.angular.coffeesystem.repository.MaterialRepository;
-import com.springboot.angular.coffeesystem.repository.MaterialTypeRepository;
-import com.springboot.angular.coffeesystem.repository.RecipeRepository;
-import com.springboot.angular.coffeesystem.repository.UnitRepository;
+import com.springboot.angular.coffeesystem.model.*;
+import com.springboot.angular.coffeesystem.repository.*;
 import com.springboot.angular.coffeesystem.service.recipe.RecipeService;
 import com.springboot.angular.coffeesystem.util.MapperObject;
 import com.springboot.angular.coffeesystem.util.PageUtil;
@@ -20,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,6 +36,8 @@ public class MaterialServiceImpl implements MaterialService {
     RecipeRepository recipeRepository;
     @Autowired
     RecipeService recipeService;
+    @Autowired
+    MaterialPriceRepository materialPriceRepository;
     public ResponseDto createMaterial(MaterialDto materialDto){
         Material material = this.mapperObject.MaterialDtoToEntity(materialDto);
         MaterialType materialType = materialTypeRepository.findByNameAndEnable(materialDto.getMaterialType(), true)
@@ -99,6 +96,13 @@ public class MaterialServiceImpl implements MaterialService {
             recipeService.deleteRecipe(element.getDrink().getId(),
                     element.getMaterial().getId());
         });
+
+        ///delete material price when material was deleted
+        MaterialPrice materialPrice = materialPriceRepository.findByMaterialPriceIdIdMaterialAndEnable(id, true)
+                .orElseThrow(()-> new NotFoundException("Material price not fount"));
+        materialPrice.setEnable(false);
+        materialPriceRepository.save(materialPrice);
+
         material.setEnable(false);
         materialRepository.save(material);
 

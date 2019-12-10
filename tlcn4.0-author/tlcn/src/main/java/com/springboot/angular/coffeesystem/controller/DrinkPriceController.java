@@ -22,11 +22,11 @@ public class DrinkPriceController {
         return ResponseEntity.ok(drinkPriceService.changePriceOrInitialPriceOfDrink(drinkPriceRequestDto));
     }
     @GetMapping("/get")
-    public ResponseEntity<ResponseDto> getDrinkByDrinkId(@RequestParam Integer drinkId){
+    public ResponseEntity<ResponseDto> getDrinkPriceByDrinkId(@RequestParam Integer drinkId){
         return ResponseEntity.ok(this.drinkPriceService.getPriceOfDrink(drinkId));
     }
     @GetMapping("/get-all")
-    public ResponseEntity<ResponseDto> getAllDrinkByDrinkId(){
+    public ResponseEntity<ResponseDto> getAllDrinkPrice(){
         return ResponseEntity.ok(this.drinkPriceService.getAllPriceOfDrink());
     }
 

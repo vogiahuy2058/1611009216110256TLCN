@@ -5,8 +5,10 @@ import com.springboot.angular.coffeesystem.dto.PagingResponseDto;
 import com.springboot.angular.coffeesystem.dto.ResponseDto;
 import com.springboot.angular.coffeesystem.exception.NotFoundException;
 import com.springboot.angular.coffeesystem.model.Drink;
+import com.springboot.angular.coffeesystem.model.DrinkPrice;
 import com.springboot.angular.coffeesystem.model.DrinkType;
 import com.springboot.angular.coffeesystem.model.Recipe;
+import com.springboot.angular.coffeesystem.repository.DrinkPriceRepository;
 import com.springboot.angular.coffeesystem.repository.DrinkRepository;
 import com.springboot.angular.coffeesystem.repository.DrinkTypeRepository;
 import com.springboot.angular.coffeesystem.repository.RecipeRepository;
@@ -16,6 +18,7 @@ import com.springboot.angular.coffeesystem.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.*;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +38,8 @@ public class DrinkServiceImpl implements DrinkService {
     RecipeRepository recipeRepository;
     @Autowired
     RecipeService recipeService;
+    @Autowired
+    DrinkPriceRepository drinkPriceRepository;
     public ResponseDto createDrink(DrinkDto drinkDto){
 
         Drink drink = this.mapperObject.DrinkDTOToDrinkEntity(drinkDto);
@@ -141,6 +146,12 @@ public class DrinkServiceImpl implements DrinkService {
             recipeService.deleteRecipe(element.getDrink().getId(),
                     element.getMaterial().getId());
         });
+        ///delete drink price when drink was deleted
+        DrinkPrice drinkPrice = drinkPriceRepository.findByDrinkPriceIdIdDrinkAndEnable(id, true)
+                .orElseThrow(()-> new NotFoundException("Drink price not fount"));
+        drinkPrice.setEnable(false);
+        drinkPriceRepository.save(drinkPrice);
+
         drink.setEnable(false);
         drinkRepository.save(drink);
         return new ResponseDto(HttpStatus.OK.value(), "Delete drink successful", null);

@@ -20,8 +20,9 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     @Query("select case when count(a) > 0 then true else false end from Account a where a.username = ?1 or a.email = ?1")
     Boolean isExists(String value);
     Optional<Account> findByUsernameAndEnable(String username, boolean enable);
-    Optional<Account> findByEmployeeId(Integer id);
+    List<Account> findByEmployeeId(Integer id);
     Page<Account> findAllByEnable(boolean enable, Pageable pageable);
     List<Account> findAllByEnable(boolean enable);
+
 
 }

@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.mapping.FetchProfile;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -25,8 +26,9 @@ public class Employee extends Auditable<String>{
     @JoinColumn(name = "branch_shop_id")
     private BranchShop branchShop;
 
-    @OneToOne(fetch = FetchType.LAZY, mappedBy = "employee", cascade = CascadeType.ALL)
-    private Account account;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "employee", cascade = CascadeType.ALL)
+    private Set<Account> account;
+
     @ManyToOne
     @JoinColumn(name = "employeeType_id")
     private EmployeeType employeeType;
