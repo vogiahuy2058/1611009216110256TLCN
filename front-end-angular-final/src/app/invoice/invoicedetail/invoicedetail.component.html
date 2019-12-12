@@ -1,0 +1,31 @@
+<mat-toolbar>
+  <span>Chọn số lượng</span>
+  <span class="fill-remaining-space"></span>
+  <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabIndex="-1">
+    <mat-icon>clear</mat-icon>
+  </button>
+</mat-toolbar>
+<mat-grid-list cols="3" rowHeight="300px">
+  <mat-grid-tile>
+    <div class="controles-container">
+      <button class="btn btn-primary" (click)="Decrease()" style="height: 200px; font-size: 50px;
+        -webkit-text-stroke-width: thick;">-</button>
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <div class="controles-container form-group1">
+      <input style="height: 200px; widows: 200px; font-size: 70px; text-align: center;"
+        [(ngModel)]="InvoiceDetail.amount">
+    </div>
+  </mat-grid-tile>
+  <mat-grid-tile>
+    <div class="controles-container">
+      <button class="btn btn-primary" (click)="Increase()" style="height: 200px; font-size: 50px;
+        -webkit-text-stroke-width: thick;">+</button>
+    </div>
+  </mat-grid-tile>
+</mat-grid-list>
+<div class="button-row" style="padding-left: 765px;">
+  <button mat-raised-button color="primary" (click)="insertNumber()">Submit</button>
+  <!-- <button mat-raised-button color="warn" (click)="onClear()">Clear</button> -->
+</div>

@@ -1,0 +1,26 @@
+<div class="container custom-container">
+  <div class="col-md-12">
+    <h3 class="mb-3 text-center">Tạo bảng giá nguyên liệu</h3>
+
+   <div class="form-group">
+            <ejs-datepicker id='datepicker' placeholder='Ngày tạo' [value]='dateValue'
+                [(ngModel)]="employeetypeDetails.date" format='yyyy-MM-dd'></ejs-datepicker>
+        </div>
+    <div class="form-group">
+            <label for="department1">Nguyên liệu</label>
+            <select style="font-size: 15px; height: 50px;" id="department1" name="department1"
+                [(ngModel)]="employeetypeDetails.materialId" class="form-control">
+                <option *ngFor="let material of Content.content" [value]="material.id">
+                    {{material.name}}
+                </option>
+            </select>
+        </div>
+    <div class="form-group">
+      <input type="text" [(ngModel)]="employeetypeDetails.price" class="form-control" placeholder="giá">
+    </div>
+    <div class="form-group">
+      <button class="btn btn-success btn-lg btn-block" (click)="addEmployeetype()">Tạo bảng giá</button>
+    </div>
+  </div>
+</div>
+

@@ -1,0 +1,95 @@
+<!-- <div class="container custom-container">
+    <div class="col-md-12">
+        <h3 class="mb-3 text-center">Create supply contract</h3>
+        <div class="form-group">
+            <ejs-datepicker id='datepicker' placeholder='Select a date' [value]='dateValue'
+                [(ngModel)]="employeetypeDetails.date" format='yyyy-MM-dd'></ejs-datepicker>
+        </div>
+        <div class="form-group">
+            <label for="department1">Chi nhánh</label>
+            <select style="font-size: 15px; height: 50px;" id="department1" name="department1"
+                [(ngModel)]="employeetypeDetails.branchShop" class="form-control">
+                <option *ngFor="let branchShop of Content1.content" [value]="branchShop.name">
+                    {{branchShop.name}}
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="department">Nhà cung cấp</label>
+            <select style="font-size: 15px; height: 50px;" id="department" name="department"
+                [(ngModel)]="employeetypeDetails.supplier" class="form-control">
+                <option *ngFor="let supplier of Content.content" [value]="supplier.name">
+                    {{supplier.name}}
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <input style="height: 50px;" type="text" [(ngModel)]="employeetypeDetails.totalPrice" class="form-control"
+                placeholder="Tổng tiền">
+        </div>
+        <div class="form-group">
+            <button class="btn btn-success btn-lg btn-block" (click)="addEmployeetype()">Save</button>
+        </div>
+    </div>
+</div> -->
+
+<mat-toolbar>
+    <!-- sửa sòng span đầu tiên thành <span>{{id?"Modify Employee":"New Employee"}}</span> -->
+    <span>{{id?"Cập nhật hợp đồng cung cấp":"Tạo mới hợp đồng cung cấp"}}</span>
+    <span class="fill-remaining-space"></span>
+    <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabIndex="-1">
+        <mat-icon>clear</mat-icon>
+    </button>
+</mat-toolbar>
+<div class="container custom-container" style="margin-left: 0px; margin-top: 30px;">
+    <div class="col-md-12">
+        <cdk-virtual-scroll-viewport style="height: 500px" itemSize="90">
+            <table style="width: 100%">
+                <tbody>
+                    <tr>
+                        <div class="form-group">
+                            <ejs-datepicker id='datepicker' placeholder='Select a date' [value]='dateValue'
+                                [(ngModel)]="restApi.employeetypeDetails.date" format='yyyy-MM-dd'></ejs-datepicker>
+                        </div>
+                        <div class="form-group">
+                            <label for="department1">Chi nhánh</label>
+                            <select style="font-size: 15px; height: 50px;" id="department1" name="department1"
+                                [(ngModel)]="restApi.employeetypeDetails.branchShop" class="form-control">
+                                <option *ngFor="let branchShop of Content1.content" [value]="branchShop.name">
+                                    {{branchShop.name}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="department">Nhà cung cấp</label>
+                            <select style="font-size: 15px; height: 50px;" id="department" name="department"
+                                [(ngModel)]="restApi.employeetypeDetails.supplier" class="form-control">
+                                <option *ngFor="let supplier of Content.content" [value]="supplier.name">
+                                    {{supplier.name}}
+                                </option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <input style="height: 50px;" type="text"
+                                [(ngModel)]="restApi.employeetypeDetails.totalPrice" class="form-control"
+                                placeholder="Tổng tiền">
+                        </div>
+                        <div class="button-row" style="float: right;">
+                            <!-- sửa các button lại như vầy -->
+                            <button *ngIf="id === null" mat-raised-button color="primary"
+                                (click)="addEmployeetype()">Xác nhận</button>
+                            <button *ngIf="id !== null" mat-raised-button color="primary"
+                                (click)="modifyEmployeetype()">Xác nhận</button>
+                            <!-- <button mat-raised-button color="warn" (click)="onClear()">Clear</button> -->
+                        </div>
+                    </tr>
+                </tbody>
+            </table>
+        </cdk-virtual-scroll-viewport>
+        <!-- <h3 class="mb-3 text-center">Create Employee</h3> -->
+
+        <!-- <div class="form-group">
+      <button class="btn btn-success btn-lg btn-block" (click)="addEmployeetype()">Create Employee</button>
+    </div> -->
+    </div>
+</div>
