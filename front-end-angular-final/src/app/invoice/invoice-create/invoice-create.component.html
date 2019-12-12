@@ -1,0 +1,158 @@
+<div class="page-title-area">
+    <div class="row ">
+        <div class="col-sm-3" style="padding-right: 25px;">
+            <h3 class="center">Hóa đơn chưa xử lý</h3>
+            <button style="margin-top: 10px; margin-bottom: 0px; height: 43px; width: 90px; margin-left: 10px;"
+                class="btn btn-dark" routerLink="/home"> Thoát </button>
+            <button style="margin-top: 10px; margin-bottom: 0px; height: 43px; width: 90px; margin-left: 10px;"
+                class="btn btn-primary" (click)="CreateInvoiceFirst()"> Tạo mới </button>
+            <ul class="list" style="margin: 0px;">
+                <cdk-virtual-scroll-viewport style="height: 640px" itemSize="90">
+                    <ng-container *cdkVirtualFor="let invoice of ContentInvoice.content">
+                        <li><button style="background-color: #A9D0F5;" (click)="selectData(invoice.id)">{{invoice.id}}
+                            </button> </li>
+                    </ng-container>
+                </cdk-virtual-scroll-viewport>
+            </ul>
+        </div>
+        <div class="col-sm-4" style="padding-right: 25px;">
+            <h3 class="mb-3 text-center">Thức uống</h3>
+            <!-- <div class="form-group">
+            <ejs-datepicker id='datepicker' placeholder='Select a date' [value]='dateValue'
+                [(ngModel)]="employeetypeDetails.date" format='yyyy-MM-dd'></ejs-datepicker>
+        </div> -->
+            <div class="form-group" style="margin-top: 37px;">
+                <label for="department1">Loại thức uống</label>
+
+                <select style="font-size: 15px; height: 50px;" id="department1" name="department1"
+                    (change)="loadlaitrang()" [(ngModel)]="DrinktypeDetails.drinkType" class="form-control">
+                    <option [value]="1">
+                        Tất cả loại
+                    </option>
+                    <option *ngFor="let drinktype of ContentDrinktype.content" [value]="drinktype.name">
+                        {{drinktype.name}}
+                    </option>
+                </select>
+            </div>
+            <div>
+                <div class="col-sm-12"><button class="btn btn-primary"
+                        (click)="onCreate(drink.id,restApiInvoice.InvoiceDetails.id,drink.name)"
+                        style="width:30%; margin-top: 10px; margin-right: 10px; "
+                        *ngFor="let drink of ContentDrink.content">{{drink.name}} </button> </div>
+            </div>
+        </div>
+        <div class="col-sm-5" style="padding-right: 25px;">
+            <h3 class="center"> Chi tiết hóa đơn {{restApiInvoice.InvoiceDetails.id}} </h3>
+            <div class="form-group row align-items-center" style="margin-top: 37px; margin-bottom: 9px;">
+                <div class="col-sm-6">
+                    <label for="sodienthoai" style="margin-left: 10px;">Số điện thoại khách hàng</label>
+                    <input style="height: 50px; margin-left: 10px; width: 100%;" id="sodienthoai" type="text"
+                        class="form-control" placeholder="Số điện thoại">
+                </div>
+                <div class="col-sm-6">
+                    <label for="department1">Loại đơn hàng</label>
+                    <select style="font-size: 15px; height: 50px; width: 100%;" id="department1" name="department1"
+                         [(ngModel)]="restApiInvoice.InvoiceDetails.orderType" class="form-control" >  
+                              
+                        <option *ngFor="let ordertype of ContentOrdertype.content" [value]="ordertype.name">
+                            {{ordertype.name}}
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div>
+
+                <cdk-virtual-scroll-viewport style="height: 450px" itemSize="90">
+                    <table style="margin-left: 20px;">
+                        <tbody>
+                            <tr *ngFor="let invoicedetail of restApiInvoice.InvoiceDetailList">
+                                <td>{{invoicedetail.serial}}</td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <td>{{invoicedetail.drinkName}}</td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <td><button class="btn btn-primary"
+                                        style="height: 52px; width: 52px; -webkit-text-stroke-width: thick;"
+                                        (click)="Decrease(invoicedetail)">-</button></td>
+                                <td><input style="height: 52px; width: 52px; text-align: center;"
+                                        [(ngModel)]="invoicedetail.amount" type="text" class="form-control"></td>
+                                <td><button class="btn btn-primary"
+                                        style="height: 52px; width: 52px; -webkit-text-stroke-width: thick;"
+                                        (click)="Increase(invoicedetail)">+</button></td>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <td>{{invoicedetail.unitPrice}}</td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <td>{{invoicedetail.price}}</td> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <td>
+                                    <button class="btn"
+                                        style="padding-top: 10px; padding-right: 11px; padding-left: 11px;height: 40px; width: 40px; color: black; background-color: white; border-color: white;"
+                                        (click)="Delete(invoicedetail)">
+                                        <i class="ti ti-trash"></i></button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </cdk-virtual-scroll-viewport>
+
+            </div>
+            <div>
+                <table style="border-top: solid;">
+                    <tbody>
+                        <tr style="height: 50px;">
+                            <td style="width: 15%;">Tổng tiền</td>
+                            <td style="width: 25%; padding-left: 10px;">{{restApiInvoice.InvoiceDetails.totalPrice}}
+                            </td>
+                            <td style="width: 15%;">Chiết khấu</td>
+                            <td style="width: 5%; padding-left: 10px;">5%</td>
+                            <td style="width: 10%; padding-left: 35px;">Thực trả</td>
+                            <td style="width: 10%; ">{{restApiInvoice.InvoiceDetails.realPay}}</td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td colspan="3"><button
+                                    style="font-size: 20px; margin-top: 10px; margin-bottom: 0px; height: 70px; width: 290px; margin-left: 10px;"
+                                    class="btn btn-primary" (click)="thanhToan()"> Thanh toán </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- <button class="btn btn-primary" style="background-color: blue;  margin-top: -82px; margin-left: 300px;"></button>
+<h6 style="margin-top: -76px; margin-left: 312px; color: white; font-size: 2rem;">+</h6> -->
+<!-- <ng-container  *ngFor="let invoicedetail of restApiInvoice.InvoiceDetailList">
+    <div class="col-sm-5">
+        <p
+            style="height: 10px; background-color: whitesmoke; width: 300px;display: flex; font-size: 20px; padding-top: 10px;">
+            &nbsp; {{invoicedetail.serial}} &nbsp; {{invoicedetail.drinkName}}</p>
+    </div>
+    <div class="col-sm-4">
+        <input style="height: 42px; margin-left: 10px; width: 42px;" type="text"></div>
+    <div> -->
+<!--<p style="background-color: whitesmoke; width: 129px;margin-left: 129px;display: flex;margin-top: -68px;">{{invoicedetail.price}}</p>-->
+<!-- <button class="btn btn-primary"
+            style="background-color: blue;  margin-top: -32px; margin-left: 200px;">-</button>
+    </div>
+
+</ng-container> -->
+<!-- <li class="col-sm-12" style="height: 52px; background-color: whitesmoke; width: 570px; font-size: 20px; color: blueviolet; text-align: left;"></li> -->
+
+
+
+
+
+
+<!--  -->
+<!-- background-color: blue; width: 129px;display: flex;margin-left: 229px;margin-top: -87px; -->
+<!-- <button class="btn btn-primary" (click)="Test()"></button>
+<ul class="">
+    <li *ngFor="let invoicedetail of restApiInvoice.InvoiceDetailList">
+      
+        <span class="badge">{{invoicedetail.price}}</span> {{invoicedetail.price}}
+      <br>
+      
+      <button class="delete" title="delete hero"
+        (click)="delete(invoicedetail)">x</button>
+    </li>
+  </ul> -->
+<!-- background-color: #58D3F7; color:black; -->

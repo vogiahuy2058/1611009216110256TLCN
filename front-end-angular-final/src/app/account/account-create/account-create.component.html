@@ -1,0 +1,105 @@
+<!-- <div class="container custom-container">
+    <div class="col-md-12">
+        <h3 class="mb-3 text-center">Create Employee</h3>
+        <div class="form-group">
+            <input type="text" [(ngModel)]="restApi.employeeDetails.username" class="form-control" placeholder="username">
+        </div>
+        <div class="form-group">
+            <input type="password" [(ngModel)]="restApi.employeeDetails.password" class="form-control" placeholder="password">
+        </div>
+        <div class="form-group">
+            <input type="text" [(ngModel)]="restApi.employeeDetails.email" class="form-control" placeholder="Email">
+        </div>
+        <div class="form-group">
+            <label for="department2">Nhân viên</label>
+            <select style="font-size: 15px; height: 50px;" [(ngModel)]="restApi.employeeDetails.idEmployee" id="department2" name="department2" class="form-control">
+                <option *ngFor="let employee of Content.content" [value]="employee.id">
+                    {{employee.id}} - {{employee.name}}
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="department1">Chọn quyền</label>
+            <select style="font-size: 15px; height: 50px;" (mouseover)="send()"  (change)="add(heroName.value); heroName.value=''" id="department1" name="department1" class="form-control" #heroName>
+                <option *ngFor="let customertype of ordersDatasend" [value]="customertype.name">
+                    {{customertype.name}}
+                </option>
+            </select>
+        </div>
+        <ul class="empList">
+            <li *ngFor="let role of heroService.empList2">
+
+                <span class="badge">{{role.name}}</span>
+                <br>
+                <button class="delete" title="delete role" (click)="delete(role)">x</button>
+            </li>
+        </ul>
+        <button mat-raised-button color="primary" style="float: right;" (click)="addEmployeetype()">Xác nhận</button>
+    </div>
+</div> -->
+
+<mat-toolbar>
+  <!-- sửa sòng span đầu tiên thành <span>{{id?"Modify Employee":"New Employee"}}</span> -->
+  <span>Tạo mới tài khoản</span>
+  <span class="fill-remaining-space"></span>
+  <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabIndex="-1">
+    <mat-icon>clear</mat-icon>
+  </button>
+</mat-toolbar>
+<div class="container custom-container" style="margin-left: 0px; margin-top: 30px;">
+  <div class="col-md-12">
+    <!-- <h3 class="mb-3 text-center">Create Employee</h3> -->
+
+    <div class="form-group">
+            <input type="text" [(ngModel)]="restApi.employeeDetails.username" class="form-control" placeholder="username">
+        </div>
+        <div class="form-group">
+            <input type="password" [(ngModel)]="restApi.employeeDetails.password" class="form-control" placeholder="password">
+        </div>
+        <div class="form-group">
+            <input type="text" [(ngModel)]="restApi.employeeDetails.email" class="form-control" placeholder="Email">
+        </div>
+        <div class="form-group">
+            <label for="department1">Loại Nhân viên</label>
+            <select style="font-size: 15px; height: 50px;" [(ngModel)]="employeeName" (change)="loademployee()" id="department1" name="department1" class="form-control">
+                <option *ngFor="let employeetype of Contentemployeetype.content" [value]="employeetype.name">
+                    {{employeetype.name}}
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="department2">Nhân viên</label>
+            <select style="font-size: 15px; height: 50px;" [(ngModel)]="restApi.employeeDetails.idEmployee" id="department2" name="department2" class="form-control">
+                <option *ngFor="let employee of Contentemployee.content" [value]="employee.id">
+                    {{employee.id}} - {{employee.name}}
+                </option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label for="department1">Chọn quyền</label>
+            <select style="font-size: 15px; height: 50px;" (mouseover)="send()"  (change)="add(heroName.value); heroName.value=''" id="department1" name="department1" class="form-control" #heroName>
+                <option *ngFor="let customertype of ordersDatasend" [value]="customertype.name">
+                    {{customertype.name}}
+                </option>
+            </select>
+        </div>
+        <ul class="empList">
+            <li *ngFor="let role of heroService.empList2">
+
+                <span class="badge">{{role.name}}</span>
+                <br>
+                <button class="delete" title="delete role" (click)="delete(role)">x</button>
+            </li>
+        </ul>
+        <!-- <button mat-raised-button color="primary" style="float: right;" (click)="addEmployeetype()">Xác nhận</button> -->
+    <div class="button-row" style="float: right;">
+        <!-- sửa các button lại như vầy -->
+        <button mat-raised-button color="primary" (click)="addEmployeetype()">Xác nhận</button>
+        
+        <!-- <button mat-raised-button color="warn" (click)="onClear()">Clear</button> -->
+      </div>
+    <!-- <div class="form-group">
+      <button class="btn btn-success btn-lg btn-block" (click)="addEmployeetype()">Create Employee</button>
+    </div> -->
+  </div>
+</div>

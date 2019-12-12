@@ -1,0 +1,31 @@
+<mat-toolbar>
+  <!-- sửa sòng span đầu tiên thành <span>{{id?"Modify Employee":"New Employee"}}</span> -->
+  <span>{{id?"Cập nhật loại nhân viên":"Tạo mới loại nhân viên"}}</span>
+  <span class="fill-remaining-space"></span>
+  <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabIndex="-1">
+    <mat-icon>clear</mat-icon>
+  </button>
+</mat-toolbar>
+<div class="container custom-container" style="margin-left: 0px; margin-top: 30px;">
+  <div class="col-md-12" novalidate="novalidate">
+    <!-- <h3 class="mb-3 text-center">Create Employee</h3> -->
+
+    <div class="form-group">
+      <input type="text" [(ngModel)]="restApi.employeetypeDetails.name" 
+      required minlength="4" #name="ngModel" (change)="check()" class="form-control" placeholder="Loại nhân viên">
+    </div>
+    <div *ngIf="checkvalidate !== 1">
+    <div style="color: red;" *ngIf="name.errors.required">Bắt buộc nhập tên loại nhân viên *</div>
+  </div>
+    <div class="button-row" style="float: right;">
+        <!-- sửa các button lại như vầy -->
+        <button *ngIf="id === null" mat-raised-button color="primary" (click)="addEmployeetype()">Xác nhận</button>
+        <button *ngIf="id !== null" mat-raised-button color="primary" (click)="modifyEmployeetype()">Xác nhận</button>
+        <!-- <button mat-raised-button color="warn" (click)="onClear()">Clear</button> -->
+      </div>
+    <!-- <div class="form-group">
+      <button class="btn btn-success btn-lg btn-block" (click)="addEmployeetype()">Create Employee</button>
+    </div> -->
+  </div>
+</div>
+
