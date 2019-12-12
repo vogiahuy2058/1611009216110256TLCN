@@ -109,10 +109,11 @@ public class InvoiceServiceImpl implements InvoiceService{
         return new ResponseDto(HttpStatus.OK.value(), "All invoice", invoiceResponseDtos);
     }
     @Transactional
-    public ResponseDto getAllInvoiceDateToDate(String fromDate, String toDate){
+    public ResponseDto getAllInvoiceDateToDate(String fromDate, String toDate, Integer branchShopId){
         LocalDate newFromDate = LocalDate.parse(fromDate, dtf);
         LocalDate newToDate = LocalDate.parse(toDate, dtf);
-        List<Invoice> invoices = invoiceRepository.findAllByEnableAndPaymentStatus(true, true);
+        List<Invoice> invoices =
+                invoiceRepository.findAllByEnableAndPaymentStatusAndBranchShopId(true, true, branchShopId);
         List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
         invoices.forEach(invoice -> {
             LocalDate dateInvoice = invoice.getDate().toLocalDate();

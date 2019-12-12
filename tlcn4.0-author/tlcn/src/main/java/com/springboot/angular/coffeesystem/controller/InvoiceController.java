@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -38,8 +39,9 @@ public class InvoiceController {
     }
     @GetMapping("/get-all-date-to-date")
     public ResponseEntity<ResponseDto> getAllInvoiceDateToDate(@RequestParam String fromDate,
-                                                               @RequestParam String toDate){
-        return  ResponseEntity.ok(this.invoiceService.getAllInvoiceDateToDate(fromDate, toDate));
+                                                               @RequestParam String toDate,
+                                                               @RequestParam Integer branchShopId){
+        return  ResponseEntity.ok(this.invoiceService.getAllInvoiceDateToDate(fromDate, toDate, branchShopId));
     }
 
     @GetMapping("/get-all-false")
