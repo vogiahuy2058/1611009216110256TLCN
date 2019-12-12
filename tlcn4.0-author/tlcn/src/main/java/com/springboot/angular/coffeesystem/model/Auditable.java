@@ -10,6 +10,7 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import java.util.Date;
@@ -22,11 +23,15 @@ import java.util.Date;
 @EntityListeners(AuditingEntityListener.class)
 public abstract class Auditable<U> {
     @CreatedBy
+    @Column(updatable = false, nullable = false)
     protected U createdBy;
     @CreatedDate
+    @Column(updatable = false, nullable = false)
     protected Date creationDate;
     @LastModifiedBy
+    @Column(nullable = false)
     protected U lastModifiedBy;
     @LastModifiedDate
+    @Column(nullable = false)
     protected Date lastModifiedDate;
 }

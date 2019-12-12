@@ -23,6 +23,7 @@ public interface AccountRepository extends JpaRepository<Account, Integer> {
     List<Account> findByEmployeeId(Integer id);
     Page<Account> findAllByEnable(boolean enable, Pageable pageable);
     List<Account> findAllByEnable(boolean enable);
+    List<Account> findByUsernameAndEmployeeIdAndEnableAndEmail(String username, Integer id, boolean enable, String email);
 
 
 }

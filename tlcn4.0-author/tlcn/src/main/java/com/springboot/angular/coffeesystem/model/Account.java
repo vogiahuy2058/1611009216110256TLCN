@@ -25,6 +25,8 @@ public class Account extends Auditable<String>{
     private String password;
     private String email;
     private boolean enable = true;
+    //status de biet co edit loai nhan vien khong
+    private boolean statusEdit = true;
     @ManyToMany(fetch = FetchType.LAZY,cascade = CascadeType.ALL)
     @JoinTable(
             name = "account_role",

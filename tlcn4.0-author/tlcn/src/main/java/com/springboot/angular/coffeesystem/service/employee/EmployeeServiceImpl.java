@@ -108,6 +108,19 @@ public class EmployeeServiceImpl implements EmployeeService {
         return new ResponseDto(HttpStatus.OK.value(),
             "All employee don't have account",employeeResponseDtos);
     }
+    @Transactional
+    public ResponseDto getEmployeeByBranchShopId(Integer branchShopId){
+        List<Employee> employees = employeeRepository.findByBranchShopIdAndEnable(branchShopId, true);
+        List<EmployeeResponseDto> employeeResponseDtos = new ArrayList<>();
+        employees.forEach(employee -> {
+            EmployeeResponseDto employeeResponseDto = mapperObject.EmployeeEntityToDto(employee);
+            employeeResponseDto.setBranchShop(employee.getBranchShop().getName());
+            employeeResponseDto.setEmployeeType(employee.getEmployeeType().getName());
+            employeeResponseDtos.add(employeeResponseDto);
+        });
+        return new ResponseDto(HttpStatus.OK.value(),
+                "List employee by branch shop id",employeeResponseDtos);
+    }
     public ResponseDto deleteEmployee(Integer id){
         Employee employee = employeeRepository.findByIdAndEnable(id, true)
                 .orElseThrow(()-> new NotFoundException("Id not found!"));
@@ -119,6 +132,20 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setEnable(false);
         employeeRepository.save(employee);
         return new ResponseDto(HttpStatus.OK.value(), "Delete employee successful", null);
+    }
+    public ResponseDto editEmployeeNotIncludeEmployeeType(EmployeeRequestDto employeeRequestDto){
+        Employee employee = employeeRepository.findByIdAndEnable(employeeRequestDto.getId(), true)
+                .orElseThrow(()-> new NotFoundException("Id not found!"));
+        employee.setName(employeeRequestDto.getName());
+        employee.setEmail(employeeRequestDto.getEmail());
+        BranchShop branchShop = branchShopRepository.findByNameAndEnable(employeeRequestDto.getBranchShop(), true)
+                .orElseThrow(()-> new NotFoundException("Branch shop not found"));
+//        EmployeeType employeeType = employeeTypeRepository.findByNameAndEnable(employeeRequestDto.getEmployeeType(), true)
+//                .orElseThrow(()-> new NotFoundException("Employee type not found"));
+        employee.setBranchShop(branchShop);
+//        employee.setEmployeeType(employeeType);
+        employeeRepository.save(employee);
+        return new ResponseDto(HttpStatus.OK.value(), "Edit employee successful", null);
     }
     public ResponseDto editEmployee(EmployeeRequestDto employeeRequestDto){
         Employee employee = employeeRepository.findByIdAndEnable(employeeRequestDto.getId(), true)
@@ -132,6 +159,12 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setBranchShop(branchShop);
         employee.setEmployeeType(employeeType);
         employeeRepository.save(employee);
+        List<Account> accounts = accountRepository.findByEmployeeId(employee.getId());
+        accounts.forEach(element->{
+            //khi edit nhan vien ma co edit ca loai nhan vien thì status edit =false
+            element.setStatusEdit(false);
+            accountService.deleteAccount(element.getId());
+        });
         return new ResponseDto(HttpStatus.OK.value(), "Edit employee successful", null);
     }
 }

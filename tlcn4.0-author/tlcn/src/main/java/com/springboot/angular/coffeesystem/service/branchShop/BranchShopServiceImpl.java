@@ -100,7 +100,7 @@ public class BranchShopServiceImpl implements BranchShopService {
             supplyContractService.deleteSupplyContract(element.getId());
         });
         //delete employee when branch shop was deleted
-        List<Employee> employees = employeeRepository.findByBranchShopId(id);
+        List<Employee> employees = employeeRepository.findByBranchShopIdAndEnable(id, true);
         employees.forEach(element->{
            employeeService.deleteEmployee(element.getId());
         });

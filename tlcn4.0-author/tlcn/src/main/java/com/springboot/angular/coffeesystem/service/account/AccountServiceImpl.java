@@ -1,7 +1,6 @@
 package com.springboot.angular.coffeesystem.service.account;
 
 import com.springboot.angular.coffeesystem.dto.*;
-import com.springboot.angular.coffeesystem.exception.ExistException;
 import com.springboot.angular.coffeesystem.exception.NotFoundException;
 import com.springboot.angular.coffeesystem.model.Account;
 import com.springboot.angular.coffeesystem.model.Employee;
@@ -46,6 +45,9 @@ public class AccountServiceImpl implements AccountService{
 
     @Transactional
     public ResponseDto createAccount(SignUpDto signUpDto){
+//        if(!allowCreateAccount(signUpDto.getUsername(), signUpDto.getIdEmployee())){
+//            return new ResponseDto(HttpStatus.BAD_REQUEST.value(), "Fail to create acccount", null);
+//        }
         Account account = new Account(signUpDto.getUsername(), encoder.encode(signUpDto.getPassword()), signUpDto.getEmail());
         Set<String> strRole = signUpDto.getRole();
         Set<Role> roleSet = new HashSet<>();
@@ -91,6 +93,60 @@ public class AccountServiceImpl implements AccountService{
 
         account.setRole(roleSet);
         Employee employee = employeeRepository.findById(signUpDto.getIdEmployee()).orElseThrow(
+                ()-> new NotFoundException("Id not found"));
+        account.setEmployee(employee);
+        this.accountRepository.save(account);
+        return new ResponseDto(HttpStatus.OK.value(), "Create account successful", null);
+    }
+    public ResponseDto createAccountChangeRole(UpgradeAccountDto upgradeAccountDto){
+        if(!allowCreateAccount(upgradeAccountDto.getUsername(), upgradeAccountDto.getEmail(), upgradeAccountDto.getIdEmployee())){
+            return new ResponseDto(HttpStatus.BAD_REQUEST.value(), "Fail to create acccount", null);
+        }
+        Account account = new Account(upgradeAccountDto.getUsername(), encoder.encode("123456"), upgradeAccountDto.getEmail());
+        Set<String> strRole = upgradeAccountDto.getRole();
+        Set<Role> roleSet = new HashSet<>();
+        strRole.forEach(r->{
+            switch (r){
+                case "admin":
+                    Role adminRole = roleRepository.findByNameAndEnable(RoleName.ROLE_ADMIN, true)
+                            .orElseThrow(() -> new NotFoundException("Fail! -> Cause: Role not found."));
+                    roleSet.add(adminRole);
+                    break;
+                case "branch manager":
+                    Role bmRole = roleRepository.findByNameAndEnable(RoleName.ROLE_BRANCH_MANAGER, true)
+                            .orElseThrow(() -> new NotFoundException("Fail! -> Cause: Role not found."));
+                    roleSet.add(bmRole);
+
+                    break;
+                case "hr":
+                    Role hrRole = roleRepository.findByNameAndEnable(RoleName.ROLE_HR, true)
+                            .orElseThrow(() -> new NotFoundException("Fail! -> Cause: Role not found."));
+                    roleSet.add(hrRole);
+
+                    break;
+                case "cashier":
+                    Role cashierRole = roleRepository.findByNameAndEnable(RoleName.ROLE_CASHIER, true)
+                            .orElseThrow(() -> new NotFoundException("Fail! -> Cause: Role not found."));
+                    roleSet.add(cashierRole);
+
+                    break;
+                case "accountant":
+                    Role accountantRole = roleRepository.findByNameAndEnable(RoleName.ROLE_ACCOUNTANT, true)
+                            .orElseThrow(() -> new NotFoundException("Fail! -> Cause: Role not found."));
+                    roleSet.add(accountantRole);
+
+                    break;
+                case "chef":
+                    Role chefRole = roleRepository.findByNameAndEnable(RoleName.ROLE_CHEF, true)
+                            .orElseThrow(() -> new NotFoundException("Fail! -> Cause: Role not found."));
+                    roleSet.add(chefRole);
+
+                    break;
+            }
+        });
+
+        account.setRole(roleSet);
+        Employee employee = employeeRepository.findById(upgradeAccountDto.getIdEmployee()).orElseThrow(
                 ()-> new NotFoundException("Id not found"));
         account.setEmployee(employee);
         this.accountRepository.save(account);
@@ -161,4 +217,19 @@ public class AccountServiceImpl implements AccountService{
         return new ResponseDto(HttpStatus.OK.value(), "All account",accountResponseDtos);
     }
 
+    public boolean allowCreateAccount(String username, String email, Integer employeeId){
+        //cho phep tao account neu username khong ton tai
+        //hoac username và employee id đúng với 1 account da co
+        //cac truong hop khac khong cho tao
+        List<Account> accountList =
+                accountRepository.findByUsernameAndEmployeeIdAndEnableAndEmail(
+                username, employeeId, true, email);
+        if(!accountList.isEmpty()){
+            return true;
+        }
+        else if(!accountRepository.findByUsernameAndEnable(username, true).isPresent()){
+            return  true;
+        }
+        return false;
+    }
 }

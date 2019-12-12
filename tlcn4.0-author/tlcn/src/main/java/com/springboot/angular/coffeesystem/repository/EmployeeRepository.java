@@ -16,7 +16,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
     List<Employee> findAllByEnable(boolean enable);
     Page<Employee> findAllByEnable(boolean enable, Pageable pageable);
     Optional<Employee> findByIdAndEnable(Integer id, boolean enable);
-    List<Employee> findByBranchShopId(Integer id);
+    List<Employee> findByBranchShopIdAndEnable(Integer id, boolean enable);
     List<Employee> findByEmployeeTypeId(Integer id);
     Optional<Employee> findByAccountId(Integer id);
     Optional<Employee> findByAccountUsername(String username);

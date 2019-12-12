@@ -3,6 +3,7 @@ package com.springboot.angular.coffeesystem.controller;
 import com.springboot.angular.coffeesystem.dto.PagingResponseDto;
 import com.springboot.angular.coffeesystem.dto.ResponseDto;
 import com.springboot.angular.coffeesystem.dto.SignUpDto;
+import com.springboot.angular.coffeesystem.dto.UpgradeAccountDto;
 import com.springboot.angular.coffeesystem.service.account.AccountService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +20,11 @@ public class AccountController {
     @PostMapping("/create")
     public ResponseEntity<ResponseDto> createAccount(@Valid @RequestBody SignUpDto signUpDto){
         return ResponseEntity.ok(this.accountService.createAccount(signUpDto));
+    }
+
+    @PostMapping("/change-role")
+    public ResponseEntity<ResponseDto> UpgradeAccount(@Valid @RequestBody UpgradeAccountDto upgradeAccountDto){
+        return ResponseEntity.ok(this.accountService.createAccountChangeRole(upgradeAccountDto));
     }
     @PutMapping("/delete")
     public ResponseEntity<ResponseDto> deleteAccount(@RequestParam Integer id){

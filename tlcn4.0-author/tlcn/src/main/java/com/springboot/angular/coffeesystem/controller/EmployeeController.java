@@ -36,7 +36,10 @@ public class EmployeeController {
         return  ResponseEntity.ok(
                 this.employeeService.getEmployeeNotHaveAccountByEmployeeType(nameEmployeeType));
     }
-
+    @GetMapping("/get-by-branch-shop")
+    public ResponseEntity<ResponseDto> getEmployeeByBranchShopId(@RequestParam Integer branchShopId){
+        return  ResponseEntity.ok(this.employeeService.getEmployeeByBranchShopId(branchShopId));
+    }
     @GetMapping("/get")
     public ResponseEntity<ResponseDto> getEmployeeById(@RequestParam Integer id){
 
@@ -49,5 +52,9 @@ public class EmployeeController {
     @PutMapping("/edit")
     public ResponseEntity<ResponseDto> editEmployee(@RequestBody EmployeeRequestDto employeeRequestDto){
         return ResponseEntity.ok(employeeService.editEmployee(employeeRequestDto));
+    }
+    @PutMapping("/edit-not-employee-type")
+    public ResponseEntity<ResponseDto> editEmployeeNotIncludeEmployeeType(@RequestBody EmployeeRequestDto employeeRequestDto){
+        return ResponseEntity.ok(employeeService.editEmployeeNotIncludeEmployeeType(employeeRequestDto));
     }
 }

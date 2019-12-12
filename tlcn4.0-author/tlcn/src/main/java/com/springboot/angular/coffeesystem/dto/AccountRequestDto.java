@@ -16,7 +16,7 @@ import java.util.Set;
 @Setter
 public class AccountRequestDto {
     private Integer id;
-    @IsExists(message = "Account is already taken!")
+//    @IsExists(message = "Account is already taken!")
     private String username;
     private String password;
     @IsExists

@@ -12,10 +12,14 @@ public interface EmployeeService {
     ResponseDto getAllEmployee();
     //    @PreAuthorize("hasRole('ROLE_ADMIN')")
     ResponseDto getEmployeeNotHaveAccountByEmployeeType(String name);
+    //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR', 'ROLE_BRANCH_MANAGER')")
+    ResponseDto getEmployeeByBranchShopId(Integer branchShopId);
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR')")
     ResponseDto deleteEmployee(Integer id);
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR')")
     ResponseDto editEmployee(EmployeeRequestDto employeeRequestDto);
+    //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR')");
+    ResponseDto editEmployeeNotIncludeEmployeeType(EmployeeRequestDto employeeRequestDto);
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR', 'ROLE_BRANCH_MANAGER')")
     ResponseDto getEmployeeById(Integer id);
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR', 'ROLE_BRANCH_MANAGER')")
