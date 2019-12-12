@@ -1,0 +1,3 @@
+Front-end là folder : front-end-angular-final
+Back-end là folder : tlcn-author
+Copy paste folder library vào nodemodule mới chạy được.
