@@ -45,15 +45,18 @@
             <h3 class="center"> Chi tiết hóa đơn {{restApiInvoice.InvoiceDetails.id}} </h3>
             <div class="form-group row align-items-center" style="margin-top: 37px; margin-bottom: 9px;">
                 <div class="col-sm-6">
+                    <!-- <label for="typeahead-basic">Search for a state:</label>
+                    <input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="model"
+                        [ngbTypeahead]="search" /> -->
                     <label for="sodienthoai" style="margin-left: 10px;">Số điện thoại khách hàng</label>
                     <input style="height: 50px; margin-left: 10px; width: 100%;" id="sodienthoai" type="text"
-                        class="form-control" placeholder="Số điện thoại">
+                        class="form-control" placeholder="Số điện thoại" [(ngModel)]="restApiInvoice.InvoiceDetails.customerPhone" [ngbTypeahead]="search">
                 </div>
                 <div class="col-sm-6">
                     <label for="department1">Loại đơn hàng</label>
                     <select style="font-size: 15px; height: 50px; width: 100%;" id="department1" name="department1"
-                         [(ngModel)]="restApiInvoice.InvoiceDetails.orderType" class="form-control" >  
-                              
+                        [(ngModel)]="restApiInvoice.InvoiceDetails.orderType" class="form-control">
+
                         <option *ngFor="let ordertype of ContentOrdertype.content" [value]="ordertype.name">
                             {{ordertype.name}}
                         </option>

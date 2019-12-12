@@ -37,6 +37,11 @@ export class AccountListComponent implements OnInit {
       username: this.token.getUsername(),
       authorities: this.token.getAuthorities()
     };
+    //token start
+    if (this.token.getToken()) {
+      this.token.checklogin()
+    }
+    //token end
     if (!this.token.getToken()) {
       this.router.navigate(['login'])
     } else {
@@ -81,6 +86,12 @@ export class AccountListComponent implements OnInit {
     })
   }
   onCreate() {
+    //token start
+    this.token.checklogin()
+    if (!this.token.getToken()) {
+      this.router.navigate(['login'])
+    } else {
+      //token end
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -88,15 +99,22 @@ export class AccountListComponent implements OnInit {
     //Chọn Component làm popup
     this.dialog.open(AccountCreateComponent, dialogConfig);
   }
-  
+} 
   // Delete employee
   deleteEmployeetype(id) {
+    //token start
+    this.token.checklogin()
+    if (!this.token.getToken()) {
+      this.router.navigate(['login'])
+    } else {
+      //token end
     if (window.confirm('Are you sure, you want to delete?')) {
       this.restApi.deleteEmployeetype(id).subscribe(data => {
         this.loadEmployeetype()
       })
     }
   }
+}
   logout() {
     this.token.signOut();
     this.router.navigate(['login'])

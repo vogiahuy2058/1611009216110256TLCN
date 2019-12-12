@@ -39,6 +39,11 @@ export class CustomertypeListComponent implements OnInit,AfterViewInit{
       username: this.token.getUsername(),
       authorities: this.token.getAuthorities()
     };
+     //token start
+     if (this.token.getToken()) {
+      this.token.checklogin()
+    }
+    //token end
     // this.token.setuptime();
     if(!this.token.getToken()){
       this.router.navigate(['login'])
@@ -95,6 +100,11 @@ export class CustomertypeListComponent implements OnInit,AfterViewInit{
     })
   }
   onCreate() {
+    //token start
+    this.token.checklogin()
+    if (!this.token.getToken()) {
+      this.router.navigate(['login'])
+    } else {
     this.restApi.employeetypeDetails.id = null;
     this.restApi.employeetypeDetails.name = '';
     const dialogConfig = new MatDialogConfig();
@@ -104,7 +114,13 @@ export class CustomertypeListComponent implements OnInit,AfterViewInit{
     //Chọn Component làm popup
     this.dialog.open(CustomertypeCreateComponent, dialogConfig);
   }
+}
   onUpdate(employeetype){
+    //token start
+    this.token.checklogin()
+    if (!this.token.getToken()) {
+      this.router.navigate(['login'])
+    } else {
     this.restApi.employeetypeDetails = employeetype;
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -113,14 +129,21 @@ export class CustomertypeListComponent implements OnInit,AfterViewInit{
     //Chọn Component làm popup dùng chung create cho update
     this.dialog.open(CustomertypeCreateComponent, dialogConfig);
   }
+}
    // Delete employee
    deleteEmployeetype(id) {
+     //token start
+    this.token.checklogin()
+    if (!this.token.getToken()) {
+      this.router.navigate(['login'])
+    } else {
     if (window.confirm('Are you sure, you want to delete?')){
       this.restApi.deleteEmployeetype(id).subscribe(data => {
         this.loadEmployeetype()
       })
     }
   }  
+}
   logout(){
     this.token.signOut();
     this.router.navigate(['login'])

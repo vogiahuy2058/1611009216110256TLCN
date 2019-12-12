@@ -39,6 +39,11 @@ export class SupplierListComponent implements OnInit {
       username: this.token.getUsername(),
       authorities: this.token.getAuthorities()
     };
+     //token start
+     if (this.token.getToken()) {
+      this.token.checklogin()
+    }
+    //token end
     if (!this.token.getToken()) {
       this.router.navigate(['login'])
     }else{
@@ -84,6 +89,12 @@ export class SupplierListComponent implements OnInit {
     })
   }
   onCreate() {
+    //token start
+    this.token.checklogin()
+    if (!this.token.getToken()) {
+      this.router.navigate(['login'])
+    } else {
+      //token end
     this.restApi.employeetypeDetails.id = null;
     this.restApi.employeetypeDetails.name = '';
     this.restApi.employeetypeDetails.address = '';
@@ -99,7 +110,14 @@ export class SupplierListComponent implements OnInit {
     //Chọn Component làm popup
     this.dialog.open(SupplierCreateComponent, dialogConfig);
   }
+}
   onUpdate(employeetype) {
+    //token start
+    this.token.checklogin()
+    if (!this.token.getToken()) {
+      this.router.navigate(['login'])
+    } else {
+      //token end
     this.restApi.employeetypeDetails = employeetype;
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -108,7 +126,14 @@ export class SupplierListComponent implements OnInit {
     //Chọn Component làm popup dùng chung create cho update
     this.dialog.open(SupplierCreateComponent, dialogConfig);
   }
+}
   onView(employeetype){
+    //token start
+    this.token.checklogin()
+    if (!this.token.getToken()) {
+      this.router.navigate(['login'])
+    } else {
+      //token end
     this.restApi.employeetypeDetails = employeetype;
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
@@ -117,14 +142,22 @@ export class SupplierListComponent implements OnInit {
     //Chọn Component làm popup dùng chung create cho update
     this.dialog.open(SupplierViewComponent, dialogConfig);
   }
+}
   // Delete employee
   deleteEmployeetype(id) {
+    //token start
+    this.token.checklogin()
+    if (!this.token.getToken()) {
+      this.router.navigate(['login'])
+    } else {
+      //token end
     if (window.confirm('Are you sure, you want to delete?')) {
       this.restApi.deleteEmployeetype(id).subscribe(data => {
         this.loadEmployeetype()
       })
     }
   }
+}
   logout() {
     this.token.signOut();
     this.router.navigate(['login'])
