@@ -5,17 +5,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class InvoiceResponseDto {
+public class InvoiceAndInvoiceDetailDto {
     private Integer id;
     private String date;
     private String customerPhone;
-    private String customerName;
     private String branchShop;
     private String cashierName;
     private String orderType;
@@ -24,7 +23,5 @@ public class InvoiceResponseDto {
     private float totalDiscount;
     private float totalPrice;
     private float realPay;
-    
-//    private String coffeeTable;
-
+    List<InvoiceDetailResponseDto> invoiceDetailDtoList;
 }

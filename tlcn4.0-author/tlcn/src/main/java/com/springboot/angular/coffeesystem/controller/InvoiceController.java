@@ -55,6 +55,12 @@ public class InvoiceController {
         return ResponseEntity.ok(invoiceService.getInvoiceById(id));
     }
 
+    @GetMapping("/get-full-invoice")
+    public ResponseEntity<ResponseDto> getFullInvoiceById(@RequestParam Integer invoiceId){
+
+        return ResponseEntity.ok(invoiceService.getFullInvoiceById(invoiceId));
+    }
+
     @GetMapping("/get-max-id")
     public ResponseEntity<ResponseDto> getMaxInvoiceId(){
 

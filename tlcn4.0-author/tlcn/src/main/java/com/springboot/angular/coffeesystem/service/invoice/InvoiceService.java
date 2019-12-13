@@ -25,6 +25,8 @@ public interface InvoiceService {
     //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER')")
     ResponseDto getAllInvoiceDateToDate(String fromDate, String toDate, Integer branchShopId);
     //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER')")
+    ResponseDto getFullInvoiceById(Integer InvoiceId);
+    //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER')")
     ResponseDto getMaxIdInvoice();
 
 }

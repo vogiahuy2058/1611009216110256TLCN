@@ -1,9 +1,7 @@
 package com.springboot.angular.coffeesystem.controller;
 
-import com.springboot.angular.coffeesystem.dto.InvoiceDetailDto;
+import com.springboot.angular.coffeesystem.dto.InvoiceDetailRequestDto;
 import com.springboot.angular.coffeesystem.dto.ResponseDto;
-import com.springboot.angular.coffeesystem.model.InvoiceDetail;
-import com.springboot.angular.coffeesystem.service.invoice.InvoiceService;
 import com.springboot.angular.coffeesystem.service.invoiceDetail.InvoiceDetailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,18 +16,18 @@ public class InvoiceDetailController {
     @Autowired
     InvoiceDetailService invoiceDetailService;
     @PostMapping("/create")
-    public ResponseEntity<ResponseDto> createInvoiceDetail(@RequestBody InvoiceDetailDto invoiceDetailDto){
-        return ResponseEntity.ok(invoiceDetailService.createInvoiceDetail(invoiceDetailDto));
+    public ResponseEntity<ResponseDto> createInvoiceDetail(@RequestBody InvoiceDetailRequestDto invoiceDetailRequestDto){
+        return ResponseEntity.ok(invoiceDetailService.createInvoiceDetail(invoiceDetailRequestDto));
     }
 
     @PutMapping("/edit")
-    public ResponseEntity<ResponseDto> editInvoiceDetail(@RequestBody InvoiceDetailDto invoiceDetailDto){
-        return ResponseEntity.ok(invoiceDetailService.editInvoiceDetail(invoiceDetailDto));
+    public ResponseEntity<ResponseDto> editInvoiceDetail(@RequestBody InvoiceDetailRequestDto invoiceDetailRequestDto){
+        return ResponseEntity.ok(invoiceDetailService.editInvoiceDetail(invoiceDetailRequestDto));
     }
 
     @PutMapping("/edit-list")
-    public ResponseEntity<ResponseDto> editListInvoiceDetail(@RequestBody List<InvoiceDetailDto> invoiceDetailDtoList){
-        return ResponseEntity.ok(invoiceDetailService.editListInvoiceDetail(invoiceDetailDtoList));
+    public ResponseEntity<ResponseDto> editListInvoiceDetail(@RequestBody List<InvoiceDetailRequestDto> invoiceDetailRequestDtoList){
+        return ResponseEntity.ok(invoiceDetailService.editListInvoiceDetail(invoiceDetailRequestDtoList));
     }
 
     @DeleteMapping("/delete")

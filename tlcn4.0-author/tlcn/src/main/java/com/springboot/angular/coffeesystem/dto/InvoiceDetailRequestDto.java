@@ -9,7 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class InvoiceDetailDto {
+public class InvoiceDetailRequestDto {
     private Integer id;
     private Integer amount;
     private float price;

@@ -1,9 +1,6 @@
 package com.springboot.angular.coffeesystem.service.invoice;
 
-import com.springboot.angular.coffeesystem.dto.InvoiceRequestDto;
-import com.springboot.angular.coffeesystem.dto.InvoiceResponseDto;
-import com.springboot.angular.coffeesystem.dto.PagingResponseDto;
-import com.springboot.angular.coffeesystem.dto.ResponseDto;
+import com.springboot.angular.coffeesystem.dto.*;
 import com.springboot.angular.coffeesystem.exception.NotFoundException;
 import com.springboot.angular.coffeesystem.model.*;
 import com.springboot.angular.coffeesystem.repository.*;
@@ -14,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -44,6 +42,8 @@ public class InvoiceServiceImpl implements InvoiceService{
     OrderTypeRepository orderTypeRepository;
     @Autowired
     EmployeeRepository employeeRepository;
+    @Autowired
+    InvoiceDetailRepository invoiceDetailRepository;
     ZoneId zoneId = ZoneId.of("Asia/Ho_Chi_Minh");
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -244,6 +244,43 @@ public class InvoiceServiceImpl implements InvoiceService{
                 .orElseThrow(()-> new NotFoundException("Username not found"));
         invoiceResponseDto.setCashierName(employee.getName());
         return new ResponseDto(HttpStatus.OK.value(), "All invoice", invoiceResponseDto );
+    }
+    @Transactional
+    public ResponseDto getFullInvoiceById(Integer InvoiceId){
+        Invoice invoice = invoiceRepository.findByIdAndEnable(InvoiceId, true)
+                .orElseThrow(()-> new NotFoundException("Id not found"));
+        InvoiceAndInvoiceDetailDto invoiceAndInvoiceDetailDto = mapperObject.InvoiceEntityToDtoFull(invoice);
+
+        if(invoice.getCustomer() == null){
+            invoiceAndInvoiceDetailDto.setCustomerPhone(null);
+        }else {
+            invoiceAndInvoiceDetailDto.setCustomerPhone(invoice.getCustomer().getPhone());
+        }
+//        invoiceResponseDto.setCoffeeTable(invoice.getCoffeeTable().getName());
+        invoiceAndInvoiceDetailDto.setBranchShop(invoice.getBranchShop().getName());
+        invoiceAndInvoiceDetailDto.setOrderType(invoice.getOrderType().getName());
+//        invoiceAndInvoiceDetailDto.setDate(DateTimeFormatter.ofPattern("yyyy-MM-dd - HH:mm:ss Z").format(invoice.getDate()));
+        invoiceAndInvoiceDetailDto.setDate(invoice.getDate().
+                format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")));
+        Employee employee = employeeRepository.findByAccountUsername(invoice.getCreatedBy())
+                .orElseThrow(()-> new NotFoundException("Username not found"));
+        invoiceAndInvoiceDetailDto.setCashierName(employee.getName());
+
+        //list invoice detail of invoice
+        List<InvoiceDetail> invoiceDetailList = invoiceDetailRepository.findByInvoice(invoice);
+        List<InvoiceDetailResponseDto> invoiceDetailResponseDtos = new ArrayList<>();
+        Integer serial = 0;
+        for (InvoiceDetail element : invoiceDetailList) {
+            InvoiceDetailResponseDto invoiceDetailResponseDto = mapperObject.InvoiceDetailEntityToDto(element);
+            invoiceDetailResponseDto.setDrinkId(element.getInvoiceDetailId().getDrinkId());
+            invoiceDetailResponseDto.setInvoiceId(element.getInvoiceDetailId().getInvoiceId());
+            invoiceDetailResponseDto.setDrinkName(element.getDrink().getName());
+            invoiceDetailResponseDto.setSerial(serial + 1);
+            serial = serial + 1;
+            invoiceDetailResponseDtos.add(invoiceDetailResponseDto);
+        }
+        invoiceAndInvoiceDetailDto.setInvoiceDetailDtoList(invoiceDetailResponseDtos);
+        return new ResponseDto(HttpStatus.OK.value(), "All invoice", invoiceAndInvoiceDetailDto );
     }
     public ResponseDto editInvoice(InvoiceRequestDto invoiceRequestDto){
         Invoice invoice = invoiceRepository.findByIdAndEnable(invoiceRequestDto.getId(), true)

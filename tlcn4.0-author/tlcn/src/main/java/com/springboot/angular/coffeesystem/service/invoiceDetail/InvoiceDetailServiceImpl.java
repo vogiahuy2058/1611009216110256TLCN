@@ -1,8 +1,7 @@
 package com.springboot.angular.coffeesystem.service.invoiceDetail;
 
-import com.springboot.angular.coffeesystem.dto.InvoiceDetailDto;
+import com.springboot.angular.coffeesystem.dto.InvoiceDetailRequestDto;
 import com.springboot.angular.coffeesystem.dto.InvoiceDetailResponseDto;
-import com.springboot.angular.coffeesystem.dto.InvoiceResponseDto;
 import com.springboot.angular.coffeesystem.dto.ResponseDto;
 import com.springboot.angular.coffeesystem.exception.NotFoundException;
 import com.springboot.angular.coffeesystem.model.Drink;
@@ -31,11 +30,11 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
     DrinkRepository drinkRepository;
     @Autowired
     InvoiceRepository invoiceRepository;
-    public ResponseDto createInvoiceDetail(InvoiceDetailDto invoiceDetailDto){
-        InvoiceDetail invoiceDetail = this.mapperObject.InvoiceDetailDtoToEntity(invoiceDetailDto);
-        Drink drink = drinkRepository.findByIdAndEnable(invoiceDetailDto.getDrinkId(), true)
+    public ResponseDto createInvoiceDetail(InvoiceDetailRequestDto invoiceDetailRequestDto){
+        InvoiceDetail invoiceDetail = this.mapperObject.InvoiceDetailDtoToEntity(invoiceDetailRequestDto);
+        Drink drink = drinkRepository.findByIdAndEnable(invoiceDetailRequestDto.getDrinkId(), true)
                 .orElseThrow(()-> new NotFoundException("Drink not found"));
-        Invoice invoice = invoiceRepository.findById(invoiceDetailDto.getInvoiceId())
+        Invoice invoice = invoiceRepository.findById(invoiceDetailRequestDto.getInvoiceId())
                 .orElseThrow(()-> new NotFoundException("Invoice not found"));
         InvoiceDetailId invoiceDetailId = new InvoiceDetailId();
         invoiceDetailId.setDrinkId(drink.getId());
@@ -52,25 +51,25 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
         return new ResponseDto(HttpStatus.OK.value(), "Successful", null);
     }
 
-    public ResponseDto editInvoiceDetail(InvoiceDetailDto invoiceDetailDto){
-        Drink drink = drinkRepository.findByIdAndEnable(invoiceDetailDto.getDrinkId(), true)
+    public ResponseDto editInvoiceDetail(InvoiceDetailRequestDto invoiceDetailRequestDto){
+        Drink drink = drinkRepository.findByIdAndEnable(invoiceDetailRequestDto.getDrinkId(), true)
                 .orElseThrow(()-> new NotFoundException("Drink not found"));
-        Invoice invoice = invoiceRepository.findByIdAndEnable(invoiceDetailDto.getInvoiceId(), true)
+        Invoice invoice = invoiceRepository.findByIdAndEnable(invoiceDetailRequestDto.getInvoiceId(), true)
                 .orElseThrow(()-> new NotFoundException("Invoice not found"));
         InvoiceDetail invoiceDetail = invoiceDetailRepository.findByDrinkAndInvoiceAndInvoiceDetailIdId(
-                drink, invoice, invoiceDetailDto.getId())
+                drink, invoice, invoiceDetailRequestDto.getId())
                 .orElseThrow(()-> new NotFoundException("Invoice detail not found"));
-        invoiceDetail.setUnitPrice(invoiceDetailDto.getUnitPrice());
-        invoiceDetail.setPrice(invoiceDetailDto.getPrice());
-        invoiceDetail.setAmount(invoiceDetailDto.getAmount());
-        invoiceDetail.setDiscount(invoiceDetailDto.getDiscount());
-        invoiceDetail.setNote(invoiceDetailDto.getNote());
+        invoiceDetail.setUnitPrice(invoiceDetailRequestDto.getUnitPrice());
+        invoiceDetail.setPrice(invoiceDetailRequestDto.getPrice());
+        invoiceDetail.setAmount(invoiceDetailRequestDto.getAmount());
+        invoiceDetail.setDiscount(invoiceDetailRequestDto.getDiscount());
+        invoiceDetail.setNote(invoiceDetailRequestDto.getNote());
         invoiceDetailRepository.save(invoiceDetail);
         return new ResponseDto(HttpStatus.OK.value(), "edit successful", null);
     }
 
-    public ResponseDto editListInvoiceDetail(List<InvoiceDetailDto> invoiceDetailDtoList){
-        invoiceDetailDtoList.forEach(element->{
+    public ResponseDto editListInvoiceDetail(List<InvoiceDetailRequestDto> invoiceDetailRequestDtoList){
+        invoiceDetailRequestDtoList.forEach(element->{
             editInvoiceDetail(element);
         });
         return new ResponseDto(HttpStatus.OK.value(), "edit list successful", null);
