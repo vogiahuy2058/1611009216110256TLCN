@@ -18,11 +18,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -43,6 +46,7 @@ public class InvoiceServiceImpl implements InvoiceService{
     EmployeeRepository employeeRepository;
     ZoneId zoneId = ZoneId.of("Asia/Ho_Chi_Minh");
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
     public ResponseDto createInvoice(InvoiceRequestDto invoiceRequestDto){
         Invoice invoice = this.mapperObject.InvoiceDtoToEntity(invoiceRequestDto);
         Customer customer = new Customer();
@@ -110,15 +114,20 @@ public class InvoiceServiceImpl implements InvoiceService{
     }
     @Transactional
     public ResponseDto getAllInvoiceDateToDate(String fromDate, String toDate, Integer branchShopId){
-        LocalDate newFromDate = LocalDate.parse(fromDate, dtf);
-        LocalDate newToDate = LocalDate.parse(toDate, dtf);
+//        LocalDate newFromDate = LocalDate.parse(fromDate, dtf);
+//        LocalDate newToDate = LocalDate.parse(toDate, dtf);
         List<Invoice> invoices =
                 invoiceRepository.findAllByEnableAndPaymentStatusAndBranchShopId(true, true, branchShopId);
         List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
-        invoices.forEach(invoice -> {
-            LocalDate dateInvoice = invoice.getDate().toLocalDate();
-            if(dateInvoice.isBefore(newToDate) && dateInvoice.isAfter(newFromDate)){
-                InvoiceResponseDto invoiceResponseDto = mapperObject.InvoiceEntityToDto(invoice);
+        try{
+            Date newFromDate = formatter.parse(fromDate);
+            Date newToDate = formatter.parse(toDate);
+
+            invoices.forEach(invoice -> {
+                Date dateInvoice = Date.from(invoice.getDate().toInstant());
+            if(dateInvoice.before(newToDate) && dateInvoice.after(newFromDate)){
+                InvoiceResponseDto invoiceResponseDto =
+                        mapperObject.InvoiceEntityToDto(invoice);
 
 //            if(invoice.getCoffeeTable()==null){
 //                invoiceResponseDto.setCoffeeTable(null);
@@ -141,9 +150,13 @@ public class InvoiceServiceImpl implements InvoiceService{
                         .orElseThrow(()-> new NotFoundException("Username not found"));
                 invoiceResponseDto.setCashierName(employee.getName());
                 invoiceResponseDtos.add(invoiceResponseDto);
-            }
+                }
 
-        });
+            });
+        }catch (ParseException e){
+            e.printStackTrace();
+        }
+
         return new ResponseDto(HttpStatus.OK.value(), "All invoice from date to date", invoiceResponseDtos);
     }
     @Transactional
