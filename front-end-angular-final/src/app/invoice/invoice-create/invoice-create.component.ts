@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router } from '@angular/router';
+import {Observable} from 'rxjs';
+import {debounceTime, distinctUntilChanged, map} from 'rxjs/operators';
 import { TokenStorageService } from 'src/app/auth/token-storage.service';
 import { BranchshopRestApiService } from 'src/app/branchshop/branchshop-rest-api.service';
 import { InvoiceRestApiService } from '../invoice-rest-api.service';
@@ -11,6 +13,7 @@ import { MatDialog, MatDialogConfig } from "@angular/material";
 import { TestpopupComponent } from 'src/app/testpopups/testpopup/testpopup.component';
 import { InvoicedetailComponent } from '../invoicedetail/invoicedetail.component';
 import { Breakpoints } from '@angular/cdk/layout';
+import { CustomerRestApiService } from 'src/app/customer/customer-rest-api.service';
 
 
 @Component({
@@ -26,6 +29,8 @@ export class InvoiceCreateComponent implements OnInit {
   //   totalPrice: 0, vat: 0
   // }
   info: any;
+  ContentCustomer: any = [];
+  Listphonecustomer: Array<any> = [];
   ContentList: Drink[];
   ContentDrinktype: any = [];
   ContentDrink: any = [];
@@ -41,6 +46,7 @@ export class InvoiceCreateComponent implements OnInit {
   constructor(
     private dialog: MatDialog,
     public restApiDrinktype: DrinktypeRestApiService,
+    public restApiCustomer: CustomerRestApiService,
     public restApiDrink: DrinkRestApiService,
     public restApiInvoice: InvoiceRestApiService,
     public restApiOrdertype: OrdertypeRestApiService,
@@ -66,6 +72,7 @@ export class InvoiceCreateComponent implements OnInit {
     this.loadOrdertype()
     // this.loadEmployeetype1()
     this.loadDrinktype()
+    this.loadCustomer()
   }
   loadOrdertype() {
     return this.restApiOrdertype.getEmployeetypes().subscribe((data: {}) => {
@@ -112,6 +119,22 @@ export class InvoiceCreateComponent implements OnInit {
       console.log('trong hàm 1' + JSON.stringify(this.ContentInvoice));
     })
   }
+  loadCustomer() {
+    return this.restApiCustomer.getEmployeetypes().subscribe((data: {}) => {
+      this.ContentCustomer= data;
+      for (let e1 of this.ContentCustomer.content) {
+        this.Listphonecustomer.push(e1.phone)
+      }
+      console.log('trong hàm 1' + JSON.stringify(this.Listphonecustomer));
+    })
+  }
+  search = (text$: Observable<string>) =>
+    text$.pipe(
+      debounceTime(200),
+      distinctUntilChanged(),
+      map(term => term.length < 2 ? []
+        : this.Listphonecustomer.filter(v => v.toLowerCase().indexOf(term.toLowerCase()) > -1).slice(0, 10))
+    )
   loadInvoiceDetail() {
     return this.restApiInvoice.getInvoiceDetail(this.restApiInvoice.InvoiceDetails.id).subscribe((data: {}) => {
       this.ContentInvoiceDetail = data;
