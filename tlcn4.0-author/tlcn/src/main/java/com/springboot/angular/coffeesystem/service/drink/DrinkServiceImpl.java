@@ -147,11 +147,13 @@ public class DrinkServiceImpl implements DrinkService {
                     element.getMaterial().getId());
         });
         ///delete drink price when drink was deleted
-        DrinkPrice drinkPrice = drinkPriceRepository.findByDrinkPriceIdIdDrinkAndEnable(id, true)
-                .orElseThrow(()-> new NotFoundException("Drink price not fount"));
-        drinkPrice.setEnable(false);
-        drinkPriceRepository.save(drinkPrice);
-
+        if(drinkPriceRepository.findByDrinkPriceIdIdDrinkAndEnable(id, true).isPresent()){
+            DrinkPrice drinkPrice = drinkPriceRepository.findByDrinkPriceIdIdDrinkAndEnable(id, true)
+                    .orElseThrow(()-> new NotFoundException("Drink price not fount"));
+            drinkPrice.setEnable(false);
+            drinkPriceRepository.save(drinkPrice);
+        }
+        
         drink.setEnable(false);
         drinkRepository.save(drink);
         return new ResponseDto(HttpStatus.OK.value(), "Delete drink successful", null);
