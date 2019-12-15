@@ -105,7 +105,7 @@ public class InvoiceServiceImpl implements InvoiceService{
             invoiceResponseDto.setOrderType(invoice.getOrderType().getName());
             invoiceResponseDto.setDate(invoice.getDate().
                     format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-            Employee employee = employeeRepository.findByAccountUsername(invoice.getCreatedBy())
+            Employee employee = employeeRepository.findByAccountUsername(invoice.getLastModifiedBy())
                     .orElseThrow(()-> new NotFoundException("Username not found"));
             invoiceResponseDto.setCashierName(employee.getName());
             invoiceResponseDtos.add(invoiceResponseDto);
@@ -146,7 +146,7 @@ public class InvoiceServiceImpl implements InvoiceService{
                 invoiceResponseDto.setOrderType(invoice.getOrderType().getName());
                 invoiceResponseDto.setDate(invoice.getDate().
                         format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-                Employee employee = employeeRepository.findByAccountUsername(invoice.getCreatedBy())
+                Employee employee = employeeRepository.findByAccountUsername(invoice.getLastModifiedBy())
                         .orElseThrow(()-> new NotFoundException("Username not found"));
                 invoiceResponseDto.setCashierName(employee.getName());
                 invoiceResponseDtos.add(invoiceResponseDto);
@@ -183,7 +183,7 @@ public class InvoiceServiceImpl implements InvoiceService{
             invoiceResponseDto.setOrderType(invoice.getOrderType().getName());
             invoiceResponseDto.setDate(invoice.getDate().
                     format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-            Employee employee = employeeRepository.findByAccountUsername(invoice.getCreatedBy())
+            Employee employee = employeeRepository.findByAccountUsername(invoice.getLastModifiedBy())
                     .orElseThrow(()-> new NotFoundException("Username not found"));
             invoiceResponseDto.setCashierName(employee.getName());
             invoiceResponseDtos.add(invoiceResponseDto);
@@ -211,7 +211,7 @@ public class InvoiceServiceImpl implements InvoiceService{
             invoiceResponseDto.setOrderType(element.getOrderType().getName());
             invoiceResponseDto.setDate(element.getDate().
                     format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-            Employee employee = employeeRepository.findByAccountUsername(element.getCreatedBy())
+            Employee employee = employeeRepository.findByAccountUsername(element.getLastModifiedBy())
                     .orElseThrow(()-> new NotFoundException("Username not found"));
             invoiceResponseDto.setCashierName(employee.getName());
             invoiceResponseDtos.add(invoiceResponseDto);});
@@ -240,7 +240,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 //        invoiceResponseDto.setDate(DateTimeFormatter.ofPattern("yyyy-MM-dd - HH:mm:ss Z").format(invoice.getDate()));
         invoiceResponseDto.setDate(invoice.getDate().
                 format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")));
-        Employee employee = employeeRepository.findByAccountUsername(invoice.getCreatedBy())
+        Employee employee = employeeRepository.findByAccountUsername(invoice.getLastModifiedBy())
                 .orElseThrow(()-> new NotFoundException("Username not found"));
         invoiceResponseDto.setCashierName(employee.getName());
         return new ResponseDto(HttpStatus.OK.value(), "All invoice", invoiceResponseDto );
@@ -252,8 +252,10 @@ public class InvoiceServiceImpl implements InvoiceService{
         InvoiceAndInvoiceDetailDto invoiceAndInvoiceDetailDto = mapperObject.InvoiceEntityToDtoFull(invoice);
 
         if(invoice.getCustomer() == null){
+            invoiceAndInvoiceDetailDto.setCustomerName(null);
             invoiceAndInvoiceDetailDto.setCustomerPhone(null);
         }else {
+            invoiceAndInvoiceDetailDto.setCustomerName(invoice.getCustomer().getName());
             invoiceAndInvoiceDetailDto.setCustomerPhone(invoice.getCustomer().getPhone());
         }
 //        invoiceResponseDto.setCoffeeTable(invoice.getCoffeeTable().getName());
@@ -262,7 +264,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 //        invoiceAndInvoiceDetailDto.setDate(DateTimeFormatter.ofPattern("yyyy-MM-dd - HH:mm:ss Z").format(invoice.getDate()));
         invoiceAndInvoiceDetailDto.setDate(invoice.getDate().
                 format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'")));
-        Employee employee = employeeRepository.findByAccountUsername(invoice.getCreatedBy())
+        Employee employee = employeeRepository.findByAccountUsername(invoice.getLastModifiedBy())
                 .orElseThrow(()-> new NotFoundException("Username not found"));
         invoiceAndInvoiceDetailDto.setCashierName(employee.getName());
 

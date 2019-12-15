@@ -88,7 +88,7 @@ public interface MapperObject {
     InvoiceDetail InvoiceDetailDtoToEntity(InvoiceDetailRequestDto invoiceDetailRequestDto);
 
     @Mapping(target="customerPhone",source = "customer.phone")
-//    @Mapping(target="customerName",source = "customer.name")
+    @Mapping(target="customerName",source = "customer.name")
     @Mapping(target="branchShop",source = "branchShop.name")
 //    @Mapping(target="coffeeTable",source = "coffeeTable.name")
     @Mapping(target="orderType",source = "orderType.name")

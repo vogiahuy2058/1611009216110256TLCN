@@ -15,6 +15,7 @@ public class InvoiceAndInvoiceDetailDto {
     private Integer id;
     private String date;
     private String customerPhone;
+    private String customerName;
     private String branchShop;
     private String cashierName;
     private String orderType;
