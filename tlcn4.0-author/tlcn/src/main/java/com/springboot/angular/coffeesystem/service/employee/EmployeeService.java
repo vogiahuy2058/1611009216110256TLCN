@@ -22,6 +22,7 @@ public interface EmployeeService {
     ResponseDto editEmployeeNotIncludeEmployeeType(EmployeeRequestDto employeeRequestDto);
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR', 'ROLE_BRANCH_MANAGER')")
     ResponseDto getEmployeeById(Integer id);
+    ResponseDto getEmployeeByUsername();
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR', 'ROLE_BRANCH_MANAGER')")
     PagingResponseDto getAllEmployeePaging(int page, int size, String sort, String sortColumn);
 }

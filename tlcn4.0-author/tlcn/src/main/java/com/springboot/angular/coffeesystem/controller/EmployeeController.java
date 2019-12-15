@@ -45,6 +45,11 @@ public class EmployeeController {
 
         return ResponseEntity.ok(employeeService.getEmployeeById(id));
     }
+    @GetMapping("/get-username")
+    public ResponseEntity<ResponseDto> getEmployeeByUsername(){
+
+        return ResponseEntity.ok(employeeService.getEmployeeByUsername());
+    }
     @PutMapping("/delete")
     public ResponseEntity<ResponseDto> deleteEmployee(@RequestParam Integer id){
         return ResponseEntity.ok(employeeService.deleteEmployee(id));
