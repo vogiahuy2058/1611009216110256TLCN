@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public interface MaterialPriceRepository extends JpaRepository<MaterialPrice, MaterialPriceId> {
 //    @Query("select mp from MaterialPrice mp where mp.materialPriceId.idMaterial=?1 and mp.enable=?2")
-    Optional<MaterialPrice> findByMaterialPriceIdIdMaterialAndEnable(Integer idMaterial, boolean enable);
+    List<MaterialPrice> findByMaterialPriceIdIdMaterialAndEnable(Integer idMaterial, boolean enable);
     @Query("select max(mp.materialPriceId.id) from MaterialPrice mp")
     Integer findMaxId();
     List<MaterialPrice> findAllByEnable(boolean enable);

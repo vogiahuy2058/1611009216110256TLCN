@@ -98,11 +98,12 @@ public class MaterialServiceImpl implements MaterialService {
         });
 
         ///delete material price when material was deleted
-        MaterialPrice materialPrice = materialPriceRepository.findByMaterialPriceIdIdMaterialAndEnable(id, true)
-                .orElseThrow(()-> new NotFoundException("Material price not fount"));
-        materialPrice.setEnable(false);
-        materialPriceRepository.save(materialPrice);
-
+        List<MaterialPrice> materialPrice = materialPriceRepository.findByMaterialPriceIdIdMaterialAndEnable(id, true);
+        materialPrice.forEach(element->{
+            element.setEnable(false);
+            materialPriceRepository.save(element);
+        });
+       
         material.setEnable(false);
         materialRepository.save(material);
 
