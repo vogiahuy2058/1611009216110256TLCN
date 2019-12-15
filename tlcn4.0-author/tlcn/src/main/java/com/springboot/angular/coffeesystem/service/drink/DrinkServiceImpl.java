@@ -153,7 +153,7 @@ public class DrinkServiceImpl implements DrinkService {
             drinkPrice.setEnable(false);
             drinkPriceRepository.save(drinkPrice);
         }
-        
+
         drink.setEnable(false);
         drinkRepository.save(drink);
         return new ResponseDto(HttpStatus.OK.value(), "Delete drink successful", null);

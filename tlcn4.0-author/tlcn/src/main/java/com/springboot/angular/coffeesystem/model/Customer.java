@@ -27,7 +27,7 @@ public class Customer extends Auditable<String> {
     private String address;
     private LocalDate birthDay;
     private boolean sex;
-    @NaturalId
+//    @NaturalId
     private String email;
     private float totalPurchase;
     private String note;
