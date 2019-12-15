@@ -18,6 +18,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -92,7 +93,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeResponseDto.setEmployeeType(employee.getEmployeeType().getName());
         return new ResponseDto(HttpStatus.OK.value(), "Successful", employeeResponseDto);
     }
-
+    @Transactional
+    public ResponseDto getEmployeeByUsername(){
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        Employee employee = employeeRepository.findByAccountUsername(username)
+                .orElseThrow(()-> new NotFoundException("Username not found"));
+        EmployeeResponseDto employeeResponseDto = mapperObject.EmployeeEntityToDto(employee);
+        employeeResponseDto.setEmployeeType(employee.getEmployeeType().getName());
+        return new ResponseDto(HttpStatus.OK.value(), "Successful", employeeResponseDto);
+    }
     @Transactional
     public ResponseDto getEmployeeNotHaveAccountByEmployeeType(String nameEmployeeType){
         EmployeeType employeeType = employeeTypeRepository.findByNameAndEnable(nameEmployeeType, true)
