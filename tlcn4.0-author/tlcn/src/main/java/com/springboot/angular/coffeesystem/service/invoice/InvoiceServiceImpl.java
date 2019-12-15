@@ -323,6 +323,15 @@ public class InvoiceServiceImpl implements InvoiceService{
         return new ResponseDto(HttpStatus.OK.value(), "Delete invoice successful", null);
     }
 
+    public ResponseDto deleteInvoiceStatusFalse(){
+        List<Invoice> invoiceList = invoiceRepository.findAllByEnableAndPaymentStatus(true, false);
+        invoiceList.forEach(element->{
+            element.setEnable(false);
+            invoiceRepository.save(element);
+        });
+
+        return new ResponseDto(HttpStatus.OK.value(), "Delete invoice successful", null);
+    }
     public ResponseDto getMaxIdInvoice(){
         Integer idOld = invoiceRepository.findMaxId();
         if(idOld == null){

@@ -20,6 +20,7 @@ public interface InvoiceService {
     ResponseDto editInvoice(InvoiceRequestDto invoiceRequestDto);
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER')")
     ResponseDto deleteInvoice(Integer id);
+    ResponseDto deleteInvoiceStatusFalse();
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER')")
     PagingResponseDto getAllInvoicePaging(int page, int size, String sort, String sortColumn);
     //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER')")

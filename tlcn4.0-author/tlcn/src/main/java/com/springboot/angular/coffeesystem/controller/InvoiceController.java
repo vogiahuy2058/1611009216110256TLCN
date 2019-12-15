@@ -75,4 +75,9 @@ public class InvoiceController {
     public ResponseEntity<ResponseDto> deleteInvoice(@RequestParam Integer id){
         return ResponseEntity.ok(invoiceService.deleteInvoice(id));
     }
+
+    @PutMapping("/delete-status-false")
+    public ResponseEntity<ResponseDto> deleteInvoiceStatusFalse(){
+        return ResponseEntity.ok(invoiceService.deleteInvoiceStatusFalse());
+    }
 }
