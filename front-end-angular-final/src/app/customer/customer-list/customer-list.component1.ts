@@ -1,25 +1,27 @@
 import { Component, OnInit, Input, AfterViewInit,ChangeDetectorRef } from '@angular/core';
+
 import * as $ from 'jquery';
 import 'datatables.net';
 import 'datatables.net-bs4';
 import { TokenStorageService } from 'src/app/auth/token-storage.service';
 import { Router } from '@angular/router';
-import { UnitRestApiService } from '../unit-rest-api.service';
-import { MatDialog, MatDialogConfig } from '@angular/material';
-import { UnitCreateComponent } from '../unit-create/unit-create.component';
-
+import { CustomerRestApiService } from '../customer-rest-api.service';
+import { MatDialog, MatDialogConfig } from "@angular/material";
+//Chọn Component làm popup
+import { CustomerCreateComponent } from '../customer-create/customer-create.component';
 @Component({
-  selector: 'app-unit-list',
-  templateUrl: './unit-list.component.html',
-  styleUrls: ['./unit-list.component.css']
+  selector: 'app-customer-list',
+  templateUrl: './customer-list.component.html',
+  styleUrls: ['./customer-list.component.css']
 })
-export class UnitListComponent implements OnInit{
+export class CustomerListComponent implements OnInit{
 
   //khai báo tên gọi cho 
   clients: any[];
   dataTable: any;
   Content:any = [];
   info: any;
+  sex: string;
   private roles: string[];
   private authority: string;
   private authorityad: string;
@@ -28,19 +30,14 @@ export class UnitListComponent implements OnInit{
   private authoritybrm: string;
   private authorityacc: string;
   private authoritycashier: string;
-  constructor(public restApi: UnitRestApiService,private dialog: MatDialog, private chRef: ChangeDetectorRef,private token: TokenStorageService,
-    public router: Router) { }
+  constructor(public restApi: CustomerRestApiService, private chRef: ChangeDetectorRef,private token: TokenStorageService,
+    public router: Router,  private dialog: MatDialog,) { }
   ngOnInit() {
     this.info = {
       token: this.token.getToken(),
       username: this.token.getUsername(),
       authorities: this.token.getAuthorities()
     };
-    //token start
-    if (this.token.getToken()) {
-      this.token.checklogin()
-    }
-    //token end
     if(!this.token.getToken()){
       this.router.navigate(['login'])
     }else{
@@ -69,12 +66,13 @@ export class UnitListComponent implements OnInit{
         return false;
       });
     }
-    if ( this.authorityacc === 'acc' || this.authoritybrm === 'brm' ||
-       this.authorityad === 'ad' || this.authoritychef === 'chef') {
-    }else{
+    if (this.authorityacc === 'acc' || this.authoritybrm === 'brm' ||
+      this.authoritycashier === 'cashier' ||  this.authorityad === 'ad' || this.authorityhr === 'hr') {
+    }
+    else{
       this.router.navigate(['home'])
     }
-     this.loadEmployeetype()
+    this.loadEmployeetype()
   }
 
   loadEmployeetype() {
@@ -86,56 +84,40 @@ export class UnitListComponent implements OnInit{
     })
   }
   onCreate() {
-     //token start
-     this.token.checklogin()
-     if (!this.token.getToken()) {
-       this.router.navigate(['login'])
-     } else {
-       //token end
-       
     this.restApi.employeetypeDetails.id = null;
-    this.restApi.initializeFormGroup();
-    this.restApi.employeetypeDetails.name = '';
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = "60%";
-    //Chọn Component làm popup
-    this.dialog.open(UnitCreateComponent, dialogConfig);
-  }
-}
-  onUpdate(employeetype){
-     //token start
-     this.token.checklogin()
-     if (!this.token.getToken()) {
-       this.router.navigate(['login'])
-     } else {
-       //token end
-    this.restApi.employeetypeDetails = employeetype;
-    this.restApi.editFormGroup(employeetype);
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = "60%";
-    //Chọn Component làm popup dùng chung create cho update
-    this.dialog.open(UnitCreateComponent, dialogConfig);
-  }
-}
+        this.restApi.employeetypeDetails.name = '';
+        this.restApi.employeetypeDetails.address = '';
+        this.restApi.employeetypeDetails.birthDay = '';
+        this.restApi.employeetypeDetails.customerType = '';
+        this.restApi.employeetypeDetails.email = '';
+        this.restApi.employeetypeDetails.note = '';
+        this.restApi.employeetypeDetails.phone = '';
+        this.restApi.employeetypeDetails.sex = true;
+        this.restApi.employeetypeDetails.totalPurchase = null;
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.width = "60%";
+        //Chọn Component làm popup
+        this.dialog.open(CustomerCreateComponent, dialogConfig);
+      }
+      onUpdate(employeetype){
+        this.restApi.employeetypeDetails = employeetype;
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.width = "60%";
+        //Chọn Component làm popup dùng chung create cho update
+        this.dialog.open(CustomerCreateComponent, dialogConfig);
+      }
    // Delete employee
    deleteEmployeetype(id) {
-      //token start
-    this.token.checklogin()
-    if (!this.token.getToken()) {
-      this.router.navigate(['login'])
-    } else {
-      //token end
     if (window.confirm('Are you sure, you want to delete?')){
       this.restApi.deleteEmployeetype(id).subscribe(data => {
         this.loadEmployeetype()
       })
     }
   }  
-}
   logout(){
     this.token.signOut();
     this.router.navigate(['login'])
@@ -143,6 +125,5 @@ export class UnitListComponent implements OnInit{
   }
 
 }
-
 
 

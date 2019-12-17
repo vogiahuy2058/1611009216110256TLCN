@@ -109,6 +109,7 @@ export class SupplycontractListComponent implements OnInit{
     this.restApi.employeetypeDetails.date = '';
     this.restApi.employeetypeDetails.supplier = '';
     this.restApi.employeetypeDetails.totalPrice = null;
+    this.restApi.initializeFormGroup();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -125,6 +126,7 @@ export class SupplycontractListComponent implements OnInit{
     } else {
       //token end
     this.restApi.employeetypeDetails = employeetype;
+    this.restApi.editFormGroup(employeetype);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;

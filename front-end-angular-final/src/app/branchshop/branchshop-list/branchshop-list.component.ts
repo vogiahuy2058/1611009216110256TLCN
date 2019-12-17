@@ -100,9 +100,12 @@ export class BranchshopListComponent implements OnInit {
       this.router.navigate(['login'])
     } else {
       //token end
-    this.restApi.employeetypeDetails.id = null;
-    this.restApi.employeetypeDetails.address = '';
-    this.restApi.employeetypeDetails.name = '';
+    // this.restApi.employeetypeDetails.id = null;
+    // this.restApi.employeetypeDetails.address = '';
+    // this.restApi.employeetypeDetails.name = '';
+     //validate s
+     this.restApi.initializeFormGroup();
+     //validate e
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -119,6 +122,7 @@ export class BranchshopListComponent implements OnInit {
     } else {
       //token end
     this.restApi.employeetypeDetails = employeetype;
+    this.restApi.editFormGroup(employeetype);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;

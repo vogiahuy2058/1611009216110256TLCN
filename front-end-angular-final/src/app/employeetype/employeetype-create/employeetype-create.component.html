@@ -1,14 +1,84 @@
 <mat-toolbar>
   <!-- sửa sòng span đầu tiên thành <span>{{id?"Modify Employee":"New Employee"}}</span> -->
-  <span>{{id?"Cập nhật loại nhân viên":"Tạo mới loại nhân viên"}}</span>
+  <span>{{restApi.form.controls['id'].value?"Cập nhật loại nhân viên":"Tạo mới loại nhân viên"}}</span>
   <span class="fill-remaining-space"></span>
   <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabIndex="-1">
-    <mat-icon>clear</mat-icon>
+    <mat-icon style="font-family: Arial, Helvetica, sans-serif;">X</mat-icon>
   </button>
 </mat-toolbar>
-<div class="container custom-container" style="margin-left: 0px; margin-top: 30px;">
+<form [formGroup]="restApi.form" class="normal-form" (submit)="onSubmit()">
+  
+  <div class="controles-container">
+    <input type="hidden" formControlName="id">
+    <mat-form-field>
+      <input formControlName="name" matInput placeholder="Tên loại nhân viên*">
+      <mat-error>Đây là trường bắt buộc</mat-error>
+    </mat-form-field>
+    <div class="button-row">
+      <button mat-raised-button color="primary" style="float: right;" type="submit"
+        [disabled]="restApi.form.invalid">Submit</button>
+      <button mat-raised-button color="warn" style="float: right;" (click)="onClear()">Clear</button>
+    </div>
+  </div>
+
+</form>
+<!-- <form [formGroup]="restApi.form" class="normal-form" (submit)="onSubmit()">
+  <mat-grid-list cols="2" rowHeight="300px">
+    
+      <div class="controles-container">
+        <input type="hidden" formControlName="$key">
+        <mat-form-field>
+          <input formControlName="fullName" matInput placeholder="Full Name*">
+          <mat-error>Đây là trường bắt buộc</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input formControlName="email" matInput placeholder="Email">
+          <mat-error>Invalid email address.</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input formControlName="mobile" matInput placeholder="Mobile*">
+          <mat-error *ngIf="restApi.form.controls['mobile'].errors?.required">This field is mandatory.</mat-error>
+          <mat-error *ngIf="restApi.form.controls['mobile'].errors?.minlength">Minimum 8 charactors needed.</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+          <input formControlName="city" matInput placeholder="City">
+        </mat-form-field>
+      
+      
+        <div class="add-bottom-padding">
+          <mat-radio-group formControlName="gender">
+            <mat-radio-button value="1">Male</mat-radio-button>
+            <mat-radio-button value="2">Female</mat-radio-button>
+            <mat-radio-button value="3">Other</mat-radio-button>
+          </mat-radio-group>
+        </div>
+        <mat-form-field>
+          <mat-select formControlName="department" placeholder="Department">
+            <mat-option>None</mat-option>
+            <ng-container *ngFor="let department of departmentService.array">
+              <mat-option value="{{department.$key}}">{{department.code}}-{{department.name}}</mat-option>
+            </ng-container>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+          <input formControlName="hireDate" matInput [matDatepicker]="picker" placeholder="Hire Date">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <div class="add-bottom-padding">
+          <mat-checkbox formControlName="isPermanent">Permanent Employee</mat-checkbox>
+        </div>
+        <div class="button-row">
+          <button mat-raised-button color="primary" type="submit" [disabled]="restApi.form.invalid">Submit</button>
+          <button mat-raised-button color="warn" (click)="onClear()">Clear</button>
+        </div>
+      </div>
+    
+  </mat-grid-list>
+</form> -->
+<!-- <div class="container custom-container" style="margin-left: 0px; margin-top: 30px;">
   <div class="col-md-12" novalidate="novalidate">
-    <!-- <h3 class="mb-3 text-center">Create Employee</h3> -->
+    
 
     <div class="form-group">
       <input type="text" [(ngModel)]="restApi.employeetypeDetails.name" 
@@ -18,14 +88,12 @@
     <div style="color: red;" *ngIf="name.errors.required">Bắt buộc nhập tên loại nhân viên *</div>
   </div>
     <div class="button-row" style="float: right;">
-        <!-- sửa các button lại như vầy -->
+        
         <button *ngIf="id === null" mat-raised-button color="primary" (click)="addEmployeetype()">Xác nhận</button>
         <button *ngIf="id !== null" mat-raised-button color="primary" (click)="modifyEmployeetype()">Xác nhận</button>
-        <!-- <button mat-raised-button color="warn" (click)="onClear()">Clear</button> -->
+        
       </div>
-    <!-- <div class="form-group">
-      <button class="btn btn-success btn-lg btn-block" (click)="addEmployeetype()">Create Employee</button>
-    </div> -->
+    
   </div>
-</div>
+</div> -->
 

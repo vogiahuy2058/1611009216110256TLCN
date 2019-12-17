@@ -4,16 +4,16 @@ import 'datatables.net';
 import 'datatables.net-bs4';
 import { TokenStorageService } from 'src/app/auth/token-storage.service';
 import { Router } from '@angular/router';
-import { UnitRestApiService } from '../unit-rest-api.service';
-import { MatDialog, MatDialogConfig } from '@angular/material';
-import { UnitCreateComponent } from '../unit-create/unit-create.component';
-
+import { MaterialRestApiService } from '../material-rest-api.service';
+import { MatDialog, MatDialogConfig } from "@angular/material";
+//Chọn Component làm popup
+import { MaterialCreateComponent } from '../material-create/material-create.component';
 @Component({
-  selector: 'app-unit-list',
-  templateUrl: './unit-list.component.html',
-  styleUrls: ['./unit-list.component.css']
+  selector: 'app-material-list',
+  templateUrl: './material-list.component.html',
+  styleUrls: ['./material-list.component.css']
 })
-export class UnitListComponent implements OnInit{
+export class MaterialListComponent implements OnInit{
 
   //khai báo tên gọi cho 
   clients: any[];
@@ -28,19 +28,14 @@ export class UnitListComponent implements OnInit{
   private authoritybrm: string;
   private authorityacc: string;
   private authoritycashier: string;
-  constructor(public restApi: UnitRestApiService,private dialog: MatDialog, private chRef: ChangeDetectorRef,private token: TokenStorageService,
-    public router: Router) { }
+  constructor(public restApi: MaterialRestApiService, private chRef: ChangeDetectorRef,private token: TokenStorageService,
+    public router: Router, private dialog: MatDialog,) { }
   ngOnInit() {
     this.info = {
       token: this.token.getToken(),
       username: this.token.getUsername(),
       authorities: this.token.getAuthorities()
     };
-    //token start
-    if (this.token.getToken()) {
-      this.token.checklogin()
-    }
-    //token end
     if(!this.token.getToken()){
       this.router.navigate(['login'])
     }else{
@@ -70,7 +65,8 @@ export class UnitListComponent implements OnInit{
       });
     }
     if ( this.authorityacc === 'acc' || this.authoritybrm === 'brm' ||
-       this.authorityad === 'ad' || this.authoritychef === 'chef') {
+       this.authoritychef === 'chef' || this.authorityad === 'ad' ) {
+      
     }else{
       this.router.navigate(['home'])
     }
@@ -86,56 +82,37 @@ export class UnitListComponent implements OnInit{
     })
   }
   onCreate() {
-     //token start
-     this.token.checklogin()
-     if (!this.token.getToken()) {
-       this.router.navigate(['login'])
-     } else {
-       //token end
-       
     this.restApi.employeetypeDetails.id = null;
-    this.restApi.initializeFormGroup();
-    this.restApi.employeetypeDetails.name = '';
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = "60%";
-    //Chọn Component làm popup
-    this.dialog.open(UnitCreateComponent, dialogConfig);
-  }
-}
-  onUpdate(employeetype){
-     //token start
-     this.token.checklogin()
-     if (!this.token.getToken()) {
-       this.router.navigate(['login'])
-     } else {
-       //token end
-    this.restApi.employeetypeDetails = employeetype;
-    this.restApi.editFormGroup(employeetype);
-    const dialogConfig = new MatDialogConfig();
-    dialogConfig.disableClose = true;
-    dialogConfig.autoFocus = true;
-    dialogConfig.width = "60%";
-    //Chọn Component làm popup dùng chung create cho update
-    this.dialog.open(UnitCreateComponent, dialogConfig);
-  }
-}
+        this.restApi.employeetypeDetails.name = '';
+        this.restApi.employeetypeDetails.inventory = null;
+        this.restApi.employeetypeDetails.materialType = '';
+        this.restApi.employeetypeDetails.maxInventory = null;
+        this.restApi.employeetypeDetails.minInventory = null;
+        this.restApi.employeetypeDetails.unit = '';
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.width = "60%";
+        //Chọn Component làm popup
+        this.dialog.open(MaterialCreateComponent, dialogConfig);
+      }
+      onUpdate(employeetype){
+        this.restApi.employeetypeDetails = employeetype;
+        const dialogConfig = new MatDialogConfig();
+        dialogConfig.disableClose = true;
+        dialogConfig.autoFocus = true;
+        dialogConfig.width = "60%";
+        //Chọn Component làm popup dùng chung create cho update
+        this.dialog.open(MaterialCreateComponent, dialogConfig);
+      }
    // Delete employee
    deleteEmployeetype(id) {
-      //token start
-    this.token.checklogin()
-    if (!this.token.getToken()) {
-      this.router.navigate(['login'])
-    } else {
-      //token end
     if (window.confirm('Are you sure, you want to delete?')){
       this.restApi.deleteEmployeetype(id).subscribe(data => {
         this.loadEmployeetype()
       })
     }
   }  
-}
   logout(){
     this.token.signOut();
     this.router.navigate(['login'])

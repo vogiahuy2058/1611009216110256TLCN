@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { httpInterceptorProviders } from './auth/auth-interceptor';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DatePickerModule } from '@syncfusion/ej2-angular-calendars';
@@ -84,7 +84,27 @@ import { EmployeetypeRestApiService } from './employeetype/employeetype-rest-api
 import { AccountCreateComponent } from './account/account-create/account-create.component';
 import { AccountListComponent } from './account/account-list/account-list.component';
 import { DrinkpriceCreateComponent } from './drinkprice/drinkprice-create/drinkprice-create.component';
-
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE
+} from '@angular/material';
+import {
+  MomentDateModule,
+  MomentDateAdapter
+} from '@angular/material-moment-adapter';
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'DD/MM/YYYY',
+  },
+  display: {
+    dateInput: 'DD/MM/YYYY',
+    monthYearLabel: 'MM YYYY',
+    dateA11yLabel: 'DD/MM/YYYY',
+    monthYearA11yLabel: 'MM YYYY',
+  },
+};
+import { MatSelectModule } from '@angular/material';
 
 @NgModule({
   declarations: [
@@ -156,9 +176,9 @@ import { DrinkpriceCreateComponent } from './drinkprice/drinkprice-create/drinkp
     AccountCreateComponent,
     AccountListComponent,
     DrinkpriceCreateComponent,
-    
+
   ],
-  imports: [  
+  imports: [
     BrowserModule,
     HttpClientModule,
     BrowserAnimationsModule,
@@ -184,8 +204,9 @@ import { DrinkpriceCreateComponent } from './drinkprice/drinkprice-create/drinkp
     Material.MatPaginatorModule,
     Material.MatSortModule,
     Material.MatDialogModule,
-    ScrollingModule
-    
+    ScrollingModule,
+    MatSelectModule
+
   ],
   exports: [
     Material.MatToolbarModule,
@@ -212,7 +233,12 @@ import { DrinkpriceCreateComponent } from './drinkprice/drinkprice-create/drinkp
     DatePipe,
     httpInterceptorProviders,
     InvoiceRestApiService,
-    EmployeetypeRestApiService
+    EmployeetypeRestApiService,
+    {
+      provide: MAT_DATE_LOCALE,
+      useValue: 'it'
+    },
+
   ],
   bootstrap: [
     AppComponent,

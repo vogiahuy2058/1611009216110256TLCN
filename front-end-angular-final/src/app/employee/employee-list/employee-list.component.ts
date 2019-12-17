@@ -96,11 +96,14 @@ export class EmployeeListComponent implements OnInit {
       this.router.navigate(['login'])
     } else {
       //token end
-    this.restApi.employeetypeDetails.id = null;
-    this.restApi.employeetypeDetails.name = '';
-    this.restApi.employeetypeDetails.employeeType = '';
-    this.restApi.employeetypeDetails.email = '';
-    this.restApi.employeetypeDetails.branchShop = '';
+    // this.restApi.employeetypeDetails.id = null;
+    // this.restApi.employeetypeDetails.name = '';
+    // this.restApi.employeetypeDetails.employeeType = '';
+    // this.restApi.employeetypeDetails.email = '';
+    // this.restApi.employeetypeDetails.branchShop = '';
+    //validate s
+    this.restApi.initializeFormGroup();
+    //validate e
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -117,6 +120,9 @@ export class EmployeeListComponent implements OnInit {
     } else {
       //token end
     this.restApi.employeetypeDetails = employeetype;
+    //validate s
+    this.restApi.editFormGroup(employeetype);
+    //validate e
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;

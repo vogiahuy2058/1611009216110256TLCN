@@ -5,7 +5,7 @@ import { Observable,throwError  } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { Contentdrink } from './contentdrink';
-
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 @Injectable({
   providedIn: 'root'
 })
@@ -19,7 +19,32 @@ export class DrinkRestApiService {
    /*========================================
     CRUD Methods for consuming RESTful API
   =========================================*/
-
+ //validate s
+ form: FormGroup = new FormGroup({
+  id: new FormControl(0),
+  name: new FormControl('', Validators.required),
+  description: new FormControl(''),
+  drinkType: new FormControl(''),
+ 
+});
+initializeFormGroup() {
+  this.form.setValue({
+    id: null,
+    name: '',
+    description: '',
+    drinkType: '',
+  });
+}
+editFormGroup(object) {
+  this.form.setValue({
+    id: object.id,
+    name: object.name,
+    description: object.description,
+    drinkType: object.drinkType,
+    
+  });
+}
+ //validate e
   // Http Options
   httpOptions = {
     headers: new HttpHeaders({

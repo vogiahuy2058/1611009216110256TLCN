@@ -5,7 +5,7 @@ import { Observable,throwError  } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { Contentemployee } from './contentemployee';
-
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 @Injectable({
   providedIn: 'root'
 })
@@ -19,7 +19,36 @@ export class EmployeeRestApiService {
    /*========================================
     CRUD Methods for consuming RESTful API
   =========================================*/
-
+//validate s
+form: FormGroup = new FormGroup({
+  id: new FormControl(0),
+  name: new FormControl('', Validators.required),
+  branchShop: new FormControl(''),
+  employeeType: new FormControl(''),
+  email: new FormControl('', Validators.email),
+  
+});
+initializeFormGroup() {
+  this.form.setValue({
+    id: null,
+    name: '',
+    branchShop: '',
+    employeeType: '',
+    email: '',
+    
+  });
+}
+editFormGroup(object) {
+  this.form.setValue({
+    id: object.id,
+    name: object.name,
+    branchShop: object.branchShop,
+    employeeType: object.employeeType,
+    email: object.email,
+    
+  });
+}
+ //validate e
   // Http Options
   httpOptions = {
     headers: new HttpHeaders({
@@ -30,6 +59,13 @@ export class EmployeeRestApiService {
   // HttpClient API get() method => Fetch employees list
   getEmployeetypes(): Observable<Contentemployee> {
     return this.http.get<Contentemployee>(this.apiURL + '/get-all')
+    .pipe(
+      retry(1),
+      catchError(this.handleError)
+    )
+  }
+  getEmployeebyusername(): Observable<Contentemployee> {
+    return this.http.get<Contentemployee>(this.apiURL + '/get-username')
     .pipe(
       retry(1),
       catchError(this.handleError)

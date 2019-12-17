@@ -100,6 +100,7 @@ export class MaterialListComponent implements OnInit {
       this.restApi.employeetypeDetails.maxInventory = null;
       this.restApi.employeetypeDetails.minInventory = null;
       this.restApi.employeetypeDetails.unit = '';
+      this.restApi.initializeFormGroup();
       const dialogConfig = new MatDialogConfig();
       dialogConfig.disableClose = true;
       dialogConfig.autoFocus = true;
@@ -116,6 +117,7 @@ export class MaterialListComponent implements OnInit {
     } else {
       //token end
       this.restApi.employeetypeDetails = employeetype;
+      this.restApi.editFormGroup(employeetype);
       const dialogConfig = new MatDialogConfig();
       dialogConfig.disableClose = true;
       dialogConfig.autoFocus = true;

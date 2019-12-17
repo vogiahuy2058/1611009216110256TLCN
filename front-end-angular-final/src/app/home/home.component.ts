@@ -31,16 +31,22 @@ export class HomeComponent implements OnInit {
       token: this.token.getToken(),
       username: this.token.getUsername(),
       authorities: this.token.getAuthorities()
+      
     };
+    console.log('xuat hien1')
     // this.token.setuptime()
     // console.log(this.token.getToken1())
     if (this.token.getToken()) {
+      console.log('xuat hien2')
       this.token.checklogin()
+      console.log('xuat hien3')
       this.router.navigate(['home'])
     } else {
+      console.log('xuat hien4')
       this.router.navigate(['login'])
     }
     //Mỗi lần làm xong thì check xem nó tên gì navigation tới trang đó(làm nhiều if)
+    console.log('xuat hien5')
     console.log(this.Checkregion.danhco)
     if (this.Checkregion.danhco === 'employeetype') {
 
@@ -87,10 +93,11 @@ export class HomeComponent implements OnInit {
     }
     console.log('token')
     this.Checkregion.danhco = '';
-
+    console.log('xuat hien6')
     if (this.token.getToken()) {
       this.roles = this.token.getAuthorities();
       this.roles.every(role => {
+        console.log('xuat hien')
         if (role === 'ROLE_ADMIN') {
           this.authorityad = 'ad';
           return true;
