@@ -9,7 +9,7 @@
             <ul class="list" style="margin: 0px;">
                 <cdk-virtual-scroll-viewport style="height: 640px" itemSize="90">
                     <ng-container *cdkVirtualFor="let invoice of ContentInvoice.content">
-                        <li><button style="background-color: #A9D0F5;" (click)="selectData(invoice.id)">{{invoice.id}}
+                        <li><button style="background-color: #A9D0F5;" (click)="selectData(invoice)">{{invoice.id}}
                             </button> </li>
                     </ng-container>
                 </cdk-virtual-scroll-viewport>
@@ -44,15 +44,22 @@
         <div class="col-sm-5" style="padding-right: 25px;">
             <h3 class="center"> Chi tiết hóa đơn {{restApiInvoice.InvoiceDetails.id}} </h3>
             <div class="form-group row align-items-center" style="margin-top: 37px; margin-bottom: 9px;">
-                <div class="col-sm-6">
+                <div class="col-sm-4">
                     <!-- <label for="typeahead-basic">Search for a state:</label>
                     <input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="model"
                         [ngbTypeahead]="search" /> -->
-                    <label for="sodienthoai" style="margin-left: 10px;">Số điện thoại khách hàng</label>
-                    <input style="height: 50px; margin-left: 10px; width: 100%;" id="sodienthoai" type="text"
-                        class="form-control" placeholder="Số điện thoại" [(ngModel)]="restApiInvoice.InvoiceDetails.customerPhone" [ngbTypeahead]="search">
+                    <label for="sodienthoai" style="margin-left: 10px;">Số điện thoại</label>
+                    <input style="height: 50px; margin-left: 10px; width: 100%;" id="sodienthoai" type="text"(change)="check()" (keydown)="check()"
+                        class="form-control" placeholder="Số điện thoại"
+                        [(ngModel)]="restApiInvoice.InvoiceDetails.customerPhone" [ngbTypeahead]="search">
+                    
                 </div>
-                <div class="col-sm-6">
+                <!-- <div class="col-sm-2" style="padding-left: 0px; padding-right: 0px;">
+                    <button style="margin-top: 30px; margin-bottom: 0px; height: 43px; width: 85px;"
+                class="btn btn-primary" (click)="check()"> Kiểm tra </button>
+                    
+                </div> -->
+                <div class="col-sm-4" style="padding-left: 5px; padding-right: 0px;">
                     <label for="department1">Loại đơn hàng</label>
                     <select style="font-size: 15px; height: 50px; width: 100%;" id="department1" name="department1"
                         [(ngModel)]="restApiInvoice.InvoiceDetails.orderType" class="form-control">
@@ -62,10 +69,20 @@
                         </option>
                     </select>
                 </div>
+                <div class="col-sm-4" style="padding-left: 0px;">
+                    <!-- <label for="typeahead-basic">Search for a state:</label>
+                    <input id="typeahead-basic" type="text" class="form-control" [(ngModel)]="model"
+                        [ngbTypeahead]="search" /> -->
+                    <label for="sodienthoai" style="margin-left: 10px;">Vị trí ngồi</label>
+                    <input style="height: 50px; margin-left: 10px; width: 100%;" id="sodienthoai" type="text"
+                        class="form-control" placeholder="Vị trí ngồi"
+                        [(ngModel)]="restApiInvoice.InvoiceDetails.numberPosition" >
+                    
+                </div>
             </div>
             <div>
 
-                <cdk-virtual-scroll-viewport style="height: 450px" itemSize="90">
+                <cdk-virtual-scroll-viewport style="height: 400px" itemSize="90">
                     <table style="margin-left: 20px;">
                         <tbody>
                             <tr *ngFor="let invoicedetail of restApiInvoice.InvoiceDetailList">
@@ -98,11 +115,20 @@
                 <table style="border-top: solid;">
                     <tbody>
                         <tr style="height: 50px;">
+                            <td style="width: 15%;">Thu ngân:</td>
+                            <td style="width: 25%; padding-left: 10px;">{{cashierName}}
+                            </td>
+                            <td style="width: 15%;"></td>
+                            <td style="width: 5%; padding-left: 10px;"></td>
+                            <td style="width: 10%; padding-left: 35px;"></td>
+                            <td style="width: 10%; "></td>
+                        </tr>
+                        <tr style="height: 50px;">
                             <td style="width: 15%;">Tổng tiền</td>
                             <td style="width: 25%; padding-left: 10px;">{{restApiInvoice.InvoiceDetails.totalPrice}}
                             </td>
                             <td style="width: 15%;">Chiết khấu</td>
-                            <td style="width: 5%; padding-left: 10px;">5%</td>
+                            <td style="width: 5%; padding-left: 10px;">{{discountName}}</td>
                             <td style="width: 10%; padding-left: 35px;">Thực trả</td>
                             <td style="width: 10%; ">{{restApiInvoice.InvoiceDetails.realPay}}</td>
                         </tr>
@@ -114,11 +140,192 @@
                                     style="font-size: 20px; margin-top: 10px; margin-bottom: 0px; height: 70px; width: 290px; margin-left: 10px;"
                                     class="btn btn-primary" (click)="thanhToan()"> Thanh toán </button>
                             </td>
+                            <!-- <td><button (click)="print(restApiInvoice.InvoiceDetails.id)">print</button></td> -->
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
+    </div>
+</div>
+
+
+<!-- in hoa don -->
+<div id="print-section" hidden>
+    <div class="invoice-box">
+        <!-- <div id="content-img" style="position: relative;">
+        {{invoice.logotop}}
+        <img class="logo-company" [ngStyle]="{'width': invoice.logoWidth ? invoice.logoWidth : '10%' , 'top': invoice.logoTop ? invoice.logoTop : '-20',
+                        'left': invoice.logoLeft ? invoice.logoLeft : '0'}" style="position: absolute; "
+          src="https://s3.amazonaws.com/clientes.files/logo/20603422806.png">
+      </div> -->
+        <table cellpadding="0" cellspacing="0" style="margin-top: 20px;">
+            <tbody>
+                <tr class="top">
+                    <td colspan="4">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td class="company-data" style="text-align: center; vertical-align: middle;">
+                                        <strong>KAMAR COFFEE CHAIN </strong><br>
+                                        <!-- <label style="font-size: 14px;"> {{invoice?.supplier?.address}} <br>
+                                            {{invoice?.supplier?.ubigeo}} </label> -->
+                                    </td>
+                                    <!-- <td id="border-document" style="text-align: center; vertical-align: middle;"> -->
+                                    <!-- <table>
+                                            <tbody>
+                                                <tr>
+                                                    <td style="text-align: center">RUC:
+                                                        {{invoice?.supplier?.numberDocument}}</td>
+                                                </tr>
+                                                <tr class="name-invoice">
+                                                    <td style="text-align: center">{{invoice?.invoiceName}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="text-align: center">
+                                                        {{invoice?.serie}}-{{invoice?.correlative}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table> -->
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+                <tr class="information">
+                    <td colspan="4">
+                        <table>
+                            <tbody style="font-size: 14px;">
+                                <tr>
+                                    <td class="client-data"> Thời gian: {{timeprint}}</td>
+                                    <td style="float: left;"> Số hóa đơn: {{idInvoice}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Thu ngân:
+                                        {{cashierName}}
+                                    </td>
+                                    <td style="float: left;">Loại đơn hàng: {{restApiInvoice.InvoiceDetails.orderType}}</td>
+                                </tr>
+                                <tr>
+                                    <td *ngIf="customerName === null || customerName===''">
+                                        <!-- {{invoicedetail.customerName}} -->
+                                    </td>
+                                    <td *ngIf="customerName !== null">Tên khách hàng:
+                                        {{customerName}}
+                                    </td>
+                                    <td style="float: left;">Bàn số: {{numberpositon}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table style="margin-top: -35px; line-height: 15px;">
+            <tbody style="font-size: 13px;">
+
+                <tr class="heading">
+                    <td class="head-serial"> STT </td>
+                    <td class="head-description"> Tên món </td>
+                    <td class="head-quantity"> Số lượng </td>
+                    <td class="head-price"> Đơn giá </td>
+                    <td class="head-total"> Thành tiền </td>
+                </tr>
+                <tr class="item" *ngFor="let invoicedetail of PrintInvoiceList">
+                    <td class="serial"> {{invoicedetail.serial}} </td>
+                    <td class="description"> {{invoicedetail.drinkName}} </td>
+                    <td class="quantity"> {{invoicedetail.amount}} </td>
+                    <td class="price"> {{invoicedetail.unitPrice}} </td>
+                    <td class="total"> {{invoicedetail.unitPrice * invoicedetail.amount}} </td>
+                </tr>
+            </tbody>
+        </table>
+        <table cellpadding="0" cellspacing="0" style="margin-top: 10px;" id="border-total">
+            <tbody>
+                <tr class="total">
+                    <!-- <td style="font-size: 12px; text-align: left;">SON: {{invoice?.totalLetter}} <br>
+                        <label *ngIf="invoice.status === '03'">COMPROBANTE ANULADO</label> <br>
+                        <label *ngIf="!invoice.isProduction">COMPROBANTE DE PRUEBA SIN VALOR</label> <br>
+                        <label *ngIf="invoice.serieCorrelativeGuia">{{invoice.serieCorrelativeGuia}}</label>
+                    </td> -->
+                    <td style="width: 20% ;" ></td>
+                    <td style="width: 20% ;" > </td>
+                    <td style="width: 25% ;" > </td>
+                    <td style="width: 35% ; font-weight: lighter;" >
+                        VAT: Đã bao gồm VAT
+                    </td>
+                </tr>
+                <tr class="total">
+                    <td style="width: 20% ;" ></td>
+                    <td style="width: 20% ;" > </td>
+                    <td style="width: 25% ;" > </td>
+                    <td style="width: 35% ; font-weight: lighter;" >
+                    
+                        Tổng giảm giá:
+                        {{totaldiscount}}
+                        
+                    </td>
+                </tr>
+                <tr class="total">
+                    <td style="width: 20% ;" ></td>
+                    <td style="width: 20% ;" > </td>
+                    <td style="width: 25% ;" > </td>
+                    <td style="width: 35% ; font-weight: lighter;" >
+                        
+                        Tổng giá: {{totalPrice}}
+                    </td>
+                </tr>
+                <tr class="total">
+                    <td style="width: 20% ;" ></td>
+                    <td style="width: 20% ;" > </td>
+                    <td style="width: 25% ;" > </td>
+                    <td style="width: 35% ; font-weight: lighter;" >
+                        
+                        Thực trả:
+                        {{realPay}} 
+                    </td>
+                </tr>
+                <tr class="total">
+                    <td style="width: 20% ;" ></td>
+                    <td style="width: 20% ;" > </td>
+                    <td style="width: 25% ;" > </td>
+                    <td style="width: 35% ; font-weight: lighter;" >
+                        <!-- Tiền khách đưa: -->
+                    </td>
+                </tr>
+                <tr class="total">
+                    <td style="width: 20% ;" ></td>
+                    <td style="width: 20% ;" > </td>
+                    <td style="width: 25% ;" > </td>
+                    <td style="width: 35% ; font-weight: lighter;" >
+                        
+                        <!-- Tiền thối: -->
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table cellpadding="0" cellspacing="0">
+            <tbody style="font-size: 13px;">
+                <tr class="qr">
+                    <td colspan="4">
+                        <table>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <!-- <ngx-qrcode qrc-element-type="text" [qrc-value]="qrInvoice" ></ngx-qrcode> -->
+                                        <br> KAMAR COFFEE {{branchshop}}
+                                        <br> Password wifi: kamarcoffee
+                                        <br> Cảm ơn quý khách và hẹn gặp lại
+                                        <!-- <br> Comprobante emitido por www.perufact.pe -->
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 <!-- <button class="btn btn-primary" style="background-color: blue;  margin-top: -82px; margin-left: 300px;"></button>

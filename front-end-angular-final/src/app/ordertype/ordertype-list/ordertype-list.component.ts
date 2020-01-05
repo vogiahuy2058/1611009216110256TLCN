@@ -95,6 +95,7 @@ export class OrdertypeListComponent implements OnInit {
       //token end
       this.restApi.employeetypeDetails.id = null;
       this.restApi.employeetypeDetails.name = '';
+      this.restApi.initializeFormGroup();
       const dialogConfig = new MatDialogConfig();
       dialogConfig.disableClose = true;
       dialogConfig.autoFocus = true;
@@ -111,6 +112,7 @@ export class OrdertypeListComponent implements OnInit {
     } else {
       //token end
       this.restApi.employeetypeDetails = employeetype;
+      this.restApi.editFormGroup(employeetype);
       const dialogConfig = new MatDialogConfig();
       dialogConfig.disableClose = true;
       dialogConfig.autoFocus = true;

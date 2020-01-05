@@ -95,16 +95,19 @@ export class CustomerListComponent implements OnInit {
       this.router.navigate(['login'])
     } else {
       //token end
-      this.restApi.employeetypeDetails.id = null;
-      this.restApi.employeetypeDetails.name = '';
-      this.restApi.employeetypeDetails.address = '';
-      this.restApi.employeetypeDetails.birthDay = '';
-      this.restApi.employeetypeDetails.customerType = '';
-      this.restApi.employeetypeDetails.email = '';
-      this.restApi.employeetypeDetails.note = '';
-      this.restApi.employeetypeDetails.phone = '';
-      this.restApi.employeetypeDetails.sex = true;
-      this.restApi.employeetypeDetails.totalPurchase = null;
+      // this.restApi.employeetypeDetails.id = null;
+      // this.restApi.employeetypeDetails.name = '';
+      // this.restApi.employeetypeDetails.address = '';
+      // this.restApi.employeetypeDetails.birthDay = '';
+      // this.restApi.employeetypeDetails.customerType = '';
+      // this.restApi.employeetypeDetails.email = '';
+      // this.restApi.employeetypeDetails.note = '';
+      // this.restApi.employeetypeDetails.phone = '';
+      // this.restApi.employeetypeDetails.sex = true;
+      // this.restApi.employeetypeDetails.totalPurchase = null;
+      //validate s
+      this.restApi.initializeFormGroup();
+      //validate e
       const dialogConfig = new MatDialogConfig();
       dialogConfig.disableClose = true;
       dialogConfig.autoFocus = true;
@@ -115,12 +118,16 @@ export class CustomerListComponent implements OnInit {
   }
   onUpdate(employeetype) {
     //token start
+    
     this.token.checklogin()
     if (!this.token.getToken()) {
       this.router.navigate(['login'])
     } else {
       //token end
     this.restApi.employeetypeDetails = employeetype;
+    //validate s
+    this.restApi.editFormGroup(employeetype);
+    //validate e
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;

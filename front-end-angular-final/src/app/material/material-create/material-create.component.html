@@ -43,15 +43,65 @@
 
 <mat-toolbar>
   <!-- sửa sòng span đầu tiên thành <span>{{id?"Modify Employee":"New Employee"}}</span> -->
-  <span>{{id?"Cập nhật nguyên liệu":"Tạo mới nguyên liệu"}}</span>
+  <span>{{restApi.form.controls['id'].value?"Cập nhật nguyên liệu":"Tạo mới nguyên liệu"}}</span>
   <span class="fill-remaining-space"></span>
   <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabIndex="-1">
     <mat-icon>clear</mat-icon>
   </button>
 </mat-toolbar>
-<div class="container custom-container" style="margin-left: 0px; margin-top: 30px;">
+<form [formGroup]="restApi.form" class="normal-form" (submit)="onSubmit()">
+  <div class="controles-container">
+    <input type="hidden" formControlName="id">
+    <mat-form-field>
+      <input formControlName="name" matInput placeholder="Tên nguyên liệu*">
+      <mat-error>Đây là trường bắt buộc.</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Loại nguyên liệu</mat-label>
+      <mat-select [(value)]="selectedProfile">
+        <ng-container *ngFor="let materialtype of contentDetail">
+          <mat-option [value]="materialtype.name">{{materialtype.name}}</mat-option>
+        </ng-container>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Đơn vị đo lường</mat-label>
+      <mat-select [(value)]="selectedProfile1">
+        <ng-container *ngFor="let unit of contentDetail1">
+          <mat-option [value]="unit.name">{{unit.name}}</mat-option>
+        </ng-container>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field>
+      <input formControlName="inventory" matInput placeholder="Thực tồn">
+      <mat-error>Đây là trường bắt buộc.</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input formControlName="maxInventory" matInput placeholder="Tồn tối đa">
+      <mat-error>Đây là trường bắt buộc.</mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <input formControlName="minInventory" matInput placeholder="Tồn tối thiểu">
+      <mat-error>Đây là trường bắt buộc.</mat-error>
+    </mat-form-field>
+    <div class="button-row">
+      <button mat-raised-button color="primary" style="float: right;" type="submit"
+        [disabled]="restApi.form.invalid">Submit</button>
+      <button mat-raised-button color="warn" style="float: right;" (click)="onClear()">Clear</button>
+    </div>
+
+  </div>
+
+
+
+
+</form>
+
+
+
+<!-- <div class="container custom-container" style="margin-left: 0px; margin-top: 30px;">
   <div class="col-md-12">
-    <!-- <h3 class="mb-3 text-center">Create Employee</h3> -->
+    
     <div class="form-group">
       <input type="text" [(ngModel)]="restApi.employeetypeDetails.name" class="form-control" placeholder="Tên nguyên liệu">
     </div>
@@ -82,20 +132,12 @@
                 </option>
             </select>
         </div>
-    <!-- <div class="form-group">
-      <input type="text" [(ngModel)]="restApi.employeetypeDetails.name" class="form-control" placeholder="Loại nhân viên">
-    </div> -->
+    
     <div class="button-row" style="float: right;">
-        <!-- sửa các button lại như vầy -->
+        
         <button *ngIf="id === null" mat-raised-button color="primary" (click)="addEmployeetype()">Xác nhận</button>
         <button *ngIf="id !== null" mat-raised-button color="primary" (click)="modifyEmployeetype()">Xác nhận</button>
-        <!-- <button mat-raised-button color="warn" (click)="onClear()">Clear</button> -->
+        
       </div>
-    <!-- <div class="form-group">
-      <button class="btn btn-success btn-lg btn-block" (click)="addEmployeetype()">Create Employee</button>
-    </div> -->
   </div>
-</div>
-
-
-
+</div> -->

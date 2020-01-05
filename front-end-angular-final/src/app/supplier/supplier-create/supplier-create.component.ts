@@ -58,7 +58,35 @@ export class SupplierCreateComponent implements OnInit {
       this.router.navigate(['/home'])
     })
   }
+  onSubmit() {
+    if (this.restApi.form.valid) {
+      if (!this.restApi.form.get('id').value) {
+       
+        this.restApi.createEmployeetype(this.restApi.form.value).subscribe((data: {}) => {
+          this.notificationService.success('Thêm thành công');
+          this.restApi.form.reset(); //thêm vào
+          this.onClose();
+          this.CheckRegion.danhco = 'supplier';
+          this.router.navigate(['/home'])
+        })
+      } else {
+        this.restApi.updateEmployeetype(this.restApi.form.value).subscribe((data: {}) => {
+          this.notificationService.success('Sửa thành công');
+          this.restApi.form.reset();  //thêm vào
+          this.onClose();
+          this.CheckRegion.danhco = 'supplier';
+          this.router.navigate(['/home'])
+        })
+      }
+    }
+  }
+  onClear() {
+    this.restApi.form.reset();
+    this.restApi.initializeFormGroup();
+    this.notificationService.success('Nhập lại thành công');
+  }
   onClose() {
+    this.restApi.form.reset();  //thêm vào
     this.dialogRef.close();
     this.CheckRegion.danhco = 'supplier';
     this.router.navigate(['/home'])

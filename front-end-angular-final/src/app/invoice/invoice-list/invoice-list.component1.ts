@@ -56,11 +56,6 @@ export class InvoiceListComponent implements OnInit {
       username: this.token.getUsername(),
       authorities: this.token.getAuthorities()
     };
-    //token start
-    if (this.token.getToken()) {
-      this.token.checklogin()
-    }
-    //token end
     if (!this.token.getToken()) {
       this.router.navigate(['login'])
     } else {
@@ -98,34 +93,34 @@ export class InvoiceListComponent implements OnInit {
     this.loadEmployeetype()
     this.loadBranchshop()
   }
-  Filter() {
+  Filter(){
     console.log(this.branchshop)
     this.count = 1;
     this.fromdate = this.datepipe.transform(this.fromdate, 'yyyy-MM-dd');
     this.todate = this.datepipe.transform(this.todate, 'yyyy-MM-dd');
-    this.CurrentTime = new Date().getFullYear() + '-' + new Date().getDate() + '-' + new Date().getMonth(), 1;
-    if (this.fromdate == null || this.todate == null) {
+    this.CurrentTime = new Date().getFullYear() + '-' + new Date().getDate() + '-'+  new Date().getMonth(), 1;
+    if(this.fromdate == null || this.todate == null){
       window.alert('Không để trống trường từ ngày hoặc đến ngày')
-    } else if (this.branchshop == null) {
+    }else if(this.branchshop == null){
       window.alert('Vui lòng chọn chi nhánh xuất')
-    } else if (this.fromdate > this.todate) {
+    }else if(this.fromdate > this.todate){
       window.alert('Vui lòng nhập ngày bắt đầu trước ngày kết thúc')
       console.log(this.CurrentTime)
-    } else if (this.fromdate > this.CurrentTime) {
+    }else if(this.fromdate > this.CurrentTime){
       console.log(this.fromdate + ' > ' + this.CurrentTime)
       window.alert('Vui lòng không chọn ngày bắt đầu sau ngày hôm nay')
-    } else if (this.todate > this.CurrentTime) {
+    }else if(this.todate > this.CurrentTime){
       console.log(this.todate + ' > ' + this.CurrentTime)
       window.alert('Vui lòng không chọn ngày kết thúc sau ngày hôm nay')
-    } else {
-      return this.restApi.getEmployeetypefromdatetodate(this.fromdate, this.todate, this.branchshop).subscribe((data: {}) => {
+    }else{
+      return this.restApi.getEmployeetypefromdatetodate(this.fromdate,this.todate,this.branchshop).subscribe((data: {}) => {
         this.Content = data;
         this.chRef.detectChanges();
         const table: any = $('table');
         this.dataTable = table.DataTable();
       })
     }
-
+   
     // var d = new Date(this.fromdate);
     // this.fromdate
     // d.setHours(0, -d.getTimezoneOffset(), 0, 0)
@@ -134,19 +129,9 @@ export class InvoiceListComponent implements OnInit {
   }
   loadBranchshop() {
     return this.restApiBranchshop.getEmployeetypes().subscribe((data: {}) => {
-      this.ContentBranchshop = data;
+      this.ContentBranchshop = data; 
     })
   }
-  // loadlaitrang() {
-  //   if (this.DrinktypeDetails.drinkType == "1") {
-  //     this.loadDrink();
-  //     console.log('vô rồi');
-  //   } else {
-  //     this.loadDrinkBySort(this.DrinktypeDetails.drinkType);
-  //     console.log('ra rồi');
-  //   }
-  // }
-
 
   loadEmployeetype() {
     return this.restApi.getEmployeetypes().subscribe((data: {}) => {
@@ -159,17 +144,10 @@ export class InvoiceListComponent implements OnInit {
 
   // Delete employee
   deleteEmployeetype(id) {
-    //token start
-    this.token.checklogin()
-    if (!this.token.getToken()) {
-      this.router.navigate(['login'])
-    } else {
-      //token end
-      if (window.confirm('Are you sure, you want to delete?')) {
-        this.restApi.deleteEmployeetype(id).subscribe(data => {
-          this.loadEmployeetype()
-        })
-      }
+    if (window.confirm('Are you sure, you want to delete?')) {
+      this.restApi.deleteEmployeetype(id).subscribe(data => {
+        this.loadEmployeetype()
+      })
     }
   }
   logout() {
@@ -178,16 +156,10 @@ export class InvoiceListComponent implements OnInit {
     //window.location.reload();
   }
   downloadCSV() {
-    //token start
-    this.token.checklogin()
-    if (!this.token.getToken()) {
-      this.router.navigate(['login'])
-    } else {
-      //token end
-      new AngularCsv(JSON.stringify(this.Content.content), "InvoiceReport", this.csvOptions);
-    }
 
+    new AngularCsv(JSON.stringify(this.Content.content), "InvoiceReport", this.csvOptions);
   }
+
 }
 
 

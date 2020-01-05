@@ -5,6 +5,7 @@ import { Observable,throwError  } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { Contentmaterialtype } from './contentmaterialtype';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +21,22 @@ export class MaterialtypeRestApiService {
     CRUD Methods for consuming RESTful API
   =========================================*/
 
+  form: FormGroup = new FormGroup({
+    id: new FormControl(0),
+    name: new FormControl('', Validators.required)
+  });
+  initializeFormGroup() {
+    this.form.setValue({
+      id: null,
+      name: '',
+    });
+  }
+  editFormGroup(object) {
+    this.form.setValue({
+      id: object.id,
+      name: object.name,
+    });
+  }
   // Http Options
   httpOptions = {
     headers: new HttpHeaders({

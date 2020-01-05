@@ -18,6 +18,9 @@ export class DrinkCreateComponent implements OnInit {
   id: any;
   info: any;
   Content: any = [];
+  //validate s dùng cho selectbox
+  contentDetail: any = []
+  selectedProfile: any = []
   constructor(
     public CheckRegion: CheckService,
     public restApi: DrinkRestApiService,
@@ -44,14 +47,61 @@ export class DrinkCreateComponent implements OnInit {
   loadEmployeetype() {
     return this.restApi1.getEmployeetypes().subscribe((data: {}) => {
       this.Content = data;
+      //validate s 
+      this.contentDetail = this.Content.content;
+      if (!this.restApi.form.get('id').value) {
+        this.selectedProfile = this.contentDetail[0].name;
+        // this.gender = true
+        console.log('drinktype' + this.selectedProfile)
+      } else {
+        this.selectedProfile = this.restApi.form.get('drinkType').value
+
+        // this.gender = this.restApi.form.get('sex').value
+        console.log('drinktype' + this.selectedProfile)
+      }
+      //validate e
       console.log('trong hàm' + this.Content);
     })
   }
+//validate s 
+onSubmit() {
+  if (this.restApi.form.valid) {
+    //nếu có selectbox
+    this.restApi.form.get('drinkType').setValue(this.selectedProfile)
+    
+    if (!this.restApi.form.get('id').value) {
+    
+      this.restApi.createEmployeetype(this.restApi.form.value).subscribe((data: {}) => {
+        this.notificationService.success('Thêm thành công');
+        this.restApi.form.reset(); //thêm vào
+        this.onClose();
+        this.CheckRegion.danhco = 'drink';
+        this.router.navigate(['/home'])
+      })
+    } else {
 
+      this.restApi.updateEmployeetype(this.restApi.form.value).subscribe((data: {}) => {
+        this.notificationService.success('Sửa thành công');
+        this.restApi.form.reset();  //thêm vào
+        this.onClose();
+        this.CheckRegion.danhco = 'drink';
+        this.router.navigate(['/home'])
+      })
+    }
+    // this.restApi.updateEmployee(this.restApi.form.value);
+    //this.service.initializeFormGroup();
+    // this.notificationService.success(':: Submitted successfully');
+    // this.onClose();
+    // this.CheckRegion.danhco = 'employeetype';
+    // this.router.navigate(['/home'])
+  }
+}
+  
   addEmployeetype() {
     this.restApi.employeetypeDetails.id = 0;
     this.restApi.createEmployeetype(this.restApi.employeetypeDetails).subscribe((data: {}) => {
       //////////
+      this.restApi.form.reset();//thêm vào
       this.notificationService.success('Thêm thành công');
       this.onClose();
       //biến này set theo tên của folder tổng
@@ -69,10 +119,19 @@ export class DrinkCreateComponent implements OnInit {
     })
   }
   onClose() {
+    //validate s
+    this.restApi.form.reset(); //thêm bước này
+    //validate e
     this.dialogRef.close();
     this.CheckRegion.danhco = 'drink';
     this.router.navigate(['/home'])
   }
+   //validate s
+  onClear() {
+    this.restApi.form.reset();
+    this.restApi.initializeFormGroup();
+    this.notificationService.success('Nhập lại thành công');
+  }//validate e
 }
 
 

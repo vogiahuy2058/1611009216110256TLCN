@@ -5,7 +5,7 @@ import { Observable,throwError  } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { Contentbranchshop } from './contentbranchshop';
-
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 @Injectable({
   providedIn: 'root'
 })
@@ -19,7 +19,29 @@ export class BranchshopRestApiService {
    /*========================================
     CRUD Methods for consuming RESTful API
   =========================================*/
-
+//validate s
+form: FormGroup = new FormGroup({
+  id: new FormControl(0),
+  name: new FormControl('', Validators.required),
+  address: new FormControl('', Validators.required),
+  
+});
+initializeFormGroup() {
+  this.form.setValue({
+   id: null,
+    address: '',
+    name: '',
+  });
+}
+editFormGroup(object) {
+  this.form.setValue({
+    id: object.id,
+    name: object.name,
+    address: object.address,
+    
+  });
+}
+ //validate e
   // Http Options
   httpOptions = {
     headers: new HttpHeaders({

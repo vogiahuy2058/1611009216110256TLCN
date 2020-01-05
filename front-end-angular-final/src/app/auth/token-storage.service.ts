@@ -26,8 +26,8 @@ export class TokenStorageService {
 
     payload = window.atob(payload)
     var payloadArray = JSON.parse(payload);
-    console.log(payloadArray.roles[1].authority)
-    console.log('haha ' + JSON.stringify(payload))
+    // console.log(payloadArray.roles[1].authority)
+    // console.log('haha ' + JSON.stringify(payload))
     return payloadArray.exp;
   }
   public getdateinit(): string {
@@ -41,24 +41,25 @@ export class TokenStorageService {
     return payloadArray.iat;
   }
   checklogin(){
-    let exp = this.getdateexpire()
+      let exp = this.getdateexpire()
       let iat = this.getdateinit()
       let now = new Date().getTime();
       var check = (parseFloat(exp) - parseFloat(iat)) * 1000
       let check1 = now - check
-      var setupTime = localStorage.getItem('setupTime');
-      if (setupTime == null) {
-        localStorage.setItem('setupTime', now.toString())
-      } else {
-        console.log(now - check + ' ' + parseFloat(setupTime) )
-        console.log('xóa cache')
-        if (now - check > parseFloat(setupTime)) {
+      var inittime = parseFloat(iat) * 1000
+      // var setupTime = localStorage.getItem('setupTime');
+      // if (setupTime == null) {
+      //   localStorage.setItem('setupTime', now.toString())
+      // } else {
+      //   console.log(now - check + ' ' + parseFloat(setupTime) )
+      //   console.log('xóa cache')
+        if (now - check > inittime) {
           console.log('xóa cache')
           localStorage.clear()
           window.sessionStorage.clear();
           // localStorage.setItem('setupTime', now.toString());
         }
-      }
+      // }
       console.log(exp + ' ' + iat + ' ' + now + ' ' +  check  + ' ' +  check1)
   }
   // public setuptime(): void {

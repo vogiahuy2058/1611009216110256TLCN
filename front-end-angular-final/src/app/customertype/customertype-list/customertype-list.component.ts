@@ -105,8 +105,11 @@ export class CustomertypeListComponent implements OnInit,AfterViewInit{
     if (!this.token.getToken()) {
       this.router.navigate(['login'])
     } else {
-    this.restApi.employeetypeDetails.id = null;
-    this.restApi.employeetypeDetails.name = '';
+    // this.restApi.employeetypeDetails.id = null;
+    // this.restApi.employeetypeDetails.name = '';
+    //validate s
+    this.restApi.initializeFormGroup();
+    //validate e
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -122,6 +125,9 @@ export class CustomertypeListComponent implements OnInit,AfterViewInit{
       this.router.navigate(['login'])
     } else {
     this.restApi.employeetypeDetails = employeetype;
+     //validate s
+     this.restApi.editFormGroup(employeetype);
+     //validate e
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;

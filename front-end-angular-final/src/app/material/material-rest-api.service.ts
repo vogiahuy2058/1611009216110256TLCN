@@ -5,6 +5,7 @@ import { Observable,throwError  } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import { Contentmaterial } from './contentmaterial';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,26 @@ export class MaterialRestApiService {
    /*========================================
     CRUD Methods for consuming RESTful API
   =========================================*/
-
+  form: FormGroup = new FormGroup({
+    id: new FormControl(0),
+    inventory: new FormControl('' , Validators.required),
+    materialType: new FormControl(''),
+    maxInventory: new FormControl(0 , Validators.required),
+    minInventory: new FormControl(0 , Validators.required),
+    name: new FormControl('', Validators.required),
+    unit: new FormControl(''),
+  });
+  initializeFormGroup() {
+    this.form.setValue({
+      id:null, inventory: null,materialType:'',maxInventory: null,minInventory: null,name: '', unit: ''
+    });
+  }
+  editFormGroup(object) {
+    this.form.setValue({
+      id:object.id, inventory: object.inventory,materialType:object.materialType,maxInventory: object.maxInventory,
+      minInventory: object.minInventory,name: object.name, unit: object.unit
+    });
+  }
   // Http Options
   httpOptions = {
     headers: new HttpHeaders({

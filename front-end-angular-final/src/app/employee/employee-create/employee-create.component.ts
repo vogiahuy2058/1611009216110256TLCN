@@ -20,6 +20,10 @@ export class EmployeeCreateComponent implements OnInit {
   id: any;
   Content:any = [];
   Content1:any = [];
+  contentDetail1: any = []
+  selectedProfile1: any = []
+  contentDetail: any = []
+  selectedProfile: any = []
   constructor(
     public CheckRegion: CheckService,
     public restApi2: BranchshopRestApiService,
@@ -48,19 +52,64 @@ export class EmployeeCreateComponent implements OnInit {
   loadEmployeetype() {
     return this.restApi1.getEmployeetypes().subscribe((data: {}) => {
       this.Content = data;
-      console.log('trong hàm'+this.Content);
+      this.contentDetail = this.Content.content;
+      if (!this.restApi.form.get('id').value) {
+        this.selectedProfile = this.contentDetail[0].name;
+      } else {
+        this.selectedProfile = this.restApi.form.get('employeeType').value
+
+      }
     })
   }
   loadEmployeetype1() {
     return this.restApi2.getEmployeetypes().subscribe((data: {}) => {
       this.Content1 = data;
-      console.log('trong hàm'+this.Content1);
+      this.contentDetail1 = this.Content1.content;
+      if (!this.restApi.form.get('id').value) {
+        this.selectedProfile1 = this.contentDetail1[0].name;
+      } else {
+        this.selectedProfile1 = this.restApi.form.get('branchShop').value
+
+      }
     })
   }
-
+  onSubmit() {
+    if (this.restApi.form.valid) {
+     
+      this.restApi.form.get('employeeType').setValue(this.selectedProfile)
+      this.restApi.form.get('branchShop').setValue(this.selectedProfile1)
+      if (!this.restApi.form.get('id').value) {
+        this.restApi.createEmployeetype(this.restApi.form.value).subscribe((data: {}) => {
+          this.notificationService.success('Thêm thành công');
+          this.restApi.form.reset(); //thêm vào
+          this.onClose();
+          this.CheckRegion.danhco = 'employee';
+          this.router.navigate(['/home'])
+        })
+      } else {
+        
+        this.restApi.updateEmployeetype(this.restApi.form.value).subscribe((data: {}) => {
+          this.notificationService.success('Sửa thành công');
+          this.restApi.form.reset();  //thêm vào
+          this.onClose();
+          this.CheckRegion.danhco = 'employee';
+          this.router.navigate(['/home'])
+        })
+      }
+      // this.restApi.updateEmployee(this.restApi.form.value);
+      //this.service.initializeFormGroup();
+      // this.notificationService.success(':: Submitted successfully');
+      // this.onClose();
+      // this.CheckRegion.danhco = 'employeetype';
+      // this.router.navigate(['/home'])
+    }
+  }
   addEmployeetype() {
     this.restApi.employeetypeDetails.id = 0;
     this.restApi.createEmployeetype(this.restApi.employeetypeDetails).subscribe((data: {}) => {
+       //validate s
+    this.restApi.form.reset(); //thêm bước này
+    //validate e
       this.notificationService.success('Thêm thành công');
       this.onClose();
       //biến này set theo tên của folder tổng
@@ -78,10 +127,17 @@ export class EmployeeCreateComponent implements OnInit {
     })
   }
   onClose() {
+     //validate s
+     this.restApi.form.reset(); //thêm bước này
+     //validate e
     this.dialogRef.close();
     this.CheckRegion.danhco = 'employee';
     this.router.navigate(['/home'])
   }
-
+  onClear() {
+    this.restApi.form.reset();
+    this.restApi.initializeFormGroup();
+    this.notificationService.success('Nhập lại thành công');
+  }
 }
 

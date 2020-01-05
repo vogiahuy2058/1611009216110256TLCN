@@ -103,6 +103,7 @@ export class SupplierListComponent implements OnInit {
     this.restApi.employeetypeDetails.phone = '';
     this.restApi.employeetypeDetails.taxCode = '';
     this.restApi.employeetypeDetails.totalPurchase = null;
+    this.restApi.initializeFormGroup();
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -119,6 +120,7 @@ export class SupplierListComponent implements OnInit {
     } else {
       //token end
     this.restApi.employeetypeDetails = employeetype;
+    this.restApi.editFormGroup(employeetype);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;
@@ -135,6 +137,7 @@ export class SupplierListComponent implements OnInit {
     } else {
       //token end
     this.restApi.employeetypeDetails = employeetype;
+    this.restApi.editFormGroup(employeetype);
     const dialogConfig = new MatDialogConfig();
     dialogConfig.disableClose = true;
     dialogConfig.autoFocus = true;

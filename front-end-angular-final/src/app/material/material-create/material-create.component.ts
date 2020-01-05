@@ -17,13 +17,17 @@ import { MatDialogRef } from '@angular/material';
 export class MaterialCreateComponent implements OnInit {
 
   // @Input() employeetypeDetails = { inventory: null,materialType:'',maxInventory: null,minInventory: null,name: '', unit: ''}
-  id:any;
+  id: any;
   info: any;
   Content: any = [];
   Content1: any = [];
+  contentDetail1: any = []
+  selectedProfile1: any = []
+  contentDetail: any = []
+  selectedProfile: any = []
   constructor(
     public CheckRegion: CheckService,
-    public restApi: MaterialRestApiService, 
+    public restApi: MaterialRestApiService,
     public restApi1: MaterialtypeRestApiService,
     public restApi2: UnitRestApiService,
     private token: TokenStorageService,
@@ -39,28 +43,78 @@ export class MaterialCreateComponent implements OnInit {
       username: this.token.getUsername(),
       authorities: this.token.getAuthorities()
     };
-    if(!this.token.getToken()){
+    if (!this.token.getToken()) {
       this.router.navigate(['login'])
     }
     this.loadtabletype();
     this.loadtabletype1();
     this.id = this.restApi.employeetypeDetails.id
   }
-  loadtabletype(){
+  loadtabletype() {
     this.restApi1.getEmployeetypes().subscribe((data: {}) => {
       this.Content = data;
+      this.contentDetail = this.Content.content;
+      if (!this.restApi.form.get('id').value) {
+        this.selectedProfile = this.contentDetail[0].name;
+      } else {
+        this.selectedProfile = this.restApi.form.get('materialType').value
+      }
     })
   }
-  loadtabletype1(){
+  loadtabletype1() {
     this.restApi2.getEmployeetypes().subscribe((data: {}) => {
       this.Content1 = data;
+      this.contentDetail1 = this.Content1.content;
+      if (!this.restApi.form.get('id').value) {
+        this.selectedProfile1 = this.contentDetail1[0].name;
+      } else {
+        this.selectedProfile1 = this.restApi.form.get('unit').value
+      }
     })
+  }
+  onSubmit() {
+    if (this.restApi.form.valid) {
+      this.restApi.form.get('unit').setValue(this.selectedProfile1)
+      this.restApi.form.get('materialType').setValue(this.selectedProfile)
+      if (this.restApi.form.get('inventory').value > this.restApi.form.get('maxInventory').value) {
+        window.alert('thực tồn không được vượt quá tồn tối đa')
+      } else if (this.restApi.form.get('inventory').value < this.restApi.form.get('minInventory').value) {
+        window.alert('thực tồn không được nhỏ hơn tồn tối thiểu')
+      } else if (this.restApi.form.get('maxInventory').value < this.restApi.form.get('minInventory').value) {
+        window.alert('tồn tối thiếu phải bé hơn tồn tối đa')
+      } else {
+        if (!this.restApi.form.get('id').value) {
+          this.restApi.createEmployeetype(this.restApi.form.value).subscribe((data: {}) => {
+            this.notificationService.success('Thêm thành công');
+            this.restApi.form.reset(); //thêm vào
+            this.onClose();
+            this.CheckRegion.danhco = 'material';
+            this.router.navigate(['/home'])
+          })
+        } else {
+
+          this.restApi.updateEmployeetype(this.restApi.form.value).subscribe((data: {}) => {
+            this.notificationService.success('Sửa thành công');
+            this.restApi.form.reset();  //thêm vào
+            this.onClose();
+            this.CheckRegion.danhco = 'material';
+            this.router.navigate(['/home'])
+          })
+        }
+      }
+      // this.restApi.updateEmployee(this.restApi.form.value);
+      //this.service.initializeFormGroup();
+      // this.notificationService.success(':: Submitted successfully');
+      // this.onClose();
+      // this.CheckRegion.danhco = 'employeetype';
+      // this.router.navigate(['/home'])
+    }
   }
 
   addEmployeetype() {
     this.restApi.employeetypeDetails.id = 0;
     this.restApi.createEmployeetype(this.restApi.employeetypeDetails).subscribe((data: {}) => {
-//////////
+      //////////
       this.notificationService.success('Thêm thành công');
       this.onClose();
       //biến này set theo tên của folder tổng
@@ -72,12 +126,18 @@ export class MaterialCreateComponent implements OnInit {
     this.restApi.createEmployeetype(this.restApi.employeetypeDetails).subscribe((data: {}) => {
       this.notificationService.success('Sửa thành công');
       this.onClose();
-       //biến này set theo tên của folder tổng
+      //biến này set theo tên của folder tổng
       this.CheckRegion.danhco = 'material';
       this.router.navigate(['/home'])
     })
   }
+  onClear() {
+    this.restApi.form.reset();
+    this.restApi.initializeFormGroup();
+    this.notificationService.success('Nhập lại thành công');
+  }
   onClose() {
+    this.restApi.form.reset();
     this.dialogRef.close();
     this.CheckRegion.danhco = 'material';
     this.router.navigate(['/home'])

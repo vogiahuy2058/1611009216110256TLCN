@@ -172,6 +172,13 @@ export class InvoiceRestApiService {
       catchError(this.handleError)
     )
   }  
+  getAllInvoice(id): Observable<Contentinvoicedetail> {
+    return this.http.get<Contentinvoicedetail>(this.apiURL + '/get-full-invoice?invoiceId=' + id)
+    .pipe(
+      retry(1),
+      catchError(this.handleError)
+    )
+  }  
   deteleInvoiceDetailbyid(drinkId,Id,invoiceId): Observable<Contentinvoicedetail> {
     return this.http.delete<Contentinvoicedetail>(this.apiURLInvoiceDetail + '/delete?drinkId='+ drinkId + '&id='+Id+'&invoiceId=' + invoiceId)
     .pipe(

@@ -86,6 +86,7 @@ export class InvoicedetailComponent implements OnInit {
     this.InvoiceDetail.price = this.InvoiceDetail.amount * this.InvoiceDetail.unitPrice
     
     this.service.InvoiceDetails.totalPrice = this.service.InvoiceDetails.totalPrice + this.InvoiceDetail.price
+    this.service.InvoiceDetails.realPay = this.service.InvoiceDetails.totalPrice - this.service.InvoiceDetails.totalPrice * (5 / 100)
     console.log('list ne : ' + JSON.stringify(this.service.InvoiceDetailList))
     this.service.createInvoiceDetail(this.InvoiceDetail).subscribe((data: {}) => {
       this.service.getmaxidinvoicedetail().subscribe((data: {}) => {

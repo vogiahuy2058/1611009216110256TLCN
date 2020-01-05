@@ -35,55 +35,53 @@
         </div>
     </div>
 </div> -->
-
 <mat-toolbar>
     <!-- sửa sòng span đầu tiên thành <span>{{id?"Modify Employee":"New Employee"}}</span> -->
-    <span>{{id?"Cập nhật nhân viên":"Tạo mới nhân viên"}}</span>
+    <span>{{restApi.form.controls['id'].value?"Cập nhật nhân viên":"Tạo mới nhân viên"}}</span>
     <span class="fill-remaining-space"></span>
     <button class="btn-dialog-close" mat-stroked-button (click)="onClose()" tabIndex="-1">
         <mat-icon>clear</mat-icon>
     </button>
 </mat-toolbar>
-<div class="container custom-container" style="margin-left: 0px; margin-top: 30px;">
-    <div class="col-md-12">
-        <!-- <h3 class="mb-3 text-center">Create Employee</h3> -->
 
-        <div class="form-group">
-            <label for="department1">Chi nhánh</label>
-            <select style="font-size: 15px; height: 50px;" id="department1" name="department1"
-                [(ngModel)]="restApi.employeetypeDetails.branchShop" class="form-control">
-                <option *ngFor="let branchShop of Content1.content" [value]="branchShop.name">
-                    {{branchShop.name}}
-                </option>
-            </select>
-        </div>
-        <div class="form-group">
-            <input style="height: 50px;" type="text" [(ngModel)]="restApi.employeetypeDetails.email" class="form-control"
-                placeholder="Email">
-        </div>
 
-        <div class="form-group">
-            <label for="department">Loại nhân viên</label>
-            <select style="font-size: 15px; height: 50px;" id="department" name="department"
-                [(ngModel)]="restApi.employeetypeDetails.employeeType" class="form-control">
-                <option *ngFor="let employeetype of Content.content" [value]="employeetype.name">
-                    {{employeetype.name}}
-                </option>
-            </select>
+<form [formGroup]="restApi.form" class="normal-form" (submit)="onSubmit()">
+
+    <div class="controles-container">
+        <input type="hidden" formControlName="id">
+        <mat-form-field>
+            <input formControlName="name" matInput placeholder="Họ và tên*">
+            <mat-error>Đây là trường bắt buộc.</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <input formControlName="email" matInput placeholder="Email">
+
+        </mat-form-field>
+
+        <mat-form-field>
+            <mat-label>Loại nhân viên</mat-label>
+            <mat-select [(value)]="selectedProfile">
+                <ng-container *ngFor="let employeetype of contentDetail">
+                    <mat-option [value]="employeetype.name">{{employeetype.name}}</mat-option>
+                </ng-container>
+            </mat-select>
+            <mat-error>Đây là trường bắt buộc.</mat-error>
+        </mat-form-field>
+        <mat-form-field>
+            <mat-label>Chi nhánh</mat-label>
+            <mat-select [(value)]="selectedProfile1">
+                <ng-container *ngFor="let branchshop of contentDetail1">
+                    <mat-option [value]="branchshop.name">{{branchshop.name}}</mat-option>
+                </ng-container>
+            </mat-select>
+            <mat-error>Đây là trường bắt buộc.</mat-error>
+        </mat-form-field>
+
+        <div class="button-row">
+            <button mat-raised-button color="primary" style="float: right;" type="submit"
+                [disabled]="restApi.form.invalid">Submit</button>
+            <button mat-raised-button color="warn" style="float: right;" (click)="onClear()">Clear</button>
         </div>
-        <div class="form-group">
-            <input style="height: 50px;" type="text" [(ngModel)]="restApi.employeetypeDetails.name" class="form-control"
-                placeholder="Tên nhân viên">
-        </div>
-        <div class="button-row" style="float: right;">
-            <!-- sửa các button lại như vầy -->
-            <button *ngIf="id === null" mat-raised-button color="primary" (click)="addEmployeetype()">Xác nhận</button>
-            <button *ngIf="id !== null" mat-raised-button color="primary" (click)="modifyEmployeetype()">Xác
-                nhận</button>
-            <!-- <button mat-raised-button color="warn" (click)="onClear()">Clear</button> -->
-        </div>
-        <!-- <div class="form-group">
-      <button class="btn btn-success btn-lg btn-block" (click)="addEmployeetype()">Create Employee</button>
-    </div> -->
     </div>
-</div>
+
+</form>
