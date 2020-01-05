@@ -1,9 +1,6 @@
 package com.springboot.angular.coffeesystem.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;
@@ -17,6 +14,7 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
+@Builder
 public class Customer extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +25,7 @@ public class Customer extends Auditable<String> {
     private String address;
     private LocalDate birthDay;
     private boolean sex;
-//    @NaturalId
+
     private String email;
     private float totalPurchase;
     private String note;

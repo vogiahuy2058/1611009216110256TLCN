@@ -16,7 +16,7 @@ public interface DrinkRepository extends JpaRepository<Drink, Integer> {
     Page<Drink> findAllByEnable(boolean enable,Pageable pageable);
     Optional<Drink> findByNameAndEnable(String name, boolean enable);
     Optional<Drink> findByIdAndEnable(Integer id, boolean enable);
-    List<Drink> findByDrinkTypeId(Integer id);
+    List<Drink> findByDrinkTypeIdAndEnable(Integer id, boolean enable);
     List<Drink> findByDrinkTypeNameAndEnable(String name, boolean enable);
     @Query("select d from Drink d where d.id  in " +
             "(SELECT dp.drinkPriceId.idDrink FROM DrinkPrice dp) " +

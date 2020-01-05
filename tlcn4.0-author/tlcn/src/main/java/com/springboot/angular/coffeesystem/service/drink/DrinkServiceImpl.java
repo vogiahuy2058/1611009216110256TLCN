@@ -139,7 +139,7 @@ public class DrinkServiceImpl implements DrinkService {
     }
     public ResponseDto deleteDrink(Integer id){
         Drink drink = drinkRepository.findByIdAndEnable(id, true)
-                .orElseThrow(()-> new NotFoundException("Id not found"));
+                .orElseThrow(()-> new NotFoundException("Id drink not found"));
         //delete recipe when drink was deleted
         List<Recipe> recipes = recipeRepository.findByDrinkId(id);
         recipes.forEach(element->{

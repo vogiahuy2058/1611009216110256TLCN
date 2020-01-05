@@ -45,9 +45,7 @@ public class AccountServiceImpl implements AccountService{
 
     @Transactional
     public ResponseDto createAccount(SignUpDto signUpDto){
-//        if(!allowCreateAccount(signUpDto.getUsername(), signUpDto.getIdEmployee())){
-//            return new ResponseDto(HttpStatus.BAD_REQUEST.value(), "Fail to create acccount", null);
-//        }
+
         Account account = new Account(signUpDto.getUsername(), encoder.encode(signUpDto.getPassword()), signUpDto.getEmail());
         Set<String> strRole = signUpDto.getRole();
         Set<Role> roleSet = new HashSet<>();
@@ -88,6 +86,8 @@ public class AccountServiceImpl implements AccountService{
                     roleSet.add(chefRole);
 
                     break;
+                default:
+                    throw new IllegalArgumentException("This role is unsupported");
             }
                 });
 

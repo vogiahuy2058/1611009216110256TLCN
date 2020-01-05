@@ -40,14 +40,25 @@ public class CustomerServiceImpl implements CustomerService{
     @Autowired
     InvoiceService invoiceService;
     public ResponseDto createCustomer(CustomerRequestDto customerRequestDto){
-        Customer customer = this.mapperObject.CustomerDtoToEntity(customerRequestDto);
+//        Customer customer = this.mapperObject.CustomerDtoToEntity(customerRequestDto);
         if(customerRepository.findByPhone(customerRequestDto.getPhone()).isPresent()){
             throw new ExistException("Customer is existed");
         }
         CustomerType customerType = customerTypeRepository.findByNameAndEnable(customerRequestDto.getCustomerType(), true)
                 .orElseThrow(()-> new NotFoundException("Customer type not found"));
-        customer.setCustomerType(customerType);
-        customerRepository.save(customer);
+//        customer.setCustomerType(customerType);
+//        customerRepository.save(customer);
+        customerRepository.save(Customer.builder().
+                name(customerRequestDto.getName())
+                .phone(customerRequestDto.getPhone())
+                .address(customerRequestDto.getAddress())
+                .birthDay(customerRequestDto.getBirthDay())
+                .sex(customerRequestDto.isSex())
+                .email(customerRequestDto.getEmail())
+                .note(customerRequestDto.getNote())
+                .totalPurchase(customerRequestDto.getTotalPurchase())
+                .customerType(customerType)
+                .enable(true).build());
         return new ResponseDto(HttpStatus.OK.value(), "Create customer successful", null);
     }
     @Transactional

@@ -4,15 +4,9 @@ import com.springboot.angular.coffeesystem.dto.PagingResponseDto;
 import com.springboot.angular.coffeesystem.dto.RecipeDto;
 import com.springboot.angular.coffeesystem.dto.ResponseDto;
 import com.springboot.angular.coffeesystem.exception.NotFoundException;
-import com.springboot.angular.coffeesystem.model.Drink;
-import com.springboot.angular.coffeesystem.model.DrinkPrice;
-import com.springboot.angular.coffeesystem.model.Material;
-import com.springboot.angular.coffeesystem.model.Recipe;
+import com.springboot.angular.coffeesystem.model.*;
 import com.springboot.angular.coffeesystem.model.embedding.RecipeId;
-import com.springboot.angular.coffeesystem.repository.DrinkPriceRepository;
-import com.springboot.angular.coffeesystem.repository.DrinkRepository;
-import com.springboot.angular.coffeesystem.repository.MaterialRepository;
-import com.springboot.angular.coffeesystem.repository.RecipeRepository;
+import com.springboot.angular.coffeesystem.repository.*;
 import com.springboot.angular.coffeesystem.util.MapperObject;
 import com.springboot.angular.coffeesystem.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,18 +32,23 @@ public class RecipeServiceImpl implements RecipeService{
     MaterialRepository materialRepository;
     @Autowired
     DrinkPriceRepository drinkPriceRepository;
+    @Autowired
+    UnitRepository unitRepository;
     public ResponseDto createRecipe(RecipeDto recipeDto){
         Recipe recipe = this.mapperObject.RecipeDtoToEntity(recipeDto);
         Drink drink = drinkRepository.findByNameAndEnable(recipeDto.getDrink(),true)
                 .orElseThrow(()-> new NotFoundException("Drink not found"));
         Material material = materialRepository.findByNameAndEnable(recipeDto.getMaterial(), true)
                 .orElseThrow(()-> new NotFoundException("Material not found"));
+        Unit unit = unitRepository.findByNameAndEnable(recipeDto.getUnit(), true)
+                .orElseThrow(()-> new NotFoundException("Unit not found"));
         RecipeId recipeId = new RecipeId();
         recipeId.setDrinkId(drink.getId());
         recipeId.setMaterialId(material.getId());
         recipe.setRecipeId(recipeId);
         recipe.setMaterial(material);
         recipe.setDrink(drink);
+        recipe.setUnit(unit);
         recipeRepository.save(recipe);
 //        DrinkPrice drinkPrice = drinkPriceRepository.findByDrinkPriceIdIdAndEnable(drink.getId(), true)
 //                .orElseThrow(()-> new NotFoundException("Drink not found"));
@@ -102,10 +101,12 @@ public class RecipeServiceImpl implements RecipeService{
                 .orElseThrow(()-> new NotFoundException("Drink not found"));
         Material material = materialRepository.findByNameAndEnable(recipeDto.getMaterial(), true)
                 .orElseThrow(()-> new NotFoundException("Material not found"));
+        Unit unit = unitRepository.findByNameAndEnable(recipeDto.getUnit(), true)
+                .orElseThrow(()-> new NotFoundException("Unit not found"));
         Recipe recipe = recipeRepository.findByDrinkAndMaterial(drink, material)
                 .orElseThrow(()-> new NotFoundException("Recipe not found"));
         recipe.setAmount(recipeDto.getAmount());
-//        recipe.setUnit(recipeDto.getUnit());
+        recipe.setUnit(unit);
         recipe.setMaterial(material);
         recipeRepository.save(recipe);
         return new ResponseDto(HttpStatus.OK.value(), "Edit recipe successful", null);

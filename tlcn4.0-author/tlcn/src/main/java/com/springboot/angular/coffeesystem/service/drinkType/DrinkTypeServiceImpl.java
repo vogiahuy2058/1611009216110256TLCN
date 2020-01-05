@@ -75,7 +75,7 @@ public class DrinkTypeServiceImpl implements DrinkTypeService{
         DrinkType drinkType = drinkTypeRepository.findByIdAndEnable(id, true)
                 .orElseThrow(()-> new NotFoundException("Id not found!"));
        //delete drink when drink type was delete
-        List<Drink> drinkList = drinkRepository.findByDrinkTypeId(id);
+        List<Drink> drinkList = drinkRepository.findByDrinkTypeIdAndEnable(id, true);
         drinkList.forEach(element->{
             drinkService.deleteDrink(element.getId());
         });
