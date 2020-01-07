@@ -195,7 +195,7 @@ public class InvoiceServiceImpl implements InvoiceService{
     public PagingResponseDto getAllInvoicePaging(int page, int size, String sort, String sortColumn) {
         Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
         List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
-        Page<Invoice> invoicePage = invoiceRepository.findAllByEnable(true, pageable);
+        Page<Invoice> invoicePage = invoiceRepository.findAllByEnableAndPaymentStatus(true,true, pageable);
         invoicePage.forEach(element->{
             InvoiceResponseDto invoiceResponseDto = mapperObject.InvoiceEntityToDto(element);
 
@@ -221,6 +221,70 @@ public class InvoiceServiceImpl implements InvoiceService{
                 invoiceResponseDtoPage.getContent(), invoiceResponseDtoPage.getTotalElements(), invoiceResponseDtoPage.getTotalPages(),
                 invoiceResponseDtoPage.getPageable());
     }
+    @Transactional
+    @Override
+    public PagingResponseDto getAllInvoicePagingStatusTrue(int page, int size, String sort, String sortColumn) {
+                Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
+        List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
+        Page<Invoice> invoicePage = invoiceRepository.findAllByEnableAndPaymentStatus(true, true, pageable);
+        invoicePage.forEach(element->{
+            InvoiceResponseDto invoiceResponseDto = mapperObject.InvoiceEntityToDto(element);
+
+            if(element.getCustomer() == null){
+                invoiceResponseDto.setCustomerName(null);
+                invoiceResponseDto.setCustomerPhone(null);
+            }else {
+                invoiceResponseDto.setCustomerName(element.getCustomer().getName());
+                invoiceResponseDto.setCustomerPhone(element.getCustomer().getPhone());
+            }
+//            invoiceResponseDto.setCoffeeTable(element.getCoffeeTable().getName());
+            invoiceResponseDto.setBranchShop(element.getBranchShop().getName());
+            invoiceResponseDto.setOrderType(element.getOrderType().getName());
+            invoiceResponseDto.setDate(element.getDate().
+                    format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+            Employee employee = employeeRepository.findByAccountUsername(element.getLastModifiedBy())
+                    .orElseThrow(()-> new NotFoundException("Username not found"));
+            invoiceResponseDto.setCashierName(employee.getName());
+            invoiceResponseDtos.add(invoiceResponseDto);});
+        Page<InvoiceResponseDto> invoiceResponseDtoPage = new PageImpl<>(invoiceResponseDtos, pageable,
+                invoicePage.getTotalElements() );
+        return new PagingResponseDto<>(
+                invoiceResponseDtoPage.getContent(), invoiceResponseDtoPage.getTotalElements(), invoiceResponseDtoPage.getTotalPages(),
+                invoiceResponseDtoPage.getPageable());
+    }
+
+//    @Override
+//    @Transactional
+//    public PagingResponseDto getAllInvoicePagingStatusTrue(int page, int size, String sort, String sortColumn) {
+//        Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
+//        List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
+//        Page<Invoice> invoicePage = invoiceRepository.findAllByEnableAndPaymentStatusPaging(true, true, pageable);
+//        invoicePage.forEach(element->{
+//            InvoiceResponseDto invoiceResponseDto = mapperObject.InvoiceEntityToDto(element);
+//
+//            if(element.getCustomer() == null){
+//                invoiceResponseDto.setCustomerName(null);
+//                invoiceResponseDto.setCustomerPhone(null);
+//            }else {
+//                invoiceResponseDto.setCustomerName(element.getCustomer().getName());
+//                invoiceResponseDto.setCustomerPhone(element.getCustomer().getPhone());
+//            }
+////            invoiceResponseDto.setCoffeeTable(element.getCoffeeTable().getName());
+//            invoiceResponseDto.setBranchShop(element.getBranchShop().getName());
+//            invoiceResponseDto.setOrderType(element.getOrderType().getName());
+//            invoiceResponseDto.setDate(element.getDate().
+//                    format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+//            Employee employee = employeeRepository.findByAccountUsername(element.getLastModifiedBy())
+//                    .orElseThrow(()-> new NotFoundException("Username not found"));
+//            invoiceResponseDto.setCashierName(employee.getName());
+//            invoiceResponseDtos.add(invoiceResponseDto);});
+//        Page<InvoiceResponseDto> invoiceResponseDtoPage = new PageImpl<>(invoiceResponseDtos, pageable,
+//                invoicePage.getTotalElements() );
+//        return new PagingResponseDto<>(
+//                invoiceResponseDtoPage.getContent(), invoiceResponseDtoPage.getTotalElements(), invoiceResponseDtoPage.getTotalPages(),
+//                invoiceResponseDtoPage.getPageable());
+//    }
+
     @Transactional
     public ResponseDto getInvoiceById(Integer id){
         Invoice invoice = invoiceRepository.findByIdAndEnable(id, true)

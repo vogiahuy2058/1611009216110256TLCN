@@ -10,7 +10,7 @@ import lombok.Setter;
 @Getter
 @Setter
 public class RecipeDto {
-    private Integer amount;
+    private double amount;
     private String unit;
 
     private String material;

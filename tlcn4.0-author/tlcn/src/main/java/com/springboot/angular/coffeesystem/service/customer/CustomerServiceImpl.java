@@ -48,6 +48,7 @@ public class CustomerServiceImpl implements CustomerService{
                 .orElseThrow(()-> new NotFoundException("Customer type not found"));
 //        customer.setCustomerType(customerType);
 //        customerRepository.save(customer);
+
         customerRepository.save(Customer.builder().
                 name(customerRequestDto.getName())
                 .phone(customerRequestDto.getPhone())

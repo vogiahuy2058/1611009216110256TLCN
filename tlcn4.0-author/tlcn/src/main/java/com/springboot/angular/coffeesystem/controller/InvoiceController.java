@@ -33,6 +33,22 @@ public class InvoiceController {
 //        return ResponseEntity.ok(this.invoiceService.getAllInvoicePaging(page, size, sort, sortColumn));
 //    }
 
+//    @GetMapping("/get-all-true")
+//    public ResponseEntity<PagingResponseDto> getAllInvoiceStatusTruePaging(@RequestParam(name = "page", required = false, defaultValue = "0") int page,
+//            @RequestParam(name = "size", required = false, defaultValue = "10") int size,
+//            @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
+//            @RequestParam(name = "column", required = false, defaultValue = "id") String sortColumn){
+//        return  ResponseEntity.ok(this.invoiceService.getAllInvoicePagingStatusTrue(page, size, sort, sortColumn));
+//    }
+
+    @GetMapping("/get-all-true-paging")
+    public ResponseEntity<PagingResponseDto> getAllInvoiceStatusTrue(@RequestParam(name = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(name = "size", required = false, defaultValue = "10") int size,
+            @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
+            @RequestParam(name = "column", required = false, defaultValue = "id") String sortColumn){
+        return  ResponseEntity.ok(this.invoiceService.getAllInvoicePagingStatusTrue(page, size, sort, sortColumn));
+    }
+
     @GetMapping("/get-all-true")
     public ResponseEntity<ResponseDto> getAllInvoiceStatusTrue(){
         return  ResponseEntity.ok(this.invoiceService.getAllInvoiceStatusTrue());

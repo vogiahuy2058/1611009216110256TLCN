@@ -217,7 +217,7 @@ public class AccountServiceImpl implements AccountService{
         return new ResponseDto(HttpStatus.OK.value(), "All account",accountResponseDtos);
     }
 
-    public boolean allowCreateAccount(String username, String email, Integer employeeId){
+    protected boolean allowCreateAccount(String username, String email, Integer employeeId){
         //cho phep tao account neu username khong ton tai
         //hoac username và employee id đúng với 1 account da co
         //cac truong hop khac khong cho tao

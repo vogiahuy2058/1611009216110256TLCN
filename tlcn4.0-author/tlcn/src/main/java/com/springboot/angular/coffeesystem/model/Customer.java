@@ -35,4 +35,5 @@ public class Customer extends Auditable<String> {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "customer", cascade = CascadeType.ALL)
     private Set<Invoice> invoices;
+
 }
