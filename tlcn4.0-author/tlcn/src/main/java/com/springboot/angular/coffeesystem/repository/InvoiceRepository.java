@@ -24,6 +24,8 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Integer> {
     Page<Invoice> findAllByEnableAndPaymentStatus(boolean enable, boolean paymentStatus, Pageable pageable);
     List<Invoice> findAllByEnableAndPaymentStatusAndBranchShopId(
             boolean enable, boolean paymentStatus, Integer id);
+    Page<Invoice> findAllByEnableAndPaymentStatusAndBranchShopId(
+            boolean enable, boolean paymentStatus, Integer id, Pageable pageable);
     @Query("select max(i.id) from Invoice i")
     Integer findMaxId();
 }
