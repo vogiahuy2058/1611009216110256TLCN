@@ -24,11 +24,13 @@ public interface InvoiceService {
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER')")
     PagingResponseDto getAllInvoicePaging(int page, int size, String sort, String sortColumn);
     //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER')")
-    PagingResponseDto getAllInvoicePagingStatusTrue(int page, int size, String sort, String sortColumn);
+    PagingResponseDto getAllInvoiceStatusTruePaging(int page, int size, String sort, String sortColumn);
     //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER')")
     ResponseDto getAllInvoiceDateToDate(String fromDate, String toDate, Integer branchShopId);
-    PagingResponseDto getAllInvoiceDateToDatePaging(int page, int size, String sort, String sortColumn,
+    PagingResponseDto getAllInvoiceDateToDateByBranchShopPaging(int page, int size, String sort, String sortColumn,
                                                     String fromDate, String toDate, Integer branchShopId);
+    public PagingResponseDto getAllInvoiceByFilterPaging(int page, int size, String sort, String sortColumn,
+                                                         String fromDate, String toDate, Integer branchShopId);
     //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER')")
     ResponseDto getFullInvoiceById(Integer InvoiceId);
     //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER')")

@@ -46,7 +46,7 @@ public class InvoiceController {
             @RequestParam(name = "size", required = false, defaultValue = "10") int size,
             @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
             @RequestParam(name = "column", required = false, defaultValue = "id") String sortColumn){
-        return  ResponseEntity.ok(this.invoiceService.getAllInvoicePagingStatusTrue(page, size, sort, sortColumn));
+        return  ResponseEntity.ok(this.invoiceService.getAllInvoiceStatusTruePaging(page, size, sort, sortColumn));
     }
 
     @GetMapping("/get-all-true")
@@ -61,7 +61,7 @@ public class InvoiceController {
                                                                @RequestParam String fromDate,
                                                                @RequestParam String toDate,
                                                                @RequestParam Integer branchShopId){
-        return  ResponseEntity.ok(this.invoiceService.getAllInvoiceDateToDatePaging(page, size, sort, sortColumn, fromDate, toDate, branchShopId));
+        return  ResponseEntity.ok(this.invoiceService.getAllInvoiceByFilterPaging(page, size, sort, sortColumn, fromDate, toDate, branchShopId));
     }
     @GetMapping("/get-all-date-to-date")
     public ResponseEntity<ResponseDto> getAllInvoiceDateToDate(@RequestParam String fromDate,
