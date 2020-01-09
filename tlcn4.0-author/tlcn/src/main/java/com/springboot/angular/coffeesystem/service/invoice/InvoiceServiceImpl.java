@@ -184,13 +184,13 @@ public class InvoiceServiceImpl implements InvoiceService{
         LocalDate newFromDate = LocalDate.parse(fromDate, dtf);
         LocalDate newToDate = LocalDate.parse(toDate, dtf);
         Page<Invoice> invoicePage =
-                invoiceRepository.findAllByEnableAndPaymentStatusAndBranchShopId(true, true, branchShopId, pageable);
+                invoiceRepository.findAllByEnableAndPaymentStatusAndBranchShopId(
+                        true, true, branchShopId, pageable);
+        List<Invoice> invoiceList = invoiceRepository.findAllByEnableAndPaymentStatusAndBranchShopId(
+                true, true, branchShopId);
         List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
-//        try{
-//            Date newFromDate = formatter.parse(fromDate);
-//            Date newToDate = formatter.parse(toDate);
 
-        invoicePage.forEach(invoice -> {
+        invoiceList.forEach(invoice -> {
 
             LocalDate dateInvoice = LocalDate.from(invoice.getDate().toLocalDate());
             if(dateInvoice.isBefore(newToDate) && dateInvoice.isAfter(newFromDate)){
@@ -223,11 +223,9 @@ public class InvoiceServiceImpl implements InvoiceService{
             }
 
         });
-//        }catch (ParseException e){
-//            e.printStackTrace();
-//        }
+
         Page<InvoiceResponseDto> invoiceResponseDtoPage = new PageImpl<>(invoiceResponseDtos, pageable,
-                invoicePage.getTotalElements() );
+                invoiceResponseDtos.size());
         return new PagingResponseDto<>(
                 invoiceResponseDtoPage.getContent(), invoiceResponseDtoPage.getTotalElements(), invoiceResponseDtoPage.getTotalPages(),
                 invoiceResponseDtoPage.getPageable());
@@ -238,8 +236,8 @@ public class InvoiceServiceImpl implements InvoiceService{
     public PagingResponseDto getAllInvoicePaging(int page, int size, String sort, String sortColumn) {
         Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
         List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
-        Page<Invoice> invoicePage = invoiceRepository.findAllByEnableAndPaymentStatus(true,true, pageable);
-        invoicePage.forEach(element->{
+        List<Invoice> invoiceList = invoiceRepository.findAllByEnableAndPaymentStatus(true,true);
+        invoiceList.forEach(element->{
             InvoiceResponseDto invoiceResponseDto = mapperObject.InvoiceEntityToDto(element);
 
             if(element.getCustomer() == null){
@@ -259,7 +257,7 @@ public class InvoiceServiceImpl implements InvoiceService{
             invoiceResponseDto.setCashierName(employee.getName());
             invoiceResponseDtos.add(invoiceResponseDto);});
         Page<InvoiceResponseDto> invoiceResponseDtoPage = new PageImpl<>(invoiceResponseDtos, pageable,
-                invoicePage.getTotalElements() );
+                invoiceResponseDtos.size());
         return new PagingResponseDto<>(
                 invoiceResponseDtoPage.getContent(), invoiceResponseDtoPage.getTotalElements(), invoiceResponseDtoPage.getTotalPages(),
                 invoiceResponseDtoPage.getPageable());
@@ -270,14 +268,14 @@ public class InvoiceServiceImpl implements InvoiceService{
         Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
         LocalDate newFromDate = LocalDate.parse(fromDate, dtf);
         LocalDate newToDate = LocalDate.parse(toDate, dtf);
-        Page<Invoice> invoicePage =
-                invoiceRepository.findAllByEnableAndPaymentStatus(true, true, pageable);
+        List<Invoice> invoiceList =
+                invoiceRepository.findAllByEnableAndPaymentStatus(true, true);
         List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
 //        try{
 //            Date newFromDate = formatter.parse(fromDate);
 //            Date newToDate = formatter.parse(toDate);
 
-        invoicePage.forEach(invoice -> {
+        invoiceList.forEach(invoice -> {
 
             LocalDate dateInvoice = LocalDate.from(invoice.getDate().toLocalDate());
             if(dateInvoice.isBefore(newToDate) && dateInvoice.isAfter(newFromDate)){
@@ -314,7 +312,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 //            e.printStackTrace();
 //        }
         Page<InvoiceResponseDto> invoiceResponseDtoPage = new PageImpl<>(invoiceResponseDtos, pageable,
-                invoicePage.getTotalElements() );
+                invoiceResponseDtos.size());
         return new PagingResponseDto<>(
                 invoiceResponseDtoPage.getContent(), invoiceResponseDtoPage.getTotalElements(), invoiceResponseDtoPage.getTotalPages(),
                 invoiceResponseDtoPage.getPageable());
@@ -324,11 +322,12 @@ public class InvoiceServiceImpl implements InvoiceService{
                                                           Integer branchShopId){
         Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
 
-        Page<Invoice> invoicePage =
-                invoiceRepository.findAllByEnableAndPaymentStatusAndBranchShopId(true, true, branchShopId, pageable);
+        List<Invoice> invoiceList =
+                invoiceRepository.findAllByEnableAndPaymentStatusAndBranchShopId(
+                        true, true, branchShopId);
         List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
 
-        invoicePage.forEach(invoice -> {
+        invoiceList.forEach(invoice -> {
 
                 InvoiceResponseDto invoiceResponseDto =
                         mapperObject.InvoiceEntityToDto(invoice);
@@ -360,10 +359,15 @@ public class InvoiceServiceImpl implements InvoiceService{
 //            e.printStackTrace();
 //        }
         Page<InvoiceResponseDto> invoiceResponseDtoPage = new PageImpl<>(invoiceResponseDtos, pageable,
-                invoicePage.getTotalElements() );
+                invoiceResponseDtos.size());
+        System.out.println("Size: " + invoiceResponseDtos.size());
+        System.out.println("Content: " + invoiceResponseDtoPage.getContent());
+        System.out.println("TotalElements: " + invoiceResponseDtoPage.getTotalElements());
+        System.out.println("TotalPages: " + invoiceResponseDtoPage.getTotalPages());
+        System.out.println("Pageable: " + invoiceResponseDtoPage.getPageable());
         return new PagingResponseDto<>(
-                invoiceResponseDtoPage.getContent(), invoiceResponseDtoPage.getTotalElements(), invoiceResponseDtoPage.getTotalPages(),
-                invoiceResponseDtoPage.getPageable());
+                invoiceResponseDtoPage.getContent(), invoiceResponseDtoPage.getTotalElements(),
+                invoiceResponseDtoPage.getTotalPages(), invoiceResponseDtoPage.getPageable());
     }
     @Transactional
     public ResponseDto getAllInvoiceStatusFalse(){
@@ -402,8 +406,8 @@ public class InvoiceServiceImpl implements InvoiceService{
     public PagingResponseDto getAllInvoiceStatusTruePaging(int page, int size, String sort, String sortColumn) {
                 Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
         List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
-        Page<Invoice> invoicePage = invoiceRepository.findAllByEnableAndPaymentStatus(true, true, pageable);
-        invoicePage.forEach(element->{
+        List<Invoice> invoiceList = invoiceRepository.findAllByEnableAndPaymentStatus(true, true);
+        invoiceList.forEach(element->{
             InvoiceResponseDto invoiceResponseDto = mapperObject.InvoiceEntityToDto(element);
 
             if(element.getCustomer() == null){
@@ -423,7 +427,7 @@ public class InvoiceServiceImpl implements InvoiceService{
             invoiceResponseDto.setCashierName(employee.getName());
             invoiceResponseDtos.add(invoiceResponseDto);});
         Page<InvoiceResponseDto> invoiceResponseDtoPage = new PageImpl<>(invoiceResponseDtos, pageable,
-                invoicePage.getTotalElements() );
+                invoiceResponseDtos.size());
         return new PagingResponseDto<>(
                 invoiceResponseDtoPage.getContent(), invoiceResponseDtoPage.getTotalElements(), invoiceResponseDtoPage.getTotalPages(),
                 invoiceResponseDtoPage.getPageable());

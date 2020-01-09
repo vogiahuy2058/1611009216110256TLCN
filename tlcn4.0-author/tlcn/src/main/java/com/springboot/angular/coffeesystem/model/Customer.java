@@ -14,7 +14,6 @@ import java.util.Set;
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
 public class Customer extends Auditable<String> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
