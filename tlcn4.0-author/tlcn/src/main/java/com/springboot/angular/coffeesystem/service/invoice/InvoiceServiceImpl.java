@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -117,6 +118,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 
         LocalDate newFromDate = LocalDate.parse(fromDate, dtf);
         LocalDate newToDate = LocalDate.parse(toDate, dtf);
+        ZonedDateTime zoneFromDate = ZonedDateTime.from(newToDate);
         List<Invoice> invoices =
                 invoiceRepository.findAllByEnableAndPaymentStatusAndBranchShopId(true, true, branchShopId);
         List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
@@ -181,29 +183,21 @@ public class InvoiceServiceImpl implements InvoiceService{
     public PagingResponseDto getAllInvoiceDateToDateByBranchShopPaging(int page, int size, String sort, String sortColumn,
                                                     String fromDate, String toDate, Integer branchShopId){
         Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
-        LocalDate newFromDate = LocalDate.parse(fromDate, dtf);
-        LocalDate newToDate = LocalDate.parse(toDate, dtf);
+//        LocalDate newFromDate = LocalDate.parse(fromDate, dtf);
+//        LocalDate newToDate = LocalDate.parse(toDate, dtf);
+        ZonedDateTime newFromDate = LocalDateTime.parse(fromDate,
+                DateTimeFormatter.ISO_DATE_TIME).atZone(zoneId);
+        ZonedDateTime newToDate = LocalDateTime.parse(toDate,
+                DateTimeFormatter.ISO_DATE_TIME).atZone(zoneId);
+
         Page<Invoice> invoicePage =
-                invoiceRepository.findAllByEnableAndPaymentStatusAndBranchShopId(
-                        true, true, branchShopId, pageable);
-        List<Invoice> invoiceList = invoiceRepository.findAllByEnableAndPaymentStatusAndBranchShopId(
-                true, true, branchShopId);
+                invoiceRepository.findByEnableAndPaymentStatusAndBranchShopIdAndDate(
+                        true, true, branchShopId, newFromDate, newToDate, pageable);
+
         List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
 
-        invoiceList.forEach(invoice -> {
-
-            LocalDate dateInvoice = LocalDate.from(invoice.getDate().toLocalDate());
-            if(dateInvoice.isBefore(newToDate) && dateInvoice.isAfter(newFromDate)){
-//                Date dateInvoice = Date.from(invoice.getDate().toInstant());
-//            if(dateInvoice.before(newToDate) && dateInvoice.after(newFromDate)){
-                InvoiceResponseDto invoiceResponseDto =
-                        mapperObject.InvoiceEntityToDto(invoice);
-
-//            if(invoice.getCoffeeTable()==null){
-//                invoiceResponseDto.setCoffeeTable(null);
-//            }else {
-//                invoiceResponseDto.setCoffeeTable(invoice.getCoffeeTable().getName());
-//            }
+        invoicePage.forEach(invoice -> {
+            InvoiceResponseDto invoiceResponseDto = mapperObject.InvoiceEntityToDto(invoice);
 
                 if(invoice.getCustomer() == null){
                     invoiceResponseDto.setCustomerName(null);
@@ -220,24 +214,24 @@ public class InvoiceServiceImpl implements InvoiceService{
                         .orElseThrow(()-> new NotFoundException("Username not found"));
                 invoiceResponseDto.setCashierName(employee.getName());
                 invoiceResponseDtos.add(invoiceResponseDto);
-            }
 
         });
 
         Page<InvoiceResponseDto> invoiceResponseDtoPage = new PageImpl<>(invoiceResponseDtos, pageable,
-                invoiceResponseDtos.size());
+                invoicePage.getTotalElements());
         return new PagingResponseDto<>(
                 invoiceResponseDtoPage.getContent(), invoiceResponseDtoPage.getTotalElements(), invoiceResponseDtoPage.getTotalPages(),
                 invoiceResponseDtoPage.getPageable());
     }
-
+// get invoice not filter
     @Transactional
     @Override
     public PagingResponseDto getAllInvoicePaging(int page, int size, String sort, String sortColumn) {
         Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
         List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
-        List<Invoice> invoiceList = invoiceRepository.findAllByEnableAndPaymentStatus(true,true);
-        invoiceList.forEach(element->{
+        Page<Invoice> invoicePage = invoiceRepository.findAllByEnableAndPaymentStatus(true, true, pageable);
+
+        invoicePage.forEach(element->{
             InvoiceResponseDto invoiceResponseDto = mapperObject.InvoiceEntityToDto(element);
 
             if(element.getCustomer() == null){
@@ -257,7 +251,7 @@ public class InvoiceServiceImpl implements InvoiceService{
             invoiceResponseDto.setCashierName(employee.getName());
             invoiceResponseDtos.add(invoiceResponseDto);});
         Page<InvoiceResponseDto> invoiceResponseDtoPage = new PageImpl<>(invoiceResponseDtos, pageable,
-                invoiceResponseDtos.size());
+                invoicePage.getTotalElements());
         return new PagingResponseDto<>(
                 invoiceResponseDtoPage.getContent(), invoiceResponseDtoPage.getTotalElements(), invoiceResponseDtoPage.getTotalPages(),
                 invoiceResponseDtoPage.getPageable());
@@ -266,21 +260,21 @@ public class InvoiceServiceImpl implements InvoiceService{
     public PagingResponseDto getAllInvoiceDateToDatePaging(int page, int size, String sort, String sortColumn,
                                                                        String fromDate, String toDate){
         Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
-        LocalDate newFromDate = LocalDate.parse(fromDate, dtf);
-        LocalDate newToDate = LocalDate.parse(toDate, dtf);
-        List<Invoice> invoiceList =
-                invoiceRepository.findAllByEnableAndPaymentStatus(true, true);
+        ZonedDateTime newFromDate = LocalDateTime.parse(fromDate,
+                DateTimeFormatter.ISO_DATE_TIME).atZone(zoneId);
+        ZonedDateTime newToDate = LocalDateTime.parse(toDate,
+                DateTimeFormatter.ISO_DATE_TIME).atZone(zoneId);
+
+        Page<Invoice> invoicePage =
+                invoiceRepository.findByEnableAndPaymentStatusAndDate(
+                        true, true, newFromDate, newToDate, pageable);
         List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
 //        try{
 //            Date newFromDate = formatter.parse(fromDate);
 //            Date newToDate = formatter.parse(toDate);
 
-        invoiceList.forEach(invoice -> {
+        invoicePage.forEach(invoice -> {
 
-            LocalDate dateInvoice = LocalDate.from(invoice.getDate().toLocalDate());
-            if(dateInvoice.isBefore(newToDate) && dateInvoice.isAfter(newFromDate)){
-//                Date dateInvoice = Date.from(invoice.getDate().toInstant());
-//            if(dateInvoice.before(newToDate) && dateInvoice.after(newFromDate)){
                 InvoiceResponseDto invoiceResponseDto =
                         mapperObject.InvoiceEntityToDto(invoice);
 
@@ -305,14 +299,13 @@ public class InvoiceServiceImpl implements InvoiceService{
                         .orElseThrow(()-> new NotFoundException("Username not found"));
                 invoiceResponseDto.setCashierName(employee.getName());
                 invoiceResponseDtos.add(invoiceResponseDto);
-            }
 
         });
 //        }catch (ParseException e){
 //            e.printStackTrace();
 //        }
         Page<InvoiceResponseDto> invoiceResponseDtoPage = new PageImpl<>(invoiceResponseDtos, pageable,
-                invoiceResponseDtos.size());
+                invoicePage.getTotalElements());
         return new PagingResponseDto<>(
                 invoiceResponseDtoPage.getContent(), invoiceResponseDtoPage.getTotalElements(), invoiceResponseDtoPage.getTotalPages(),
                 invoiceResponseDtoPage.getPageable());
@@ -322,12 +315,12 @@ public class InvoiceServiceImpl implements InvoiceService{
                                                           Integer branchShopId){
         Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
 
-        List<Invoice> invoiceList =
+        Page<Invoice> invoicePage =
                 invoiceRepository.findAllByEnableAndPaymentStatusAndBranchShopId(
-                        true, true, branchShopId);
+                        true, true, branchShopId, pageable);
         List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
 
-        invoiceList.forEach(invoice -> {
+        invoicePage.forEach(invoice -> {
 
                 InvoiceResponseDto invoiceResponseDto =
                         mapperObject.InvoiceEntityToDto(invoice);
@@ -359,12 +352,8 @@ public class InvoiceServiceImpl implements InvoiceService{
 //            e.printStackTrace();
 //        }
         Page<InvoiceResponseDto> invoiceResponseDtoPage = new PageImpl<>(invoiceResponseDtos, pageable,
-                invoiceResponseDtos.size());
-        System.out.println("Size: " + invoiceResponseDtos.size());
-        System.out.println("Content: " + invoiceResponseDtoPage.getContent());
-        System.out.println("TotalElements: " + invoiceResponseDtoPage.getTotalElements());
-        System.out.println("TotalPages: " + invoiceResponseDtoPage.getTotalPages());
-        System.out.println("Pageable: " + invoiceResponseDtoPage.getPageable());
+                invoicePage.getTotalElements());
+
         return new PagingResponseDto<>(
                 invoiceResponseDtoPage.getContent(), invoiceResponseDtoPage.getTotalElements(),
                 invoiceResponseDtoPage.getTotalPages(), invoiceResponseDtoPage.getPageable());
@@ -406,8 +395,8 @@ public class InvoiceServiceImpl implements InvoiceService{
     public PagingResponseDto getAllInvoiceStatusTruePaging(int page, int size, String sort, String sortColumn) {
                 Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
         List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
-        List<Invoice> invoiceList = invoiceRepository.findAllByEnableAndPaymentStatus(true, true);
-        invoiceList.forEach(element->{
+        Page<Invoice> invoicePage = invoiceRepository.findAllByEnableAndPaymentStatus(true, true, pageable);
+        invoicePage.forEach(element->{
             InvoiceResponseDto invoiceResponseDto = mapperObject.InvoiceEntityToDto(element);
 
             if(element.getCustomer() == null){
@@ -427,7 +416,7 @@ public class InvoiceServiceImpl implements InvoiceService{
             invoiceResponseDto.setCashierName(employee.getName());
             invoiceResponseDtos.add(invoiceResponseDto);});
         Page<InvoiceResponseDto> invoiceResponseDtoPage = new PageImpl<>(invoiceResponseDtos, pageable,
-                invoiceResponseDtos.size());
+                invoicePage.getTotalElements());
         return new PagingResponseDto<>(
                 invoiceResponseDtoPage.getContent(), invoiceResponseDtoPage.getTotalElements(), invoiceResponseDtoPage.getTotalPages(),
                 invoiceResponseDtoPage.getPageable());

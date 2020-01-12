@@ -23,6 +23,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -67,6 +68,8 @@ public class CustomerServiceImpl implements CustomerService{
     public PagingResponseDto getAllCustomerPaging(int page, int size, String sort, String sortColumn) {
         Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
         List<CustomerResponseDto> coffeeTableDtos = new ArrayList<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
         Page<Customer> customerPage = customerRepository.findAllByEnable(true, pageable);
         customerPage.forEach(element->{
             CustomerResponseDto customerResponseDto = mapperObject.CustomerEntityToDto(element);

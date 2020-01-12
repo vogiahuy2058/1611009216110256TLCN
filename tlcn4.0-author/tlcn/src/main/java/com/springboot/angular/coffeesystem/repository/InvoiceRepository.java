@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -21,9 +22,19 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Integer> {
     Page<Invoice> findAllByEnable(boolean enable, Pageable pageable);
 //    @Query("select i.customer as customer from Invoice i where i.enable=?1 and i.paymentStatus=?2")
     List<Invoice> findAllByEnableAndPaymentStatus(boolean enable, boolean paymentStatus);
+
     Page<Invoice> findAllByEnableAndPaymentStatus(boolean enable, boolean paymentStatus, Pageable pageable);
+    @Query("select i from Invoice i where i.enable=?1 and i.paymentStatus=?2 " +
+            "and i.date>=?3 and i.date <=?4")
+    Page<Invoice> findByEnableAndPaymentStatusAndDate(boolean enable, boolean paymentStatus,
+                                                      ZonedDateTime fromDate, ZonedDateTime toDate, Pageable pageable);
     List<Invoice> findAllByEnableAndPaymentStatusAndBranchShopId(
             boolean enable, boolean paymentStatus, Integer id);
+    @Query("select i from Invoice i where i.enable=?1 and i.paymentStatus=?2 " +
+            "and i.branchShop.id=?3 and i.date>=?4 and i.date <=?5")
+    Page<Invoice> findByEnableAndPaymentStatusAndBranchShopIdAndDate(
+            boolean enable, boolean paymentStatus, Integer id,
+            ZonedDateTime fromDate, ZonedDateTime toDate, Pageable pageable);
     Page<Invoice> findAllByEnableAndPaymentStatusAndBranchShopId(
             boolean enable, boolean paymentStatus, Integer id, Pageable pageable);
     Page<Invoice> findAll(Pageable pageable);
