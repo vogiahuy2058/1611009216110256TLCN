@@ -16,12 +16,12 @@ public interface DrinkService {
     ResponseDto getDrinkHavePriceByDrinkType(String nameDrinkType);
     //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER')")
     ResponseDto getAllDrinkHavePrice();
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT')")
+//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_MANAGE_ALL_BRANCH', 'ROLE_BRANCH_MANAGER')")
     ResponseDto createDrink(DrinkDto drinkDTO);
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT')")
+//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_MANAGE_ALL_BRANCH', 'ROLE_BRANCH_MANAGER')")
     ResponseDto editDrink(DrinkDto drinkDto);
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT')")
+//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_MANAGE_ALL_BRANCH', 'ROLE_BRANCH_MANAGER')")
     ResponseDto deleteDrink(Integer id);
-//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CHEF', 'ROLE_CASHIER')")
+//    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CHEF', 'ROLE_CASHIER', 'ROLE_MANAGE_ALL_BRANCH')")
     ResponseDto getDrinkById(Integer id);
 }

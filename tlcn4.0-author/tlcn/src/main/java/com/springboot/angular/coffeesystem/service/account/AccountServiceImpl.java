@@ -51,40 +51,52 @@ public class AccountServiceImpl implements AccountService{
         Set<Role> roleSet = new HashSet<>();
         strRole.forEach(r->{
             switch (r){
-                case "admin":
+                case "ROLE_ADMIN":
                     Role adminRole = roleRepository.findByNameAndEnable(RoleName.ROLE_ADMIN, true)
                             .orElseThrow(() -> new NotFoundException("Fail! -> Cause: Role not found."));
                     roleSet.add(adminRole);
                     break;
-                case "branch manager":
+
+                case "ROLE_BRANCH_MANAGER":
                     Role bmRole = roleRepository.findByNameAndEnable(RoleName.ROLE_BRANCH_MANAGER, true)
                             .orElseThrow(() -> new NotFoundException("Fail! -> Cause: Role not found."));
                     roleSet.add(bmRole);
-
                     break;
-                case "hr":
+
+                case "ROLE_HR":
                     Role hrRole = roleRepository.findByNameAndEnable(RoleName.ROLE_HR, true)
                             .orElseThrow(() -> new NotFoundException("Fail! -> Cause: Role not found."));
                     roleSet.add(hrRole);
-
                     break;
-                case "cashier":
+
+                case "ROLE_CASHIER":
                     Role cashierRole = roleRepository.findByNameAndEnable(RoleName.ROLE_CASHIER, true)
                             .orElseThrow(() -> new NotFoundException("Fail! -> Cause: Role not found."));
                     roleSet.add(cashierRole);
-
                     break;
-                case "accountant":
+
+                case "ROLE_ACCOUNTANT":
                     Role accountantRole = roleRepository.findByNameAndEnable(RoleName.ROLE_ACCOUNTANT, true)
                             .orElseThrow(() -> new NotFoundException("Fail! -> Cause: Role not found."));
                     roleSet.add(accountantRole);
-
                     break;
-                case "chef":
+
+                case "ROLE_CHEF":
                     Role chefRole = roleRepository.findByNameAndEnable(RoleName.ROLE_CHEF, true)
                             .orElseThrow(() -> new NotFoundException("Fail! -> Cause: Role not found."));
                     roleSet.add(chefRole);
+                    break;
 
+                case "ROLE_MANAGE_ALL_BRANCH":
+                    Role manageAllBranch = roleRepository.findByNameAndEnable(RoleName.ROLE_MANAGE_ALL_BRANCH, true)
+                            .orElseThrow(() -> new NotFoundException("Fail! -> Cause: Role not found."));
+                    roleSet.add(manageAllBranch);
+                    break;
+
+                case "ROLE_CEO":
+                    Role ceoRole = roleRepository.findByNameAndEnable(RoleName.ROLE_CEO, true)
+                            .orElseThrow(() -> new NotFoundException("Fail! -> Cause: Role not found."));
+                    roleSet.add(ceoRole);
                     break;
                 default:
                     throw new IllegalArgumentException("This role is unsupported");
