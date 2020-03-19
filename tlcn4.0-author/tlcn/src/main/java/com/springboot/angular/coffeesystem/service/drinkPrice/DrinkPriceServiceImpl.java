@@ -31,7 +31,7 @@ public class DrinkPriceServiceImpl implements DrinkPriceService{
     final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     @Transactional
     public ResponseDto createPriceOfDrink(DrinkPriceRequestDto drinkPriceRequestDto){
-        //neu drink price do da ton tai thì enable=false
+        //neu drink price do da ton tai thì enable cua price cu =false
         if(drinkPriceRepository.findByDrinkPriceIdIdDrinkAndEnable(drinkPriceRequestDto.getDrinkId(),
                 true).isPresent()){
             DrinkPrice drinkPriceOld =

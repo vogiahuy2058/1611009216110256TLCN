@@ -4,6 +4,7 @@ import com.springboot.angular.coffeesystem.dto.MaterialPriceRequestDto;
 import com.springboot.angular.coffeesystem.dto.MaterialPriceResponseDto;
 import com.springboot.angular.coffeesystem.dto.ResponseDto;
 import com.springboot.angular.coffeesystem.exception.NotFoundException;
+import com.springboot.angular.coffeesystem.model.DrinkPrice;
 import com.springboot.angular.coffeesystem.model.Material;
 import com.springboot.angular.coffeesystem.model.MaterialPrice;
 import com.springboot.angular.coffeesystem.model.embedding.MaterialPriceId;
@@ -30,7 +31,7 @@ public class MaterialPriceServiceImpl implements MaterialPriceService {
     MaterialRepository materialRepository;
     public ResponseDto createPriceOfMaterial(MaterialPriceRequestDto materialPriceRequestDto){
 
-        //neu material price do da ton tai thì enable=false
+        //neu material price do da ton tai thì enable materila cu=false
         if(materialPriceRepository.findByMaterialPriceIdIdMaterialAndEnable(materialPriceRequestDto.getMaterialId(),
                 true).isPresent()){
             MaterialPrice materialPriceOld = materialPriceRepository.findByMaterialPriceIdIdMaterialAndEnable(materialPriceRequestDto.getMaterialId(), true)
