@@ -22,11 +22,11 @@ public class MaterialPriceController {
         return ResponseEntity.ok(materialPriceService.changePriceOfMaterial(materialPriceRequestDto));
     }
     @GetMapping("/get")
-    public ResponseEntity<ResponseDto> getMaterialByMaterialId(@RequestParam Integer materialId){
+    public ResponseEntity<ResponseDto> getMaterialPriceByMaterialId(@RequestParam Integer materialId){
         return ResponseEntity.ok(this.materialPriceService.getPriceOfMaterial(materialId));
     }
     @GetMapping("/get-all")
-    public ResponseEntity<ResponseDto> geAllMaterialByMaterial(){
+    public ResponseEntity<ResponseDto> getAllMaterialPrice(){
         return ResponseEntity.ok(this.materialPriceService.getAllPriceOfMaterial());
     }
 }
