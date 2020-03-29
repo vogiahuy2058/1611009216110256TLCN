@@ -60,7 +60,11 @@
 									<li class="nav-item"><a class="nav-link" href="#">Yogurt</a></li>
 								</ul>
 							</li> -->
-							<li class="nav-item"><a class="nav-link" href="category.html">Thực đơn</a></li>
+							<li class="nav-item submenu dropdown active">
+								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+								 aria-expanded="false">Thức uống</a>
+							</li>
+							<!-- <li class="nav-item"><a class="nav-link" href="category.html">Thực đơn</a></li> -->
 							<li class="nav-item submenu dropdown">
 								<a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
 								 aria-expanded="false">Blog</a>
@@ -103,8 +107,8 @@
 					<h1>Trang danh mục cửa hàng</h1>
 					<nav class="d-flex align-items-center">
 						<a href="index.html">Trang chủ<span class="lnr lnr-arrow-right"></span></a>
-						<a href="#">Thức uống<span class="lnr lnr-arrow-right"></span></a>
-						<a href="category.html">Fashon Category</a>
+						<!-- <a href="#">Thức uống<span class="lnr lnr-arrow-right"></span></a> -->
+						<a href="category.html">Thực đơn</a>
 					</nav>
 				</div>
 			</div>
@@ -115,7 +119,7 @@
 		<div class="row">
 			<div class="col-xl-3 col-lg-4 col-md-5">
 				<div class="sidebar-categories">
-					<div class="head">Browse Categories</div>
+					<div class="head">Menu</div>
 					<ul class="main-categories">
 						<li class="main-nav-list"><a data-toggle="collapse" href="#fruitsVegetable" aria-expanded="false" aria-controls="fruitsVegetable"><span
 								 class="lnr lnr-arrow-right"></span>Fruits and Vegetables<span class="number">(53)</span></a>
@@ -223,9 +227,9 @@
 					</ul>
 				</div>
 				<div class="sidebar-filter mt-50">
-					<div class="top-filter-head">Product Filters</div>
+					<div class="top-filter-head">Lọc thực đơn theo:</div>
 					<div class="common-filter">
-						<div class="head">Brands</div>
+						<div class="head">Chi nhánh</div>
 						<form action="#">
 							<ul>
 								<li class="filter-list"><input class="pixel-radio" type="radio" id="apple" name="brand"><label for="apple">Apple<span>(29)</span></label></li>
@@ -236,7 +240,7 @@
 							</ul>
 						</form>
 					</div>
-					<div class="common-filter">
+					<!-- <div class="common-filter">
 						<div class="head">Color</div>
 						<form action="#">
 							<ul>
@@ -249,21 +253,21 @@
 								<li class="filter-list"><input class="pixel-radio" type="radio" id="spacegrey" name="color"><label for="spacegrey">Spacegrey<span>(19)</span></label></li>
 							</ul>
 						</form>
-					</div>
-					<div class="common-filter">
-						<div class="head">Price</div>
+					</div> -->
+					<!-- <div class="common-filter">
+						<div class="head">Giá</div>
 						<div class="price-range-area">
 							<div id="price-range"></div>
 							<div class="value-wrapper d-flex">
-								<div class="price">Price:</div>
-								<span>$</span>
+								<div class="price">Giá:</div>
 								<div id="lower-value"></div>
-								<div class="to">to</div>
-								<span>$</span>
+								<span>Đ</span>
+								<div class="to">đến</div>
 								<div id="upper-value"></div>
+								<span>Đ</span>
 							</div>
 						</div>
-					</div>
+					</div> -->
 				</div>
 			</div>
 			<div class="col-xl-9 col-lg-8 col-md-7">
@@ -271,16 +275,16 @@
 				<div class="filter-bar d-flex flex-wrap align-items-center">
 					<div class="sorting">
 						<select>
-							<option value="1">Default sorting</option>
-							<option value="1">Default sorting</option>
-							<option value="1">Default sorting</option>
+							<option value="1">Sắp xếp theo mặc định</option>
+							<option value="1">Sắp xếp theo mặc định</option>
+							<option value="1">Sắp xếp theo mặc định</option>
 						</select>
 					</div>
 					<div class="sorting mr-auto">
 						<select>
-							<option value="1">Show 12</option>
-							<option value="1">Show 12</option>
-							<option value="1">Show 12</option>
+							<option value="1">Hiển thị 12 mục</option>
+							<option value="1">Hiển thị 15 mục</option>
+							<option value="1">Hiển thị 18 mục</option>
 						</select>
 					</div>
 					<div class="pagination">
@@ -300,31 +304,30 @@
 						<!-- single product -->
 						<div class="col-lg-4 col-md-6">
 							<div class="single-product">
-								<img class="img-fluid" src="img/product/p1.jpg" alt="">
+								<img class="img-fluid" src="img/product/tracamvang.jpg" alt="">
 								<div class="product-details">
-									<h6>addidas New Hammer sole
-										for Sports person</h6>
+									<h6>Trà cam vàng</h6>
 									<div class="price">
-										<h6>$150.00</h6>
-										<h6 class="l-through">$210.00</h6>
+										<h6>55,000 Đ</h6>
+										<h6 class="l-through">65,000 Đ</h6>
 									</div>
 									<div class="prd-bottom">
 
 										<a href="" class="social-info">
 											<span class="ti-bag"></span>
-											<p class="hover-text">add to bag</p>
+											<p class="hover-text">Mua ngay</p>
 										</a>
 										<a href="" class="social-info">
 											<span class="lnr lnr-heart"></span>
-											<p class="hover-text">Wishlist</p>
+											<p class="hover-text">Yêu thích</p>
 										</a>
-										<a href="" class="social-info">
+										<!-- <a href="" class="social-info">
 											<span class="lnr lnr-sync"></span>
 											<p class="hover-text">compare</p>
-										</a>
-										<a href="" class="social-info">
+										</a> -->
+										<a href="single-product.html" class="social-info">
 											<span class="lnr lnr-move"></span>
-											<p class="hover-text">view more</p>
+											<p class="hover-text">Xem thêm</p>
 										</a>
 									</div>
 								</div>
@@ -333,31 +336,30 @@
 						<!-- single product -->
 						<div class="col-lg-4 col-md-6">
 							<div class="single-product">
-								<img class="img-fluid" src="img/product/p2.jpg" alt="">
+								<img class="img-fluid" src="img/product/tracamvang.jpg" alt="">
 								<div class="product-details">
-									<h6>addidas New Hammer sole
-										for Sports person</h6>
+									<h6>Trà cam vàng</h6>
 									<div class="price">
-										<h6>$150.00</h6>
-										<h6 class="l-through">$210.00</h6>
+										<h6>55,000 Đ</h6>
+										<h6 class="l-through">65,000 Đ</h6>
 									</div>
 									<div class="prd-bottom">
 
 										<a href="" class="social-info">
 											<span class="ti-bag"></span>
-											<p class="hover-text">add to bag</p>
+											<p class="hover-text">Mua ngay</p>
 										</a>
 										<a href="" class="social-info">
 											<span class="lnr lnr-heart"></span>
-											<p class="hover-text">Wishlist</p>
+											<p class="hover-text">Yêu thích</p>
 										</a>
-										<a href="" class="social-info">
+										<!-- <a href="" class="social-info">
 											<span class="lnr lnr-sync"></span>
 											<p class="hover-text">compare</p>
-										</a>
-										<a href="" class="social-info">
+										</a> -->
+										<a href="single-product.html" class="social-info">
 											<span class="lnr lnr-move"></span>
-											<p class="hover-text">view more</p>
+											<p class="hover-text">Xem thêm</p>
 										</a>
 									</div>
 								</div>
@@ -366,31 +368,30 @@
 						<!-- single product -->
 						<div class="col-lg-4 col-md-6">
 							<div class="single-product">
-								<img class="img-fluid" src="img/product/p3.jpg" alt="">
+								<img class="img-fluid" src="img/product/tracamvang.jpg" alt="">
 								<div class="product-details">
-									<h6>addidas New Hammer sole
-										for Sports person</h6>
+									<h6>Trà cam vàng</h6>
 									<div class="price">
-										<h6>$150.00</h6>
-										<h6 class="l-through">$210.00</h6>
+										<h6>55,000 Đ</h6>
+										<h6 class="l-through">65,000 Đ</h6>
 									</div>
 									<div class="prd-bottom">
 
 										<a href="" class="social-info">
 											<span class="ti-bag"></span>
-											<p class="hover-text">add to bag</p>
+											<p class="hover-text">Mua ngay</p>
 										</a>
 										<a href="" class="social-info">
 											<span class="lnr lnr-heart"></span>
-											<p class="hover-text">Wishlist</p>
+											<p class="hover-text">Yêu thích</p>
 										</a>
-										<a href="" class="social-info">
+										<!-- <a href="" class="social-info">
 											<span class="lnr lnr-sync"></span>
 											<p class="hover-text">compare</p>
-										</a>
-										<a href="" class="social-info">
+										</a> -->
+										<a href="single-product.html" class="social-info">
 											<span class="lnr lnr-move"></span>
-											<p class="hover-text">view more</p>
+											<p class="hover-text">Xem thêm</p>
 										</a>
 									</div>
 								</div>
@@ -399,31 +400,30 @@
 						<!-- single product -->
 						<div class="col-lg-4 col-md-6">
 							<div class="single-product">
-								<img class="img-fluid" src="img/product/p4.jpg" alt="">
+								<img class="img-fluid" src="img/product/tracamvang.jpg" alt="">
 								<div class="product-details">
-									<h6>addidas New Hammer sole
-										for Sports person</h6>
+									<h6>Trà cam vàng</h6>
 									<div class="price">
-										<h6>$150.00</h6>
-										<h6 class="l-through">$210.00</h6>
+										<h6>55,000 Đ</h6>
+										<h6 class="l-through">65,000 Đ</h6>
 									</div>
 									<div class="prd-bottom">
 
 										<a href="" class="social-info">
 											<span class="ti-bag"></span>
-											<p class="hover-text">add to bag</p>
+											<p class="hover-text">Mua ngay</p>
 										</a>
 										<a href="" class="social-info">
 											<span class="lnr lnr-heart"></span>
-											<p class="hover-text">Wishlist</p>
+											<p class="hover-text">Yêu thích</p>
 										</a>
-										<a href="" class="social-info">
+										<!-- <a href="" class="social-info">
 											<span class="lnr lnr-sync"></span>
 											<p class="hover-text">compare</p>
-										</a>
-										<a href="" class="social-info">
+										</a> -->
+										<a href="single-product.html" class="social-info">
 											<span class="lnr lnr-move"></span>
-											<p class="hover-text">view more</p>
+											<p class="hover-text">Xem thêm</p>
 										</a>
 									</div>
 								</div>
@@ -432,31 +432,30 @@
 						<!-- single product -->
 						<div class="col-lg-4 col-md-6">
 							<div class="single-product">
-								<img class="img-fluid" src="img/product/p5.jpg" alt="">
+								<img class="img-fluid" src="img/product/tracamvang.jpg" alt="">
 								<div class="product-details">
-									<h6>addidas New Hammer sole
-										for Sports person</h6>
+									<h6>Trà cam vàng</h6>
 									<div class="price">
-										<h6>$150.00</h6>
-										<h6 class="l-through">$210.00</h6>
+										<h6>55,000 Đ</h6>
+										<h6 class="l-through">65,000 Đ</h6>
 									</div>
 									<div class="prd-bottom">
 
 										<a href="" class="social-info">
 											<span class="ti-bag"></span>
-											<p class="hover-text">add to bag</p>
+											<p class="hover-text">Mua ngay</p>
 										</a>
 										<a href="" class="social-info">
 											<span class="lnr lnr-heart"></span>
-											<p class="hover-text">Wishlist</p>
+											<p class="hover-text">Yêu thích</p>
 										</a>
-										<a href="" class="social-info">
+										<!-- <a href="" class="social-info">
 											<span class="lnr lnr-sync"></span>
 											<p class="hover-text">compare</p>
-										</a>
-										<a href="" class="social-info">
+										</a> -->
+										<a href="single-product.html" class="social-info">
 											<span class="lnr lnr-move"></span>
-											<p class="hover-text">view more</p>
+											<p class="hover-text">Xem thêm</p>
 										</a>
 									</div>
 								</div>
@@ -465,31 +464,30 @@
 						<!-- single product -->
 						<div class="col-lg-4 col-md-6">
 							<div class="single-product">
-								<img class="img-fluid" src="img/product/p6.jpg" alt="">
+								<img class="img-fluid" src="img/product/tracamvang.jpg" alt="">
 								<div class="product-details">
-									<h6>addidas New Hammer sole
-										for Sports person</h6>
+									<h6>Trà cam vàng</h6>
 									<div class="price">
-										<h6>$150.00</h6>
-										<h6 class="l-through">$210.00</h6>
+										<h6>55,000 Đ</h6>
+										<h6 class="l-through">65,000 Đ</h6>
 									</div>
 									<div class="prd-bottom">
 
 										<a href="" class="social-info">
 											<span class="ti-bag"></span>
-											<p class="hover-text">add to bag</p>
+											<p class="hover-text">Mua ngay</p>
 										</a>
 										<a href="" class="social-info">
 											<span class="lnr lnr-heart"></span>
-											<p class="hover-text">Wishlist</p>
+											<p class="hover-text">Yêu thích</p>
 										</a>
-										<a href="" class="social-info">
+										<!-- <a href="" class="social-info">
 											<span class="lnr lnr-sync"></span>
 											<p class="hover-text">compare</p>
-										</a>
-										<a href="" class="social-info">
+										</a> -->
+										<a href="single-product.html" class="social-info">
 											<span class="lnr lnr-move"></span>
-											<p class="hover-text">view more</p>
+											<p class="hover-text">Xem thêm</p>
 										</a>
 									</div>
 								</div>
@@ -502,9 +500,9 @@
 				<div class="filter-bar d-flex flex-wrap align-items-center">
 					<div class="sorting mr-auto">
 						<select>
-							<option value="1">Show 12</option>
-							<option value="1">Show 12</option>
-							<option value="1">Show 12</option>
+							<option value="1">Hiển thị 12 mục</option>
+							<option value="1">Hiển thị 15 mục</option>
+							<option value="1">Hiển thị 18 mục</option>
 						</select>
 					</div>
 					<div class="pagination">
@@ -528,7 +526,7 @@
 			<div class="row justify-content-center">
 				<div class="col-lg-6 text-center">
 					<div class="section-title">
-						<h1>Deals of the Week</h1>
+						<h1>Ưu đãi trong tuần</h1>
 						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore
 							magna aliqua.</p>
 					</div>
@@ -539,108 +537,108 @@
 					<div class="row">
 						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r1.jpg" alt=""></a>
+								<a href="single-product.html"><img src="img/product/tracamvangblack.jpg" alt=""></a>
 								<div class="desc">
-									<a href="#" class="title">Black lace Heels</a>
+									<a href="single-product.html" class="title">Trà cam vàng</a>
 									<div class="price">
-										<h6>$189.00</h6>
-										<h6 class="l-through">$210.00</h6>
+										<h6>55,000 Đ</h6>
+										<h6 class="l-through">65,000 Đ</h6>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r2.jpg" alt=""></a>
+								<a href="single-product.html"><img src="img/product/tracamvangblack.jpg" alt=""></a>
 								<div class="desc">
-									<a href="#" class="title">Black lace Heels</a>
+									<a href="single-product.html" class="title">Trà cam vàng</a>
 									<div class="price">
-										<h6>$189.00</h6>
-										<h6 class="l-through">$210.00</h6>
+										<h6>55,000 Đ</h6>
+										<h6 class="l-through">65,000 Đ</h6>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r3.jpg" alt=""></a>
+								<a href="single-product.html"><img src="img/product/tracamvangblack.jpg" alt=""></a>
 								<div class="desc">
-									<a href="#" class="title">Black lace Heels</a>
+									<a href="single-product.html" class="title">Trà cam vàng</a>
 									<div class="price">
-										<h6>$189.00</h6>
-										<h6 class="l-through">$210.00</h6>
+										<h6>55,000 Đ</h6>
+										<h6 class="l-through">65,000 Đ</h6>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r5.jpg" alt=""></a>
+								<a href="single-product.html"><img src="img/product/tracamvangblack.jpg" alt=""></a>
 								<div class="desc">
-									<a href="#" class="title">Black lace Heels</a>
+									<a href="single-product.html" class="title">Trà cam vàng</a>
 									<div class="price">
-										<h6>$189.00</h6>
-										<h6 class="l-through">$210.00</h6>
+										<h6>55,000 Đ</h6>
+										<h6 class="l-through">65,000 Đ</h6>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r6.jpg" alt=""></a>
+								<a href="single-product.html"><img src="img/product/tracamvangblack.jpg" alt=""></a>
 								<div class="desc">
-									<a href="#" class="title">Black lace Heels</a>
+									<a href="single-product.html" class="title">Trà cam vàng</a>
 									<div class="price">
-										<h6>$189.00</h6>
-										<h6 class="l-through">$210.00</h6>
+										<h6>55,000 Đ</h6>
+										<h6 class="l-through">65,000 Đ</h6>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6 mb-20">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r7.jpg" alt=""></a>
+								<a href="single-product.html"><img src="img/product/tracamvangblack.jpg" alt=""></a>
 								<div class="desc">
-									<a href="#" class="title">Black lace Heels</a>
+									<a href="single-product.html" class="title">Trà cam vàng</a>
 									<div class="price">
-										<h6>$189.00</h6>
-										<h6 class="l-through">$210.00</h6>
+										<h6>55,000 Đ</h6>
+										<h6 class="l-through">65,000 Đ</h6>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r9.jpg" alt=""></a>
+								<a href="single-product.html"><img src="img/product/tracamvangblack.jpg" alt=""></a>
 								<div class="desc">
-									<a href="#" class="title">Black lace Heels</a>
+									<a href="single-product.html" class="title">Trà cam vàng</a>
 									<div class="price">
-										<h6>$189.00</h6>
-										<h6 class="l-through">$210.00</h6>
+										<h6>55,000 Đ</h6>
+										<h6 class="l-through">65,000 Đ</h6>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r10.jpg" alt=""></a>
+								<a href="single-product.html"><img src="img/product/tracamvangblack.jpg" alt=""></a>
 								<div class="desc">
-									<a href="#" class="title">Black lace Heels</a>
+									<a href="single-product.html" class="title">Trà cam vàng</a>
 									<div class="price">
-										<h6>$189.00</h6>
-										<h6 class="l-through">$210.00</h6>
+										<h6>55,000 Đ</h6>
+										<h6 class="l-through">65,000 Đ</h6>
 									</div>
 								</div>
 							</div>
 						</div>
 						<div class="col-lg-4 col-md-4 col-sm-6">
 							<div class="single-related-product d-flex">
-								<a href="#"><img src="img/r11.jpg" alt=""></a>
+								<a href="single-product.html"><img src="img/product/tracamvangblack.jpg" alt=""></a>
 								<div class="desc">
-									<a href="#" class="title">Black lace Heels</a>
+									<a href="single-product.html" class="title">Trà cam vàng</a>
 									<div class="price">
-										<h6>$189.00</h6>
-										<h6 class="l-through">$210.00</h6>
+										<h6>55,000 Đ</h6>
+										<h6 class="l-through">65,000 Đ</h6>
 									</div>
 								</div>
 							</div>
@@ -665,17 +663,23 @@
 			<div class="row">
 				<div class="col-lg-3  col-md-6 col-sm-6">
 					<div class="single-footer-widget">
-						<h6>About Us</h6>
+						<h6>Thông tin</h6>
 						<p>
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore dolore
-							magna aliqua.
+							Về chúng tôi
 						</p>
+						<p>
+							Câu chuyện về hạt cà phê
+						</p>
+						<p>
+							Cơ hội nghề nghiệp
+						</p>
+						
 					</div>
 				</div>
 				<div class="col-lg-4  col-md-6 col-sm-6">
 					<div class="single-footer-widget">
-						<h6>Newsletter</h6>
-						<p>Stay update with our latest</p>
+						<h6>Tin tức thư từ</h6>
+						<p>Liên tục cập nhật thông tin mới nhất</p>
 						<div class="" id="mc_embed_signup">
 
 							<form target="_blank" novalidate="true" action="https://spondonit.us12.list-manage.com/subscribe/post?u=1462626880ade1ac87bd9c93a&amp;id=92a4423d01"
@@ -683,7 +687,7 @@
 
 								<div class="d-flex flex-row">
 
-									<input class="form-control" name="EMAIL" placeholder="Enter Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter Email '"
+									<input class="form-control" name="EMAIL" placeholder="Nhập Email" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Nhập Email '"
 									 required="" type="email">
 
 
@@ -693,8 +697,8 @@
 									</div>
 
 									<!-- <div class="col-lg-4 col-md-4">
-													<button class="bb-btn btn"><span class="lnr lnr-arrow-right"></span></button>
-												</div>  -->
+												<button class="bb-btn btn"><span class="lnr lnr-arrow-right"></span></button>
+											</div>  -->
 								</div>
 								<div class="info"></div>
 							</form>
@@ -703,8 +707,14 @@
 				</div>
 				<div class="col-lg-3  col-md-6 col-sm-6">
 					<div class="single-footer-widget mail-chimp">
-						<h6 class="mb-20">Instragram Feed</h6>
-						<ul class="instafeed d-flex flex-wrap">
+						<h6 class="mb-20">Địa chỉ</h6>
+						<p>
+							362 Nguyễn Du Phường 8 
+						</p>
+						<p>
+							Quận 5 TPHCM.
+						</p>
+						<!-- <ul class="instafeed d-flex flex-wrap">
 							<li><img src="img/i1.jpg" alt=""></li>
 							<li><img src="img/i2.jpg" alt=""></li>
 							<li><img src="img/i3.jpg" alt=""></li>
@@ -713,25 +723,27 @@
 							<li><img src="img/i6.jpg" alt=""></li>
 							<li><img src="img/i7.jpg" alt=""></li>
 							<li><img src="img/i8.jpg" alt=""></li>
-						</ul>
+						</ul> -->
 					</div>
 				</div>
 				<div class="col-lg-2 col-md-6 col-sm-6">
 					<div class="single-footer-widget">
-						<h6>Follow Us</h6>
-						<p>Let us be social</p>
+						<h6>Mạng xã hội</h6>
+						<!-- <p>trên các mạng xã hội</p> -->
 						<div class="footer-social d-flex align-items-center">
 							<a href="#"><i class="fa fa-facebook"></i></a>
 							<a href="#"><i class="fa fa-twitter"></i></a>
+							<!-- <a href="#"><i class="fa fa-zalo"></i></a>
 							<a href="#"><i class="fa fa-dribbble"></i></a>
-							<a href="#"><i class="fa fa-behance"></i></a>
+							<a href="#"><i class="fa fa-behance"></i></a> -->
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="footer-bottom d-flex justify-content-center align-items-center flex-wrap">
-				<p class="footer-text m-0"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+				<p class="footer-text m-0">
+					<!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+<!-- Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a> -->
 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
 </p>
 			</div>
