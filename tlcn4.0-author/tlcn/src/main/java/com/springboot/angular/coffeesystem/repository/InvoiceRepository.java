@@ -21,22 +21,22 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Integer> {
 //    List<Invoice> findByCoffeeTableId(Integer id);
     Page<Invoice> findAllByEnable(boolean enable, Pageable pageable);
 //    @Query("select i.customer as customer from Invoice i where i.enable=?1 and i.paymentStatus=?2")
-    List<Invoice> findAllByEnableAndPaymentStatus(boolean enable, boolean paymentStatus);
+    List<Invoice> findAllByEnableAndStatus(boolean enable, Integer status);
 
-    Page<Invoice> findAllByEnableAndPaymentStatus(boolean enable, boolean paymentStatus, Pageable pageable);
-    @Query("select i from Invoice i where i.enable=?1 and i.paymentStatus=?2 " +
+    Page<Invoice> findAllByEnableAndStatus(boolean enable, Integer status, Pageable pageable);
+    @Query("select i from Invoice i where i.enable=?1 and i.status=?2 " +
             "and i.date>=?3 and i.date <=?4")
-    Page<Invoice> findByEnableAndPaymentStatusAndDate(boolean enable, boolean paymentStatus,
+    Page<Invoice> findByEnableAndPaymentStatusAndDate(boolean enable, Integer status,
                                                       ZonedDateTime fromDate, ZonedDateTime toDate, Pageable pageable);
-    List<Invoice> findAllByEnableAndPaymentStatusAndBranchShopId(
-            boolean enable, boolean paymentStatus, Integer id);
-    @Query("select i from Invoice i where i.enable=?1 and i.paymentStatus=?2 " +
+    List<Invoice> findAllByEnableAndStatusAndBranchShopId(
+            boolean enable, Integer status, Integer id);
+    @Query("select i from Invoice i where i.enable=?1 and i.status=?2 " +
             "and i.branchShop.id=?3 and i.date>=?4 and i.date <=?5")
     Page<Invoice> findByEnableAndPaymentStatusAndBranchShopIdAndDate(
-            boolean enable, boolean paymentStatus, Integer id,
+            boolean enable, Integer status, Integer id,
             ZonedDateTime fromDate, ZonedDateTime toDate, Pageable pageable);
-    Page<Invoice> findAllByEnableAndPaymentStatusAndBranchShopId(
-            boolean enable, boolean paymentStatus, Integer id, Pageable pageable);
+    Page<Invoice> findAllByEnableAndStatusAndBranchShopId(
+            boolean enable, Integer status, Integer id, Pageable pageable);
     Page<Invoice> findAll(Pageable pageable);
     @Query("select max(i.id) from Invoice i")
     Integer findMaxId();

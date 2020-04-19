@@ -24,7 +24,7 @@ public class InvoiceResponseDto {
     private float totalDiscount;
     private float totalPrice;
     private float realPay;
-    
+    private Integer status;
 //    private String coffeeTable;
 
 }

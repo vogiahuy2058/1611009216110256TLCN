@@ -46,12 +46,12 @@ public class InvoiceController {
             @RequestParam(name = "size", required = false, defaultValue = "10") int size,
             @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
             @RequestParam(name = "column", required = false, defaultValue = "id") String sortColumn){
-        return  ResponseEntity.ok(this.invoiceService.getAllInvoiceStatusTruePaging(page, size, sort, sortColumn));
+        return  ResponseEntity.ok(this.invoiceService.getAllInvoiceStatus2Paging(page, size, sort, sortColumn));
     }
 
     @GetMapping("/get-all-true")
     public ResponseEntity<ResponseDto> getAllInvoiceStatusTrue(){
-        return  ResponseEntity.ok(this.invoiceService.getAllInvoiceStatusTrue());
+        return  ResponseEntity.ok(this.invoiceService.getAllInvoiceStatus2());
     }
     @GetMapping("/get-all-date-to-date-paging")
     public ResponseEntity<PagingResponseDto> getAllInvoiceDateToDatePaging(@RequestParam(name = "page", required = false, defaultValue = "0") int page,
@@ -72,7 +72,7 @@ public class InvoiceController {
 
     @GetMapping("/get-all-false")
     public ResponseEntity<ResponseDto> getAllInvoiceStatusFalse(){
-        return  ResponseEntity.ok(this.invoiceService.getAllInvoiceStatusFalse());
+        return  ResponseEntity.ok(this.invoiceService.getAllInvoiceStatus0());
     }
 
     @GetMapping("/get")
@@ -104,6 +104,6 @@ public class InvoiceController {
 
     @PutMapping("/delete-status-false")
     public ResponseEntity<ResponseDto> deleteInvoiceStatusFalse(){
-        return ResponseEntity.ok(invoiceService.deleteInvoiceStatusFalse());
+        return ResponseEntity.ok(invoiceService.deleteInvoiceStatus0());
     }
 }

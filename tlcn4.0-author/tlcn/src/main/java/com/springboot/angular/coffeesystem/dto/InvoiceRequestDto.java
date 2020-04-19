@@ -23,7 +23,7 @@ public class InvoiceRequestDto {
     private float totalDiscount;
     private Integer numberPosition;
     private String customerPhone;
-    private boolean paymentStatus;
+    private Integer status;
 
 //    private String branchShop;
 

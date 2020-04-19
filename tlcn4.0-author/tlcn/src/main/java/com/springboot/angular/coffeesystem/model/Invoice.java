@@ -28,7 +28,10 @@ public class Invoice extends Auditable<String> {
 //    private LocalDateTime date;
     private ZonedDateTime date;
     private boolean enable = true;
-    private boolean paymentStatus = false;
+    //status=0: chua thanh toan
+    //status=1: da thanh toan
+    //status=2: da in phieu dan tren ly thuc uong
+    private Integer status;
     private Integer numberPosition;
 
     @ManyToOne

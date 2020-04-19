@@ -83,8 +83,8 @@ public class InvoiceServiceImpl implements InvoiceService{
         return new ResponseDto(HttpStatus.OK.value(), "Create invoice successful", null);
     }
     @Transactional
-    public ResponseDto getAllInvoiceStatusTrue(){
-        List<Invoice> invoices = invoiceRepository.findAllByEnableAndPaymentStatus(true, true);
+    public ResponseDto getAllInvoiceStatus2(){
+        List<Invoice> invoices = invoiceRepository.findAllByEnableAndStatus(true, 2);
         List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
         invoices.forEach(invoice -> {
             InvoiceResponseDto invoiceResponseDto = mapperObject.InvoiceEntityToDto(invoice);
@@ -120,7 +120,7 @@ public class InvoiceServiceImpl implements InvoiceService{
         LocalDate newToDate = LocalDate.parse(toDate, dtf);
         ZonedDateTime zoneFromDate = ZonedDateTime.from(newToDate);
         List<Invoice> invoices =
-                invoiceRepository.findAllByEnableAndPaymentStatusAndBranchShopId(true, true, branchShopId);
+                invoiceRepository.findAllByEnableAndStatusAndBranchShopId(true, 2, branchShopId);
         List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
 //        try{
 //            Date newFromDate = formatter.parse(fromDate);
@@ -176,7 +176,7 @@ public class InvoiceServiceImpl implements InvoiceService{
             return getAllInvoiceDateToDatePaging(page, size, sort, sortColumn, fromDate, toDate);
         }
         else {
-            return getAllInvoiceStatusTruePaging(page, size, sort, sortColumn);
+            return getAllInvoiceStatus2Paging(page, size, sort, sortColumn);
         }
     }
     @Transactional
@@ -192,7 +192,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 
         Page<Invoice> invoicePage =
                 invoiceRepository.findByEnableAndPaymentStatusAndBranchShopIdAndDate(
-                        true, true, branchShopId, newFromDate, newToDate, pageable);
+                        true, 2, branchShopId, newFromDate, newToDate, pageable);
 
         List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
 
@@ -229,7 +229,7 @@ public class InvoiceServiceImpl implements InvoiceService{
     public PagingResponseDto getAllInvoicePaging(int page, int size, String sort, String sortColumn) {
         Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
         List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
-        Page<Invoice> invoicePage = invoiceRepository.findAllByEnableAndPaymentStatus(true, true, pageable);
+        Page<Invoice> invoicePage = invoiceRepository.findAllByEnableAndStatus(true, 2, pageable);
 
         invoicePage.forEach(element->{
             InvoiceResponseDto invoiceResponseDto = mapperObject.InvoiceEntityToDto(element);
@@ -267,7 +267,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 
         Page<Invoice> invoicePage =
                 invoiceRepository.findByEnableAndPaymentStatusAndDate(
-                        true, true, newFromDate, newToDate, pageable);
+                        true, 2, newFromDate, newToDate, pageable);
         List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
 //        try{
 //            Date newFromDate = formatter.parse(fromDate);
@@ -316,8 +316,8 @@ public class InvoiceServiceImpl implements InvoiceService{
         Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
 
         Page<Invoice> invoicePage =
-                invoiceRepository.findAllByEnableAndPaymentStatusAndBranchShopId(
-                        true, true, branchShopId, pageable);
+                invoiceRepository.findAllByEnableAndStatusAndBranchShopId(
+                        true, 2, branchShopId, pageable);
         List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
 
         invoicePage.forEach(invoice -> {
@@ -359,8 +359,8 @@ public class InvoiceServiceImpl implements InvoiceService{
                 invoiceResponseDtoPage.getTotalPages(), invoiceResponseDtoPage.getPageable());
     }
     @Transactional
-    public ResponseDto getAllInvoiceStatusFalse(){
-        List<Invoice> invoices = invoiceRepository.findAllByEnableAndPaymentStatus(true, false);
+    public ResponseDto getAllInvoiceStatus0(){
+        List<Invoice> invoices = invoiceRepository.findAllByEnableAndStatus(true, 0);
         List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
         invoices.forEach(invoice -> {
             InvoiceResponseDto invoiceResponseDto = mapperObject.InvoiceEntityToDto(invoice);
@@ -392,10 +392,10 @@ public class InvoiceServiceImpl implements InvoiceService{
 
     @Transactional
     @Override
-    public PagingResponseDto getAllInvoiceStatusTruePaging(int page, int size, String sort, String sortColumn) {
+    public PagingResponseDto getAllInvoiceStatus2Paging(int page, int size, String sort, String sortColumn) {
                 Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
         List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
-        Page<Invoice> invoicePage = invoiceRepository.findAllByEnableAndPaymentStatus(true, true, pageable);
+        Page<Invoice> invoicePage = invoiceRepository.findAllByEnableAndStatus(true, 2, pageable);
         invoicePage.forEach(element->{
             InvoiceResponseDto invoiceResponseDto = mapperObject.InvoiceEntityToDto(element);
 
@@ -543,7 +543,7 @@ public class InvoiceServiceImpl implements InvoiceService{
         invoice.setTotalDiscount(invoiceRequestDto.getTotalDiscount());
 //        invoice.setDate(ZonedDateTime.parse(invoiceRequestDto.getDate().withZoneSameInstant(zoneId).toString()));
         invoice.setNumberPosition(invoiceRequestDto.getNumberPosition());
-        invoice.setPaymentStatus(invoiceRequestDto.isPaymentStatus());
+        invoice.setStatus(invoiceRequestDto.getStatus());
         invoice.setRealPay(invoiceRequestDto.getRealPay());
         invoiceRepository.save(invoice);
         return new ResponseDto(HttpStatus.OK.value(), "Edit invoice successful", null);
@@ -556,8 +556,8 @@ public class InvoiceServiceImpl implements InvoiceService{
         return new ResponseDto(HttpStatus.OK.value(), "Delete invoice successful", null);
     }
 
-    public ResponseDto deleteInvoiceStatusFalse(){
-        List<Invoice> invoiceList = invoiceRepository.findAllByEnableAndPaymentStatus(true, false);
+    public ResponseDto deleteInvoiceStatus0(){
+        List<Invoice> invoiceList = invoiceRepository.findAllByEnableAndStatus(true, 0);
         invoiceList.forEach(element->{
             element.setEnable(false);
             invoiceRepository.save(element);

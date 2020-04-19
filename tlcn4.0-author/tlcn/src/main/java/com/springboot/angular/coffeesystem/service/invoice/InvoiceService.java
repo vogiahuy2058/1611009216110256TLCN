@@ -3,15 +3,17 @@ package com.springboot.angular.coffeesystem.service.invoice;
 import com.springboot.angular.coffeesystem.dto.InvoiceRequestDto;
 import com.springboot.angular.coffeesystem.dto.PagingResponseDto;
 import com.springboot.angular.coffeesystem.dto.ResponseDto;
+import com.springboot.angular.coffeesystem.util.PageUtil;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 
 import java.time.LocalDate;
 
 public interface InvoiceService {
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER', 'ROLE_MANAGE_ALL_BRANCH')")
-    ResponseDto getAllInvoiceStatusTrue();
+    ResponseDto getAllInvoiceStatus2();
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER', 'ROLE_MANAGE_ALL_BRANCH')")
-    ResponseDto getAllInvoiceStatusFalse();
+    ResponseDto getAllInvoiceStatus0();
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER', 'ROLE_MANAGE_ALL_BRANCH')")
     ResponseDto createInvoice(InvoiceRequestDto invoiceRequestDto);
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER', 'ROLE_MANAGE_ALL_BRANCH')")
@@ -20,11 +22,11 @@ public interface InvoiceService {
     ResponseDto editInvoice(InvoiceRequestDto invoiceRequestDto);
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_MANAGE_ALL_BRANCH')")
     ResponseDto deleteInvoice(Integer id);
-    ResponseDto deleteInvoiceStatusFalse();
+    ResponseDto deleteInvoiceStatus0();
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER', 'ROLE_MANAGE_ALL_BRANCH')")
     PagingResponseDto getAllInvoicePaging(int page, int size, String sort, String sortColumn);
     //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER', 'ROLE_MANAGE_ALL_BRANCH')")
-    PagingResponseDto getAllInvoiceStatusTruePaging(int page, int size, String sort, String sortColumn);
+    PagingResponseDto getAllInvoiceStatus2Paging(int page, int size, String sort, String sortColumn);
     //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER', 'ROLE_MANAGE_ALL_BRANCH')")
     ResponseDto getAllInvoiceDateToDate(String fromDate, String toDate, Integer branchShopId);
     PagingResponseDto getAllInvoiceDateToDateByBranchShopPaging(int page, int size, String sort, String sortColumn,
