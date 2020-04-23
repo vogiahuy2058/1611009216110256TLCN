@@ -103,6 +103,26 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
         }
         return new ResponseDto(HttpStatus.OK.value(), "Successful", invoiceDetailResponseDtos);
     }
+
+    @Transactional
+    public ResponseDto getInvoiceDetailByInvoiceIdAndStatus(Integer invoiceId, Integer status){
+        Invoice invoice = invoiceRepository.findByIdAndEnableAndStatus(invoiceId, true, status)
+                .orElseThrow(()-> new NotFoundException("Invoice has id: " + invoiceId + " and status: "
+                        + status + " not found"));
+        List<InvoiceDetail> invoiceDetailList = invoiceDetailRepository.findByInvoice(invoice);
+        List<InvoiceDetailResponseDto> invoiceDetailResponseDtos = new ArrayList<>();
+        Integer serial = 0;
+        for (InvoiceDetail element : invoiceDetailList) {
+            InvoiceDetailResponseDto invoiceDetailResponseDto = mapperObject.InvoiceDetailEntityToDto(element);
+            invoiceDetailResponseDto.setDrinkId(element.getInvoiceDetailId().getDrinkId());
+            invoiceDetailResponseDto.setInvoiceId(element.getInvoiceDetailId().getInvoiceId());
+            invoiceDetailResponseDto.setDrinkName(element.getDrink().getName());
+            invoiceDetailResponseDto.setSerial(serial + 1);
+            serial = serial + 1;
+            invoiceDetailResponseDtos.add(invoiceDetailResponseDto);
+        }
+        return new ResponseDto(HttpStatus.OK.value(), "Successful", invoiceDetailResponseDtos);
+    }
     @Transactional
     public ResponseDto getInvoiceDetailByID(Integer id){
         InvoiceDetail invoiceDetail = invoiceDetailRepository.findByInvoiceDetailIdId(id)

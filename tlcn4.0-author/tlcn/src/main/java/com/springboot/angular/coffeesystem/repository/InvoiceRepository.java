@@ -15,6 +15,7 @@ import java.util.Optional;
 @Transactional(rollbackFor = Exception.class)
 public interface InvoiceRepository extends JpaRepository<Invoice, Integer> {
     Optional<Invoice> findByIdAndEnable(Integer id, boolean enable);
+    Optional<Invoice> findByIdAndEnableAndStatus(Integer id, boolean enable, Integer status);
     List<Invoice> findByBranchShopId(Integer id);
     List<Invoice> findByOrderTypeId(Integer id);
     List<Invoice> findByCustomerId(Integer id);

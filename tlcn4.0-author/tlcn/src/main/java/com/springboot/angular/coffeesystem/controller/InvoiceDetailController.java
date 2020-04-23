@@ -41,6 +41,13 @@ public class InvoiceDetailController {
 
         return ResponseEntity.ok(invoiceDetailService.getInvoiceDetailByInvoiceId(invoiceId));
     }
+    @GetMapping("/get-by-id-status-invoice")
+    public ResponseEntity<ResponseDto> getInvoiceDetailByInvoiceIdAndStatusInvoice
+            (@RequestParam Integer invoiceId,
+             @RequestParam Integer status){
+
+        return ResponseEntity.ok(invoiceDetailService.getInvoiceDetailByInvoiceIdAndStatus(invoiceId, status));
+    }
     @GetMapping("/get-by-id")
     public ResponseEntity<ResponseDto> getInvoiceDetailById(@RequestParam Integer id){
 
