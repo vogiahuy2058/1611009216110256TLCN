@@ -49,9 +49,9 @@ public class InvoiceController {
         return  ResponseEntity.ok(this.invoiceService.getAllInvoiceStatus2Paging(page, size, sort, sortColumn));
     }
 
-    @GetMapping("/get-all-true")
-    public ResponseEntity<ResponseDto> getAllInvoiceStatusTrue(){
-        return  ResponseEntity.ok(this.invoiceService.getAllInvoiceStatus2());
+    @GetMapping("/get-all-by-status")
+    public ResponseEntity<ResponseDto> getAllInvoiceByStatus(@RequestParam Integer status){
+        return  ResponseEntity.ok(this.invoiceService.getAllInvoiceByStatus(status));
     }
     @GetMapping("/get-all-date-to-date-paging")
     public ResponseEntity<PagingResponseDto> getAllInvoiceDateToDatePaging(@RequestParam(name = "page", required = false, defaultValue = "0") int page,

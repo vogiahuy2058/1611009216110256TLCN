@@ -83,8 +83,8 @@ public class InvoiceServiceImpl implements InvoiceService{
         return new ResponseDto(HttpStatus.OK.value(), "Create invoice successful", null);
     }
     @Transactional
-    public ResponseDto getAllInvoiceStatus2(){
-        List<Invoice> invoices = invoiceRepository.findAllByEnableAndStatus(true, 2);
+    public ResponseDto getAllInvoiceByStatus(Integer status){
+        List<Invoice> invoices = invoiceRepository.findAllByEnableAndStatus(true, status);
         List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
         invoices.forEach(invoice -> {
             InvoiceResponseDto invoiceResponseDto = mapperObject.InvoiceEntityToDto(invoice);
