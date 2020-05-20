@@ -1,7 +1,10 @@
 package com.springboot.angular.coffeesystem.repository;
 
+import com.springboot.angular.coffeesystem.model.Drink;
 import com.springboot.angular.coffeesystem.model.DrinkPrice;
 import com.springboot.angular.coffeesystem.model.embedding.DrinkPriceId;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -13,4 +16,5 @@ public interface DrinkPriceRepository extends JpaRepository<DrinkPrice, DrinkPri
     List<DrinkPrice> findAllByEnable(boolean enable);
     @Query("select max(dp.drinkPriceId.id) from DrinkPrice dp")
     Integer findMaxId();
+    Page<DrinkPrice> findAllByEnable(boolean enable, Pageable pageable);
 }

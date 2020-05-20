@@ -1,6 +1,7 @@
 package com.springboot.angular.coffeesystem.controller;
 
 import com.springboot.angular.coffeesystem.dto.DrinkDto;
+import com.springboot.angular.coffeesystem.dto.PagingResponseDto;
 import com.springboot.angular.coffeesystem.dto.ResponseDto;
 import com.springboot.angular.coffeesystem.service.drink.DrinkService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,14 +15,14 @@ public class DrinkController {
     @Autowired
     private DrinkService drinkService;
 
-//    @GetMapping("/get-all")
-//    public ResponseEntity<PagingResponseDto> getAllDrinkPaging(
-//            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
-//            @RequestParam(name = "size", required = false, defaultValue = "10") int size,
-//            @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
-//            @RequestParam(name = "column", required = false, defaultValue = "name") String sortColumn){
-//        return ResponseEntity.ok(this.drinkService.getAllDrinkPaging(page, size, sort, sortColumn));
-//    }
+    @GetMapping("/get-all-paging")
+    public ResponseEntity<PagingResponseDto> getAllDrinkPaging(
+            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(name = "size", required = false, defaultValue = "10") int size,
+            @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
+            @RequestParam(name = "column", required = false, defaultValue = "name") String sortColumn){
+        return ResponseEntity.ok(this.drinkService.getAllDrinkPaging(page, size, sort, sortColumn));
+    }
 
     @GetMapping("/get-all")
     public ResponseEntity<ResponseDto> getAllDrink(){

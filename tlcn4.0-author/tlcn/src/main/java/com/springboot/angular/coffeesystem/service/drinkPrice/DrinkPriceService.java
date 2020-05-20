@@ -1,6 +1,7 @@
 package com.springboot.angular.coffeesystem.service.drinkPrice;
 
 import com.springboot.angular.coffeesystem.dto.DrinkPriceRequestDto;
+import com.springboot.angular.coffeesystem.dto.PagingResponseDto;
 import com.springboot.angular.coffeesystem.dto.ResponseDto;
 import org.springframework.security.access.prepost.PreAuthorize;
 
@@ -13,4 +14,5 @@ public interface DrinkPriceService {
     ResponseDto getPriceOfDrink(Integer drinkId);
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER', 'ROLE_MANAGE_ALL_BRANCH')")
     ResponseDto getAllPriceOfDrink();
+    PagingResponseDto getAllDrinkPricePaging(int page, int size, String sort, String sortColumn);
 }

@@ -19,14 +19,14 @@ public class CustomerTypeController {
     public ResponseEntity<ResponseDto> createCustomerType(@RequestBody CustomerTypeDto customerTypeDto){
         return ResponseEntity.ok(customerTypeService.createCustomerType(customerTypeDto));
     }
-//    @GetMapping("/get-all")
-//    public ResponseEntity<PagingResponseDto> getAllCustomerTypePaging(
-//            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
-//            @RequestParam(name = "size", required = false, defaultValue = "10") int size,
-//            @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
-//            @RequestParam(name = "column", required = false, defaultValue = "name") String sortColumn){
-//        return ResponseEntity.ok(this.customerTypeService.getAllCustomerTypePaging(page, size, sort, sortColumn));
-//    }
+    @GetMapping("/get-all-paging")
+    public ResponseEntity<PagingResponseDto> getAllCustomerTypePaging(
+            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(name = "size", required = false, defaultValue = "10") int size,
+            @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
+            @RequestParam(name = "column", required = false, defaultValue = "name") String sortColumn){
+        return ResponseEntity.ok(this.customerTypeService.getAllCustomerTypePaging(page, size, sort, sortColumn));
+    }
 
     @GetMapping("/get-all")
     public ResponseEntity<ResponseDto> getAllCustomerType(){

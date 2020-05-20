@@ -1,7 +1,10 @@
 package com.springboot.angular.coffeesystem.repository;
 
+import com.springboot.angular.coffeesystem.model.DrinkPrice;
 import com.springboot.angular.coffeesystem.model.MaterialPrice;
 import com.springboot.angular.coffeesystem.model.embedding.MaterialPriceId;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -14,4 +17,5 @@ public interface MaterialPriceRepository extends JpaRepository<MaterialPrice, Ma
     @Query("select max(mp.materialPriceId.id) from MaterialPrice mp")
     Integer findMaxId();
     List<MaterialPrice> findAllByEnable(boolean enable);
+    Page<MaterialPrice> findAllByEnable(boolean enable, Pageable pageable);
 }

@@ -34,14 +34,14 @@ public class AccountController {
     public ResponseEntity<ResponseDto> getAccount(@RequestParam String username){
         return  ResponseEntity.ok(this.accountService.getAccount(username));
     }
-//    @GetMapping("/get-all")
-//    public ResponseEntity<PagingResponseDto> getAllAccountPaging(
-//            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
-//            @RequestParam(name = "size", required = false, defaultValue = "10") int size,
-//            @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
-//            @RequestParam(name = "column", required = false, defaultValue = "username") String sortColumn){
-//        return ResponseEntity.ok(this.accountService.getAllAccountPaging(page, size, sort, sortColumn));
-//    }
+    @GetMapping("/get-all-paging")
+    public ResponseEntity<PagingResponseDto> getAllAccountPaging(
+            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(name = "size", required = false, defaultValue = "10") int size,
+            @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
+            @RequestParam(name = "column", required = false, defaultValue = "username") String sortColumn){
+        return ResponseEntity.ok(this.accountService.getAllAccountPaging(page, size, sort, sortColumn));
+    }
     @GetMapping("/get-all")
     public ResponseEntity<ResponseDto> getAllAccount(){
         return  ResponseEntity.ok(this.accountService.getAllAccount());

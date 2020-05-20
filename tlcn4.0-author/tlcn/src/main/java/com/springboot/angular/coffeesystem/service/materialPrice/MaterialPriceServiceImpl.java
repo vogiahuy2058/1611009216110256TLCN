@@ -1,16 +1,20 @@
 package com.springboot.angular.coffeesystem.service.materialPrice;
 
-import com.springboot.angular.coffeesystem.dto.MaterialPriceRequestDto;
-import com.springboot.angular.coffeesystem.dto.MaterialPriceResponseDto;
-import com.springboot.angular.coffeesystem.dto.ResponseDto;
+import com.springboot.angular.coffeesystem.dto.*;
 import com.springboot.angular.coffeesystem.exception.NotFoundException;
+import com.springboot.angular.coffeesystem.model.Drink;
+import com.springboot.angular.coffeesystem.model.DrinkPrice;
 import com.springboot.angular.coffeesystem.model.Material;
 import com.springboot.angular.coffeesystem.model.MaterialPrice;
 import com.springboot.angular.coffeesystem.model.embedding.MaterialPriceId;
 import com.springboot.angular.coffeesystem.repository.MaterialPriceRepository;
 import com.springboot.angular.coffeesystem.repository.MaterialRepository;
 import com.springboot.angular.coffeesystem.util.MapperObject;
+import com.springboot.angular.coffeesystem.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -96,5 +100,27 @@ public class MaterialPriceServiceImpl implements MaterialPriceService {
             materialPriceResponseDtos.add(materialPriceResponseDto);
         });
         return new ResponseDto(HttpStatus.OK.value(), "All material price", materialPriceResponseDtos);
+    }
+    @Transactional
+    public PagingResponseDto getAllMaterialPricePaging(int page, int size, String sort, String sortColumn) {
+        Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
+        List<MaterialPriceResponseDto> materialPriceResponseDtos = new ArrayList<>();
+        Page<MaterialPrice> materialPricePage = materialPriceRepository.findAllByEnable(true, pageable);
+
+        materialPricePage.forEach(element->{
+            MaterialPriceResponseDto materialPriceResponseDto = mapperObject.MaterialPriceEntityToDto1(element);
+            Material material = materialRepository.findByIdAndEnable(element.getMaterialPriceId().getIdMaterial(), true)
+                    .orElseThrow(()-> new NotFoundException("Material id not found"));
+            materialPriceResponseDto.setId(element.getMaterialPriceId().getId());
+            materialPriceResponseDto.setMaterialId(element.getMaterialPriceId().getIdMaterial());
+            materialPriceResponseDto.setDate(element.getMaterialPriceId().getDate()
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            materialPriceResponseDto.setMaterialName(material.getName());
+            materialPriceResponseDtos.add(materialPriceResponseDto);});
+        Page<MaterialPriceResponseDto> materialPriceResponseDtoPage = new PageImpl<>(materialPriceResponseDtos, pageable,
+                materialPricePage.getTotalElements());
+        return new PagingResponseDto<>(
+                materialPriceResponseDtoPage.getContent(), materialPriceResponseDtoPage.getTotalElements(), materialPriceResponseDtoPage.getTotalPages(),
+                materialPriceResponseDtoPage.getPageable());
     }
 }

@@ -19,14 +19,14 @@ public class DrinkTypeController {
     public ResponseEntity<ResponseDto> createDrinkType(@RequestBody DrinkTypeDto drinkTypeDto){
         return ResponseEntity.ok(drinkTypeService.createDrinkType(drinkTypeDto));
     }
-//    @GetMapping("/get-all")
-//    public ResponseEntity<PagingResponseDto> getAllDrinkPaging(
-//            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
-//            @RequestParam(name = "size", required = false, defaultValue = "10") int size,
-//            @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
-//            @RequestParam(name = "column", required = false, defaultValue = "name") String sortColumn){
-//        return ResponseEntity.ok(this.drinkTypeService.getAllDrinkTypePaging(page, size, sort, sortColumn));
-//    }
+    @GetMapping("/get-all-paging")
+    public ResponseEntity<PagingResponseDto> getAllDrinkPaging(
+            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(name = "size", required = false, defaultValue = "10") int size,
+            @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
+            @RequestParam(name = "column", required = false, defaultValue = "name") String sortColumn){
+        return ResponseEntity.ok(this.drinkTypeService.getAllDrinkTypePaging(page, size, sort, sortColumn));
+    }
 
     @GetMapping("/get-all")
     public ResponseEntity<ResponseDto> getAllDrinkType(){

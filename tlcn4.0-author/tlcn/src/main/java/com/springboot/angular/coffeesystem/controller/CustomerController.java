@@ -21,14 +21,14 @@ public class CustomerController {
     public ResponseEntity<ResponseDto> createCustomer(@RequestBody CustomerRequestDto customerRequestDto){
         return ResponseEntity.ok(customerService.createCustomer(customerRequestDto));
     }
-//    @GetMapping("/get-all")
-//    public ResponseEntity<PagingResponseDto> getAllCustomerPaging(
-//            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
-//            @RequestParam(name = "size", required = false, defaultValue = "10") int size,
-//            @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
-//            @RequestParam(name = "column", required = false, defaultValue = "name") String sortColumn){
-//        return ResponseEntity.ok(this.customerService.getAllCustomerPaging(page, size, sort, sortColumn));
-//    }
+    @GetMapping("/get-all-paging")
+    public ResponseEntity<PagingResponseDto> getAllCustomerPaging(
+            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(name = "size", required = false, defaultValue = "10") int size,
+            @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
+            @RequestParam(name = "column", required = false, defaultValue = "name") String sortColumn){
+        return ResponseEntity.ok(this.customerService.getAllCustomerPaging(page, size, sort, sortColumn));
+    }
 
     @GetMapping("/get-all")
     public ResponseEntity<ResponseDto> getAllCustomer(){

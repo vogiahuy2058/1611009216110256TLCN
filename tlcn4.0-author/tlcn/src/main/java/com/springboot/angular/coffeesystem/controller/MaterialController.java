@@ -2,6 +2,7 @@ package com.springboot.angular.coffeesystem.controller;
 
 
 import com.springboot.angular.coffeesystem.dto.MaterialDto;
+import com.springboot.angular.coffeesystem.dto.PagingResponseDto;
 import com.springboot.angular.coffeesystem.dto.ResponseDto;
 import com.springboot.angular.coffeesystem.service.material.MaterialService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,14 +19,14 @@ public class MaterialController {
     public ResponseEntity<ResponseDto> createMaterial(@RequestBody MaterialDto materialDto){
         return ResponseEntity.ok(materialService.createMaterial(materialDto));
     }
-//    @GetMapping("/get-all")
-//    public ResponseEntity<PagingResponseDto> getAllMaterialPaging(
-//            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
-//            @RequestParam(name = "size", required = false, defaultValue = "10") int size,
-//            @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
-//            @RequestParam(name = "column", required = false, defaultValue = "name") String sortColumn){
-//        return ResponseEntity.ok(this.materialService.getAllMaterialPaging(page, size, sort, sortColumn));
-//    }
+    @GetMapping("/get-all-paging")
+    public ResponseEntity<PagingResponseDto> getAllMaterialPaging(
+            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(name = "size", required = false, defaultValue = "10") int size,
+            @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
+            @RequestParam(name = "column", required = false, defaultValue = "name") String sortColumn){
+        return ResponseEntity.ok(this.materialService.getAllMaterialPaging(page, size, sort, sortColumn));
+    }
 
     @GetMapping("/get-all")
     public ResponseEntity<ResponseDto> getAllMaterial(){

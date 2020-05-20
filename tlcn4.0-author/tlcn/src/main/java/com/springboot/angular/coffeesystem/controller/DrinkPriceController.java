@@ -1,6 +1,7 @@
 package com.springboot.angular.coffeesystem.controller;
 
 import com.springboot.angular.coffeesystem.dto.DrinkPriceRequestDto;
+import com.springboot.angular.coffeesystem.dto.PagingResponseDto;
 import com.springboot.angular.coffeesystem.dto.ResponseDto;
 import com.springboot.angular.coffeesystem.service.drinkPrice.DrinkPriceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,15 @@ public class DrinkPriceController {
     @GetMapping("/get-all")
     public ResponseEntity<ResponseDto> getAllDrinkPrice(){
         return ResponseEntity.ok(this.drinkPriceService.getAllPriceOfDrink());
+    }
+
+    @GetMapping("/get-all-paging")
+    public ResponseEntity<PagingResponseDto> getAllDrinkPaging(
+            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(name = "size", required = false, defaultValue = "10") int size,
+            @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
+            @RequestParam(name = "column", required = false, defaultValue = "drink.name") String sortColumn){
+        return ResponseEntity.ok(this.drinkPriceService.getAllDrinkPricePaging(page, size, sort, sortColumn));
     }
 
 }

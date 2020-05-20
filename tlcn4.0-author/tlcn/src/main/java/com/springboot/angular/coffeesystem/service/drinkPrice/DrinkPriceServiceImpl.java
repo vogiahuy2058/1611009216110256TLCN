@@ -1,8 +1,6 @@
 package com.springboot.angular.coffeesystem.service.drinkPrice;
 
-import com.springboot.angular.coffeesystem.dto.DrinkPriceRequestDto;
-import com.springboot.angular.coffeesystem.dto.DrinkPriceResponseDto;
-import com.springboot.angular.coffeesystem.dto.ResponseDto;
+import com.springboot.angular.coffeesystem.dto.*;
 import com.springboot.angular.coffeesystem.exception.NotFoundException;
 import com.springboot.angular.coffeesystem.model.Drink;
 import com.springboot.angular.coffeesystem.model.DrinkPrice;
@@ -10,7 +8,11 @@ import com.springboot.angular.coffeesystem.model.embedding.DrinkPriceId;
 import com.springboot.angular.coffeesystem.repository.DrinkPriceRepository;
 import com.springboot.angular.coffeesystem.repository.DrinkRepository;
 import com.springboot.angular.coffeesystem.util.MapperObject;
+import com.springboot.angular.coffeesystem.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -106,5 +108,27 @@ public class DrinkPriceServiceImpl implements DrinkPriceService{
         return new ResponseDto(HttpStatus.OK.value(), "All drink price", drinkPriceResponseDtos);
     }
 
+    @Transactional
+    public PagingResponseDto getAllDrinkPricePaging(int page, int size, String sort, String sortColumn) {
+        Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
+        List<DrinkPriceResponseDto> drinkPriceResponseDtos = new ArrayList<>();
+        Page<DrinkPrice> drinkPricePage = drinkPriceRepository.findAllByEnable(true, pageable);
+
+        drinkPricePage.forEach(element->{
+            DrinkPriceResponseDto drinkPriceResponseDto = mapperObject.DrinkPriceEntityToDto1(element);
+            Drink drink = drinkRepository.findByIdAndEnable(element.getDrinkPriceId().getIdDrink(), true)
+                    .orElseThrow(()-> new NotFoundException("Dink id not found"));
+            drinkPriceResponseDto.setId(element.getDrinkPriceId().getId());
+            drinkPriceResponseDto.setDrinkId(element.getDrinkPriceId().getIdDrink());
+            drinkPriceResponseDto.setDate(element.getDrinkPriceId().getDate()
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            drinkPriceResponseDto.setDrinkName(drink.getName());
+            drinkPriceResponseDtos.add(drinkPriceResponseDto);});
+        Page<DrinkPriceResponseDto> drinkPriceDtoPage = new PageImpl<>(drinkPriceResponseDtos, pageable,
+                drinkPricePage.getTotalElements());
+        return new PagingResponseDto<>(
+                drinkPriceDtoPage.getContent(), drinkPriceDtoPage.getTotalElements(), drinkPriceDtoPage.getTotalPages(),
+                drinkPriceDtoPage.getPageable());
+    }
 
 }
