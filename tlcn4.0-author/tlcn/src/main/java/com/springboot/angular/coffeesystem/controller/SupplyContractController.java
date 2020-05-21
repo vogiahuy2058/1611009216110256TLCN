@@ -1,5 +1,6 @@
 package com.springboot.angular.coffeesystem.controller;
 
+import com.springboot.angular.coffeesystem.dto.PagingResponseDto;
 import com.springboot.angular.coffeesystem.dto.ResponseDto;
 import com.springboot.angular.coffeesystem.dto.SupplyContractRequestDto;
 import com.springboot.angular.coffeesystem.service.supplyContract.SupplyContractService;
@@ -17,14 +18,14 @@ public class SupplyContractController {
     public ResponseEntity<ResponseDto> createSupplyContract(@RequestBody SupplyContractRequestDto supplyContractRequestDto){
         return ResponseEntity.ok(supplyContractService.createSupplyContract(supplyContractRequestDto));
     }
-//    @GetMapping("/get-all")
-//    public ResponseEntity<PagingResponseDto> getAllSupplyContractPaging(
-//            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
-//            @RequestParam(name = "size", required = false, defaultValue = "10") int size,
-//            @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
-//            @RequestParam(name = "column", required = false, defaultValue = "id") String sortColumn){
-//        return ResponseEntity.ok(this.supplyContractService.getAllSupplyContractPaging(page, size, sort, sortColumn));
-//    }
+    @GetMapping("/get-all-paging")
+    public ResponseEntity<PagingResponseDto> getAllSupplyContractPaging(
+            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(name = "size", required = false, defaultValue = "10") int size,
+            @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
+            @RequestParam(name = "column", required = false, defaultValue = "id") String sortColumn){
+        return ResponseEntity.ok(this.supplyContractService.getAllSupplyContractPaging(page, size, sort, sortColumn));
+    }
 
     @GetMapping("/get-all")
     public ResponseEntity<ResponseDto> getAllSupplyContract(){
