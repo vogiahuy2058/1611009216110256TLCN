@@ -9,6 +9,7 @@
         <module>config-server</module>
         <module>service-registry</module>
         <module>edge-service</module>
+        <module>turbine-stream</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

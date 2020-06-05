@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="config-server" />
+        <module name="turbine-stream" />
         <module name="edge-service" />
         <module name="service-registry" />
       </profile>
@@ -18,6 +19,7 @@
       <module name="config-server" options="-parameters" />
       <module name="edge-service" options="-parameters" />
       <module name="service-registry" options="-parameters" />
+      <module name="turbine-stream" options="-parameters" />
     </option>
   </component>
 </project>
