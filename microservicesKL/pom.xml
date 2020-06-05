@@ -10,6 +10,8 @@
         <module>service-registry</module>
         <module>edge-service</module>
         <module>turbine-stream</module>
+        <module>hystrix-dashboard</module>
+        <module>coffee</module>
     </modules>
     <parent>
         <groupId>org.springframework.boot</groupId>

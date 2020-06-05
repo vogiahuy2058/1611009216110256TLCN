@@ -6,18 +6,22 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="config-server" />
-        <module name="turbine-stream" />
-        <module name="edge-service" />
         <module name="service-registry" />
+        <module name="config-server" />
+        <module name="edge-service" />
+        <module name="hystrix-dashboard" />
+        <module name="coffee" />
+        <module name="turbine-stream" />
       </profile>
     </annotationProcessing>
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="coffee" options="-parameters" />
       <module name="coffeesystem" options="-parameters" />
       <module name="config-server" options="-parameters" />
       <module name="edge-service" options="-parameters" />
+      <module name="hystrix-dashboard" options="-parameters" />
       <module name="service-registry" options="-parameters" />
       <module name="turbine-stream" options="-parameters" />
     </option>
