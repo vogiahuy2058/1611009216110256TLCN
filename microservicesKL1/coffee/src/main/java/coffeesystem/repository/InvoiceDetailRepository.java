@@ -1,10 +1,13 @@
 package coffeesystem.repository;
 
 
+import coffeesystem.model.Customer;
 import coffeesystem.model.Drink;
 import coffeesystem.model.Invoice;
 import coffeesystem.model.InvoiceDetail;
 import coffeesystem.model.embedding.InvoiceDetailId;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -20,4 +23,5 @@ public interface InvoiceDetailRepository extends JpaRepository<InvoiceDetail, In
     @Query("select max(ind.invoiceDetailId.id) from InvoiceDetail ind")
     Integer findMaxId();
     Optional<InvoiceDetail> findByInvoiceDetailIdId(Integer id);
+    Page<InvoiceDetail> findAllByInvoice(Invoice invoice, Pageable pageable);
 }

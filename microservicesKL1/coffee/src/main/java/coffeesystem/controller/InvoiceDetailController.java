@@ -1,6 +1,7 @@
 package coffeesystem.controller;
 
 import coffeesystem.dto.InvoiceDetailRequestDto;
+import coffeesystem.dto.PagingResponseDto;
 import coffeesystem.dto.ResponseDto;
 import coffeesystem.service.invoiceDetail.InvoiceDetailService;
 import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
@@ -48,6 +49,23 @@ public class InvoiceDetailController {
     public ResponseEntity<ResponseDto> fallBackGetInvoiceDetailByInvoiceId(Integer invoiceId) {
         System.out.println("=======fallBackGetInvoiceDetailByInvoiceId=========");
         return new ResponseEntity<ResponseDto>(HttpStatus.OK);
+    }
+
+    @GetMapping("/get-by-id-invoice-paging")
+    @HystrixCommand(fallbackMethod = "fallBackGetAllInvoiceDetailPaging")
+    public ResponseEntity<PagingResponseDto> getInvoiceDetailByInvoiceIdPaging(
+            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(name = "size", required = false, defaultValue = "10") int size,
+            @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
+            @RequestParam(name = "column", required = false, defaultValue = "invoiceDetailId.id") String sortColumn,
+            @RequestParam Integer invoiceId){
+        return  ResponseEntity.ok(this.invoiceDetailService.
+                getInvoiceDetailByInvoiceIdPaging(page, size, sort, sortColumn, invoiceId));
+    }
+    public ResponseEntity<PagingResponseDto> fallBackGetAllInvoiceDetailPaging(int page, int size, String sort,
+                                                                               String sortColumn, Integer invoiceId) {
+        System.out.println("=======fallBackGetAllInvoiceDetailPaging=========");
+        return new ResponseEntity<PagingResponseDto>(HttpStatus.OK);
     }
     @GetMapping("/get-by-id-status-invoice")
     @HystrixCommand(fallbackMethod = "fallBackGetByInvoiceIdAndStatus")

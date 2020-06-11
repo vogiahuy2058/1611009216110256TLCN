@@ -1,10 +1,9 @@
 package coffeesystem.service.invoiceDetail;
 
-import coffeesystem.dto.InvoiceDetailRequestDto;
-import coffeesystem.dto.InvoiceDetailResponseDto;
-import coffeesystem.dto.ResponseDto;
+import coffeesystem.dto.*;
 import coffeesystem.exception.NotFoundException;
 import coffeesystem.model.Drink;
+import coffeesystem.model.Employee;
 import coffeesystem.model.Invoice;
 import coffeesystem.model.InvoiceDetail;
 import coffeesystem.model.embedding.InvoiceDetailId;
@@ -12,11 +11,16 @@ import coffeesystem.repository.DrinkRepository;
 import coffeesystem.repository.InvoiceDetailRepository;
 import coffeesystem.repository.InvoiceRepository;
 import coffeesystem.util.MapperObject;
+import coffeesystem.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -102,6 +106,32 @@ public class InvoiceDetailServiceImpl implements InvoiceDetailService {
             invoiceDetailResponseDtos.add(invoiceDetailResponseDto);
         }
         return new ResponseDto(HttpStatus.OK.value(), "Successful", invoiceDetailResponseDtos);
+    }
+    @Transactional
+    public PagingResponseDto getInvoiceDetailByInvoiceIdPaging(
+            int page, int size, String sort, String sortColumn, Integer invoiceId) {
+        Invoice invoice = invoiceRepository.findByIdAndEnable(invoiceId, true)
+                .orElseThrow(()-> new NotFoundException("Invoice not found"));
+        Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
+        List<InvoiceDetailResponseDto> invoiceDetailResponseDtos = new ArrayList<>();
+        Page<InvoiceDetail> invoiceDetailPage = invoiceDetailRepository.findAllByInvoice(invoice, pageable);
+        Integer serial = 0;
+
+        for (InvoiceDetail element : invoiceDetailPage) {
+            InvoiceDetailResponseDto invoiceDetailResponseDto = mapperObject.InvoiceDetailEntityToDto(element);
+            invoiceDetailResponseDto.setDrinkId(element.getInvoiceDetailId().getDrinkId());
+            invoiceDetailResponseDto.setInvoiceId(element.getInvoiceDetailId().getInvoiceId());
+            invoiceDetailResponseDto.setDrinkName(element.getDrink().getName());
+            invoiceDetailResponseDto.setSerial(serial + 1);
+            serial = serial + 1;
+            invoiceDetailResponseDtos.add(invoiceDetailResponseDto);
+        }
+
+        Page<InvoiceDetailResponseDto> invoiceDetailResponseDtoPage = new PageImpl<>(invoiceDetailResponseDtos, pageable,
+                invoiceDetailPage.getTotalElements());
+        return new PagingResponseDto<>(
+                invoiceDetailResponseDtoPage.getContent(), invoiceDetailResponseDtoPage.getTotalElements(), invoiceDetailResponseDtoPage.getTotalPages(),
+                invoiceDetailResponseDtoPage.getPageable());
     }
 
     @Transactional
