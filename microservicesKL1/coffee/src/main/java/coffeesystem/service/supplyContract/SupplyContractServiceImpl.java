@@ -45,6 +45,7 @@ public class SupplyContractServiceImpl implements SupplyContractService{
                 true).orElseThrow(()-> new NotFoundException("Branch shop not found"));
         supplyContract.setBranchShop(branchShop);
         supplyContract.setSupplier(supplier);
+        supplyContract.setStatus(0);
         supplyContractRepository.save(supplyContract);
         return new ResponseDto(HttpStatus.OK.value(), "Create supply contract successful", null);
     }
@@ -131,6 +132,7 @@ public class SupplyContractServiceImpl implements SupplyContractService{
         supplyContract.setSupplier(supplier);
         supplyContract.setTotalPrice(supplyContractRequestDto.getTotalPrice());
         supplyContract.setDate(supplyContractRequestDto.getDate());
+        supplyContract.setStatus(supplyContractRequestDto.getStatus());
         supplyContractRepository.save(supplyContract);
         return new ResponseDto(HttpStatus.OK.value(), "Edit supply contract successful", null);
     }

@@ -19,6 +19,6 @@ public class SupplyContractRequestDto {
     private float totalPrice;
     private String branchShop;
     private String supplier;
-
+    private Integer status;
 
 }
