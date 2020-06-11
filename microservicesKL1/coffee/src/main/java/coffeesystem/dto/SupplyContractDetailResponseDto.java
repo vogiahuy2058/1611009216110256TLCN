@@ -23,4 +23,5 @@ public class SupplyContractDetailResponseDto {
     private LocalDate deliveryTime;
     private LocalDate paymentTime;
     private String materialName;
+    private String unitName;
 }

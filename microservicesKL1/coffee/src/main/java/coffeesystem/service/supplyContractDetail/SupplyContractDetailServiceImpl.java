@@ -7,6 +7,7 @@ import coffeesystem.model.embedding.SupplyContractDetailId;
 import coffeesystem.repository.MaterialRepository;
 import coffeesystem.repository.SupplyContractDetailRepository;
 import coffeesystem.repository.SupplyContractRepository;
+import coffeesystem.repository.UnitRepository;
 import coffeesystem.util.MapperObject;
 import coffeesystem.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,8 @@ public class SupplyContractDetailServiceImpl implements SupplyContractDetailServ
     MaterialRepository materialRepository;
     @Autowired
     SupplyContractDetailRepository supplyContractDetailRepository;
+    @Autowired
+    UnitRepository unitRepository;
     public ResponseDto createSupplyContractDetail(SupplyContractDetailRequestDto detailDto){
         SupplyContractDetail supplyContractDetail =
                 this.mapperObject.SupplyContractDetailDtoEntity(detailDto);
@@ -39,6 +42,8 @@ public class SupplyContractDetailServiceImpl implements SupplyContractDetailServ
                 .orElseThrow(()-> new NotFoundException("Supply contract not found"));
         Material material = materialRepository.findByIdAndEnable(detailDto.getMaterialId(), true)
                 .orElseThrow(()-> new NotFoundException("Material not found"));
+        Unit unit = unitRepository.findByNameAndEnable(detailDto.getUnitName(), true)
+                .orElseThrow(()-> new NotFoundException("Unit not found"));
         SupplyContractDetailId supplyContractDetailId = new SupplyContractDetailId();
         Integer idOld = supplyContractDetailRepository.findMaxId();
         if(idOld == null){
@@ -50,6 +55,7 @@ public class SupplyContractDetailServiceImpl implements SupplyContractDetailServ
         supplyContractDetail.setSupplyContractDetailId(supplyContractDetailId);
         supplyContractDetail.setSupplyContract(supplyContract);
         supplyContractDetail.setMaterial(material);
+        supplyContractDetail.setUnit(unit);
         repository.save(supplyContractDetail);
         return new ResponseDto(HttpStatus.OK.value(), "Successful", null);
     }
@@ -58,6 +64,8 @@ public class SupplyContractDetailServiceImpl implements SupplyContractDetailServ
                 .orElseThrow(()-> new NotFoundException("Supply contract not found"));
         Material material = materialRepository.findByIdAndEnable(detailDto.getMaterialId(), true)
                 .orElseThrow(()-> new NotFoundException("Material not found"));
+        Unit unit = unitRepository.findByNameAndEnable(detailDto.getUnitName(), true)
+                .orElseThrow(()-> new NotFoundException("Unit not found"));
         SupplyContractDetail supplyContractDetail =
                 repository.findByMaterialAndSupplyContract(material, supplyContract)
                 .orElseThrow(()-> new NotFoundException("Supply contract detail not found"));
@@ -65,6 +73,7 @@ public class SupplyContractDetailServiceImpl implements SupplyContractDetailServ
         supplyContractDetail.setAmount(detailDto.getAmount());
         supplyContractDetail.setDeliveryTime(detailDto.getDeliveryTime());
         supplyContractDetail.setPaymentTime(detailDto.getPaymentTime());
+        supplyContractDetail.setUnit(unit);
         repository.save(supplyContractDetail);
         return new ResponseDto(HttpStatus.OK.value(), "Successful", null);
     }
@@ -99,6 +108,7 @@ public class SupplyContractDetailServiceImpl implements SupplyContractDetailServ
             supplyContractDetailResponseDto.setMaterialId(element.getSupplyContractDetailId().getMaterialId());
             supplyContractDetailResponseDto.setSupplyContractId(element.getSupplyContractDetailId().getSupplyContractId());
             supplyContractDetailResponseDto.setMaterialName(element.getMaterial().getName());
+            supplyContractDetailResponseDto.setUnitName(element.getUnit().getName());
             supplyContractDetailResponseDto.setSerial(serial + 1);
             serial = serial + 1;
             supplyContractDetailResponseDtos.add(supplyContractDetailResponseDto);
@@ -121,6 +131,7 @@ public class SupplyContractDetailServiceImpl implements SupplyContractDetailServ
             supplyContractDetailResponseDto.setMaterialId(element.getSupplyContractDetailId().getMaterialId());
             supplyContractDetailResponseDto.setSupplyContractId(element.getSupplyContractDetailId().getSupplyContractId());
             supplyContractDetailResponseDto.setMaterialName(element.getMaterial().getName());
+            supplyContractDetailResponseDto.setUnitName(element.getUnit().getName());
             supplyContractDetailResponseDto.setSerial(serial + 1);
             serial = serial + 1;
             supplyContractDetailResponseDtos.add(supplyContractDetailResponseDto);
@@ -149,6 +160,7 @@ public class SupplyContractDetailServiceImpl implements SupplyContractDetailServ
             supplyContractDetailResponseDto.setMaterialId(element.getSupplyContractDetailId().getMaterialId());
             supplyContractDetailResponseDto.setSupplyContractId(element.getSupplyContractDetailId().getSupplyContractId());
             supplyContractDetailResponseDto.setMaterialName(element.getMaterial().getName());
+            supplyContractDetailResponseDto.setUnitName(element.getUnit().getName());
             supplyContractDetailResponseDto.setSerial(serial + 1);
             serial = serial + 1;
             supplyContractDetailResponseDtos.add(supplyContractDetailResponseDto);
@@ -165,6 +177,7 @@ public class SupplyContractDetailServiceImpl implements SupplyContractDetailServ
         supplyContractDetailResponseDto.setSupplyContractId(supplyContractDetail.getSupplyContractDetailId().getSupplyContractId());
         supplyContractDetailResponseDto.setMaterialName(supplyContractDetail.getMaterial().getName());
         supplyContractDetailResponseDto.setSerial(1);
+        supplyContractDetailResponseDto.setUnitName(supplyContractDetail.getUnit().getName());
         return new ResponseDto(HttpStatus.OK.value(), "Successful", supplyContractDetailResponseDto );
     }
     public ResponseDto getMaxIdSupplyContractDetail(){

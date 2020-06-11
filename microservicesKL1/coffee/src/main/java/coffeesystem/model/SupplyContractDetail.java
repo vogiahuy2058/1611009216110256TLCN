@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.Set;
 
 @Entity
 @Table(name = "supply_contract_detail")
@@ -32,5 +33,8 @@ public class SupplyContractDetail extends Auditable<String> {
     private float amount;
     private LocalDate deliveryTime;
     private LocalDate paymentTime;
+    @ManyToOne
+    @JoinColumn(name = "unit_id")
+    private Unit unit;
 
 }

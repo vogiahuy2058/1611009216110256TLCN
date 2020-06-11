@@ -143,11 +143,13 @@ public interface MapperObject {
     @Mapping(target="material.id",source = "materialId")
     @Mapping(target="supplyContractDetailId.supplyContractId",source = "supplyContractId")
     @Mapping(target="supplyContractDetailId.id",source = "id")
+//    @Mapping(target="unit.name",source = "unit")
     SupplyContractDetail SupplyContractDetailDtoEntity(SupplyContractDetailRequestDto detailDto);
 
     @Mapping(target="materialId",source = "material.id")
     @Mapping(target="supplyContractId",source = "supplyContractDetailId.supplyContractId")
     @Mapping(target="id",source = "supplyContractDetailId.id")
+//    @Mapping(target="unit",source = "unit.name")
     SupplyContractDetailResponseDto SupplyContractEntityToDto(SupplyContractDetail supplyContractDetail);
 
     @Mapping(target="drinkPriceId.idDrink",source = "drinkId")

@@ -21,5 +21,6 @@ public class SupplyContractDetailRequestDto {
     private float amount;
     private LocalDate deliveryTime;
     private LocalDate paymentTime;
+    private String unitName;
 
 }
