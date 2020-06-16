@@ -181,10 +181,10 @@ public interface MapperObject {
     @Mapping(target="minMaxInventoryId.idMaterial",source = "materialId")
     @Mapping(target="minMaxInventoryId.idBranchShop",source = "branchShopId")
     @Mapping(target="minMaxInventoryId.id",source = "id")
-    MinMaxInventory MinMaxInventoryDtoToEntity(MinMaxInventoryDto minMaxInventoryDto);
+    MinMaxInventory MinMaxInventoryDtoToEntity(MinMaxInventoryRequestDto minMaxInventoryRequestDto);
 
     @Mapping(target="materialId",source = "minMaxInventoryId.idMaterial")
     @Mapping(target="branchShopId",source = "minMaxInventoryId.idBranchShop")
     @Mapping(target="id",source = "minMaxInventoryId.id")
-    MinMaxInventoryDto MinMaxInventoryEntityToDto(MinMaxInventory minMaxInventory);
+    MinMaxInventoryResponseDto MinMaxInventoryEntityToDto(MinMaxInventory minMaxInventory);
 }

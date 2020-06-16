@@ -4,16 +4,11 @@ import coffeesystem.dto.BranchShopDto;
 import coffeesystem.dto.PagingResponseDto;
 import coffeesystem.dto.ResponseDto;
 import coffeesystem.exception.NotFoundException;
-import coffeesystem.model.BranchShop;
-import coffeesystem.model.Employee;
-import coffeesystem.model.Invoice;
-import coffeesystem.model.SupplyContract;
-import coffeesystem.repository.BranchShopRepository;
-import coffeesystem.repository.EmployeeRepository;
-import coffeesystem.repository.InvoiceRepository;
-import coffeesystem.repository.SupplyContractRepository;
+import coffeesystem.model.*;
+import coffeesystem.repository.*;
 import coffeesystem.service.employee.EmployeeService;
 import coffeesystem.service.invoice.InvoiceService;
+import coffeesystem.service.minMaxInventory.MinMaxInventoryService;
 import coffeesystem.service.supplyContract.SupplyContractService;
 import coffeesystem.util.MapperObject;
 import coffeesystem.util.PageUtil;
@@ -49,6 +44,10 @@ public class BranchShopServiceImpl implements BranchShopService {
     EmployeeRepository employeeRepository;
     @Autowired
     EmployeeService employeeService;
+    @Autowired
+    MinMaxInventoryRepository minMaxInventoryRepository;
+    @Autowired
+    MinMaxInventoryService minMaxInventoryService;
     public ResponseDto createBranchShop(BranchShopDto branchShopDto){
         BranchShop branchShop = this.mapperObject.BranchShopDtoToEntity(branchShopDto);
         branchShopRepository.save(branchShop);
@@ -93,6 +92,13 @@ public class BranchShopServiceImpl implements BranchShopService {
     public ResponseDto deleteBranchShop(Integer id){
         BranchShop branchShop = branchShopRepository.findByIdAndEnable(id, true)
                 .orElseThrow(()-> new NotFoundException("Id not found!"));
+        //delete min max inventory when branch shop was deleted
+
+        List<MinMaxInventory> minMaxInventories = minMaxInventoryRepository.findByMinMaxInventoryIdIdBranchShop(id);
+        minMaxInventories.forEach(element->{
+            minMaxInventoryService.deleteMinMaxInventory(element.getMaterial().getId(),
+                    element.getBranchShop().getId());
+        });
         //delete invoice when branch shop was deleted
         List<Invoice> invoices = invoiceRepository.findByBranchShopId(id);
         invoices.forEach(element->{
@@ -108,6 +114,7 @@ public class BranchShopServiceImpl implements BranchShopService {
         employees.forEach(element->{
            employeeService.deleteEmployee(element.getId());
         });
+
         branchShop.setEnable(false);
         branchShopRepository.save(branchShop);
         return new ResponseDto(HttpStatus.OK.value(), "Delete branch shop successful", null);

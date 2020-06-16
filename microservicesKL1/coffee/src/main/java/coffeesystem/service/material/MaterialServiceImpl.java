@@ -6,6 +6,7 @@ import coffeesystem.dto.ResponseDto;
 import coffeesystem.exception.NotFoundException;
 import coffeesystem.model.*;
 import coffeesystem.repository.*;
+import coffeesystem.service.minMaxInventory.MinMaxInventoryService;
 import coffeesystem.service.recipe.RecipeService;
 import coffeesystem.util.MapperObject;
 import coffeesystem.util.PageUtil;
@@ -38,6 +39,10 @@ public class MaterialServiceImpl implements MaterialService {
     RecipeService recipeService;
     @Autowired
     MaterialPriceRepository materialPriceRepository;
+    @Autowired
+    MinMaxInventoryRepository minMaxInventoryRepository;
+    @Autowired
+    MinMaxInventoryService minMaxInventoryService;
     public ResponseDto createMaterial(MaterialDto materialDto){
         Material material = this.mapperObject.MaterialDtoToEntity(materialDto);
         MaterialType materialType = materialTypeRepository.findByNameAndEnable(materialDto.getMaterialType(), true)
@@ -105,7 +110,13 @@ public class MaterialServiceImpl implements MaterialService {
             materialPrice.setEnable(false);
             materialPriceRepository.save(materialPrice);
         }
+        //delete min max inventory when material was deleted
 
+        List<MinMaxInventory> minMaxInventories = minMaxInventoryRepository.findByMinMaxInventoryIdIdMaterial(id);
+        minMaxInventories.forEach(element->{
+            minMaxInventoryService.deleteMinMaxInventory(element.getMaterial().getId(),
+                    element.getBranchShop().getId());
+        });
         material.setEnable(false);
         materialRepository.save(material);
 

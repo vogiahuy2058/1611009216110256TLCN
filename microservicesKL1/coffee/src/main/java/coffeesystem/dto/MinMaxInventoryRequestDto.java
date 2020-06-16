@@ -14,12 +14,11 @@ import javax.persistence.ManyToOne;
 @AllArgsConstructor
 @Getter
 @Setter
-public class MinMaxInventoryDto {
+public class MinMaxInventoryRequestDto {
     private Integer id;
     private Integer materialId;
     private Integer branchShopId;
     private float minInventory;
     private float maxInventory;
-
 
 }

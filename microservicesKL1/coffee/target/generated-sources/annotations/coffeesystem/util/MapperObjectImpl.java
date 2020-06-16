@@ -22,7 +22,8 @@ import coffeesystem.dto.MaterialDto;
 import coffeesystem.dto.MaterialPriceRequestDto;
 import coffeesystem.dto.MaterialPriceResponseDto;
 import coffeesystem.dto.MaterialTypeDto;
-import coffeesystem.dto.MinMaxInventoryDto;
+import coffeesystem.dto.MinMaxInventoryRequestDto;
+import coffeesystem.dto.MinMaxInventoryResponseDto;
 import coffeesystem.dto.OrderTypeDto;
 import coffeesystem.dto.RecipeDto;
 import coffeesystem.dto.RoleDto;
@@ -72,9 +73,8 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-06-16T20:20:04+0700",
+    date = "2020-06-16T22:29:29+0700",
     comments = "version: 1.2.0.CR2, compiler: javac, environment: Java 1.8.0_231 (Oracle Corporation)"
-
 )
 @Component
 public class MapperObjectImpl implements MapperObject {
@@ -1037,44 +1037,44 @@ public class MapperObjectImpl implements MapperObject {
     }
 
     @Override
-    public MinMaxInventory MinMaxInventoryDtoToEntity(MinMaxInventoryDto minMaxInventoryDto) {
-        if ( minMaxInventoryDto == null ) {
+    public MinMaxInventory MinMaxInventoryDtoToEntity(MinMaxInventoryRequestDto minMaxInventoryRequestDto) {
+        if ( minMaxInventoryRequestDto == null ) {
             return null;
         }
 
         MinMaxInventory minMaxInventory = new MinMaxInventory();
 
-        minMaxInventory.setMinMaxInventoryId( minMaxInventoryDtoToMinMaxInventoryId( minMaxInventoryDto ) );
-        minMaxInventory.setMinInventory( minMaxInventoryDto.getMinInventory() );
-        minMaxInventory.setMaxInventory( minMaxInventoryDto.getMaxInventory() );
+        minMaxInventory.setMinMaxInventoryId( minMaxInventoryRequestDtoToMinMaxInventoryId( minMaxInventoryRequestDto ) );
+        minMaxInventory.setMinInventory( minMaxInventoryRequestDto.getMinInventory() );
+        minMaxInventory.setMaxInventory( minMaxInventoryRequestDto.getMaxInventory() );
 
         return minMaxInventory;
     }
 
     @Override
-    public MinMaxInventoryDto MinMaxInventoryEntityToDto(MinMaxInventory minMaxInventory) {
+    public MinMaxInventoryResponseDto MinMaxInventoryEntityToDto(MinMaxInventory minMaxInventory) {
         if ( minMaxInventory == null ) {
             return null;
         }
 
-        MinMaxInventoryDto minMaxInventoryDto = new MinMaxInventoryDto();
+        MinMaxInventoryResponseDto minMaxInventoryResponseDto = new MinMaxInventoryResponseDto();
 
         Integer idBranchShop = minMaxInventoryMinMaxInventoryIdIdBranchShop( minMaxInventory );
         if ( idBranchShop != null ) {
-            minMaxInventoryDto.setBranchShopId( idBranchShop );
+            minMaxInventoryResponseDto.setBranchShopId( idBranchShop );
         }
         Integer id = minMaxInventoryMinMaxInventoryIdId( minMaxInventory );
         if ( id != null ) {
-            minMaxInventoryDto.setId( id );
+            minMaxInventoryResponseDto.setId( id );
         }
         Integer idMaterial = minMaxInventoryMinMaxInventoryIdIdMaterial( minMaxInventory );
         if ( idMaterial != null ) {
-            minMaxInventoryDto.setMaterialId( idMaterial );
+            minMaxInventoryResponseDto.setMaterialId( idMaterial );
         }
-        minMaxInventoryDto.setMinInventory( minMaxInventory.getMinInventory() );
-        minMaxInventoryDto.setMaxInventory( minMaxInventory.getMaxInventory() );
+        minMaxInventoryResponseDto.setMinInventory( minMaxInventory.getMinInventory() );
+        minMaxInventoryResponseDto.setMaxInventory( minMaxInventory.getMaxInventory() );
 
-        return minMaxInventoryDto;
+        return minMaxInventoryResponseDto;
     }
 
     private Integer accountEmployeeId(Account account) {
@@ -1782,16 +1782,16 @@ public class MapperObjectImpl implements MapperObject {
         return idMaterial;
     }
 
-    protected MinMaxInventoryId minMaxInventoryDtoToMinMaxInventoryId(MinMaxInventoryDto minMaxInventoryDto) {
-        if ( minMaxInventoryDto == null ) {
+    protected MinMaxInventoryId minMaxInventoryRequestDtoToMinMaxInventoryId(MinMaxInventoryRequestDto minMaxInventoryRequestDto) {
+        if ( minMaxInventoryRequestDto == null ) {
             return null;
         }
 
         MinMaxInventoryId minMaxInventoryId = new MinMaxInventoryId();
 
-        minMaxInventoryId.setId( minMaxInventoryDto.getId() );
-        minMaxInventoryId.setIdMaterial( minMaxInventoryDto.getMaterialId() );
-        minMaxInventoryId.setIdBranchShop( minMaxInventoryDto.getBranchShopId() );
+        minMaxInventoryId.setId( minMaxInventoryRequestDto.getId() );
+        minMaxInventoryId.setIdMaterial( minMaxInventoryRequestDto.getMaterialId() );
+        minMaxInventoryId.setIdBranchShop( minMaxInventoryRequestDto.getBranchShopId() );
 
         return minMaxInventoryId;
     }
