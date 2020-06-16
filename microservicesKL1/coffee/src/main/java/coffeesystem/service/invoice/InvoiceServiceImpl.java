@@ -78,6 +78,7 @@ public class InvoiceServiceImpl implements InvoiceService{
 //        invoice.setCoffeeTable(coffeeTable);
         invoice.setBranchShop(branchShop);
         invoice.setOrderType(orderType);
+        invoice.setStatus(0);
         ZonedDateTime now = ZonedDateTime.now();
         invoice.setDate(now.withZoneSameInstant(zoneId));
         invoiceRepository.save(invoice);

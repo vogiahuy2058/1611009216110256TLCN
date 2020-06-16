@@ -26,6 +26,12 @@ public class SupplyContract extends Auditable<String> {
     private float totalPrice;
     private boolean enable = true;
 
+    //status=0: chua thanh toan
+    //status=1: da giao
+    //status=2: da thanh toan
+    //status=3: hoan thanh
+    private Integer status;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "supplyContract", cascade = CascadeType.ALL)
     private Set<SupplyContractDetail> supplyContractDetails;
 

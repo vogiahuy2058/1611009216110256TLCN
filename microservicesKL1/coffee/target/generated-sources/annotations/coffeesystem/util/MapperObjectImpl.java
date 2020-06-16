@@ -26,7 +26,8 @@ import coffeesystem.dto.OrderTypeDto;
 import coffeesystem.dto.RecipeDto;
 import coffeesystem.dto.RoleDto;
 import coffeesystem.dto.SupplierDto;
-import coffeesystem.dto.SupplyContractDetailDto;
+import coffeesystem.dto.SupplyContractDetailRequestDto;
+import coffeesystem.dto.SupplyContractDetailResponseDto;
 import coffeesystem.dto.SupplyContractRequestDto;
 import coffeesystem.dto.SupplyContractResponseDto;
 import coffeesystem.dto.TableTypeDto;
@@ -58,6 +59,7 @@ import coffeesystem.model.Unit;
 import coffeesystem.model.embedding.DrinkPriceId;
 import coffeesystem.model.embedding.InvoiceDetailId;
 import coffeesystem.model.embedding.MaterialPriceId;
+import coffeesystem.model.embedding.SupplyContractDetailId;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashSet;
@@ -67,8 +69,10 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
+
     date = "2020-06-11T11:05:12+0700",
     comments = "version: 1.2.0.CR2, compiler: javac, environment: Java 1.8.0_221 (Oracle Corporation)"
+
 )
 @Component
 public class MapperObjectImpl implements MapperObject {
@@ -782,6 +786,7 @@ public class MapperObjectImpl implements MapperObject {
         supplyContract.setId( supplyContractRequestDto.getId() );
         supplyContract.setDate( supplyContractRequestDto.getDate() );
         supplyContract.setTotalPrice( supplyContractRequestDto.getTotalPrice() );
+        supplyContract.setStatus( supplyContractRequestDto.getStatus() );
 
         return supplyContract;
     }
@@ -805,6 +810,7 @@ public class MapperObjectImpl implements MapperObject {
         supplyContractRequestDto.setId( supplyContract.getId() );
         supplyContractRequestDto.setDate( supplyContract.getDate() );
         supplyContractRequestDto.setTotalPrice( supplyContract.getTotalPrice() );
+        supplyContractRequestDto.setStatus( supplyContract.getStatus() );
 
         return supplyContractRequestDto;
     }
@@ -878,21 +884,49 @@ public class MapperObjectImpl implements MapperObject {
     }
 
     @Override
-    public SupplyContractDetail SupplyContractDetailDtoEntity(SupplyContractDetailDto detailDto) {
+    public SupplyContractDetail SupplyContractDetailDtoEntity(SupplyContractDetailRequestDto detailDto) {
         if ( detailDto == null ) {
             return null;
         }
 
         SupplyContractDetail supplyContractDetail = new SupplyContractDetail();
 
-        supplyContractDetail.setSupplyContract( supplyContractDetailDtoToSupplyContract( detailDto ) );
-        supplyContractDetail.setMaterial( supplyContractDetailDtoToMaterial( detailDto ) );
+        supplyContractDetail.setSupplyContractDetailId( supplyContractDetailRequestDtoToSupplyContractDetailId( detailDto ) );
+        supplyContractDetail.setMaterial( supplyContractDetailRequestDtoToMaterial( detailDto ) );
         supplyContractDetail.setUnitPrice( detailDto.getUnitPrice() );
         supplyContractDetail.setAmount( detailDto.getAmount() );
         supplyContractDetail.setDeliveryTime( detailDto.getDeliveryTime() );
         supplyContractDetail.setPaymentTime( detailDto.getPaymentTime() );
 
         return supplyContractDetail;
+    }
+
+    @Override
+    public SupplyContractDetailResponseDto SupplyContractEntityToDto(SupplyContractDetail supplyContractDetail) {
+        if ( supplyContractDetail == null ) {
+            return null;
+        }
+
+        SupplyContractDetailResponseDto supplyContractDetailResponseDto = new SupplyContractDetailResponseDto();
+
+        Integer id = supplyContractDetailSupplyContractDetailIdId( supplyContractDetail );
+        if ( id != null ) {
+            supplyContractDetailResponseDto.setId( id );
+        }
+        Integer id1 = supplyContractDetailMaterialId( supplyContractDetail );
+        if ( id1 != null ) {
+            supplyContractDetailResponseDto.setMaterialId( id1 );
+        }
+        Integer supplyContractId = supplyContractDetailSupplyContractDetailIdSupplyContractId( supplyContractDetail );
+        if ( supplyContractId != null ) {
+            supplyContractDetailResponseDto.setSupplyContractId( supplyContractId );
+        }
+        supplyContractDetailResponseDto.setUnitPrice( supplyContractDetail.getUnitPrice() );
+        supplyContractDetailResponseDto.setAmount( supplyContractDetail.getAmount() );
+        supplyContractDetailResponseDto.setDeliveryTime( supplyContractDetail.getDeliveryTime() );
+        supplyContractDetailResponseDto.setPaymentTime( supplyContractDetail.getPaymentTime() );
+
+        return supplyContractDetailResponseDto;
     }
 
     @Override
@@ -1517,28 +1551,74 @@ public class MapperObjectImpl implements MapperObject {
         return name;
     }
 
-    protected SupplyContract supplyContractDetailDtoToSupplyContract(SupplyContractDetailDto supplyContractDetailDto) {
-        if ( supplyContractDetailDto == null ) {
+    protected SupplyContractDetailId supplyContractDetailRequestDtoToSupplyContractDetailId(SupplyContractDetailRequestDto supplyContractDetailRequestDto) {
+        if ( supplyContractDetailRequestDto == null ) {
             return null;
         }
 
-        SupplyContract supplyContract = new SupplyContract();
+        SupplyContractDetailId supplyContractDetailId = new SupplyContractDetailId();
 
-        supplyContract.setId( supplyContractDetailDto.getSupplyContractId() );
+        supplyContractDetailId.setId( supplyContractDetailRequestDto.getId() );
+        supplyContractDetailId.setSupplyContractId( supplyContractDetailRequestDto.getSupplyContractId() );
 
-        return supplyContract;
+        return supplyContractDetailId;
     }
 
-    protected Material supplyContractDetailDtoToMaterial(SupplyContractDetailDto supplyContractDetailDto) {
-        if ( supplyContractDetailDto == null ) {
+    protected Material supplyContractDetailRequestDtoToMaterial(SupplyContractDetailRequestDto supplyContractDetailRequestDto) {
+        if ( supplyContractDetailRequestDto == null ) {
             return null;
         }
 
         Material material = new Material();
 
-        material.setId( supplyContractDetailDto.getMaterialId() );
+        material.setId( supplyContractDetailRequestDto.getMaterialId() );
 
         return material;
+    }
+
+    private Integer supplyContractDetailSupplyContractDetailIdId(SupplyContractDetail supplyContractDetail) {
+        if ( supplyContractDetail == null ) {
+            return null;
+        }
+        SupplyContractDetailId supplyContractDetailId = supplyContractDetail.getSupplyContractDetailId();
+        if ( supplyContractDetailId == null ) {
+            return null;
+        }
+        Integer id = supplyContractDetailId.getId();
+        if ( id == null ) {
+            return null;
+        }
+        return id;
+    }
+
+    private Integer supplyContractDetailMaterialId(SupplyContractDetail supplyContractDetail) {
+        if ( supplyContractDetail == null ) {
+            return null;
+        }
+        Material material = supplyContractDetail.getMaterial();
+        if ( material == null ) {
+            return null;
+        }
+        Integer id = material.getId();
+        if ( id == null ) {
+            return null;
+        }
+        return id;
+    }
+
+    private Integer supplyContractDetailSupplyContractDetailIdSupplyContractId(SupplyContractDetail supplyContractDetail) {
+        if ( supplyContractDetail == null ) {
+            return null;
+        }
+        SupplyContractDetailId supplyContractDetailId = supplyContractDetail.getSupplyContractDetailId();
+        if ( supplyContractDetailId == null ) {
+            return null;
+        }
+        Integer supplyContractId = supplyContractDetailId.getSupplyContractId();
+        if ( supplyContractId == null ) {
+            return null;
+        }
+        return supplyContractId;
     }
 
     protected DrinkPriceId drinkPriceRequestDtoToDrinkPriceId(DrinkPriceRequestDto drinkPriceRequestDto) {
