@@ -22,15 +22,20 @@ public class SupplyContract extends Auditable<String> {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    private LocalDate date;
+    private LocalDate dateCreate;
     private float totalPrice;
     private boolean enable = true;
 
-    //status=0: chua thanh toan
-    //status=1: da giao
-    //status=2: da thanh toan
-    //status=3: hoan thanh
+    //status=0: chua xu ly
+    //status=1: khong duyet yeu cau
+    //status=2: duyet yeu cau
+    //status=3: da in phieu nhap
+    //status=4: da nhan hang
+    //status=5: da thanh toan
+    //status=6: hoan thanh
     private Integer status;
+    private LocalDate deliveryTime;
+    private LocalDate paymentTime;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "supplyContract", cascade = CascadeType.ALL)
     private Set<SupplyContractDetail> supplyContractDetails;

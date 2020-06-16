@@ -15,8 +15,8 @@ public class MaterialPriceId implements Serializable {
     private Integer id;
     @Column(name = "id_material")
     private Integer idMaterial;
-    @Column(name = "date_material")
-    private LocalDate date;
+    @Column(name = "first_date")
+    private LocalDate firstDate;
 
     public Integer getId() {
         return id;
@@ -34,12 +34,12 @@ public class MaterialPriceId implements Serializable {
         this.idMaterial = idMaterial;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDate getFirstDate() {
+        return firstDate;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setFirstDate(LocalDate firstDate) {
+        this.firstDate = firstDate;
     }
 
     @Override
@@ -49,11 +49,11 @@ public class MaterialPriceId implements Serializable {
         MaterialPriceId that = (MaterialPriceId) o;
         return id.equals(that.id) &&
                 idMaterial.equals(that.idMaterial) &&
-                date.equals(that.date);
+                firstDate.equals(that.firstDate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, idMaterial, date);
+        return Objects.hash(id, idMaterial, firstDate);
     }
 }

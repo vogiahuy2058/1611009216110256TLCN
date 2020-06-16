@@ -32,5 +32,7 @@ public class BranchShop extends Auditable<String>{
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "branchShop", cascade = CascadeType.ALL)
     private Set<Employee> employees;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "branchShop", cascade = CascadeType.ALL)
+    private Set<MinMaxInventory> minMaxInventories;
 
 }

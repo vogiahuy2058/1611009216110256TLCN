@@ -9,4 +9,5 @@ public enum  RoleName {
     ROLE_CHEF,
     ROLE_MANAGE_ALL_BRANCH,
     ROLE_CEO,
+    ROLE_WAREHOUSE_MANAGER,
 }

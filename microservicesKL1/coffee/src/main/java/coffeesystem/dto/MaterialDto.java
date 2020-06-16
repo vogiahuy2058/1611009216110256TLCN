@@ -16,9 +16,9 @@ import java.util.Date;
 public class MaterialDto {
     private Integer id;
     private String name;
-    private float inventory;
-    private float minInventory;
-    private float maxInventory;
+//    private float inventory;
+//    private float minInventory;
+//    private float maxInventory;
     private String unit;
     private String materialType;
 }

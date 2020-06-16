@@ -56,7 +56,9 @@ public class SupplyContractServiceImpl implements SupplyContractService{
         supplyContracts.forEach(element->{
             SupplyContractResponseDto supplyContractResponseDto =
                     mapperObject.SupplyContractEntityToDto1(element);
-            supplyContractResponseDto.setDate(element.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            supplyContractResponseDto.setDate(element.getDateCreate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            supplyContractResponseDto.setDeliveryTime(element.getDeliveryTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            supplyContractResponseDto.setPaymentTime(element.getPaymentTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             supplyContractResponseDto.setBranchShop(element.getBranchShop().getName());
             supplyContractResponseDto.setSupplier(element.getSupplier().getName());
             supplyContractResponseDtos.add(supplyContractResponseDto);
@@ -72,7 +74,9 @@ public class SupplyContractServiceImpl implements SupplyContractService{
         supplyContractPage.forEach(element->{
             SupplyContractResponseDto supplyContractResponseDto =
                     mapperObject.SupplyContractEntityToDto1(element);
-            supplyContractResponseDto.setDate(element.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            supplyContractResponseDto.setDate(element.getDateCreate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            supplyContractResponseDto.setDeliveryTime(element.getDeliveryTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            supplyContractResponseDto.setPaymentTime(element.getPaymentTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             supplyContractResponseDto.setBranchShop(element.getBranchShop().getName());
             supplyContractResponseDto.setSupplier(element.getSupplier().getName());
             supplyContractResponseDtos.add(supplyContractResponseDto);});
@@ -88,7 +92,9 @@ public class SupplyContractServiceImpl implements SupplyContractService{
                 .orElseThrow(()-> new NotFoundException("Id not found"));
         SupplyContractResponseDto supplyContractResponseDto =
                 mapperObject.SupplyContractEntityToDto1(supplyContract);
-        supplyContractResponseDto.setDate(supplyContract.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        supplyContractResponseDto.setDate(supplyContract.getDateCreate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        supplyContractResponseDto.setDeliveryTime(supplyContract.getDeliveryTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        supplyContractResponseDto.setPaymentTime(supplyContract.getPaymentTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         supplyContractResponseDto.setSupplier(supplyContract.getSupplier().getName());
         supplyContractResponseDto.setBranchShop(supplyContract.getBranchShop().getName());
         return new ResponseDto(HttpStatus.OK.value(), "All supply contract", supplyContractResponseDto);
@@ -100,11 +106,13 @@ public class SupplyContractServiceImpl implements SupplyContractService{
         List<SupplyContract> supplyContracts = supplyContractRepository.findAllByEnable(true);
         List<SupplyContractResponseDto> supplyContractResponseDtos = new ArrayList<>();
         supplyContracts.forEach(element->{
-            LocalDate supplyContractDate = element.getDate();
+            LocalDate supplyContractDate = element.getDateCreate();
             if(supplyContractDate.isBefore(newToDate) && supplyContractDate.isAfter(newFromDate)){
                 SupplyContractResponseDto supplyContractResponseDto =
                         mapperObject.SupplyContractEntityToDto1(element);
-                supplyContractResponseDto.setDate(element.getDate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                supplyContractResponseDto.setDate(element.getDateCreate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                supplyContractResponseDto.setDeliveryTime(element.getDeliveryTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                supplyContractResponseDto.setPaymentTime(element.getPaymentTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
                 supplyContractResponseDto.setBranchShop(element.getBranchShop().getName());
                 supplyContractResponseDto.setSupplier(element.getSupplier().getName());
                 supplyContractResponseDtos.add(supplyContractResponseDto);
@@ -131,7 +139,9 @@ public class SupplyContractServiceImpl implements SupplyContractService{
         supplyContract.setBranchShop(branchShop);
         supplyContract.setSupplier(supplier);
         supplyContract.setTotalPrice(supplyContractRequestDto.getTotalPrice());
-        supplyContract.setDate(supplyContractRequestDto.getDate());
+        supplyContract.setDateCreate(supplyContractRequestDto.getDate());
+        supplyContract.setDeliveryTime(supplyContractRequestDto.getDeliveryTime());
+        supplyContract.setPaymentTime(supplyContractRequestDto.getPaymentTime());
         supplyContract.setStatus(supplyContractRequestDto.getStatus());
         supplyContractRepository.save(supplyContract);
         return new ResponseDto(HttpStatus.OK.value(), "Edit supply contract successful", null);

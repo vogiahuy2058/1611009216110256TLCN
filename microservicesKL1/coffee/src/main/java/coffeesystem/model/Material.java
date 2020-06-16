@@ -25,11 +25,8 @@ public class Material extends Auditable<String>{
     private Integer id;
 //    @NaturalId
     private String name;
-    private float inventory;
+//    private float inventory;
     private boolean enable = true;
-
-    private float minInventory;
-    private float maxInventory;
 
     @ManyToOne
     @JoinColumn(name = "material_type_id")
@@ -43,6 +40,8 @@ public class Material extends Auditable<String>{
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "material", cascade = CascadeType.ALL)
     private Set<MaterialPrice> materialPrices;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "material", cascade = CascadeType.ALL)
+    private Set<MinMaxInventory> minMaxInventories;
 
     @ManyToOne
     @JoinColumn(name = "unit_id")

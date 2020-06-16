@@ -74,6 +74,7 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
+        <finalName>edge-service</finalName>
     </build>
 
     <repositories>

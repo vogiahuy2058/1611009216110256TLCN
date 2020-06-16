@@ -13,6 +13,8 @@ public class MaterialPriceResponseDto {
     private Integer id;
     private Integer materialId;
     private String materialName;
-    private String date;
-    private float price;
+    private String firstDate;
+    private String lastDate;
+    private float costPrice;
+    private float priceFromSupplier;
 }

@@ -99,6 +99,12 @@ public class AccountServiceImpl implements AccountService{
                             .orElseThrow(() -> new NotFoundException("Fail! -> Cause: Role not found."));
                     roleSet.add(ceoRole);
                     break;
+
+                case "ROLE_WAREHOUSE_MANAGER":
+                    Role wmRole = roleRepository.findByNameAndEnable(RoleName.ROLE_WAREHOUSE_MANAGER, true)
+                            .orElseThrow(() -> new NotFoundException("Fail! -> Cause: Role not found."));
+                    roleSet.add(wmRole);
+                    break;
                 default:
                     throw new IllegalArgumentException("This role is unsupported");
             }

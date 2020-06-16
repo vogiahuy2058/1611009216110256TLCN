@@ -16,4 +16,7 @@ public class SupplyContractResponseDto {
     private String branchShop;
     private String supplier;
     private float totalPrice;
+    private String deliveryTime;
+    private String paymentTime;
+
 }

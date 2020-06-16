@@ -54,7 +54,7 @@ public class MaterialPriceServiceImpl implements MaterialPriceService {
             idOld = 0;
         }
         materialPriceId.setId(idOld + 1);
-        materialPriceId.setDate(materialPriceRequestDto.getDate());
+        materialPriceId.setFirstDate(materialPriceRequestDto.getFirstDate());
         materialPrice.setMaterialPriceId(materialPriceId);
         materialPrice.setMaterial(material);
         materialPriceRepository.save(materialPrice);
@@ -80,7 +80,9 @@ public class MaterialPriceServiceImpl implements MaterialPriceService {
         MaterialPriceResponseDto materialPriceResponseDto = mapperObject.MaterialPriceEntityToDto1(materialPrice);
         materialPriceResponseDto.setId(materialPrice.getMaterialPriceId().getId());
         materialPriceResponseDto.setMaterialId(materialPrice.getMaterialPriceId().getIdMaterial());
-        materialPriceResponseDto.setDate(materialPrice.getMaterialPriceId().getDate()
+        materialPriceResponseDto.setFirstDate(materialPrice.getMaterialPriceId().getFirstDate()
+                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        materialPriceResponseDto.setLastDate(materialPrice.getLastDate()
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         materialPriceResponseDto.setMaterialName(material.getName());
         return new ResponseDto(HttpStatus.OK.value(), "Successful", materialPriceResponseDto);
@@ -95,7 +97,9 @@ public class MaterialPriceServiceImpl implements MaterialPriceService {
                     .orElseThrow(()-> new NotFoundException("Material id not found"));
             materialPriceResponseDto.setId(element.getMaterialPriceId().getId());
             materialPriceResponseDto.setMaterialId(element.getMaterialPriceId().getIdMaterial());
-            materialPriceResponseDto.setDate(element.getMaterialPriceId().getDate()
+            materialPriceResponseDto.setFirstDate(element.getMaterialPriceId().getFirstDate()
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            materialPriceResponseDto.setLastDate(element.getLastDate()
                     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             materialPriceResponseDto.setMaterialName(material.getName());
             materialPriceResponseDtos.add(materialPriceResponseDto);
@@ -114,7 +118,9 @@ public class MaterialPriceServiceImpl implements MaterialPriceService {
                     .orElseThrow(()-> new NotFoundException("Material id not found"));
             materialPriceResponseDto.setId(element.getMaterialPriceId().getId());
             materialPriceResponseDto.setMaterialId(element.getMaterialPriceId().getIdMaterial());
-            materialPriceResponseDto.setDate(element.getMaterialPriceId().getDate()
+            materialPriceResponseDto.setFirstDate(element.getMaterialPriceId().getFirstDate()
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            materialPriceResponseDto.setLastDate(element.getLastDate()
                     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             materialPriceResponseDto.setMaterialName(material.getName());
             materialPriceResponseDtos.add(materialPriceResponseDto);});

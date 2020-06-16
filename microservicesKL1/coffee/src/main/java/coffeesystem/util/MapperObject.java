@@ -119,6 +119,7 @@ public interface MapperObject {
 
     @Mapping(target="branchShop.name",source = "branchShop")
     @Mapping(target="supplier.name",source = "supplier")
+    @Mapping(target="dateCreate",source = "date")
     SupplyContract SupplyContractDtoToEntity(SupplyContractRequestDto supplyContractRequestDto);
 
     @Mapping(target="branchShop",source = "branchShop.name")
@@ -127,7 +128,7 @@ public interface MapperObject {
 
     @Mapping(target="branchShop",source = "branchShop.name")
     @Mapping(target="supplier",source = "supplier.name")
-    @Mapping(target="date",source = "date")
+//    @Mapping(target="date",source = "dateCreate")
     SupplyContractResponseDto SupplyContractEntityToDto1(SupplyContract supplyContract);
 
     @Mapping(target="material.name",source = "material")
@@ -163,18 +164,27 @@ public interface MapperObject {
     DrinkPriceResponseDto DrinkPriceEntityToDto1(DrinkPrice drinkPrice);
 
     @Mapping(target="materialPriceId.idMaterial",source = "materialId")
-    @Mapping(target="materialPriceId.date",source = "date")
+    @Mapping(target="materialPriceId.firstDate",source = "firstDate")
     @Mapping(target="materialPriceId.id",source = "id")
     MaterialPrice MaterialPriceDtoToEntity(MaterialPriceRequestDto materialPriceRequestDto);
 
     @Mapping(target="materialId",source = "materialPriceId.idMaterial")
-    @Mapping(target="date",source = "materialPriceId.date")
+    @Mapping(target="firstDate",source = "materialPriceId.firstDate")
     @Mapping(target="id",source = "materialPriceId.id")
     MaterialPriceRequestDto MaterialPriceEntityToDto(MaterialPrice materialPrice);
 
     @Mapping(target="materialId",source = "materialPriceId.idMaterial")
-    @Mapping(target="date",source = "materialPriceId.date")
+//    @Mapping(target="firstDate",source = "materialPriceId.firstDate")
     @Mapping(target="id",source = "materialPriceId.id")
     MaterialPriceResponseDto MaterialPriceEntityToDto1(MaterialPrice materialPrice);
 
+    @Mapping(target="minMaxInventoryId.idMaterial",source = "materialId")
+    @Mapping(target="minMaxInventoryId.idBranchShop",source = "branchShopId")
+    @Mapping(target="minMaxInventoryId.id",source = "id")
+    MinMaxInventory MinMaxInventoryDtoToEntity(MinMaxInventoryDto minMaxInventoryDto);
+
+    @Mapping(target="materialId",source = "minMaxInventoryId.idMaterial")
+    @Mapping(target="branchShopId",source = "minMaxInventoryId.idBranchShop")
+    @Mapping(target="id",source = "minMaxInventoryId.id")
+    MinMaxInventoryDto MinMaxInventoryEntityToDto(MinMaxInventory minMaxInventory);
 }

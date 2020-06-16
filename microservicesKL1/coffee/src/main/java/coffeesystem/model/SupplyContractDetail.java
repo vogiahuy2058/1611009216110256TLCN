@@ -31,8 +31,7 @@ public class SupplyContractDetail extends Auditable<String> {
 
     private float unitPrice;
     private float amount;
-    private LocalDate deliveryTime;
-    private LocalDate paymentTime;
+
     @ManyToOne
     @JoinColumn(name = "unit_id")
     private Unit unit;

@@ -16,9 +16,9 @@ C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffe
 C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\repository\RecipeRepository.java
 C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\dto\MaterialPriceRequestDto.java
 C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\service\recipe\RecipeService.java
+C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\dto\SupplyContractDetailRequestDto.java
 C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\service\orderType\OrderTypeService.java
 C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\configuration\security\jwt\JwtAuthEntryPoint.java
-C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\dto\SupplyContractDetailDto.java
 C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\model\Invoice.java
 C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\repository\CustomerRepository.java
 C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\controller\UnitController.java
@@ -113,6 +113,7 @@ C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffe
 C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\exception\FileStorageException.java
 C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\exception\NotFoundException.java
 C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\model\Unit.java
+C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\dto\SupplyContractDetailResponseDto.java
 C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\service\invoiceDetail\InvoiceDetailService.java
 C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\dto\UnitDto.java
 C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\util\IsExistsValidatorHandler.java
@@ -136,6 +137,7 @@ C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffe
 C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\service\account\AccountService.java
 C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\configuration\security\jwt\JwtAuthTokenFilter.java
 C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\dto\SignUpDto.java
+C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\model\embedding\SupplyContractDetailId.java
 C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\service\recipe\RecipeServiceImpl.java
 C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\configuration\WebMvcConfig.java
 C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\dto\LoginDto.java
@@ -145,7 +147,6 @@ C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffe
 C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\dto\InvoiceAndInvoiceDetailDto.java
 C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\controller\DrinkTypeController.java
 C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\dto\EmployeeRequestDto.java
-C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\model\embedding\SupplyContractId.java
 C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\service\customer\CustomerService.java
 C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\service\account\AccountServiceImpl.java
 C:\Users\Dell M2800\Documents\GitHub\1611009216110256TLCN\microservicesKL1\coffee\src\main\java\coffeesystem\controller\RecipeController.java

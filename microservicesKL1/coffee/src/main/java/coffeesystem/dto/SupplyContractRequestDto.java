@@ -20,5 +20,7 @@ public class SupplyContractRequestDto {
     private String branchShop;
     private String supplier;
     private Integer status;
+    private LocalDate deliveryTime;
+    private LocalDate paymentTime;
 
 }

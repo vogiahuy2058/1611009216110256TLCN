@@ -20,8 +20,8 @@ public class SupplyContractDetailResponseDto {
 
     private float unitPrice;
     private float amount;
-    private LocalDate deliveryTime;
-    private LocalDate paymentTime;
+//    private LocalDate deliveryTime;
+//    private LocalDate paymentTime;
     private String materialName;
     private String unitName;
 }

@@ -39,8 +39,8 @@ public class MaterialPriceController {
     public ResponseEntity<ResponseDto> getAllPriceMaterial(){
         return ResponseEntity.ok(this.materialPriceService.getAllPriceOfMaterial());
     }
-    public ResponseEntity<ResponseDto> fallBackGetAllMaterialPrice() {
-        System.out.println("=======fallBackGetAllMaterialPrice=========");
+    public ResponseEntity<ResponseDto> fallBackGetAllPriceMaterial() {
+        System.out.println("=======fallBackGetAllPriceMaterial=========");
         return new ResponseEntity<ResponseDto>(HttpStatus.OK);
     }
 

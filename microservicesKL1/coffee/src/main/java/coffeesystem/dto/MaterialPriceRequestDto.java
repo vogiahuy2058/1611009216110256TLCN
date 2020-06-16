@@ -14,6 +14,8 @@ import java.time.LocalDate;
 public class MaterialPriceRequestDto {
     private Integer id;
     private Integer materialId;
-    private LocalDate date;
-    private float price;
+    private LocalDate firstDate;
+    private LocalDate lastDate;
+    private float costPrice;
+    private float priceFromSupplier;
 }
