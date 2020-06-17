@@ -13,6 +13,8 @@ import coffeesystem.dto.DrinkTypeDto;
 import coffeesystem.dto.EmployeeRequestDto;
 import coffeesystem.dto.EmployeeResponseDto;
 import coffeesystem.dto.EmployeeTypeDto;
+import coffeesystem.dto.InternalSCRequestDto;
+import coffeesystem.dto.InternalSCResponseDto;
 import coffeesystem.dto.InvoiceAndInvoiceDetailDto;
 import coffeesystem.dto.InvoiceDetailRequestDto;
 import coffeesystem.dto.InvoiceDetailResponseDto;
@@ -44,6 +46,7 @@ import coffeesystem.model.DrinkPrice;
 import coffeesystem.model.DrinkType;
 import coffeesystem.model.Employee;
 import coffeesystem.model.EmployeeType;
+import coffeesystem.model.InternalSC;
 import coffeesystem.model.Invoice;
 import coffeesystem.model.InvoiceDetail;
 import coffeesystem.model.Material;
@@ -73,7 +76,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-06-16T22:29:29+0700",
+    date = "2020-06-17T09:58:53+0700",
     comments = "version: 1.2.0.CR2, compiler: javac, environment: Java 1.8.0_231 (Oracle Corporation)"
 )
 @Component
@@ -838,6 +841,7 @@ public class MapperObjectImpl implements MapperObject {
         if ( supplyContract.getPaymentTime() != null ) {
             supplyContractResponseDto.setPaymentTime( DateTimeFormatter.ISO_LOCAL_DATE.format( supplyContract.getPaymentTime() ) );
         }
+        supplyContractResponseDto.setStatus( supplyContract.getStatus() );
 
         return supplyContractResponseDto;
     }
@@ -1075,6 +1079,44 @@ public class MapperObjectImpl implements MapperObject {
         minMaxInventoryResponseDto.setMaxInventory( minMaxInventory.getMaxInventory() );
 
         return minMaxInventoryResponseDto;
+    }
+
+    @Override
+    public InternalSC InternalSCDtoToEntity(InternalSCRequestDto internalSCRequestDto) {
+        if ( internalSCRequestDto == null ) {
+            return null;
+        }
+
+        InternalSC internalSC = new InternalSC();
+
+        internalSC.setBranchShop( internalSCRequestDtoToBranchShop( internalSCRequestDto ) );
+        internalSC.setDateCreate( internalSCRequestDto.getDate() );
+        internalSC.setId( internalSCRequestDto.getId() );
+        internalSC.setStatus( internalSCRequestDto.getStatus() );
+        internalSC.setDeliveryTime( internalSCRequestDto.getDeliveryTime() );
+
+        return internalSC;
+    }
+
+    @Override
+    public InternalSCResponseDto InternalSCEntityToDto(InternalSC internalSC) {
+        if ( internalSC == null ) {
+            return null;
+        }
+
+        InternalSCResponseDto internalSCResponseDto = new InternalSCResponseDto();
+
+        String name = internalSCBranchShopName( internalSC );
+        if ( name != null ) {
+            internalSCResponseDto.setBranchShop( name );
+        }
+        internalSCResponseDto.setId( internalSC.getId() );
+        internalSCResponseDto.setStatus( internalSC.getStatus() );
+        if ( internalSC.getDeliveryTime() != null ) {
+            internalSCResponseDto.setDeliveryTime( DateTimeFormatter.ISO_LOCAL_DATE.format( internalSC.getDeliveryTime() ) );
+        }
+
+        return internalSCResponseDto;
     }
 
     private Integer accountEmployeeId(Account account) {
@@ -1839,5 +1881,32 @@ public class MapperObjectImpl implements MapperObject {
             return null;
         }
         return idMaterial;
+    }
+
+    protected BranchShop internalSCRequestDtoToBranchShop(InternalSCRequestDto internalSCRequestDto) {
+        if ( internalSCRequestDto == null ) {
+            return null;
+        }
+
+        BranchShop branchShop = new BranchShop();
+
+        branchShop.setName( internalSCRequestDto.getBranchShop() );
+
+        return branchShop;
+    }
+
+    private String internalSCBranchShopName(InternalSC internalSC) {
+        if ( internalSC == null ) {
+            return null;
+        }
+        BranchShop branchShop = internalSC.getBranchShop();
+        if ( branchShop == null ) {
+            return null;
+        }
+        String name = branchShop.getName();
+        if ( name == null ) {
+            return null;
+        }
+        return name;
     }
 }

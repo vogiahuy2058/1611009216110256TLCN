@@ -95,6 +95,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .orElseThrow(()-> new NotFoundException("Id not found"));
         EmployeeResponseDto employeeResponseDto = mapperObject.EmployeeEntityToDto(employee);
         employeeResponseDto.setEmployeeType(employee.getEmployeeType().getName());
+        employeeResponseDto.setBranchShop(employee.getBranchShop().getName());
         return new ResponseDto(HttpStatus.OK.value(), "Successful", employeeResponseDto);
     }
     @Transactional
@@ -153,6 +154,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .orElseThrow(()-> new NotFoundException("Id not found!"));
         employee.setName(employeeRequestDto.getName());
         employee.setEmail(employeeRequestDto.getEmail());
+        employee.setIdCuaHuy(employeeRequestDto.getIdCuaHuy());
         BranchShop branchShop = branchShopRepository.findByNameAndEnable(employeeRequestDto.getBranchShop(), true)
                 .orElseThrow(()-> new NotFoundException("Branch shop not found"));
 //        EmployeeType employeeType = employeeTypeRepository.findByNameAndEnable(employeeRequestDto.getEmployeeType(), true)
@@ -167,6 +169,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .orElseThrow(()-> new NotFoundException("Id not found!"));
         employee.setName(employeeRequestDto.getName());
         employee.setEmail(employeeRequestDto.getEmail());
+        employee.setIdCuaHuy(employeeRequestDto.getIdCuaHuy());
         BranchShop branchShop = branchShopRepository.findByNameAndEnable(employeeRequestDto.getBranchShop(), true)
                 .orElseThrow(()-> new NotFoundException("Branch shop not found"));
         EmployeeType employeeType = employeeTypeRepository.findByNameAndEnable(employeeRequestDto.getEmployeeType(), true)

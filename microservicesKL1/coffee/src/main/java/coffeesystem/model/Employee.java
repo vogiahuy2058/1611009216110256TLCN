@@ -22,6 +22,7 @@ public class Employee extends Auditable<String>{
     private String name;
     private String email;
     private boolean enable = true;
+    private String idCuaHuy;
     @ManyToOne
     @JoinColumn(name = "branch_shop_id")
     private BranchShop branchShop;
