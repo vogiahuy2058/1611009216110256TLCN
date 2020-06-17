@@ -86,4 +86,9 @@ public class EmployeeController {
     public ResponseEntity<ResponseDto> editEmployeeNotIncludeEmployeeType(@RequestBody EmployeeRequestDto employeeRequestDto){
         return ResponseEntity.ok(employeeService.editEmployeeNotIncludeEmployeeType(employeeRequestDto));
     }
+    @GetMapping("/get-max-id")
+    public ResponseEntity<ResponseDto> getMaxIdEmployee(){
+
+        return ResponseEntity.ok(employeeService.getMaxIdEmployee());
+    }
 }

@@ -25,5 +25,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, Integer> {
             "(SELECT a.employee FROM Account a) " +
             "and e.employeeType.name=?1 and e.enable=true")
     List<Employee> findEmployeeNotHaveAccountByEmployeeType(String name);
+    @Query("select max(e.id) from Employee e")
+    Integer findMaxId();
 
 }

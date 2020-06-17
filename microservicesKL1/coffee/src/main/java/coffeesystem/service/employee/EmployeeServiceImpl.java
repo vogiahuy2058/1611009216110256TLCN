@@ -185,4 +185,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         });
         return new ResponseDto(HttpStatus.OK.value(), "Edit employee successful", null);
     }
+    @Transactional
+    public ResponseDto getMaxIdEmployee(){
+        Integer maxId = employeeRepository.findMaxId();
+        if(maxId == null){
+            maxId = 0;
+        }
+        return new ResponseDto(HttpStatus.OK.value(), "Max id", maxId);
+
+    }
 }
