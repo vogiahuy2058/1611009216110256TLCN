@@ -20,28 +20,28 @@ public class MinMaxInventoryController {
     }
 
     @GetMapping("/get")
-//    @HystrixCommand(fallbackMethod = "fallBackGetMinMaxInventoryById")
+    @HystrixCommand(fallbackMethod = "fallBackGetMinMaxInventoryById")
     public ResponseEntity<ResponseDto> getMinMaxInventoryByMaterialIđAnBranchShopId(@RequestParam Integer idMaterial,
                                                                       @RequestParam Integer idBranchShop){
         return ResponseEntity.ok(this.minMaxInventoryService.getMinMaxByIdMaterialAndIdBranchShop(idMaterial, idBranchShop));
     }
 
-    public ResponseEntity<ResponseDto> fallBackGetMaterialPriceById(Integer materialId) {
-        System.out.println("=======fallBackGetMaterialPriceById=========");
+    public ResponseEntity<ResponseDto> fallBackGetMinMaxInventoryById(Integer idMaterial, Integer idBranchShop) {
+        System.out.println("=======fallBackGetMinMaxInventoryById=========");
         return new ResponseEntity<ResponseDto>(HttpStatus.OK);
     }
     @GetMapping("/get-all")
-//    @HystrixCommand(fallbackMethod = "fallBackGetAllMinMaxInventory")
+    @HystrixCommand(fallbackMethod = "fallBackGetAllMinMaxInventory")
     public ResponseEntity<ResponseDto> getAllMinMaxInventory(){
         return ResponseEntity.ok(this.minMaxInventoryService.getAllMinMaxInventory());
     }
-    public ResponseEntity<ResponseDto> fallBackGetAllPriceMaterial() {
-        System.out.println("=======fallBackGetAllPriceMaterial=========");
+    public ResponseEntity<ResponseDto> fallBackGetAllMinMaxInventory() {
+        System.out.println("=======fallBackGetAllMinMaxInventory=========");
         return new ResponseEntity<ResponseDto>(HttpStatus.OK);
     }
 
     @GetMapping("/get-all-paging")
-//    @HystrixCommand(fallbackMethod = "fallBackGetAllMMinMaxInventoryPaging")
+    @HystrixCommand(fallbackMethod = "fallBackGetAllMMinMaxInventoryPaging")
     public ResponseEntity<PagingResponseDto> getAllMinMaxInventoryPaging(
             @RequestParam(name = "page", required = false, defaultValue = "0") int page,
             @RequestParam(name = "size", required = false, defaultValue = "10") int size,
@@ -49,8 +49,8 @@ public class MinMaxInventoryController {
             @RequestParam(name = "column", required = false, defaultValue = "minMaxInventoryId.id") String sortColumn){
         return ResponseEntity.ok(this.minMaxInventoryService.getAllMinMaxInventoryPaging(page, size, sort, sortColumn));
     }
-    public ResponseEntity<PagingResponseDto> fallBackGetAllMaterialPricePaging(int page, int size, String sort, String sortColumn) {
-        System.out.println("=======fallBackGetAllMaterialPricePaging=========");
+    public ResponseEntity<PagingResponseDto> fallBackGetAllMMinMaxInventoryPaging(int page, int size, String sort, String sortColumn) {
+        System.out.println("=======fallBackGetAllMMinMaxInventoryPaging=========");
         return new ResponseEntity<PagingResponseDto>(HttpStatus.OK);
     }
     @PutMapping("/delete")

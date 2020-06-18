@@ -46,22 +46,22 @@ public class SupplyContractController {
     }
 
     @GetMapping("/get")
-    @HystrixCommand(fallbackMethod = "fallBackGetMaterialById")
+    @HystrixCommand(fallbackMethod = "fallBackGetSupplyContractById")
     public ResponseEntity<ResponseDto> getSupplyContractId(@RequestParam Integer id){
         return ResponseEntity.ok(supplyContractService.getSupplyContractById(id));
     }
-    public ResponseEntity<ResponseDto> fallBackGetMaterialById(Integer id) {
-        System.out.println("=======fallBackGetMaterialById=========");
+    public ResponseEntity<ResponseDto> fallBackGetSupplyContractById(Integer id) {
+        System.out.println("=======fallBackGetSupplyContractById=========");
         return new ResponseEntity<ResponseDto>(HttpStatus.OK);
     }
     @GetMapping("/get-all-date-to-date")
-    @HystrixCommand(fallbackMethod = "fallBackGetMaterialDateToDate")
+    @HystrixCommand(fallbackMethod = "fallBackGetSupplyContractDateToDate")
     public ResponseEntity<ResponseDto> getAllSupplyContractDateToDate(@RequestParam String fromDate,
                                                                       @RequestParam String toDate){
-        return  ResponseEntity.ok(this.supplyContractService.getAllInvoiceDateToDate(fromDate, toDate));
+        return  ResponseEntity.ok(this.supplyContractService.getAllSupplyContractDateToDate(fromDate, toDate));
     }
 
-    public ResponseEntity<ResponseDto> fallBackGetMaterialDateToDate(String fromDate, String toDate) {
+    public ResponseEntity<ResponseDto> fallBackGetSupplyContractDateToDate(String fromDate, String toDate) {
         System.out.println("=======fallBackGetMaterialDateToDate=========");
         return new ResponseEntity<ResponseDto>(HttpStatus.OK);
     }

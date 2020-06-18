@@ -187,4 +187,12 @@ public interface MapperObject {
     @Mapping(target="branchShopId",source = "minMaxInventoryId.idBranchShop")
     @Mapping(target="id",source = "minMaxInventoryId.id")
     MinMaxInventoryResponseDto MinMaxInventoryEntityToDto(MinMaxInventory minMaxInventory);
+
+    @Mapping(target="branchShop.name",source = "branchShop")
+    @Mapping(target="dateCreate",source = "date")
+    InternalSC InternalSCDtoToEntity(InternalSCRequestDto internalSCRequestDto);
+
+
+    @Mapping(target="branchShop",source = "branchShop.name")
+    InternalSCResponseDto InternalSCEntityToDto(InternalSC internalSC);
 }

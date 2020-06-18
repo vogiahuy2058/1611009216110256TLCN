@@ -81,17 +81,17 @@ public class InvoiceController {
         System.out.println("=======fallBackGetAllInvoiceDateToDatePaging=========");
         return new ResponseEntity<PagingResponseDto>(HttpStatus.OK);
     }
-//    @GetMapping("/get-all-date-to-date")
+    @GetMapping("/get-all-date-to-date")
 //    @HystrixCommand(fallbackMethod = "fallBackGetAllInvoiceDateToDate")
-//    public ResponseEntity<ResponseDto> getAllInvoiceDateToDate(@RequestParam String fromDate,
-//                                                               @RequestParam String toDate,
-//                                                               @RequestParam Integer branchShopId){
-//        return  ResponseEntity.ok(this.invoiceService.getAllInvoiceDateToDate(fromDate, toDate, branchShopId));
-//    }
-//    public ResponseEntity<ResponseDto> fallBackGetAllInvoiceDateToDate(String fromDate, String toDate, Integer branchShopId) {
-//        System.out.println("=======fallBackGetAllInvoiceDateToDatePaging=========");
-//        return new ResponseEntity<ResponseDto>(HttpStatus.OK);
-//    }
+    public ResponseEntity<ResponseDto> getAllInvoiceDateToDate(@RequestParam String fromDate,
+                                                               @RequestParam String toDate,
+                                                               @RequestParam Integer branchShopId){
+        return  ResponseEntity.ok(this.invoiceService.getAllInvoiceByFilter(fromDate, toDate, branchShopId));
+    }
+    public ResponseEntity<ResponseDto> fallBackGetAllInvoiceDateToDate(String fromDate, String toDate, Integer branchShopId) {
+        System.out.println("=======fallBackGetAllInvoiceDateToDatePaging=========");
+        return new ResponseEntity<ResponseDto>(HttpStatus.OK);
+    }
 
     @GetMapping("/get-all-false")
     public ResponseEntity<ResponseDto> getAllInvoiceStatusFalse(){

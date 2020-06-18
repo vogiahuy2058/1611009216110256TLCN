@@ -29,6 +29,10 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Integer> {
             "and i.date>=?3 and i.date <=?4")
     Page<Invoice> findByEnableAndPaymentStatusAndDate(boolean enable, Integer status,
                                                       ZonedDateTime fromDate, ZonedDateTime toDate, Pageable pageable);
+    @Query("select i from Invoice i where i.enable=?1 and i.status=?2 " +
+            "and i.date>=?3 and i.date <=?4")
+    List<Invoice> findByEnableAndPaymentStatusAndDate(boolean enable, Integer status,
+                                                      ZonedDateTime fromDate, ZonedDateTime toDate);
     List<Invoice> findAllByEnableAndStatusAndBranchShopId(
             boolean enable, Integer status, Integer id);
     @Query("select i from Invoice i where i.enable=?1 and i.status=?2 " +
@@ -36,6 +40,11 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Integer> {
     Page<Invoice> findByEnableAndPaymentStatusAndBranchShopIdAndDate(
             boolean enable, Integer status, Integer id,
             ZonedDateTime fromDate, ZonedDateTime toDate, Pageable pageable);
+    @Query("select i from Invoice i where i.enable=?1 and i.status=?2 " +
+            "and i.branchShop.id=?3 and i.date>=?4 and i.date <=?5")
+    List<Invoice> findByEnableAndPaymentStatusAndBranchShopIdAndDate(
+            boolean enable, Integer status, Integer id,
+            ZonedDateTime fromDate, ZonedDateTime toDate);
     Page<Invoice> findAllByEnableAndStatusAndBranchShopId(
             boolean enable, Integer status, Integer id, Pageable pageable);
     Page<Invoice> findAll(Pageable pageable);

@@ -97,10 +97,10 @@ public class SupplyContractServiceImpl implements SupplyContractService{
         supplyContractResponseDto.setPaymentTime(supplyContract.getPaymentTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         supplyContractResponseDto.setSupplier(supplyContract.getSupplier().getName());
         supplyContractResponseDto.setBranchShop(supplyContract.getBranchShop().getName());
-        return new ResponseDto(HttpStatus.OK.value(), "All supply contract", supplyContractResponseDto);
+        return new ResponseDto(HttpStatus.OK.value(), "Get supply contract by id: "+id, supplyContractResponseDto);
     }
     @Transactional
-    public ResponseDto getAllInvoiceDateToDate(String fromDate, String toDate){
+    public ResponseDto getAllSupplyContractDateToDate(String fromDate, String toDate){
         LocalDate newFromDate = LocalDate.parse(fromDate, dtf);
         LocalDate newToDate = LocalDate.parse(toDate, dtf);
         List<SupplyContract> supplyContracts = supplyContractRepository.findAllByEnable(true);
@@ -126,7 +126,7 @@ public class SupplyContractServiceImpl implements SupplyContractService{
                 .orElseThrow(()-> new NotFoundException("Id not found!"));
         supplyContract.setEnable(false);
         supplyContractRepository.save(supplyContract);
-        return new ResponseDto(HttpStatus.OK.value(), "Delete supply successful", null);
+        return new ResponseDto(HttpStatus.OK.value(), "Delete supply contract successful", null);
     }
     public ResponseDto editSupplyContract(SupplyContractRequestDto supplyContractRequestDto){
 

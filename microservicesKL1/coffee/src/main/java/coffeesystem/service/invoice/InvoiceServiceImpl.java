@@ -116,23 +116,70 @@ public class InvoiceServiceImpl implements InvoiceService{
         return new ResponseDto(HttpStatus.OK.value(), "All invoice", invoiceResponseDtos);
     }
     @Transactional
-    public ResponseDto getAllInvoiceDateToDate(String fromDate, String toDate, Integer branchShopId){
+    public ResponseDto getAllInvoiceByFilter(String fromDate, String toDate, Integer branchShopId){
+        if(!fromDate.equals("nulldate") && !toDate.equals("nulldate") && branchShopId != 0){
+            return getAllInvoiceDateToDateByBranchShopId(fromDate, toDate, branchShopId);
+        }
+        else if(fromDate.equals("nulldate") && toDate.equals("nulldate") && branchShopId != 0){
+            return getAllInvoiceByBranchShopId(branchShopId);
+        }
 
-        LocalDate newFromDate = LocalDate.parse(fromDate, dtf);
-        LocalDate newToDate = LocalDate.parse(toDate, dtf);
-        ZonedDateTime zoneFromDate = ZonedDateTime.from(newToDate);
-        List<Invoice> invoices =
-                invoiceRepository.findAllByEnableAndStatusAndBranchShopId(true, 2, branchShopId);
+        else if(!fromDate.equals("nulldate") && !fromDate.equals("nulldate") && branchShopId == 0){
+            return getAllInvoiceDateToDate(fromDate, toDate);
+        }
+        else {
+            return getAllInvoiceStatus2();
+        }
+    }
+    @Transactional
+    public ResponseDto getAllInvoiceDateToDateByBranchShopId(String fromDate, String toDate, Integer branchShopId){
+        ZonedDateTime newFromDate = LocalDateTime.parse(fromDate,
+                DateTimeFormatter.ISO_DATE_TIME).atZone(zoneId);
+        ZonedDateTime newToDate = LocalDateTime.parse(toDate,
+                DateTimeFormatter.ISO_DATE_TIME).atZone(zoneId);
+
+        List<Invoice> invoiceList =
+                invoiceRepository.findByEnableAndPaymentStatusAndBranchShopIdAndDate(
+                        true, 2, branchShopId, newFromDate, newToDate);
+
         List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
-//        try{
-//            Date newFromDate = formatter.parse(fromDate);
-//            Date newToDate = formatter.parse(toDate);
 
-        invoices.forEach(invoice -> {
-            LocalDate dateInvoice = LocalDate.from(invoice.getDate().toLocalDate());
-            if(dateInvoice.isBefore(newToDate) && dateInvoice.isAfter(newFromDate)){
-                InvoiceResponseDto invoiceResponseDto =
-                        mapperObject.InvoiceEntityToDto(invoice);
+        invoiceList.forEach(invoice -> {
+            InvoiceResponseDto invoiceResponseDto = mapperObject.InvoiceEntityToDto(invoice);
+
+            if(invoice.getCustomer() == null){
+                invoiceResponseDto.setCustomerName(null);
+                invoiceResponseDto.setCustomerPhone(null);
+            }else {
+                invoiceResponseDto.setCustomerName(invoice.getCustomer().getName());
+                invoiceResponseDto.setCustomerPhone(invoice.getCustomer().getPhone());
+            }
+            invoiceResponseDto.setBranchShop(invoice.getBranchShop().getName());
+            invoiceResponseDto.setOrderType(invoice.getOrderType().getName());
+            invoiceResponseDto.setDate(invoice.getDate().
+                    format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+            Employee employee = employeeRepository.findByAccountUsername(invoice.getLastModifiedBy())
+                    .orElseThrow(()-> new NotFoundException("Username not found"));
+            invoiceResponseDto.setCashierName(employee.getName());
+            invoiceResponseDtos.add(invoiceResponseDto);
+
+        });
+
+        return new ResponseDto(HttpStatus.OK.value(),
+                "All invoice from date to date and id branch shop", invoiceResponseDtos);
+    }
+    @Transactional
+    public ResponseDto getAllInvoiceByBranchShopId(Integer branchShopId){
+
+        List<Invoice> invoiceList =
+                invoiceRepository.findAllByEnableAndStatusAndBranchShopId(
+                        true, 2, branchShopId);
+        List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
+
+        invoiceList.forEach(invoice -> {
+
+            InvoiceResponseDto invoiceResponseDto =
+                    mapperObject.InvoiceEntityToDto(invoice);
 
 //            if(invoice.getCoffeeTable()==null){
 //                invoiceResponseDto.setCoffeeTable(null);
@@ -140,29 +187,100 @@ public class InvoiceServiceImpl implements InvoiceService{
 //                invoiceResponseDto.setCoffeeTable(invoice.getCoffeeTable().getName());
 //            }
 
-                if(invoice.getCustomer() == null){
-                    invoiceResponseDto.setCustomerName(null);
-                    invoiceResponseDto.setCustomerPhone(null);
-                }else {
-                    invoiceResponseDto.setCustomerName(invoice.getCustomer().getName());
-                    invoiceResponseDto.setCustomerPhone(invoice.getCustomer().getPhone());
-                }
-                invoiceResponseDto.setBranchShop(invoice.getBranchShop().getName());
-                invoiceResponseDto.setOrderType(invoice.getOrderType().getName());
-                invoiceResponseDto.setDate(invoice.getDate().
-                        format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-                Employee employee = employeeRepository.findByAccountUsername(invoice.getLastModifiedBy())
-                        .orElseThrow(()-> new NotFoundException("Username not found"));
-                invoiceResponseDto.setCashierName(employee.getName());
-                invoiceResponseDtos.add(invoiceResponseDto);
+            if(invoice.getCustomer() == null){
+                invoiceResponseDto.setCustomerName(null);
+                invoiceResponseDto.setCustomerPhone(null);
+            }else {
+                invoiceResponseDto.setCustomerName(invoice.getCustomer().getName());
+                invoiceResponseDto.setCustomerPhone(invoice.getCustomer().getPhone());
             }
+            invoiceResponseDto.setBranchShop(invoice.getBranchShop().getName());
+            invoiceResponseDto.setOrderType(invoice.getOrderType().getName());
+            invoiceResponseDto.setDate(invoice.getDate().
+                    format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+            Employee employee = employeeRepository.findByAccountUsername(invoice.getLastModifiedBy())
+                    .orElseThrow(()-> new NotFoundException("Username not found"));
+            invoiceResponseDto.setCashierName(employee.getName());
+            invoiceResponseDtos.add(invoiceResponseDto);
 
         });
 //        }catch (ParseException e){
 //            e.printStackTrace();
 //        }
+        return new ResponseDto(HttpStatus.OK.value(), "All invoice by id branch shop", invoiceResponseDtos);
+    }
+    @Transactional
+    public ResponseDto getAllInvoiceDateToDate(String fromDate, String toDate){
+        ZonedDateTime newFromDate = LocalDateTime.parse(fromDate,
+                DateTimeFormatter.ISO_DATE_TIME).atZone(zoneId);
+        ZonedDateTime newToDate = LocalDateTime.parse(toDate,
+                DateTimeFormatter.ISO_DATE_TIME).atZone(zoneId);
 
-        return new ResponseDto(HttpStatus.OK.value(), "All invoice from date to date", invoiceResponseDtos);
+        List<Invoice> invoiceList =
+                invoiceRepository.findByEnableAndPaymentStatusAndDate(
+                        true, 2, newFromDate, newToDate);
+        List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
+//        try{
+//            Date newFromDate = formatter.parse(fromDate);
+//            Date newToDate = formatter.parse(toDate);
+
+        invoiceList.forEach(invoice -> {
+
+            InvoiceResponseDto invoiceResponseDto =
+                    mapperObject.InvoiceEntityToDto(invoice);
+
+//            if(invoice.getCoffeeTable()==null){
+//                invoiceResponseDto.setCoffeeTable(null);
+//            }else {
+//                invoiceResponseDto.setCoffeeTable(invoice.getCoffeeTable().getName());
+//            }
+
+            if(invoice.getCustomer() == null){
+                invoiceResponseDto.setCustomerName(null);
+                invoiceResponseDto.setCustomerPhone(null);
+            }else {
+                invoiceResponseDto.setCustomerName(invoice.getCustomer().getName());
+                invoiceResponseDto.setCustomerPhone(invoice.getCustomer().getPhone());
+            }
+            invoiceResponseDto.setBranchShop(invoice.getBranchShop().getName());
+            invoiceResponseDto.setOrderType(invoice.getOrderType().getName());
+            invoiceResponseDto.setDate(invoice.getDate().
+                    format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+            Employee employee = employeeRepository.findByAccountUsername(invoice.getLastModifiedBy())
+                    .orElseThrow(()-> new NotFoundException("Username not found"));
+            invoiceResponseDto.setCashierName(employee.getName());
+            invoiceResponseDtos.add(invoiceResponseDto);
+
+        });
+//        }catch (ParseException e){
+//            e.printStackTrace();
+//        }
+        return new ResponseDto(HttpStatus.OK.value(), "All invoice date to date", invoiceResponseDtos);
+    }
+    @Transactional
+    public ResponseDto getAllInvoiceStatus2() {
+        List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
+        List<Invoice> invoiceList = invoiceRepository.findAllByEnableAndStatus(true, 2);
+        invoiceList.forEach(element->{
+            InvoiceResponseDto invoiceResponseDto = mapperObject.InvoiceEntityToDto(element);
+
+            if(element.getCustomer() == null){
+                invoiceResponseDto.setCustomerName(null);
+                invoiceResponseDto.setCustomerPhone(null);
+            }else {
+                invoiceResponseDto.setCustomerName(element.getCustomer().getName());
+                invoiceResponseDto.setCustomerPhone(element.getCustomer().getPhone());
+            }
+//            invoiceResponseDto.setCoffeeTable(element.getCoffeeTable().getName());
+            invoiceResponseDto.setBranchShop(element.getBranchShop().getName());
+            invoiceResponseDto.setOrderType(element.getOrderType().getName());
+            invoiceResponseDto.setDate(element.getDate().
+                    format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+            Employee employee = employeeRepository.findByAccountUsername(element.getLastModifiedBy())
+                    .orElseThrow(()-> new NotFoundException("Username not found"));
+            invoiceResponseDto.setCashierName(employee.getName());
+            invoiceResponseDtos.add(invoiceResponseDto);});
+        return new ResponseDto(HttpStatus.OK.value(), "All invoice not filter", invoiceResponseDtos);
     }
     @Transactional
     public PagingResponseDto getAllInvoiceByFilterPaging(int page, int size, String sort, String sortColumn,
@@ -225,6 +343,139 @@ public class InvoiceServiceImpl implements InvoiceService{
                 invoiceResponseDtoPage.getContent(), invoiceResponseDtoPage.getTotalElements(), invoiceResponseDtoPage.getTotalPages(),
                 invoiceResponseDtoPage.getPageable());
     }
+    @Transactional
+    public PagingResponseDto getAllInvoiceByBranchShopIdPaging(int page, int size, String sort, String sortColumn,
+                                                               Integer branchShopId){
+        Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
+
+        Page<Invoice> invoicePage =
+                invoiceRepository.findAllByEnableAndStatusAndBranchShopId(
+                        true, 2, branchShopId, pageable);
+        List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
+
+        invoicePage.forEach(invoice -> {
+
+            InvoiceResponseDto invoiceResponseDto =
+                    mapperObject.InvoiceEntityToDto(invoice);
+
+//            if(invoice.getCoffeeTable()==null){
+//                invoiceResponseDto.setCoffeeTable(null);
+//            }else {
+//                invoiceResponseDto.setCoffeeTable(invoice.getCoffeeTable().getName());
+//            }
+
+            if(invoice.getCustomer() == null){
+                invoiceResponseDto.setCustomerName(null);
+                invoiceResponseDto.setCustomerPhone(null);
+            }else {
+                invoiceResponseDto.setCustomerName(invoice.getCustomer().getName());
+                invoiceResponseDto.setCustomerPhone(invoice.getCustomer().getPhone());
+            }
+            invoiceResponseDto.setBranchShop(invoice.getBranchShop().getName());
+            invoiceResponseDto.setOrderType(invoice.getOrderType().getName());
+            invoiceResponseDto.setDate(invoice.getDate().
+                    format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+            Employee employee = employeeRepository.findByAccountUsername(invoice.getLastModifiedBy())
+                    .orElseThrow(()-> new NotFoundException("Username not found"));
+            invoiceResponseDto.setCashierName(employee.getName());
+            invoiceResponseDtos.add(invoiceResponseDto);
+
+        });
+//        }catch (ParseException e){
+//            e.printStackTrace();
+//        }
+        Page<InvoiceResponseDto> invoiceResponseDtoPage = new PageImpl<>(invoiceResponseDtos, pageable,
+                invoicePage.getTotalElements());
+
+        return new PagingResponseDto<>(
+                invoiceResponseDtoPage.getContent(), invoiceResponseDtoPage.getTotalElements(),
+                invoiceResponseDtoPage.getTotalPages(), invoiceResponseDtoPage.getPageable());
+    }
+    @Transactional
+    public PagingResponseDto getAllInvoiceDateToDatePaging(int page, int size, String sort, String sortColumn,
+                                                           String fromDate, String toDate){
+        Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
+        ZonedDateTime newFromDate = LocalDateTime.parse(fromDate,
+                DateTimeFormatter.ISO_DATE_TIME).atZone(zoneId);
+        ZonedDateTime newToDate = LocalDateTime.parse(toDate,
+                DateTimeFormatter.ISO_DATE_TIME).atZone(zoneId);
+
+        Page<Invoice> invoicePage =
+                invoiceRepository.findByEnableAndPaymentStatusAndDate(
+                        true, 2, newFromDate, newToDate, pageable);
+        List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
+//        try{
+//            Date newFromDate = formatter.parse(fromDate);
+//            Date newToDate = formatter.parse(toDate);
+
+        invoicePage.forEach(invoice -> {
+
+            InvoiceResponseDto invoiceResponseDto =
+                    mapperObject.InvoiceEntityToDto(invoice);
+
+//            if(invoice.getCoffeeTable()==null){
+//                invoiceResponseDto.setCoffeeTable(null);
+//            }else {
+//                invoiceResponseDto.setCoffeeTable(invoice.getCoffeeTable().getName());
+//            }
+
+            if(invoice.getCustomer() == null){
+                invoiceResponseDto.setCustomerName(null);
+                invoiceResponseDto.setCustomerPhone(null);
+            }else {
+                invoiceResponseDto.setCustomerName(invoice.getCustomer().getName());
+                invoiceResponseDto.setCustomerPhone(invoice.getCustomer().getPhone());
+            }
+            invoiceResponseDto.setBranchShop(invoice.getBranchShop().getName());
+            invoiceResponseDto.setOrderType(invoice.getOrderType().getName());
+            invoiceResponseDto.setDate(invoice.getDate().
+                    format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+            Employee employee = employeeRepository.findByAccountUsername(invoice.getLastModifiedBy())
+                    .orElseThrow(()-> new NotFoundException("Username not found"));
+            invoiceResponseDto.setCashierName(employee.getName());
+            invoiceResponseDtos.add(invoiceResponseDto);
+
+        });
+//        }catch (ParseException e){
+//            e.printStackTrace();
+//        }
+        Page<InvoiceResponseDto> invoiceResponseDtoPage = new PageImpl<>(invoiceResponseDtos, pageable,
+                invoicePage.getTotalElements());
+        return new PagingResponseDto<>(
+                invoiceResponseDtoPage.getContent(), invoiceResponseDtoPage.getTotalElements(), invoiceResponseDtoPage.getTotalPages(),
+                invoiceResponseDtoPage.getPageable());
+    }
+    @Transactional
+    @Override
+    public PagingResponseDto getAllInvoiceStatus2Paging(int page, int size, String sort, String sortColumn) {
+        Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
+        List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
+        Page<Invoice> invoicePage = invoiceRepository.findAllByEnableAndStatus(true, 2, pageable);
+        invoicePage.forEach(element->{
+            InvoiceResponseDto invoiceResponseDto = mapperObject.InvoiceEntityToDto(element);
+
+            if(element.getCustomer() == null){
+                invoiceResponseDto.setCustomerName(null);
+                invoiceResponseDto.setCustomerPhone(null);
+            }else {
+                invoiceResponseDto.setCustomerName(element.getCustomer().getName());
+                invoiceResponseDto.setCustomerPhone(element.getCustomer().getPhone());
+            }
+//            invoiceResponseDto.setCoffeeTable(element.getCoffeeTable().getName());
+            invoiceResponseDto.setBranchShop(element.getBranchShop().getName());
+            invoiceResponseDto.setOrderType(element.getOrderType().getName());
+            invoiceResponseDto.setDate(element.getDate().
+                    format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
+            Employee employee = employeeRepository.findByAccountUsername(element.getLastModifiedBy())
+                    .orElseThrow(()-> new NotFoundException("Username not found"));
+            invoiceResponseDto.setCashierName(employee.getName());
+            invoiceResponseDtos.add(invoiceResponseDto);});
+        Page<InvoiceResponseDto> invoiceResponseDtoPage = new PageImpl<>(invoiceResponseDtos, pageable,
+                invoicePage.getTotalElements());
+        return new PagingResponseDto<>(
+                invoiceResponseDtoPage.getContent(), invoiceResponseDtoPage.getTotalElements(), invoiceResponseDtoPage.getTotalPages(),
+                invoiceResponseDtoPage.getPageable());
+    }
 // get invoice not filter
     @Transactional
     @Override
@@ -258,108 +509,8 @@ public class InvoiceServiceImpl implements InvoiceService{
                 invoiceResponseDtoPage.getContent(), invoiceResponseDtoPage.getTotalElements(), invoiceResponseDtoPage.getTotalPages(),
                 invoiceResponseDtoPage.getPageable());
     }
-    @Transactional
-    public PagingResponseDto getAllInvoiceDateToDatePaging(int page, int size, String sort, String sortColumn,
-                                                                       String fromDate, String toDate){
-        Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
-        ZonedDateTime newFromDate = LocalDateTime.parse(fromDate,
-                DateTimeFormatter.ISO_DATE_TIME).atZone(zoneId);
-        ZonedDateTime newToDate = LocalDateTime.parse(toDate,
-                DateTimeFormatter.ISO_DATE_TIME).atZone(zoneId);
 
-        Page<Invoice> invoicePage =
-                invoiceRepository.findByEnableAndPaymentStatusAndDate(
-                        true, 2, newFromDate, newToDate, pageable);
-        List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
-//        try{
-//            Date newFromDate = formatter.parse(fromDate);
-//            Date newToDate = formatter.parse(toDate);
 
-        invoicePage.forEach(invoice -> {
-
-                InvoiceResponseDto invoiceResponseDto =
-                        mapperObject.InvoiceEntityToDto(invoice);
-
-//            if(invoice.getCoffeeTable()==null){
-//                invoiceResponseDto.setCoffeeTable(null);
-//            }else {
-//                invoiceResponseDto.setCoffeeTable(invoice.getCoffeeTable().getName());
-//            }
-
-                if(invoice.getCustomer() == null){
-                    invoiceResponseDto.setCustomerName(null);
-                    invoiceResponseDto.setCustomerPhone(null);
-                }else {
-                    invoiceResponseDto.setCustomerName(invoice.getCustomer().getName());
-                    invoiceResponseDto.setCustomerPhone(invoice.getCustomer().getPhone());
-                }
-                invoiceResponseDto.setBranchShop(invoice.getBranchShop().getName());
-                invoiceResponseDto.setOrderType(invoice.getOrderType().getName());
-                invoiceResponseDto.setDate(invoice.getDate().
-                        format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-                Employee employee = employeeRepository.findByAccountUsername(invoice.getLastModifiedBy())
-                        .orElseThrow(()-> new NotFoundException("Username not found"));
-                invoiceResponseDto.setCashierName(employee.getName());
-                invoiceResponseDtos.add(invoiceResponseDto);
-
-        });
-//        }catch (ParseException e){
-//            e.printStackTrace();
-//        }
-        Page<InvoiceResponseDto> invoiceResponseDtoPage = new PageImpl<>(invoiceResponseDtos, pageable,
-                invoicePage.getTotalElements());
-        return new PagingResponseDto<>(
-                invoiceResponseDtoPage.getContent(), invoiceResponseDtoPage.getTotalElements(), invoiceResponseDtoPage.getTotalPages(),
-                invoiceResponseDtoPage.getPageable());
-    }
-    @Transactional
-    public PagingResponseDto getAllInvoiceByBranchShopIdPaging(int page, int size, String sort, String sortColumn,
-                                                          Integer branchShopId){
-        Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
-
-        Page<Invoice> invoicePage =
-                invoiceRepository.findAllByEnableAndStatusAndBranchShopId(
-                        true, 2, branchShopId, pageable);
-        List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
-
-        invoicePage.forEach(invoice -> {
-
-                InvoiceResponseDto invoiceResponseDto =
-                        mapperObject.InvoiceEntityToDto(invoice);
-
-//            if(invoice.getCoffeeTable()==null){
-//                invoiceResponseDto.setCoffeeTable(null);
-//            }else {
-//                invoiceResponseDto.setCoffeeTable(invoice.getCoffeeTable().getName());
-//            }
-
-                if(invoice.getCustomer() == null){
-                    invoiceResponseDto.setCustomerName(null);
-                    invoiceResponseDto.setCustomerPhone(null);
-                }else {
-                    invoiceResponseDto.setCustomerName(invoice.getCustomer().getName());
-                    invoiceResponseDto.setCustomerPhone(invoice.getCustomer().getPhone());
-                }
-                invoiceResponseDto.setBranchShop(invoice.getBranchShop().getName());
-                invoiceResponseDto.setOrderType(invoice.getOrderType().getName());
-                invoiceResponseDto.setDate(invoice.getDate().
-                        format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-                Employee employee = employeeRepository.findByAccountUsername(invoice.getLastModifiedBy())
-                        .orElseThrow(()-> new NotFoundException("Username not found"));
-                invoiceResponseDto.setCashierName(employee.getName());
-                invoiceResponseDtos.add(invoiceResponseDto);
-
-        });
-//        }catch (ParseException e){
-//            e.printStackTrace();
-//        }
-        Page<InvoiceResponseDto> invoiceResponseDtoPage = new PageImpl<>(invoiceResponseDtos, pageable,
-                invoicePage.getTotalElements());
-
-        return new PagingResponseDto<>(
-                invoiceResponseDtoPage.getContent(), invoiceResponseDtoPage.getTotalElements(),
-                invoiceResponseDtoPage.getTotalPages(), invoiceResponseDtoPage.getPageable());
-    }
     @Transactional
     public ResponseDto getAllInvoiceStatus0(){
         List<Invoice> invoices = invoiceRepository.findAllByEnableAndStatus(true, 0);
@@ -392,37 +543,7 @@ public class InvoiceServiceImpl implements InvoiceService{
         return new ResponseDto(HttpStatus.OK.value(), "All invoice", invoiceResponseDtos);
     }
 
-    @Transactional
-    @Override
-    public PagingResponseDto getAllInvoiceStatus2Paging(int page, int size, String sort, String sortColumn) {
-                Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
-        List<InvoiceResponseDto> invoiceResponseDtos = new ArrayList<>();
-        Page<Invoice> invoicePage = invoiceRepository.findAllByEnableAndStatus(true, 2, pageable);
-        invoicePage.forEach(element->{
-            InvoiceResponseDto invoiceResponseDto = mapperObject.InvoiceEntityToDto(element);
 
-            if(element.getCustomer() == null){
-                invoiceResponseDto.setCustomerName(null);
-                invoiceResponseDto.setCustomerPhone(null);
-            }else {
-                invoiceResponseDto.setCustomerName(element.getCustomer().getName());
-                invoiceResponseDto.setCustomerPhone(element.getCustomer().getPhone());
-            }
-//            invoiceResponseDto.setCoffeeTable(element.getCoffeeTable().getName());
-            invoiceResponseDto.setBranchShop(element.getBranchShop().getName());
-            invoiceResponseDto.setOrderType(element.getOrderType().getName());
-            invoiceResponseDto.setDate(element.getDate().
-                    format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")));
-            Employee employee = employeeRepository.findByAccountUsername(element.getLastModifiedBy())
-                    .orElseThrow(()-> new NotFoundException("Username not found"));
-            invoiceResponseDto.setCashierName(employee.getName());
-            invoiceResponseDtos.add(invoiceResponseDto);});
-        Page<InvoiceResponseDto> invoiceResponseDtoPage = new PageImpl<>(invoiceResponseDtos, pageable,
-                invoicePage.getTotalElements());
-        return new PagingResponseDto<>(
-                invoiceResponseDtoPage.getContent(), invoiceResponseDtoPage.getTotalElements(), invoiceResponseDtoPage.getTotalPages(),
-                invoiceResponseDtoPage.getPageable());
-    }
 
 //    @Override
 //    @Transactional
