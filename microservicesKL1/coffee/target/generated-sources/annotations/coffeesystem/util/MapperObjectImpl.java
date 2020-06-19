@@ -6,6 +6,7 @@ import coffeesystem.dto.CoffeeTableDto;
 import coffeesystem.dto.CustomerRequestDto;
 import coffeesystem.dto.CustomerResponseDto;
 import coffeesystem.dto.CustomerTypeDto;
+import coffeesystem.dto.DemoDto;
 import coffeesystem.dto.DrinkDto;
 import coffeesystem.dto.DrinkPriceRequestDto;
 import coffeesystem.dto.DrinkPriceResponseDto;
@@ -13,6 +14,8 @@ import coffeesystem.dto.DrinkTypeDto;
 import coffeesystem.dto.EmployeeRequestDto;
 import coffeesystem.dto.EmployeeResponseDto;
 import coffeesystem.dto.EmployeeTypeDto;
+import coffeesystem.dto.InternalSCDetailRequestDto;
+import coffeesystem.dto.InternalSCDetailResponseDto;
 import coffeesystem.dto.InternalSCRequestDto;
 import coffeesystem.dto.InternalSCResponseDto;
 import coffeesystem.dto.InvoiceAndInvoiceDetailDto;
@@ -41,12 +44,14 @@ import coffeesystem.model.BranchShop;
 import coffeesystem.model.CoffeeTable;
 import coffeesystem.model.Customer;
 import coffeesystem.model.CustomerType;
+import coffeesystem.model.Demo;
 import coffeesystem.model.Drink;
 import coffeesystem.model.DrinkPrice;
 import coffeesystem.model.DrinkType;
 import coffeesystem.model.Employee;
 import coffeesystem.model.EmployeeType;
 import coffeesystem.model.InternalSC;
+import coffeesystem.model.InternalSCDetail;
 import coffeesystem.model.Invoice;
 import coffeesystem.model.InvoiceDetail;
 import coffeesystem.model.Material;
@@ -63,6 +68,7 @@ import coffeesystem.model.SupplyContractDetail;
 import coffeesystem.model.TableType;
 import coffeesystem.model.Unit;
 import coffeesystem.model.embedding.DrinkPriceId;
+import coffeesystem.model.embedding.InternalSCDetailId;
 import coffeesystem.model.embedding.InvoiceDetailId;
 import coffeesystem.model.embedding.MaterialPriceId;
 import coffeesystem.model.embedding.MinMaxInventoryId;
@@ -76,7 +82,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-06-17T09:58:53+0700",
+    date = "2020-06-19T20:26:41+0700",
     comments = "version: 1.2.0.CR2, compiler: javac, environment: Java 1.8.0_231 (Oracle Corporation)"
 )
 @Component
@@ -420,6 +426,7 @@ public class MapperObjectImpl implements MapperObject {
         employee.setId( employeeRequestDto.getId() );
         employee.setName( employeeRequestDto.getName() );
         employee.setEmail( employeeRequestDto.getEmail() );
+        employee.setIdCuaHuy( employeeRequestDto.getIdCuaHuy() );
 
         return employee;
     }
@@ -443,6 +450,7 @@ public class MapperObjectImpl implements MapperObject {
         employeeResponseDto.setId( employee.getId() );
         employeeResponseDto.setName( employee.getName() );
         employeeResponseDto.setEmail( employee.getEmail() );
+        employeeResponseDto.setIdCuaHuy( employee.getIdCuaHuy() );
 
         return employeeResponseDto;
     }
@@ -898,7 +906,6 @@ public class MapperObjectImpl implements MapperObject {
         SupplyContractDetail supplyContractDetail = new SupplyContractDetail();
 
         supplyContractDetail.setSupplyContractDetailId( supplyContractDetailRequestDtoToSupplyContractDetailId( detailDto ) );
-        supplyContractDetail.setMaterial( supplyContractDetailRequestDtoToMaterial( detailDto ) );
         supplyContractDetail.setUnitPrice( detailDto.getUnitPrice() );
         supplyContractDetail.setAmount( detailDto.getAmount() );
 
@@ -917,9 +924,9 @@ public class MapperObjectImpl implements MapperObject {
         if ( id != null ) {
             supplyContractDetailResponseDto.setId( id );
         }
-        Integer id1 = supplyContractDetailMaterialId( supplyContractDetail );
-        if ( id1 != null ) {
-            supplyContractDetailResponseDto.setMaterialId( id1 );
+        Integer materialId = supplyContractDetailSupplyContractDetailIdMaterialId( supplyContractDetail );
+        if ( materialId != null ) {
+            supplyContractDetailResponseDto.setMaterialId( materialId );
         }
         Integer supplyContractId = supplyContractDetailSupplyContractDetailIdSupplyContractId( supplyContractDetail );
         if ( supplyContractId != null ) {
@@ -1117,6 +1124,75 @@ public class MapperObjectImpl implements MapperObject {
         }
 
         return internalSCResponseDto;
+    }
+
+    @Override
+    public InternalSCDetail InternalSCDetailDtoEntity(InternalSCDetailRequestDto internalSCDetailRequestDto) {
+        if ( internalSCDetailRequestDto == null ) {
+            return null;
+        }
+
+        InternalSCDetail internalSCDetail = new InternalSCDetail();
+
+        internalSCDetail.setInternalSCDetailId( internalSCDetailRequestDtoToInternalSCDetailId( internalSCDetailRequestDto ) );
+        internalSCDetail.setAmount( internalSCDetailRequestDto.getAmount() );
+
+        return internalSCDetail;
+    }
+
+    @Override
+    public InternalSCDetailResponseDto InternalSCDetailEntityToDto(InternalSCDetail internalSCDetail) {
+        if ( internalSCDetail == null ) {
+            return null;
+        }
+
+        InternalSCDetailResponseDto internalSCDetailResponseDto = new InternalSCDetailResponseDto();
+
+        Integer internalSCId = internalSCDetailInternalSCDetailIdInternalSCId( internalSCDetail );
+        if ( internalSCId != null ) {
+            internalSCDetailResponseDto.setInternalSCId( internalSCId );
+        }
+        Integer id = internalSCDetailInternalSCDetailIdId( internalSCDetail );
+        if ( id != null ) {
+            internalSCDetailResponseDto.setId( id );
+        }
+        Integer materialId = internalSCDetailInternalSCDetailIdMaterialId( internalSCDetail );
+        if ( materialId != null ) {
+            internalSCDetailResponseDto.setMaterialId( materialId );
+        }
+        internalSCDetailResponseDto.setAmount( internalSCDetail.getAmount() );
+
+        return internalSCDetailResponseDto;
+    }
+
+    @Override
+    public Demo DemoDtoToEntity(DemoDto demoDto) {
+        if ( demoDto == null ) {
+            return null;
+        }
+
+        Demo demo = new Demo();
+
+        demo.setId( demoDto.getId() );
+        demo.setLabel( demoDto.getLabel() );
+        demo.setStatus( demoDto.getStatus() );
+
+        return demo;
+    }
+
+    @Override
+    public DemoDto DemoEntityToDto(Demo demo) {
+        if ( demo == null ) {
+            return null;
+        }
+
+        DemoDto demoDto = new DemoDto();
+
+        demoDto.setId( demo.getId() );
+        demoDto.setLabel( demo.getLabel() );
+        demoDto.setStatus( demo.getStatus() );
+
+        return demoDto;
     }
 
     private Integer accountEmployeeId(Account account) {
@@ -1645,20 +1721,9 @@ public class MapperObjectImpl implements MapperObject {
 
         supplyContractDetailId.setId( supplyContractDetailRequestDto.getId() );
         supplyContractDetailId.setSupplyContractId( supplyContractDetailRequestDto.getSupplyContractId() );
+        supplyContractDetailId.setMaterialId( supplyContractDetailRequestDto.getMaterialId() );
 
         return supplyContractDetailId;
-    }
-
-    protected Material supplyContractDetailRequestDtoToMaterial(SupplyContractDetailRequestDto supplyContractDetailRequestDto) {
-        if ( supplyContractDetailRequestDto == null ) {
-            return null;
-        }
-
-        Material material = new Material();
-
-        material.setId( supplyContractDetailRequestDto.getMaterialId() );
-
-        return material;
     }
 
     private Integer supplyContractDetailSupplyContractDetailIdId(SupplyContractDetail supplyContractDetail) {
@@ -1676,19 +1741,19 @@ public class MapperObjectImpl implements MapperObject {
         return id;
     }
 
-    private Integer supplyContractDetailMaterialId(SupplyContractDetail supplyContractDetail) {
+    private Integer supplyContractDetailSupplyContractDetailIdMaterialId(SupplyContractDetail supplyContractDetail) {
         if ( supplyContractDetail == null ) {
             return null;
         }
-        Material material = supplyContractDetail.getMaterial();
-        if ( material == null ) {
+        SupplyContractDetailId supplyContractDetailId = supplyContractDetail.getSupplyContractDetailId();
+        if ( supplyContractDetailId == null ) {
             return null;
         }
-        Integer id = material.getId();
-        if ( id == null ) {
+        Integer materialId = supplyContractDetailId.getMaterialId();
+        if ( materialId == null ) {
             return null;
         }
-        return id;
+        return materialId;
     }
 
     private Integer supplyContractDetailSupplyContractDetailIdSupplyContractId(SupplyContractDetail supplyContractDetail) {
@@ -1908,5 +1973,64 @@ public class MapperObjectImpl implements MapperObject {
             return null;
         }
         return name;
+    }
+
+    protected InternalSCDetailId internalSCDetailRequestDtoToInternalSCDetailId(InternalSCDetailRequestDto internalSCDetailRequestDto) {
+        if ( internalSCDetailRequestDto == null ) {
+            return null;
+        }
+
+        InternalSCDetailId internalSCDetailId = new InternalSCDetailId();
+
+        internalSCDetailId.setId( internalSCDetailRequestDto.getId() );
+        internalSCDetailId.setMaterialId( internalSCDetailRequestDto.getMaterialId() );
+        internalSCDetailId.setInternalSCId( internalSCDetailRequestDto.getInternalSCId() );
+
+        return internalSCDetailId;
+    }
+
+    private Integer internalSCDetailInternalSCDetailIdInternalSCId(InternalSCDetail internalSCDetail) {
+        if ( internalSCDetail == null ) {
+            return null;
+        }
+        InternalSCDetailId internalSCDetailId = internalSCDetail.getInternalSCDetailId();
+        if ( internalSCDetailId == null ) {
+            return null;
+        }
+        Integer internalSCId = internalSCDetailId.getInternalSCId();
+        if ( internalSCId == null ) {
+            return null;
+        }
+        return internalSCId;
+    }
+
+    private Integer internalSCDetailInternalSCDetailIdId(InternalSCDetail internalSCDetail) {
+        if ( internalSCDetail == null ) {
+            return null;
+        }
+        InternalSCDetailId internalSCDetailId = internalSCDetail.getInternalSCDetailId();
+        if ( internalSCDetailId == null ) {
+            return null;
+        }
+        Integer id = internalSCDetailId.getId();
+        if ( id == null ) {
+            return null;
+        }
+        return id;
+    }
+
+    private Integer internalSCDetailInternalSCDetailIdMaterialId(InternalSCDetail internalSCDetail) {
+        if ( internalSCDetail == null ) {
+            return null;
+        }
+        InternalSCDetailId internalSCDetailId = internalSCDetail.getInternalSCDetailId();
+        if ( internalSCDetailId == null ) {
+            return null;
+        }
+        Integer materialId = internalSCDetailId.getMaterialId();
+        if ( materialId == null ) {
+            return null;
+        }
+        return materialId;
     }
 }

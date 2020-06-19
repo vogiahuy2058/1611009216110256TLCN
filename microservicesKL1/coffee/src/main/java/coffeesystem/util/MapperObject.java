@@ -141,13 +141,13 @@ public interface MapperObject {
     @Mapping(target="unit",source = "unit.name")
     RecipeDto RecipeEntityToDto(Recipe recipe);
 
-    @Mapping(target="material.id",source = "materialId")
+    @Mapping(target="supplyContractDetailId.materialId",source = "materialId")
     @Mapping(target="supplyContractDetailId.supplyContractId",source = "supplyContractId")
     @Mapping(target="supplyContractDetailId.id",source = "id")
 //    @Mapping(target="unit.name",source = "unit")
     SupplyContractDetail SupplyContractDetailDtoEntity(SupplyContractDetailRequestDto detailDto);
 
-    @Mapping(target="materialId",source = "material.id")
+    @Mapping(target="materialId",source = "supplyContractDetailId.materialId")
     @Mapping(target="supplyContractId",source = "supplyContractDetailId.supplyContractId")
     @Mapping(target="id",source = "supplyContractDetailId.id")
 //    @Mapping(target="unit",source = "unit.name")
@@ -195,4 +195,18 @@ public interface MapperObject {
 
     @Mapping(target="branchShop",source = "branchShop.name")
     InternalSCResponseDto InternalSCEntityToDto(InternalSC internalSC);
+
+    @Mapping(target="internalSCDetailId.materialId",source = "materialId")
+    @Mapping(target="internalSCDetailId.internalSCId",source = "internalSCId")
+    @Mapping(target="internalSCDetailId.id",source = "id")
+    InternalSCDetail InternalSCDetailDtoEntity(InternalSCDetailRequestDto internalSCDetailRequestDto);
+
+    @Mapping(target="materialId",source = "internalSCDetailId.materialId")
+    @Mapping(target="internalSCId",source = "internalSCDetailId.internalSCId")
+    @Mapping(target="id",source = "internalSCDetailId.id")
+    InternalSCDetailResponseDto InternalSCDetailEntityToDto(InternalSCDetail internalSCDetail);
+
+    Demo DemoDtoToEntity(DemoDto demoDto);
+    DemoDto DemoEntityToDto(Demo demo);
+
 }

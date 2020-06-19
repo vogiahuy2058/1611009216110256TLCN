@@ -1,11 +1,9 @@
-package coffeesystem.service.InternalSCService;
+package coffeesystem.service.InternalSC;
 
 import coffeesystem.dto.*;
 import coffeesystem.exception.NotFoundException;
 import coffeesystem.model.BranchShop;
 import coffeesystem.model.InternalSC;
-import coffeesystem.model.Supplier;
-import coffeesystem.model.SupplyContract;
 import coffeesystem.repository.BranchShopRepository;
 import coffeesystem.repository.InternalSCRepository;
 import coffeesystem.util.MapperObject;

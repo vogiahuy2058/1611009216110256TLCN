@@ -57,7 +57,7 @@ public class SupplyContractDetailServiceImpl implements SupplyContractDetailServ
         supplyContractDetail.setMaterial(material);
         supplyContractDetail.setUnit(unit);
         repository.save(supplyContractDetail);
-        return new ResponseDto(HttpStatus.OK.value(), "Successful", null);
+        return new ResponseDto(HttpStatus.OK.value(), "Create successful", null);
     }
     public ResponseDto editSupplyContractDetail(SupplyContractDetailRequestDto detailDto){
         SupplyContract supplyContract = supplyContractRepository.findByIdAndEnable(detailDto.getSupplyContractId(), true)
@@ -75,7 +75,7 @@ public class SupplyContractDetailServiceImpl implements SupplyContractDetailServ
 //        supplyContractDetail.setPaymentTime(detailDto.getPaymentTime());
         supplyContractDetail.setUnit(unit);
         repository.save(supplyContractDetail);
-        return new ResponseDto(HttpStatus.OK.value(), "Successful", null);
+        return new ResponseDto(HttpStatus.OK.value(), "Edit successful", null);
     }
 
     public ResponseDto editListSupplyContractDetail(List<SupplyContractDetailRequestDto> supplyContractDetailRequestDtoList){

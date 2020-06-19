@@ -1,4 +1,4 @@
-package coffeesystem.service.InternalSCService;
+package coffeesystem.service.InternalSC;
 
 import coffeesystem.dto.InternalSCRequestDto;
 import coffeesystem.dto.PagingResponseDto;
