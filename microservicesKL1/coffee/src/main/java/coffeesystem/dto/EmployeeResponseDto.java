@@ -16,5 +16,5 @@ public class EmployeeResponseDto {
     private String email;
     private String branchShop;
     private String employeeType;
-    private String idCuaHuy;
+
 }

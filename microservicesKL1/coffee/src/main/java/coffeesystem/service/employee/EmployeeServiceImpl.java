@@ -46,7 +46,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     AccountService accountService;
     @Transactional
     public ResponseDto createEmployee(EmployeeRequestDto employeeRequestDto){
-        Employee employee = this.mapperObject.EmployeeDtoToEntity(employeeRequestDto);
+        Employee employee = this.mapperObject.EmployeeDtoToEntity1(employeeRequestDto);
         BranchShop branchShop = branchShopRepository.findByNameAndEnable(employeeRequestDto.getBranchShop(), true)
                 .orElseThrow(()-> new NotFoundException("Branch shop not found"));
         EmployeeType employeeType = employeeTypeRepository.findByNameAndEnable(employeeRequestDto.getEmployeeType(), true)
@@ -61,7 +61,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         List<Employee> employeeList = employeeRepository.findAllByEnable(true);
         List<EmployeeResponseDto> employeeResponseDtos = new ArrayList<>();
         employeeList.forEach(employee -> {
-            EmployeeResponseDto employeeResponseDto = mapperObject.EmployeeEntityToDto(employee);
+            EmployeeResponseDto employeeResponseDto = mapperObject.EmployeeEntityToDto1(employee);
             employeeResponseDto.setBranchShop(employee.getBranchShop().getName());
             employeeResponseDto.setEmployeeType(employee.getEmployeeType().getName());
             employeeResponseDtos.add(employeeResponseDto);
@@ -77,7 +77,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         List<EmployeeResponseDto> employeeResponseDtos = new ArrayList<>();
         Page<Employee> employeePage = employeeRepository.findAllByEnable(true, pageable);
         employeePage.forEach(element-> {
-            EmployeeResponseDto employeeResponseDto = mapperObject.EmployeeEntityToDto(element);
+            EmployeeResponseDto employeeResponseDto = mapperObject.EmployeeEntityToDto1(element);
             employeeResponseDto.setBranchShop(element.getBranchShop().getName());
             employeeResponseDto.setEmployeeType(element.getEmployeeType().getName());
             employeeResponseDtos.add(employeeResponseDto);
@@ -93,7 +93,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     public ResponseDto getEmployeeById(Integer id){
         Employee employee = employeeRepository.findByIdAndEnable(id, true)
                 .orElseThrow(()-> new NotFoundException("Id not found"));
-        EmployeeResponseDto employeeResponseDto = mapperObject.EmployeeEntityToDto(employee);
+        EmployeeResponseDto employeeResponseDto = mapperObject.EmployeeEntityToDto1(employee);
         employeeResponseDto.setEmployeeType(employee.getEmployeeType().getName());
         employeeResponseDto.setBranchShop(employee.getBranchShop().getName());
         return new ResponseDto(HttpStatus.OK.value(), "Successful", employeeResponseDto);
@@ -103,7 +103,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         String username = SecurityContextHolder.getContext().getAuthentication().getName();
         Employee employee = employeeRepository.findByAccountUsername(username)
                 .orElseThrow(()-> new NotFoundException("Username not found"));
-        EmployeeResponseDto employeeResponseDto = mapperObject.EmployeeEntityToDto(employee);
+        EmployeeResponseDto employeeResponseDto = mapperObject.EmployeeEntityToDto1(employee);
         employeeResponseDto.setEmployeeType(employee.getEmployeeType().getName());
         return new ResponseDto(HttpStatus.OK.value(), "Successful", employeeResponseDto);
     }
@@ -114,7 +114,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         List<Employee> employeeList = employeeRepository.findEmployeeNotHaveAccountByEmployeeType(nameEmployeeType);
         List<EmployeeResponseDto> employeeResponseDtos = new ArrayList<>();
         employeeList.forEach(employee -> {
-            EmployeeResponseDto employeeResponseDto = mapperObject.EmployeeEntityToDto(employee);
+            EmployeeResponseDto employeeResponseDto = mapperObject.EmployeeEntityToDto1(employee);
             employeeResponseDto.setBranchShop(employee.getBranchShop().getName());
             employeeResponseDto.setEmployeeType(employee.getEmployeeType().getName());
             employeeResponseDtos.add(employeeResponseDto);
@@ -129,7 +129,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         List<Employee> employees = employeeRepository.findByBranchShopIdAndEnable(branchShopId, true);
         List<EmployeeResponseDto> employeeResponseDtos = new ArrayList<>();
         employees.forEach(employee -> {
-            EmployeeResponseDto employeeResponseDto = mapperObject.EmployeeEntityToDto(employee);
+            EmployeeResponseDto employeeResponseDto = mapperObject.EmployeeEntityToDto1(employee);
             employeeResponseDto.setBranchShop(employee.getBranchShop().getName());
             employeeResponseDto.setEmployeeType(employee.getEmployeeType().getName());
             employeeResponseDtos.add(employeeResponseDto);
@@ -154,7 +154,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .orElseThrow(()-> new NotFoundException("Id not found!"));
         employee.setName(employeeRequestDto.getName());
         employee.setEmail(employeeRequestDto.getEmail());
-        employee.setIdCuaHuy(employeeRequestDto.getIdCuaHuy());
+        employee.setIdkey(employeeRequestDto.getIdkey());
         BranchShop branchShop = branchShopRepository.findByNameAndEnable(employeeRequestDto.getBranchShop(), true)
                 .orElseThrow(()-> new NotFoundException("Branch shop not found"));
 //        EmployeeType employeeType = employeeTypeRepository.findByNameAndEnable(employeeRequestDto.getEmployeeType(), true)
@@ -169,7 +169,7 @@ public class EmployeeServiceImpl implements EmployeeService {
                 .orElseThrow(()-> new NotFoundException("Id not found!"));
         employee.setName(employeeRequestDto.getName());
         employee.setEmail(employeeRequestDto.getEmail());
-        employee.setIdCuaHuy(employeeRequestDto.getIdCuaHuy());
+        employee.setIdkey(employeeRequestDto.getIdkey());
         BranchShop branchShop = branchShopRepository.findByNameAndEnable(employeeRequestDto.getBranchShop(), true)
                 .orElseThrow(()-> new NotFoundException("Branch shop not found"));
         EmployeeType employeeType = employeeTypeRepository.findByNameAndEnable(employeeRequestDto.getEmployeeType(), true)

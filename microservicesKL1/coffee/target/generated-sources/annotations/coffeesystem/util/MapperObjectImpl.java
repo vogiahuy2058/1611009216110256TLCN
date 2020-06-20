@@ -82,7 +82,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-06-19T20:26:41+0700",
+    date = "2020-06-20T15:54:18+0700",
     comments = "version: 1.2.0.CR2, compiler: javac, environment: Java 1.8.0_231 (Oracle Corporation)"
 )
 @Component
@@ -426,7 +426,7 @@ public class MapperObjectImpl implements MapperObject {
         employee.setId( employeeRequestDto.getId() );
         employee.setName( employeeRequestDto.getName() );
         employee.setEmail( employeeRequestDto.getEmail() );
-        employee.setIdCuaHuy( employeeRequestDto.getIdCuaHuy() );
+        employee.setIdkey( employeeRequestDto.getIdkey() );
 
         return employee;
     }
@@ -450,7 +450,47 @@ public class MapperObjectImpl implements MapperObject {
         employeeResponseDto.setId( employee.getId() );
         employeeResponseDto.setName( employee.getName() );
         employeeResponseDto.setEmail( employee.getEmail() );
-        employeeResponseDto.setIdCuaHuy( employee.getIdCuaHuy() );
+
+        return employeeResponseDto;
+    }
+
+    @Override
+    public Employee EmployeeDtoToEntity1(EmployeeRequestDto employeeRequestDto) {
+        if ( employeeRequestDto == null ) {
+            return null;
+        }
+
+        Employee employee = new Employee();
+
+        employee.setBranchShop( employeeRequestDtoToBranchShop1( employeeRequestDto ) );
+        employee.setEmployeeType( employeeRequestDtoToEmployeeType1( employeeRequestDto ) );
+        employee.setId( employeeRequestDto.getId() );
+        employee.setName( employeeRequestDto.getName() );
+        employee.setEmail( employeeRequestDto.getEmail() );
+        employee.setIdkey( employeeRequestDto.getIdkey() );
+
+        return employee;
+    }
+
+    @Override
+    public EmployeeResponseDto EmployeeEntityToDto1(Employee employee) {
+        if ( employee == null ) {
+            return null;
+        }
+
+        EmployeeResponseDto employeeResponseDto = new EmployeeResponseDto();
+
+        String name = employeeBranchShopName( employee );
+        if ( name != null ) {
+            employeeResponseDto.setBranchShop( name );
+        }
+        String name1 = employeeEmployeeTypeName( employee );
+        if ( name1 != null ) {
+            employeeResponseDto.setEmployeeType( name1 );
+        }
+        employeeResponseDto.setId( employee.getId() );
+        employeeResponseDto.setName( employee.getName() );
+        employeeResponseDto.setEmail( employee.getEmail() );
 
         return employeeResponseDto;
     }
@@ -1302,6 +1342,30 @@ public class MapperObjectImpl implements MapperObject {
             return null;
         }
         return name;
+    }
+
+    protected BranchShop employeeRequestDtoToBranchShop1(EmployeeRequestDto employeeRequestDto) {
+        if ( employeeRequestDto == null ) {
+            return null;
+        }
+
+        BranchShop branchShop = new BranchShop();
+
+        branchShop.setName( employeeRequestDto.getBranchShop() );
+
+        return branchShop;
+    }
+
+    protected EmployeeType employeeRequestDtoToEmployeeType1(EmployeeRequestDto employeeRequestDto) {
+        if ( employeeRequestDto == null ) {
+            return null;
+        }
+
+        EmployeeType employeeType = new EmployeeType();
+
+        employeeType.setName( employeeRequestDto.getEmployeeType() );
+
+        return employeeType;
     }
 
     protected CustomerType customerRequestDtoToCustomerType(CustomerRequestDto customerRequestDto) {

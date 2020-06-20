@@ -55,6 +55,13 @@ public interface MapperObject {
     @Mapping(target="branchShop",source = "branchShop.name")
     @Mapping(target="employeeType",source = "employeeType.name")
     EmployeeResponseDto EmployeeEntityToDto(Employee employee);
+    @Mapping(target="branchShop.name",source = "branchShop")
+    @Mapping(target="employeeType.name",source = "employeeType")
+    Employee EmployeeDtoToEntity1(EmployeeRequestDto employeeRequestDto);
+
+    @Mapping(target="branchShop",source = "branchShop.name")
+    @Mapping(target="employeeType",source = "employeeType.name")
+    EmployeeResponseDto EmployeeEntityToDto1(Employee employee);
 
     BranchShop BranchShopDtoToEntity(BranchShopDto branchShopDto);
     BranchShopDto BranchShopEntityToDto(BranchShop branchShop);

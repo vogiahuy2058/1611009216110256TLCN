@@ -21,5 +21,5 @@ public class EmployeeRequestDto {
     private String email;
     private String branchShop;
     private String employeeType;
-    private String idCuaHuy;
+    private String idkey;
 }
