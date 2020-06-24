@@ -27,4 +27,6 @@ public interface MinMaxInventoryRepository extends JpaRepository<MinMaxInventory
             "(SELECT mmi.material FROM MinMaxInventory mmi) " +
             "and m.enable=true")
     List<MinMaxInventory> findMinMaxInventoryNotCreateYet();
+    Optional<MinMaxInventory> findByMinMaxInventoryIdIdAndEnable(
+            Integer id, boolean enable);
 }

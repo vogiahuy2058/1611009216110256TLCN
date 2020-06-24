@@ -70,9 +70,8 @@ public class MinMaxInventoryController {
         return new ResponseEntity<PagingResponseDto>(HttpStatus.OK);
     }
     @PutMapping("/delete")
-    public ResponseEntity<ResponseDto> deleteMinMaxInventory(@RequestParam Integer idMaterial,
-                                                             @RequestParam Integer idBranchShop){
-        return ResponseEntity.ok(minMaxInventoryService.deleteMinMaxInventory(idMaterial,idBranchShop));
+    public ResponseEntity<ResponseDto> deleteMinMaxInventory(@RequestParam Integer id){
+        return ResponseEntity.ok(minMaxInventoryService.deleteMinMaxInventory(id));
     }
     @PutMapping("/edit")
     public ResponseEntity<ResponseDto> editMinMaxInventory(@RequestBody MinMaxInventoryRequestDto minMaxInventoryRequestDto){
