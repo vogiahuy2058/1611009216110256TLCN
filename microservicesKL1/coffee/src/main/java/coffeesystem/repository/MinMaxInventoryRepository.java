@@ -1,5 +1,6 @@
 package coffeesystem.repository;
 
+import coffeesystem.model.Employee;
 import coffeesystem.model.MaterialPrice;
 import coffeesystem.model.MinMaxInventory;
 import coffeesystem.model.embedding.MinMaxInventoryId;
@@ -20,5 +21,10 @@ public interface MinMaxInventoryRepository extends JpaRepository<MinMaxInventory
     Page<MinMaxInventory> findAllByEnable(boolean enable, Pageable pageable);
     List<MinMaxInventory> findByMinMaxInventoryIdIdMaterial(Integer idMaterial);
     List<MinMaxInventory> findByMinMaxInventoryIdIdBranchShop(Integer idBranchShop);
-    Page<MinMaxInventory> findByBranchShopIdAndEnable(Integer id, boolean enable, Pageable pageable);
+    Page<MinMaxInventory> findByMinMaxInventoryIdIdBranchShopAndEnable(
+            Integer idBranchShop, boolean enable, Pageable pageable);
+    @Query("select m from Material m where m not in " +
+            "(SELECT mmi.material FROM MinMaxInventory mmi) " +
+            "and m.enable=true")
+    List<MinMaxInventory> findMinMaxInventoryNotCreateYet();
 }

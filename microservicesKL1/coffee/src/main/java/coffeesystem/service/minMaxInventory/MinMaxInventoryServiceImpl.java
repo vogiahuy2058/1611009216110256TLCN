@@ -1,6 +1,7 @@
 package coffeesystem.service.minMaxInventory;
 
 import coffeesystem.dto.*;
+import coffeesystem.exception.ExistException;
 import coffeesystem.exception.NotFoundException;
 import coffeesystem.model.*;
 import coffeesystem.model.embedding.MinMaxInventoryId;
@@ -32,25 +33,33 @@ public class MinMaxInventoryServiceImpl implements MinMaxInventoryService{
     @Autowired
     BranchShopRepository branchShopRepository;
     public ResponseDto createMinMaxInventory(MinMaxInventoryRequestDto minMaxInventoryRequestDto){
-        MinMaxInventory minMaxInventory = mapperObject.MinMaxInventoryDtoToEntity(minMaxInventoryRequestDto);
-        Material material = materialRepository.findByIdAndEnable(minMaxInventoryRequestDto.getMaterialId(), true)
-                .orElseThrow(()-> new NotFoundException("Material not found"));
-        BranchShop branchShop = branchShopRepository.findByIdAndEnable(minMaxInventoryRequestDto.getBranchShopId(), true)
-                .orElseThrow(()-> new NotFoundException("Branch shop not found"));
-        MinMaxInventoryId minMaxInventoryId = new MinMaxInventoryId();
-        minMaxInventoryId.setIdMaterial(minMaxInventoryRequestDto.getMaterialId());
-        minMaxInventoryId.setIdBranchShop(minMaxInventoryRequestDto.getBranchShopId());
-        Integer idOld = minMaxInventoryRepository.findMaxId();
-        if(idOld == null){
-            idOld = 0;
-        }
-        minMaxInventoryId.setId(idOld + 1);
-        minMaxInventory.setMinMaxInventoryId(minMaxInventoryId);
-        minMaxInventory.setMaterial(material);
-        minMaxInventory.setBranchShop(branchShop);
-        minMaxInventoryRepository.save(minMaxInventory);
+        if(minMaxInventoryRepository.
+                findByMinMaxInventoryIdIdMaterialAndMinMaxInventoryIdIdBranchShopAndEnable(minMaxInventoryRequestDto.getMaterialId(),
+                        minMaxInventoryRequestDto.getBranchShopId(), true).isPresent()){
+            throw new ExistException("Min max inventory was existed");
+//            return new ResponseDto(HttpStatus.OK.value(), "Create successful", null);
+        } else {
+            MinMaxInventory minMaxInventory = mapperObject.MinMaxInventoryDtoToEntity(minMaxInventoryRequestDto);
+            Material material = materialRepository.findByIdAndEnable(minMaxInventoryRequestDto.getMaterialId(), true)
+                    .orElseThrow(()-> new NotFoundException("Material not found"));
+            BranchShop branchShop = branchShopRepository.findByIdAndEnable(minMaxInventoryRequestDto.getBranchShopId(), true)
+                    .orElseThrow(()-> new NotFoundException("Branch shop not found"));
+            MinMaxInventoryId minMaxInventoryId = new MinMaxInventoryId();
+            minMaxInventoryId.setIdMaterial(minMaxInventoryRequestDto.getMaterialId());
+            minMaxInventoryId.setIdBranchShop(minMaxInventoryRequestDto.getBranchShopId());
+            Integer idOld = minMaxInventoryRepository.findMaxId();
+            if(idOld == null){
+                idOld = 0;
+            }
+            minMaxInventoryId.setId(idOld + 1);
+            minMaxInventory.setMinMaxInventoryId(minMaxInventoryId);
+            minMaxInventory.setMaterial(material);
+            minMaxInventory.setBranchShop(branchShop);
+            minMaxInventoryRepository.save(minMaxInventory);
 
-        return new ResponseDto(HttpStatus.OK.value(), "Create successful", null);
+            return new ResponseDto(HttpStatus.OK.value(), "Create successful", null);
+        }
+
     }
     public ResponseDto editMinMaxInventory(MinMaxInventoryRequestDto minMaxInventoryRequestDto){
         MinMaxInventory minMaxInventory = minMaxInventoryRepository.
@@ -112,11 +121,11 @@ public class MinMaxInventoryServiceImpl implements MinMaxInventoryService{
     }
     @Transactional
     public PagingResponseDto getAllByBranchShopIdPaging(int page, int size, String sort,
-                                                        String sortColumn, Integer branchShoId){
+                                                        String sortColumn, Integer branchShopId){
 
         Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
         List<MinMaxInventoryResponseDto> minMaxInventoryResponseDtos = new ArrayList<>();
-        Page<MinMaxInventory> minMaxInventoryPage = minMaxInventoryRepository.findByBranchShopIdAndEnable(branchShoId, true, pageable);
+        Page<MinMaxInventory> minMaxInventoryPage = minMaxInventoryRepository.findByMinMaxInventoryIdIdBranchShopAndEnable(branchShopId, true, pageable);
 
         minMaxInventoryPage.forEach(element->{
             MinMaxInventoryResponseDto minMaxInventoryResponseDto = mapperObject.MinMaxInventoryEntityToDto(element);
