@@ -11,4 +11,6 @@ public interface MinMaxInventoryService {
     ResponseDto getAllMinMaxInventory();
     PagingResponseDto getAllMinMaxInventoryPaging(int page, int size, String sort, String sortColumn);
     ResponseDto getMinMaxByIdMaterialAndIdBranchShop(Integer materialId, Integer branchShopId);
+    PagingResponseDto getAllByBranchShopIdPaging(int page, int size, String sort,
+                                                 String sortColumn, Integer branchShoId);
 }

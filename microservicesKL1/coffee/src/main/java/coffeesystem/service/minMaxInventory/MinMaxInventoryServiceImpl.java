@@ -111,6 +111,34 @@ public class MinMaxInventoryServiceImpl implements MinMaxInventoryService{
 
     }
     @Transactional
+    public PagingResponseDto getAllByBranchShopIdPaging(int page, int size, String sort,
+                                                        String sortColumn, Integer branchShoId){
+
+        Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
+        List<MinMaxInventoryResponseDto> minMaxInventoryResponseDtos = new ArrayList<>();
+        Page<MinMaxInventory> minMaxInventoryPage = minMaxInventoryRepository.findByBranchShopIdAndEnable(branchShoId, true, pageable);
+
+        minMaxInventoryPage.forEach(element->{
+            MinMaxInventoryResponseDto minMaxInventoryResponseDto = mapperObject.MinMaxInventoryEntityToDto(element);
+            Material material = materialRepository.findByIdAndEnable(element.getMinMaxInventoryId().getIdMaterial(), true)
+                    .orElseThrow(()-> new NotFoundException("Material id not found"));
+            BranchShop branchShop = branchShopRepository.findByIdAndEnable(element.getMinMaxInventoryId().getIdBranchShop(), true)
+                    .orElseThrow(()-> new NotFoundException("Branch shop id not found"));
+            minMaxInventoryResponseDto.setId(element.getMinMaxInventoryId().getId());
+            minMaxInventoryResponseDto.setMaterialId(element.getMinMaxInventoryId().getIdMaterial());
+            minMaxInventoryResponseDto.setBranchShopId(element.getMinMaxInventoryId().getIdBranchShop());
+            minMaxInventoryResponseDto.setBranchShopName(branchShop.getName());
+            minMaxInventoryResponseDto.setMaterialName(material.getName());
+            minMaxInventoryResponseDto.setUnitName(material.getUnit().getName());
+            minMaxInventoryResponseDtos.add(minMaxInventoryResponseDto);});
+        Page<MinMaxInventoryResponseDto> minMaxInventoryResponseDtoPage = new PageImpl<>(minMaxInventoryResponseDtos, pageable,
+                minMaxInventoryPage.getTotalElements());
+        return new PagingResponseDto<>(
+                minMaxInventoryResponseDtoPage.getContent(), minMaxInventoryResponseDtoPage.getTotalElements(),
+                minMaxInventoryResponseDtoPage.getTotalPages(), minMaxInventoryResponseDtoPage.getPageable());
+
+    }
+    @Transactional
     public ResponseDto getMinMaxByIdMaterialAndIdBranchShop(Integer materialId, Integer branchShopId){
         MinMaxInventory minMaxInventory = minMaxInventoryRepository.
                 findByMinMaxInventoryIdIdMaterialAndMinMaxInventoryIdIdBranchShopAndEnable(materialId, branchShopId, true)

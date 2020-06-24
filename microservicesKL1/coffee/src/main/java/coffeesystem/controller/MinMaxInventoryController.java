@@ -41,7 +41,7 @@ public class MinMaxInventoryController {
     }
 
     @GetMapping("/get-all-paging")
-    @HystrixCommand(fallbackMethod = "fallBackGetAllMMinMaxInventoryPaging")
+    @HystrixCommand(fallbackMethod = "fallBackGetAllMinMaxInventoryPaging")
     public ResponseEntity<PagingResponseDto> getAllMinMaxInventoryPaging(
             @RequestParam(name = "page", required = false, defaultValue = "0") int page,
             @RequestParam(name = "size", required = false, defaultValue = "10") int size,
@@ -49,8 +49,24 @@ public class MinMaxInventoryController {
             @RequestParam(name = "column", required = false, defaultValue = "minMaxInventoryId.id") String sortColumn){
         return ResponseEntity.ok(this.minMaxInventoryService.getAllMinMaxInventoryPaging(page, size, sort, sortColumn));
     }
-    public ResponseEntity<PagingResponseDto> fallBackGetAllMMinMaxInventoryPaging(int page, int size, String sort, String sortColumn) {
+    public ResponseEntity<PagingResponseDto> fallBackGetAllMinMaxInventoryPaging(int page, int size, String sort, String sortColumn) {
         System.out.println("=======fallBackGetAllMMinMaxInventoryPaging=========");
+        return new ResponseEntity<PagingResponseDto>(HttpStatus.OK);
+    }
+    @GetMapping("/get-by-branch-shop-id-paging")
+    @HystrixCommand(fallbackMethod = "fallBackGetAllMinMaxInventoryPaging")
+    public ResponseEntity<PagingResponseDto> getMinMaxInventoryByBranchShopIdPaging(
+            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(name = "size", required = false, defaultValue = "10") int size,
+            @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
+            @RequestParam(name = "column", required = false, defaultValue = "minMaxInventoryId.id") String sortColumn,
+            @RequestParam Integer idBranchShop){
+        return ResponseEntity.ok(this.minMaxInventoryService.getAllByBranchShopIdPaging(page, size, sort,
+                sortColumn, idBranchShop));
+    }
+    public ResponseEntity<PagingResponseDto> fallBackGetAllMinMaxInventoryPaging(int page, int size, String sort,
+                                                                                  String sortColumn, Integer idBranchShop) {
+        System.out.println("=======fallBackGetAllMinMaxInventoryPaging=========");
         return new ResponseEntity<PagingResponseDto>(HttpStatus.OK);
     }
     @PutMapping("/delete")

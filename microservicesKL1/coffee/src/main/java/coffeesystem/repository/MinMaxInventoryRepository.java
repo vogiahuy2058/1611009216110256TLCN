@@ -20,4 +20,5 @@ public interface MinMaxInventoryRepository extends JpaRepository<MinMaxInventory
     Page<MinMaxInventory> findAllByEnable(boolean enable, Pageable pageable);
     List<MinMaxInventory> findByMinMaxInventoryIdIdMaterial(Integer idMaterial);
     List<MinMaxInventory> findByMinMaxInventoryIdIdBranchShop(Integer idBranchShop);
+    Page<MinMaxInventory> findByBranchShopIdAndEnable(Integer id, boolean enable, Pageable pageable);
 }
