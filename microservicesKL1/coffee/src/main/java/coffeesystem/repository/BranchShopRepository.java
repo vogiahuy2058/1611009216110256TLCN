@@ -20,4 +20,5 @@ public interface BranchShopRepository extends JpaRepository<BranchShop, Integer>
     Optional<BranchShop> findByNameAndEnable(String name, boolean enable);
     Optional<BranchShop> findByIdAndEnable(Integer id, boolean enable);
     Optional<BranchShop> findByEmployees(Employee employee);
+
 }

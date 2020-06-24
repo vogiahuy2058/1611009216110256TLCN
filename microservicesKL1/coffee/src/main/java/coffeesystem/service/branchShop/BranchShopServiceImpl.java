@@ -119,6 +119,16 @@ public class BranchShopServiceImpl implements BranchShopService {
         branchShopRepository.save(branchShop);
         return new ResponseDto(HttpStatus.OK.value(), "Delete branch shop successful", null);
     }
+    @Transactional
+    public ResponseDto getBranchShopByUsername(String username){
+        Employee employee = employeeRepository.findByAccountUsername(username)
+                .orElseThrow(()-> new NotFoundException("Username not found"));
+        BranchShop branchShop = branchShopRepository.findByEmployees(employee)
+                .orElseThrow(()-> new NotFoundException("Branch shop not found"));
+        BranchShopDto branchShopDto = mapperObject.BranchShopEntityToDto(branchShop);
+        return new ResponseDto(HttpStatus.OK.value(), "Successful", branchShopDto);
+
+    }
     public ResponseDto editBranchShop(BranchShopDto branchShopDto){
         BranchShop branchShop = branchShopRepository.findByIdAndEnable(branchShopDto.getId(), true)
                 .orElseThrow(()-> new NotFoundException("Id not found!"));

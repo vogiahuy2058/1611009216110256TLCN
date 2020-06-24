@@ -19,5 +19,6 @@ public interface BranchShopService {
     ResponseDto editBranchShop(BranchShopDto branchShopDto);
 //    @PreAuthorize("hasAnyRole('ROLE_MANAGE_ALL_BRANCH','ROLE_ACCOUNTANT', 'ROLE_ADMIN', 'ROLE_CASHIER', 'ROLE_HR')")
     ResponseDto getBranchShopById(Integer id);
+    ResponseDto getBranchShopByUsername(String username);
     ResponseDto hystrixBranchShop();
 }

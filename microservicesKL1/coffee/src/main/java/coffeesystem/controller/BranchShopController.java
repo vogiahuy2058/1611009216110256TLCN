@@ -60,6 +60,15 @@ public class BranchShopController {
         System.out.println("=======fallBackGetBranchShopById=========");
         return new ResponseEntity<ResponseDto>(HttpStatus.OK);
     }
+    @GetMapping("/get-by-username")
+//    @HystrixCommand(fallbackMethod = "fallBackGetBranchShopById")
+    public ResponseEntity<ResponseDto> getBranchShopByUsername(@RequestParam String username){
+        return ResponseEntity.ok(branchShopService.getBranchShopByUsername(username));
+    }
+//    public ResponseEntity<ResponseDto> fallBackGetBranchShopById(Integer id) {
+//        System.out.println("=======fallBackGetBranchShopById=========");
+//        return new ResponseEntity<ResponseDto>(HttpStatus.OK);
+//    }
     @PutMapping("/delete")
 //    @HystrixCommand(fallbackMethod = "fallBackDeleteBranchShop")
     public ResponseEntity<ResponseDto> deleteBranchShop(@RequestParam Integer id){
@@ -70,4 +79,6 @@ public class BranchShopController {
     public ResponseEntity<ResponseDto> editBranchShop(@RequestBody BranchShopDto branchShopDto){
         return ResponseEntity.ok(branchShopService.editBranchShop(branchShopDto));
     }
+
+
 }
