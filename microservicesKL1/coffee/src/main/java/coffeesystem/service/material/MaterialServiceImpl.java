@@ -114,8 +114,7 @@ public class MaterialServiceImpl implements MaterialService {
 
         List<MinMaxInventory> minMaxInventories = minMaxInventoryRepository.findByMinMaxInventoryIdIdMaterial(id);
         minMaxInventories.forEach(element->{
-            minMaxInventoryService.deleteMinMaxInventory(element.getMaterial().getId(),
-                    element.getBranchShop().getId());
+            minMaxInventoryService.deleteMinMaxInventory(element.getMinMaxInventoryId().getId());
         });
         material.setEnable(false);
         materialRepository.save(material);

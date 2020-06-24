@@ -96,8 +96,7 @@ public class BranchShopServiceImpl implements BranchShopService {
 
         List<MinMaxInventory> minMaxInventories = minMaxInventoryRepository.findByMinMaxInventoryIdIdBranchShop(id);
         minMaxInventories.forEach(element->{
-            minMaxInventoryService.deleteMinMaxInventory(element.getMaterial().getId(),
-                    element.getBranchShop().getId());
+            minMaxInventoryService.deleteMinMaxInventory(element.getMinMaxInventoryId().getId());
         });
         //delete invoice when branch shop was deleted
         List<Invoice> invoices = invoiceRepository.findByBranchShopId(id);
