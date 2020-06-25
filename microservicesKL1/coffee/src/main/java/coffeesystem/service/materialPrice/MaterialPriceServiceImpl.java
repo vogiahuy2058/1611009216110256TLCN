@@ -20,9 +20,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 @Service
@@ -41,10 +46,18 @@ public class MaterialPriceServiceImpl implements MaterialPriceService {
             MaterialPrice materialPriceOld = materialPriceRepository.findByMaterialPriceIdIdMaterialAndEnable(materialPriceRequestDto.getMaterialId(), true)
                     .orElseThrow(()-> new NotFoundException("Id material not found"));
             materialPriceOld.setEnable(false);
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(Date.valueOf(materialPriceRequestDto.getFirstDate()));
+            calendar.add(calendar.DATE, -1);
+            System.out.println(calendar);
+            Instant instant = calendar.toInstant();
+            LocalDate lastDate = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalDate();
+            //cap nhat last date của material old
+            materialPriceOld.setLastDate(lastDate);
             materialPriceRepository.save(materialPriceOld);
         }
 
-        MaterialPrice materialPrice = mapperObject.MaterialPriceDtoToEntity(materialPriceRequestDto);
+        MaterialPrice materialPrice = mapperObject.MaterialPriceDtoToEntity1(materialPriceRequestDto);
         Material material = materialRepository.findByIdAndEnable(materialPriceRequestDto.getMaterialId(), true)
                 .orElseThrow(()-> new NotFoundException("Material not found"));
         MaterialPriceId materialPriceId = new MaterialPriceId();
@@ -82,8 +95,14 @@ public class MaterialPriceServiceImpl implements MaterialPriceService {
         materialPriceResponseDto.setMaterialId(materialPrice.getMaterialPriceId().getIdMaterial());
         materialPriceResponseDto.setFirstDate(materialPrice.getMaterialPriceId().getFirstDate()
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        materialPriceResponseDto.setLastDate(materialPrice.getLastDate()
-                .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        if(materialPrice.getLastDate() == null){
+            materialPriceResponseDto.setLastDate("null");
+        }
+        else {
+            materialPriceResponseDto.setLastDate(materialPrice.getLastDate()
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        }
+
         materialPriceResponseDto.setMaterialName(material.getName());
         return new ResponseDto(HttpStatus.OK.value(), "Successful", materialPriceResponseDto);
     }
@@ -99,8 +118,13 @@ public class MaterialPriceServiceImpl implements MaterialPriceService {
             materialPriceResponseDto.setMaterialId(element.getMaterialPriceId().getIdMaterial());
             materialPriceResponseDto.setFirstDate(element.getMaterialPriceId().getFirstDate()
                     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-            materialPriceResponseDto.setLastDate(element.getLastDate()
-                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            if(element.getLastDate() == null){
+                materialPriceResponseDto.setLastDate("null");
+            }
+            else {
+                materialPriceResponseDto.setLastDate(element.getLastDate()
+                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            }
             materialPriceResponseDto.setMaterialName(material.getName());
             materialPriceResponseDtos.add(materialPriceResponseDto);
         });
@@ -120,8 +144,13 @@ public class MaterialPriceServiceImpl implements MaterialPriceService {
             materialPriceResponseDto.setMaterialId(element.getMaterialPriceId().getIdMaterial());
             materialPriceResponseDto.setFirstDate(element.getMaterialPriceId().getFirstDate()
                     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-            materialPriceResponseDto.setLastDate(element.getLastDate()
-                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            if(element.getLastDate() == null){
+                materialPriceResponseDto.setLastDate("null");
+            }
+            else {
+                materialPriceResponseDto.setLastDate(element.getLastDate()
+                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            }
             materialPriceResponseDto.setMaterialName(material.getName());
             materialPriceResponseDtos.add(materialPriceResponseDto);});
         Page<MaterialPriceResponseDto> materialPriceResponseDtoPage = new PageImpl<>(materialPriceResponseDtos, pageable,

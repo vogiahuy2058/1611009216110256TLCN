@@ -174,6 +174,10 @@ public interface MapperObject {
     @Mapping(target="materialPriceId.firstDate",source = "firstDate")
     @Mapping(target="materialPriceId.id",source = "id")
     MaterialPrice MaterialPriceDtoToEntity(MaterialPriceRequestDto materialPriceRequestDto);
+    @Mapping(target="materialPriceId.idMaterial",source = "materialId")
+    @Mapping(target="materialPriceId.firstDate",source = "firstDate")
+    @Mapping(target="materialPriceId.id",source = "id")
+    MaterialPrice MaterialPriceDtoToEntity1(MaterialPriceRequestDto materialPriceRequestDto);
 
     @Mapping(target="materialId",source = "materialPriceId.idMaterial")
     @Mapping(target="firstDate",source = "materialPriceId.firstDate")
@@ -215,5 +219,20 @@ public interface MapperObject {
 
     Demo DemoDtoToEntity(DemoDto demoDto);
     DemoDto DemoEntityToDto(Demo demo);
+
+//    @Mapping(target="inventoryId.idMaterial",source = "materialId")
+//    @Mapping(target="inventoryId.idBranchShop",source = "branchShopId")
+//    @Mapping(target="inventoryId.firstDate",source = "firstDate")
+//    Inventory InventoryDtoToEntity(InventoryRequestDto inventoryRequestDto);
+//
+    @Mapping(target="inventoryId.idMaterial",source = "materialId")
+    @Mapping(target="inventoryId.idBranchShop",source = "branchShopId")
+    @Mapping(target="inventoryId.firstDate",source = "firstDate")
+    Inventory InventoryDtoToEntity1(InventoryRequestDto inventoryRequestDto);
+
+    @Mapping(target="materialId",source = "inventoryId.idMaterial")
+    @Mapping(target="branchShopId",source = "inventoryId.idBranchShop")
+    InventoryResponseDto InventoryEntityToDto(Inventory inventory);
+
 
 }

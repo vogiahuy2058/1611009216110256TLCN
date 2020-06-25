@@ -15,7 +15,7 @@ public class MaterialPriceRequestDto {
     private Integer id;
     private Integer materialId;
     private LocalDate firstDate;
-    private LocalDate lastDate;
+//    private LocalDate lastDate;
     private float costPrice;
     private float priceFromSupplier;
 }

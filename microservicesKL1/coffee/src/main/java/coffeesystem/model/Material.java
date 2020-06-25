@@ -42,6 +42,8 @@ public class Material extends Auditable<String>{
     private Set<MaterialPrice> materialPrices;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "material", cascade = CascadeType.ALL)
     private Set<MinMaxInventory> minMaxInventories;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "material", cascade = CascadeType.ALL)
+    private Set<Inventory> inventories;
 
     @ManyToOne
     @JoinColumn(name = "unit_id")
