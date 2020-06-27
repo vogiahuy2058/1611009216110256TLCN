@@ -26,5 +26,7 @@ public interface EmployeeService {
     ResponseDto getEmployeeByUsername();
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_HR', 'ROLE_BRANCH_MANAGER', 'ROLE_MANAGE_ALL_BRANCH')")
     PagingResponseDto getAllEmployeePaging(int page, int size, String sort, String sortColumn);
+    PagingResponseDto getAllEmployeeByIdBranchShopPaging(
+            int page, int size, String sort, String sortColumn, Integer idBranchShop);
     ResponseDto getMaxIdEmployee();
 }

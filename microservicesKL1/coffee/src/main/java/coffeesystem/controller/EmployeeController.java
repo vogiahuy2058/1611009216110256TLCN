@@ -33,7 +33,15 @@ public class EmployeeController {
         System.out.println("=======fallBackGetAllEmployeePaging=========");
         return new ResponseEntity<PagingResponseDto>(HttpStatus.OK);
     }
-
+    @GetMapping("/get-all-by-id-branch-shop-paging")
+    public ResponseEntity<PagingResponseDto> getAllEmployeeByIdBranchShopPaging(
+            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(name = "size", required = false, defaultValue = "10") int size,
+            @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
+            @RequestParam(name = "column", required = false, defaultValue = "name") String sortColumn,
+            @RequestParam Integer idBranchShop){
+        return ResponseEntity.ok(this.employeeService.getAllEmployeeByIdBranchShopPaging(page, size, sort, sortColumn, idBranchShop));
+    }
     @GetMapping("/get-all")
     @HystrixCommand(fallbackMethod = "fallBackGetAllEmployee")
     public ResponseEntity<ResponseDto> getAllEmployee(){

@@ -26,6 +26,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.awt.print.PrinterGraphics;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,6 +77,26 @@ public class EmployeeServiceImpl implements EmployeeService {
         Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
         List<EmployeeResponseDto> employeeResponseDtos = new ArrayList<>();
         Page<Employee> employeePage = employeeRepository.findAllByEnable(true, pageable);
+        employeePage.forEach(element-> {
+            EmployeeResponseDto employeeResponseDto = mapperObject.EmployeeEntityToDto1(element);
+            employeeResponseDto.setBranchShop(element.getBranchShop().getName());
+            employeeResponseDto.setEmployeeType(element.getEmployeeType().getName());
+            employeeResponseDtos.add(employeeResponseDto);
+        });
+        Page<EmployeeResponseDto> employeeResponseDtoPage = new PageImpl<>(employeeResponseDtos, pageable,
+                employeePage.getTotalElements() );
+
+        return new PagingResponseDto<>(
+                employeeResponseDtoPage.getContent(), employeeResponseDtoPage.getTotalElements(), employeeResponseDtoPage.getTotalPages(),
+                employeeResponseDtoPage.getPageable());
+    }
+    @Transactional
+    @Override
+    public PagingResponseDto getAllEmployeeByIdBranchShopPaging(
+            int page, int size, String sort, String sortColumn, Integer idBranchShop) {
+        Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
+        List<EmployeeResponseDto> employeeResponseDtos = new ArrayList<>();
+        Page<Employee> employeePage = employeeRepository.findByBranchShopIdAndEnable(idBranchShop, true, pageable);
         employeePage.forEach(element-> {
             EmployeeResponseDto employeeResponseDto = mapperObject.EmployeeEntityToDto1(element);
             employeeResponseDto.setBranchShop(element.getBranchShop().getName());
