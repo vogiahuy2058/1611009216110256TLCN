@@ -1,15 +1,14 @@
 package coffeesystem.service.inventory;
 
+import coffeesystem.controller.InvoiceController;
 import coffeesystem.dto.*;
 import coffeesystem.exception.ExistException;
 import coffeesystem.exception.NotFoundException;
 import coffeesystem.model.*;
 import coffeesystem.model.embedding.InventoryId;
 import coffeesystem.model.embedding.MinMaxInventoryId;
-import coffeesystem.repository.BranchShopRepository;
-import coffeesystem.repository.InventoryRepository;
-import coffeesystem.repository.MaterialRepository;
-import coffeesystem.repository.MinMaxInventoryRepository;
+import coffeesystem.repository.*;
+import coffeesystem.service.inventoryControl.InventoryControlService;
 import coffeesystem.util.MapperObject;
 import coffeesystem.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +39,8 @@ public class InventoryServiceImpl implements InventoryService{
     MaterialRepository materialRepository;
     @Autowired
     BranchShopRepository branchShopRepository;
+    @Autowired
+    InventoryControlRepository inventoryControlRepository;
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public ResponseDto createInventory(InventoryRequestDto inventoryRequestDto){
         if(inventoryRepository.
@@ -65,10 +66,18 @@ public class InventoryServiceImpl implements InventoryService{
                 inventoryOld.setLastDate(lastDate);
                 //set trang thai completed cho inventory old
                 inventoryOld.setStatus("completed");
+                //set so luong con lai cua bang kiem kho qua bang ton
+                InventoryControl inventoryControl = inventoryControlRepository
+                        .findByIdMaterialAndIdBranchShopAndFirstDateAndStatusActiveAndEnable(inventoryOld.getInventoryId().getIdMaterial(),
+                                inventoryOld.getInventoryId().getIdBranchShop(),
+                                inventoryOld.getInventoryId().getFirstDate(), true)
+                        .orElseThrow(()-> new NotFoundException("Inventory control not found"));
+                inventoryOld.setBacklogLastDate(inventoryControl.getRemainingAmount());
                 float quantitySold = inventoryOld.getBacklogFirstDate() + inventoryOld.getImportPeriod() -
                         inventoryOld.getBacklogLastDate();
                 //set quantitySold cua inventory old
                 inventoryOld.setQuantitySold(quantitySold);
+
                 inventoryRepository.save(inventoryOld);
                 backlogFirstDate = inventoryOld.getBacklogLastDate();
             }
