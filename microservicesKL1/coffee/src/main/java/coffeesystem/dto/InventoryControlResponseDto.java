@@ -16,6 +16,7 @@ public class InventoryControlResponseDto {
     private String firstDate;
     private Integer materialId;
     private Integer branchShopId;
+    private String status;
     private String checkDate;
     private float remainingAmount;
     private String materialName;

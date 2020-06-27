@@ -41,11 +41,16 @@ public class InventoryControlController {
 //                                                                               @RequestParam Integer idBranchShop){
 //        return ResponseEntity.ok(this.inventoryService.getByIdMaterialAndIdBranchShop(idMaterial, idBranchShop));
 //    }
-//    @GetMapping("/get-all")
-////    @HystrixCommand(fallbackMethod = "fallBackGetAllMinMaxInventory")
-//    public ResponseEntity<ResponseDto> getAllInventory(){
-//        return ResponseEntity.ok(this.inventoryService.getAllInventory());
-//    }
+    @GetMapping("/get-all-status-active")
+//    @HystrixCommand(fallbackMethod = "fallBackGetAllMinMaxInventory")
+    public ResponseEntity<ResponseDto> getAllInventoryControlByStatusActive(){
+        return ResponseEntity.ok(this.inventoryControlService.getAllInventoryControlStatusActive());
+    }
+    @GetMapping("/get-all")
+//    @HystrixCommand(fallbackMethod = "fallBackGetAllMinMaxInventory")
+    public ResponseEntity<ResponseDto> getAllInventoryControl(){
+        return ResponseEntity.ok(this.inventoryControlService.getAllInventoryControl());
+    }
 //    public ResponseEntity<ResponseDto> fallBackGetAllMinMaxInventory() {
 //        System.out.println("=======fallBackGetAllMinMaxInventory=========");
 //        return new ResponseEntity<ResponseDto>(HttpStatus.OK);

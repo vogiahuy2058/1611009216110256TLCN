@@ -5,4 +5,6 @@ import coffeesystem.dto.ResponseDto;
 
 public interface InventoryControlService {
     ResponseDto createInventoryControl(InventoryControlRequestDto requestDto);
+    ResponseDto getAllInventoryControlStatusActive();
+    ResponseDto getAllInventoryControl();
 }
