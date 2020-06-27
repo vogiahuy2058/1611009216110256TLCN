@@ -15,6 +15,8 @@ import java.util.Objects;
 @Getter
 @Setter
 public class InventoryId  implements Serializable {
+    @Column(name = "id")
+    private Integer id;
     @Column(name = "first_date")
     private LocalDate firstDate;
     @Column(name = "id_material")

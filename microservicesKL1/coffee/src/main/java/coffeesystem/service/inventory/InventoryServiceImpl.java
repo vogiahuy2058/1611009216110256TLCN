@@ -81,11 +81,11 @@ public class InventoryServiceImpl implements InventoryService{
             inventoryId.setIdMaterial(inventoryRequestDto.getMaterialId());
             inventoryId.setIdBranchShop(inventoryRequestDto.getBranchShopId());
             inventoryId.setFirstDate(inventoryRequestDto.getFirstDate());
-//            Integer idOld = minMaxInventoryRepository.findMaxId();
-//            if(idOld == null){
-//                idOld = 0;
-//            }
-//            minMaxInventoryId.setId(idOld + 1);
+            Integer idOld = inventoryRepository.findMaxId();
+            if(idOld == null){
+                idOld = 0;
+            }
+            inventoryId.setId(idOld + 1);
             inventory.setInventoryId(inventoryId);
             inventory.setMaterial(material);
             inventory.setBranchShop(branchShop);
@@ -120,12 +120,13 @@ public class InventoryServiceImpl implements InventoryService{
                     .orElseThrow(()-> new NotFoundException("Material id not found"));
             BranchShop branchShop = branchShopRepository.findByIdAndEnable(element.getInventoryId().getIdBranchShop(), true)
                     .orElseThrow(()-> new NotFoundException("Branch shop id not found"));
-//            minMaxInventoryResponseDto.setId(element.getMinMaxInventoryId().getId());
+            inventoryResponseDto.setId(element.getInventoryId().getId());
             inventoryResponseDto.setMaterialId(element.getInventoryId().getIdMaterial());
             inventoryResponseDto.setBranchShopId(element.getInventoryId().getIdBranchShop());
             inventoryResponseDto.setBranchShopName(branchShop.getName());
             inventoryResponseDto.setMaterialName(material.getName());
             inventoryResponseDto.setUnitName(material.getUnit().getName());
+            inventoryResponseDto.setStatus(element.getStatus());
             inventoryResponseDto.setFirstDate(element.getInventoryId().getFirstDate()
                     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             if(element.getLastDate() == null){
@@ -152,12 +153,13 @@ public class InventoryServiceImpl implements InventoryService{
                     .orElseThrow(()-> new NotFoundException("Material id not found"));
             BranchShop branchShop = branchShopRepository.findByIdAndEnable(element.getInventoryId().getIdBranchShop(), true)
                     .orElseThrow(()-> new NotFoundException("Branch shop id not found"));
-//            minMaxInventoryResponseDto.setId(element.getMinMaxInventoryId().getId());
+            inventoryResponseDto.setId(element.getInventoryId().getId());
             inventoryResponseDto.setMaterialId(element.getInventoryId().getIdMaterial());
             inventoryResponseDto.setBranchShopId(element.getInventoryId().getIdBranchShop());
             inventoryResponseDto.setBranchShopName(branchShop.getName());
             inventoryResponseDto.setMaterialName(material.getName());
             inventoryResponseDto.setUnitName(material.getUnit().getName());
+            inventoryResponseDto.setStatus(element.getStatus());
             inventoryResponseDto.setFirstDate(element.getInventoryId().getFirstDate()
                     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             if(element.getLastDate() == null){
@@ -189,12 +191,53 @@ public class InventoryServiceImpl implements InventoryService{
                     .orElseThrow(()-> new NotFoundException("Material id not found"));
             BranchShop branchShop = branchShopRepository.findByIdAndEnable(element.getInventoryId().getIdBranchShop(), true)
                     .orElseThrow(()-> new NotFoundException("Branch shop id not found"));
-//            minMaxInventoryResponseDto.setId(element.getMinMaxInventoryId().getId());
+            inventoryResponseDto.setId(element.getInventoryId().getId());
             inventoryResponseDto.setMaterialId(element.getInventoryId().getIdMaterial());
             inventoryResponseDto.setBranchShopId(element.getInventoryId().getIdBranchShop());
             inventoryResponseDto.setBranchShopName(branchShop.getName());
             inventoryResponseDto.setMaterialName(material.getName());
             inventoryResponseDto.setUnitName(material.getUnit().getName());
+            inventoryResponseDto.setStatus(element.getStatus());
+            inventoryResponseDto.setFirstDate(element.getInventoryId().getFirstDate()
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            if(element.getLastDate() == null){
+                inventoryResponseDto.setLastDate("null");
+            }
+            else {
+                inventoryResponseDto.setLastDate(element.getLastDate()
+                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            }
+            inventoryResponseDtos.add(inventoryResponseDto);});
+        Page<InventoryResponseDto> inventoryResponseDtoPage = new PageImpl<>(inventoryResponseDtos, pageable,
+                inventoryPage.getTotalElements());
+        return new PagingResponseDto<>(
+                inventoryResponseDtoPage.getContent(), inventoryResponseDtoPage.getTotalElements(),
+                inventoryResponseDtoPage.getTotalPages(), inventoryResponseDtoPage.getPageable());
+
+    }
+    @Transactional
+    public PagingResponseDto getAllByBranchShopIdAndStatusPaging(int page, int size, String sort,
+                                                        String sortColumn, Integer branchShopId, String status){
+
+        Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
+        List<InventoryResponseDto> inventoryResponseDtos = new ArrayList<>();
+        Page<Inventory> inventoryPage = inventoryRepository.
+                findByInventoryIdIdBranchShopAndStatusAndEnable(branchShopId, status,
+                        true,pageable);
+
+        inventoryPage.forEach(element->{
+            InventoryResponseDto inventoryResponseDto = mapperObject.InventoryEntityToDto(element);
+            Material material = materialRepository.findByIdAndEnable(element.getInventoryId().getIdMaterial(), true)
+                    .orElseThrow(()-> new NotFoundException("Material id not found"));
+            BranchShop branchShop = branchShopRepository.findByIdAndEnable(element.getInventoryId().getIdBranchShop(), true)
+                    .orElseThrow(()-> new NotFoundException("Branch shop id not found"));
+            inventoryResponseDto.setId(element.getInventoryId().getId());
+            inventoryResponseDto.setMaterialId(element.getInventoryId().getIdMaterial());
+            inventoryResponseDto.setBranchShopId(element.getInventoryId().getIdBranchShop());
+            inventoryResponseDto.setBranchShopName(branchShop.getName());
+            inventoryResponseDto.setMaterialName(material.getName());
+            inventoryResponseDto.setUnitName(material.getUnit().getName());
+            inventoryResponseDto.setStatus(element.getStatus());
             inventoryResponseDto.setFirstDate(element.getInventoryId().getFirstDate()
                     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             if(element.getLastDate() == null){
@@ -223,12 +266,13 @@ public class InventoryServiceImpl implements InventoryService{
                     .orElseThrow(()-> new NotFoundException("Material id not found"));
             BranchShop branchShop = branchShopRepository.findByIdAndEnable(element.getInventoryId().getIdBranchShop(), true)
                     .orElseThrow(()-> new NotFoundException("Branch shop id not found"));
-//            minMaxInventoryResponseDto.setId(element.getMinMaxInventoryId().getId());
+            inventoryResponseDto.setId(element.getInventoryId().getId());
             inventoryResponseDto.setMaterialId(element.getInventoryId().getIdMaterial());
             inventoryResponseDto.setBranchShopId(element.getInventoryId().getIdBranchShop());
             inventoryResponseDto.setBranchShopName(branchShop.getName());
             inventoryResponseDto.setMaterialName(material.getName());
             inventoryResponseDto.setUnitName(material.getUnit().getName());
+            inventoryResponseDto.setStatus(element.getStatus());
             inventoryResponseDto.setFirstDate(element.getInventoryId().getFirstDate()
                     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             if(element.getLastDate() == null){
@@ -261,6 +305,7 @@ public class InventoryServiceImpl implements InventoryService{
             inventoryResponseDto.setBranchShopName(branchShop.getName());
             inventoryResponseDto.setMaterialName(material.getName());
             inventoryResponseDto.setUnitName(material.getUnit().getName());
+            inventoryResponseDto.setStatus(inventory.getStatus());
             inventoryResponseDto.setFirstDate(inventory.getInventoryId().getFirstDate()
                     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             if(inventory.getLastDate() == null){
@@ -273,11 +318,9 @@ public class InventoryServiceImpl implements InventoryService{
 
         return new ResponseDto(HttpStatus.OK.value(), "All inventory", inventoryResponseDto);
     }
-    public ResponseDto deleteInventory(Integer idMaterial, Integer idBranchShop, String firstDate){
-        LocalDate newFirstDate = LocalDate.parse(firstDate, dtf);
+    public ResponseDto deleteInventory(Integer id){
         Inventory inventory = inventoryRepository.
-                findByInventoryIdIdMaterialAndInventoryIdIdBranchShopAndInventoryIdFirstDateAndEnable(
-                        idMaterial, idBranchShop, newFirstDate, true)
+                findByInventoryIdIdAndEnable(id, true)
                 .orElseThrow(()-> new NotFoundException("Inventory not found"));
         inventory.setEnable(false);
         inventoryRepository.save(inventory);

@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class InventoryRequestDto {
+    private Integer id;
     private Integer materialId;
     private Integer branchShopId;
     private LocalDate firstDate;

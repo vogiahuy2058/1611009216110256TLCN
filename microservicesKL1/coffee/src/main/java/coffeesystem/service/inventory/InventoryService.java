@@ -11,9 +11,11 @@ public interface InventoryService {
     ResponseDto getAllInventory();
     PagingResponseDto getAllInventoryPaging(int page, int size, String sort, String sortColumn);
     ResponseDto editInventory(InventoryRequestDto inventoryRequestDto);
-    ResponseDto deleteInventory(Integer idMaterial, Integer idBranchShop, String firstDate);
+    ResponseDto deleteInventory(Integer id);
     ResponseDto getByIdMaterialAndIdBranchShop(Integer materialId, Integer branchShopId);
     PagingResponseDto getAllByBranchShopIdPaging(int page, int size, String sort,
                                                  String sortColumn, Integer branchShopId);
+    PagingResponseDto getAllByBranchShopIdAndStatusPaging(int page, int size, String sort,
+                                                          String sortColumn, Integer branchShopId, String status);
     ResponseDto getByIdMaterialAndIdBranchShopAndFirstDate(Integer materialId, Integer branchShopId, String firstDate);
 }

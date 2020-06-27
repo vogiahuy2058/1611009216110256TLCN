@@ -15,7 +15,9 @@ public class InternalSCDetailRequestDto {
     private Integer internalSCId;
 
 //    private float unitPrice;
-    private float amount;
+    private float numberOfRequest;
+    private float quantityAllowed;
+    private float quantityReceived;
     //    private LocalDate deliveryTime;
 //    private LocalDate paymentTime;
     private String unitName;

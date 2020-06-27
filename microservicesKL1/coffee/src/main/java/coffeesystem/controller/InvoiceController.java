@@ -55,6 +55,15 @@ public class InvoiceController {
         return new ResponseEntity<PagingResponseDto>(HttpStatus.OK);
     }
 
+    @GetMapping("/get-all-true-id-branch-shop-paging")
+    public ResponseEntity<PagingResponseDto> getAllInvoiceStatusTrueByBranchShopId(@RequestParam(name = "page", required = false, defaultValue = "0") int page,
+                                                                     @RequestParam(name = "size", required = false, defaultValue = "10") int size,
+                                                                     @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
+                                                                     @RequestParam(name = "column", required = false, defaultValue = "id") String sortColumn,
+                                                                                   @RequestParam Integer idBranchShop){
+        return  ResponseEntity.ok(this.invoiceService.getAllInvoiceStatus2PagingByBranchShop(page, size, sort, sortColumn, idBranchShop));
+    }
+
     @GetMapping("/get-all-by-status")
     @HystrixCommand(fallbackMethod = "fallBackGetInvoiceByStatus")
     public ResponseEntity<ResponseDto> getAllInvoiceByStatus(@RequestParam Integer status){
@@ -63,6 +72,11 @@ public class InvoiceController {
     public ResponseEntity<ResponseDto> fallBackGetInvoiceByStatus(Integer status) {
         System.out.println("=======fallBackGetInvoiceByStatus=========");
         return new ResponseEntity<ResponseDto>(HttpStatus.OK);
+    }
+    @GetMapping("/get-all-by-status-and-id-branch-shop")
+    public ResponseEntity<ResponseDto> getAllInvoiceByStatusAndIdBranchShop(@RequestParam Integer status,
+                                                                            @RequestParam Integer idBranchShop){
+        return  ResponseEntity.ok(this.invoiceService.getAllInvoiceByStatusAndIdBranchShop(status, idBranchShop));
     }
     @GetMapping("/get-all-date-to-date-paging")
 //    @HystrixCommand(fallbackMethod = "fallBackGetAllInvoiceDateToDatePaging")
@@ -96,6 +110,10 @@ public class InvoiceController {
     @GetMapping("/get-all-false")
     public ResponseEntity<ResponseDto> getAllInvoiceStatusFalse(){
         return  ResponseEntity.ok(this.invoiceService.getAllInvoiceStatus0());
+    }
+    @GetMapping("/get-all-false-by-branch-shop-id")
+    public ResponseEntity<ResponseDto> getAllInvoiceStatusFalse(@RequestParam Integer idBranchShop){
+        return  ResponseEntity.ok(this.invoiceService.getAllInvoiceStatus0ByBranchShop(idBranchShop));
     }
 
     @GetMapping("/get")

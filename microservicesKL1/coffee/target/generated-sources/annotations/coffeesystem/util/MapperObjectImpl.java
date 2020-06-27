@@ -18,6 +18,8 @@ import coffeesystem.dto.InternalSCDetailRequestDto;
 import coffeesystem.dto.InternalSCDetailResponseDto;
 import coffeesystem.dto.InternalSCRequestDto;
 import coffeesystem.dto.InternalSCResponseDto;
+import coffeesystem.dto.InventoryControlRequestDto;
+import coffeesystem.dto.InventoryControlResponseDto;
 import coffeesystem.dto.InventoryRequestDto;
 import coffeesystem.dto.InventoryResponseDto;
 import coffeesystem.dto.InvoiceAndInvoiceDetailDto;
@@ -55,6 +57,7 @@ import coffeesystem.model.EmployeeType;
 import coffeesystem.model.InternalSC;
 import coffeesystem.model.InternalSCDetail;
 import coffeesystem.model.Inventory;
+import coffeesystem.model.InventoryControl;
 import coffeesystem.model.Invoice;
 import coffeesystem.model.InvoiceDetail;
 import coffeesystem.model.Material;
@@ -86,7 +89,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-06-25T22:20:31+0700",
+    date = "2020-06-27T08:37:09+0700",
     comments = "version: 1.2.0.CR2, compiler: javac, environment: Java 1.8.0_231 (Oracle Corporation)"
 )
 @Component
@@ -951,7 +954,8 @@ public class MapperObjectImpl implements MapperObject {
 
         supplyContractDetail.setSupplyContractDetailId( supplyContractDetailRequestDtoToSupplyContractDetailId( detailDto ) );
         supplyContractDetail.setUnitPrice( detailDto.getUnitPrice() );
-        supplyContractDetail.setAmount( detailDto.getAmount() );
+        supplyContractDetail.setNumberOfRequest( detailDto.getNumberOfRequest() );
+        supplyContractDetail.setQuantityReceived( detailDto.getQuantityReceived() );
 
         return supplyContractDetail;
     }
@@ -977,7 +981,8 @@ public class MapperObjectImpl implements MapperObject {
             supplyContractDetailResponseDto.setSupplyContractId( supplyContractId );
         }
         supplyContractDetailResponseDto.setUnitPrice( supplyContractDetail.getUnitPrice() );
-        supplyContractDetailResponseDto.setAmount( supplyContractDetail.getAmount() );
+        supplyContractDetailResponseDto.setNumberOfRequest( supplyContractDetail.getNumberOfRequest() );
+        supplyContractDetailResponseDto.setQuantityReceived( supplyContractDetail.getQuantityReceived() );
 
         return supplyContractDetailResponseDto;
     }
@@ -1192,7 +1197,9 @@ public class MapperObjectImpl implements MapperObject {
         InternalSCDetail internalSCDetail = new InternalSCDetail();
 
         internalSCDetail.setInternalSCDetailId( internalSCDetailRequestDtoToInternalSCDetailId( internalSCDetailRequestDto ) );
-        internalSCDetail.setAmount( internalSCDetailRequestDto.getAmount() );
+        internalSCDetail.setNumberOfRequest( internalSCDetailRequestDto.getNumberOfRequest() );
+        internalSCDetail.setQuantityAllowed( internalSCDetailRequestDto.getQuantityAllowed() );
+        internalSCDetail.setQuantityReceived( internalSCDetailRequestDto.getQuantityReceived() );
 
         return internalSCDetail;
     }
@@ -1217,7 +1224,9 @@ public class MapperObjectImpl implements MapperObject {
         if ( materialId != null ) {
             internalSCDetailResponseDto.setMaterialId( materialId );
         }
-        internalSCDetailResponseDto.setAmount( internalSCDetail.getAmount() );
+        internalSCDetailResponseDto.setNumberOfRequest( internalSCDetail.getNumberOfRequest() );
+        internalSCDetailResponseDto.setQuantityAllowed( internalSCDetail.getQuantityAllowed() );
+        internalSCDetailResponseDto.setQuantityReceived( internalSCDetail.getQuantityReceived() );
 
         return internalSCDetailResponseDto;
     }
@@ -1262,6 +1271,7 @@ public class MapperObjectImpl implements MapperObject {
 
         inventory.setInventoryId( inventoryRequestDtoToInventoryId( inventoryRequestDto ) );
         inventory.setImportPeriod( inventoryRequestDto.getImportPeriod() );
+        inventory.setBacklogLastDate( inventoryRequestDto.getBacklogLastDate() );
 
         return inventory;
     }
@@ -1274,13 +1284,17 @@ public class MapperObjectImpl implements MapperObject {
 
         InventoryResponseDto inventoryResponseDto = new InventoryResponseDto();
 
-        Integer idMaterial = inventoryInventoryIdIdMaterial( inventory );
-        if ( idMaterial != null ) {
-            inventoryResponseDto.setMaterialId( idMaterial );
-        }
         Integer idBranchShop = inventoryInventoryIdIdBranchShop( inventory );
         if ( idBranchShop != null ) {
             inventoryResponseDto.setBranchShopId( idBranchShop );
+        }
+        Integer id = inventoryInventoryIdId( inventory );
+        if ( id != null ) {
+            inventoryResponseDto.setId( id );
+        }
+        Integer idMaterial = inventoryInventoryIdIdMaterial( inventory );
+        if ( idMaterial != null ) {
+            inventoryResponseDto.setMaterialId( idMaterial );
         }
         if ( inventory.getLastDate() != null ) {
             inventoryResponseDto.setLastDate( DateTimeFormatter.ISO_LOCAL_DATE.format( inventory.getLastDate() ) );
@@ -1289,8 +1303,52 @@ public class MapperObjectImpl implements MapperObject {
         inventoryResponseDto.setImportPeriod( inventory.getImportPeriod() );
         inventoryResponseDto.setBacklogLastDate( inventory.getBacklogLastDate() );
         inventoryResponseDto.setQuantitySold( inventory.getQuantitySold() );
+        inventoryResponseDto.setStatus( inventory.getStatus() );
 
         return inventoryResponseDto;
+    }
+
+    @Override
+    public InventoryControl InventoryControlDtoToEntity(InventoryControlRequestDto inventoryControlRequestDto) {
+        if ( inventoryControlRequestDto == null ) {
+            return null;
+        }
+
+        InventoryControl inventoryControl = new InventoryControl();
+
+        inventoryControl.setInventoryId( inventoryControlRequestDtoToInventoryId( inventoryControlRequestDto ) );
+        inventoryControl.setCheckDate( inventoryControlRequestDto.getCheckDate() );
+        inventoryControl.setRemainingAmount( inventoryControlRequestDto.getRemainingAmount() );
+
+        return inventoryControl;
+    }
+
+    @Override
+    public InventoryControlResponseDto InventoryControlEntityToDto(InventoryControl inventoryControl) {
+        if ( inventoryControl == null ) {
+            return null;
+        }
+
+        InventoryControlResponseDto inventoryControlResponseDto = new InventoryControlResponseDto();
+
+        Integer idBranchShop = inventoryControlInventoryIdIdBranchShop( inventoryControl );
+        if ( idBranchShop != null ) {
+            inventoryControlResponseDto.setBranchShopId( idBranchShop );
+        }
+        Integer id = inventoryControlInventoryIdId( inventoryControl );
+        if ( id != null ) {
+            inventoryControlResponseDto.setId( id );
+        }
+        Integer idMaterial = inventoryControlInventoryIdIdMaterial( inventoryControl );
+        if ( idMaterial != null ) {
+            inventoryControlResponseDto.setMaterialId( idMaterial );
+        }
+        if ( inventoryControl.getCheckDate() != null ) {
+            inventoryControlResponseDto.setCheckDate( DateTimeFormatter.ISO_LOCAL_DATE.format( inventoryControl.getCheckDate() ) );
+        }
+        inventoryControlResponseDto.setRemainingAmount( inventoryControl.getRemainingAmount() );
+
+        return inventoryControlResponseDto;
     }
 
     private Integer accountEmployeeId(Account account) {
@@ -2178,10 +2236,41 @@ public class MapperObjectImpl implements MapperObject {
         InventoryId inventoryId = new InventoryId();
 
         inventoryId.setFirstDate( inventoryRequestDto.getFirstDate() );
+        inventoryId.setId( inventoryRequestDto.getId() );
         inventoryId.setIdBranchShop( inventoryRequestDto.getBranchShopId() );
         inventoryId.setIdMaterial( inventoryRequestDto.getMaterialId() );
 
         return inventoryId;
+    }
+
+    private Integer inventoryInventoryIdIdBranchShop(Inventory inventory) {
+        if ( inventory == null ) {
+            return null;
+        }
+        InventoryId inventoryId = inventory.getInventoryId();
+        if ( inventoryId == null ) {
+            return null;
+        }
+        Integer idBranchShop = inventoryId.getIdBranchShop();
+        if ( idBranchShop == null ) {
+            return null;
+        }
+        return idBranchShop;
+    }
+
+    private Integer inventoryInventoryIdId(Inventory inventory) {
+        if ( inventory == null ) {
+            return null;
+        }
+        InventoryId inventoryId = inventory.getInventoryId();
+        if ( inventoryId == null ) {
+            return null;
+        }
+        Integer id = inventoryId.getId();
+        if ( id == null ) {
+            return null;
+        }
+        return id;
     }
 
     private Integer inventoryInventoryIdIdMaterial(Inventory inventory) {
@@ -2199,11 +2288,26 @@ public class MapperObjectImpl implements MapperObject {
         return idMaterial;
     }
 
-    private Integer inventoryInventoryIdIdBranchShop(Inventory inventory) {
-        if ( inventory == null ) {
+    protected InventoryId inventoryControlRequestDtoToInventoryId(InventoryControlRequestDto inventoryControlRequestDto) {
+        if ( inventoryControlRequestDto == null ) {
             return null;
         }
-        InventoryId inventoryId = inventory.getInventoryId();
+
+        InventoryId inventoryId = new InventoryId();
+
+        inventoryId.setFirstDate( inventoryControlRequestDto.getFirstDate() );
+        inventoryId.setId( inventoryControlRequestDto.getId() );
+        inventoryId.setIdBranchShop( inventoryControlRequestDto.getBranchShopId() );
+        inventoryId.setIdMaterial( inventoryControlRequestDto.getMaterialId() );
+
+        return inventoryId;
+    }
+
+    private Integer inventoryControlInventoryIdIdBranchShop(InventoryControl inventoryControl) {
+        if ( inventoryControl == null ) {
+            return null;
+        }
+        InventoryId inventoryId = inventoryControl.getInventoryId();
         if ( inventoryId == null ) {
             return null;
         }
@@ -2212,5 +2316,35 @@ public class MapperObjectImpl implements MapperObject {
             return null;
         }
         return idBranchShop;
+    }
+
+    private Integer inventoryControlInventoryIdId(InventoryControl inventoryControl) {
+        if ( inventoryControl == null ) {
+            return null;
+        }
+        InventoryId inventoryId = inventoryControl.getInventoryId();
+        if ( inventoryId == null ) {
+            return null;
+        }
+        Integer id = inventoryId.getId();
+        if ( id == null ) {
+            return null;
+        }
+        return id;
+    }
+
+    private Integer inventoryControlInventoryIdIdMaterial(InventoryControl inventoryControl) {
+        if ( inventoryControl == null ) {
+            return null;
+        }
+        InventoryId inventoryId = inventoryControl.getInventoryId();
+        if ( inventoryId == null ) {
+            return null;
+        }
+        Integer idMaterial = inventoryId.getIdMaterial();
+        if ( idMaterial == null ) {
+            return null;
+        }
+        return idMaterial;
     }
 }

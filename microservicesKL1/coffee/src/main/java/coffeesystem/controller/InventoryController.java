@@ -82,11 +82,21 @@ public class InventoryController {
         System.out.println("=======fallBackGetAllMinMaxInventoryPaging=========");
         return new ResponseEntity<PagingResponseDto>(HttpStatus.OK);
     }
+    @GetMapping("/get-by-branch-shop-id-status-paging")
+//    @HystrixCommand(fallbackMethod = "fallBackGetAllMinMaxInventoryPaging")
+    public ResponseEntity<PagingResponseDto> getMinMaxInventoryByBranchShopIdAndStatusPaging(
+            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(name = "size", required = false, defaultValue = "10") int size,
+            @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
+            @RequestParam(name = "column", required = false, defaultValue = "inventoryId.idBranchShop") String sortColumn,
+            @RequestParam Integer idBranchShop,
+            @RequestParam String status){
+        return ResponseEntity.ok(this.inventoryService.getAllByBranchShopIdAndStatusPaging(page, size, sort,
+                sortColumn, idBranchShop, status));
+    }
     @PutMapping("/delete")
-    public ResponseEntity<ResponseDto> deleteInventory(@RequestParam Integer idMaterial,
-                                                       @RequestParam Integer idBranchShop,
-                                                       @RequestParam String firstDate){
-        return ResponseEntity.ok(inventoryService.deleteInventory(idMaterial, idBranchShop, firstDate));
+    public ResponseEntity<ResponseDto> deleteInventory(@RequestParam Integer id){
+        return ResponseEntity.ok(inventoryService.deleteInventory(id));
     }
     @PutMapping("/edit")
     public ResponseEntity<ResponseDto> editInventory(@RequestBody InventoryRequestDto inventoryRequestDto){

@@ -1,27 +1,24 @@
 package coffeesystem.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.util.Date;
+
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-public class SupplyContractDetailRequestDto {
+public class InventoryControlResponseDto {
     private Integer id;
+    private String firstDate;
     private Integer materialId;
-    private Integer supplyContractId;
-
-    private float unitPrice;
-    private float numberOfRequest;
-    private float quantityReceived;
-//    private LocalDate deliveryTime;
-//    private LocalDate paymentTime;
+    private Integer branchShopId;
+    private String checkDate;
+    private float remainingAmount;
+    private String materialName;
+    private String branchShopName;
     private String unitName;
-
 }

@@ -228,11 +228,22 @@ public interface MapperObject {
     @Mapping(target="inventoryId.idMaterial",source = "materialId")
     @Mapping(target="inventoryId.idBranchShop",source = "branchShopId")
     @Mapping(target="inventoryId.firstDate",source = "firstDate")
+    @Mapping(target="inventoryId.id",source = "id")
     Inventory InventoryDtoToEntity1(InventoryRequestDto inventoryRequestDto);
 
     @Mapping(target="materialId",source = "inventoryId.idMaterial")
     @Mapping(target="branchShopId",source = "inventoryId.idBranchShop")
+    @Mapping(target="id",source = "inventoryId.id")
     InventoryResponseDto InventoryEntityToDto(Inventory inventory);
 
-
+    @Mapping(target="inventoryId.idMaterial",source = "materialId")
+    @Mapping(target="inventoryId.idBranchShop",source = "branchShopId")
+    @Mapping(target="inventoryId.firstDate",source = "firstDate")
+    @Mapping(target="inventoryId.id",source = "id")
+    InventoryControl InventoryControlDtoToEntity(InventoryControlRequestDto inventoryControlRequestDto);
+    @Mapping(target="materialId",source = "inventoryId.idMaterial")
+    @Mapping(target="branchShopId",source = "inventoryId.idBranchShop")
+    @Mapping(target="id",source = "inventoryId.id")
+    InventoryControlResponseDto InventoryControlEntityToDto(InventoryControl inventoryControl);
+    
 }

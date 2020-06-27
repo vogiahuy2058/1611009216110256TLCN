@@ -70,7 +70,8 @@ public class SupplyContractDetailServiceImpl implements SupplyContractDetailServ
                 repository.findByMaterialAndSupplyContract(material, supplyContract)
                 .orElseThrow(()-> new NotFoundException("Supply contract detail not found"));
         supplyContractDetail.setUnitPrice(detailDto.getUnitPrice());
-        supplyContractDetail.setAmount(detailDto.getAmount());
+        supplyContractDetail.setNumberOfRequest(detailDto.getNumberOfRequest());
+        supplyContractDetail.setQuantityReceived(detailDto.getQuantityReceived());
 //        supplyContractDetail.setDeliveryTime(detailDto.getDeliveryTime());
 //        supplyContractDetail.setPaymentTime(detailDto.getPaymentTime());
         supplyContractDetail.setUnit(unit);

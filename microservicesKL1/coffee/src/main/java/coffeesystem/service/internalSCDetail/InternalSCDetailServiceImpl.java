@@ -67,7 +67,9 @@ public class InternalSCDetailServiceImpl implements InternalSCDetailService{
                 internalSCDetailRepository.findByMaterialAndInternalSC(material, internalSC)
                         .orElseThrow(()-> new NotFoundException("Internal supply contract detail not found"));
 //        supplyContractDetail.setUnitPrice(detailDto.getUnitPrice());
-        internalSCDetail.setAmount(internalSCDetailRequestDto.getAmount());
+        internalSCDetail.setNumberOfRequest(internalSCDetailRequestDto.getNumberOfRequest());
+        internalSCDetail.setQuantityAllowed(internalSCDetailRequestDto.getQuantityAllowed());
+        internalSCDetail.setQuantityReceived(internalSCDetailRequestDto.getQuantityReceived());
 //        supplyContractDetail.setDeliveryTime(detailDto.getDeliveryTime());
 //        supplyContractDetail.setPaymentTime(detailDto.getPaymentTime());
         internalSCDetail.setUnit(unit);

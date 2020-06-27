@@ -12,6 +12,7 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class InventoryResponseDto {
+    private Integer id;
     private Integer materialId;
     private Integer branchShopId;
     private String firstDate;
@@ -23,6 +24,7 @@ public class InventoryResponseDto {
     private float backlogLastDate;
     //so luong ban duoc
     private float quantitySold;
+    private String status;
     private String materialName;
     private String branchShopName;
     private String unitName;

@@ -19,7 +19,8 @@ public class SupplyContractDetailResponseDto {
     private Integer supplyContractId;
 
     private float unitPrice;
-    private float amount;
+    private float numberOfRequest;
+    private float quantityReceived;
 //    private LocalDate deliveryTime;
 //    private LocalDate paymentTime;
     private String materialName;

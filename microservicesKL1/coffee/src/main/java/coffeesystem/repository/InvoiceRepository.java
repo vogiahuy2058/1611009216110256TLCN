@@ -25,6 +25,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Integer> {
     List<Invoice> findAllByEnableAndStatus(boolean enable, Integer status);
 
     Page<Invoice> findAllByEnableAndStatus(boolean enable, Integer status, Pageable pageable);
+
     @Query("select i from Invoice i where i.enable=?1 and i.status=?2 " +
             "and i.date>=?3 and i.date <=?4")
     Page<Invoice> findByEnableAndPaymentStatusAndDate(boolean enable, Integer status,

@@ -16,6 +16,7 @@ import java.util.Optional;
 public interface InventoryRepository extends JpaRepository<Inventory, InventoryId> {
     Optional<Inventory> findByInventoryIdIdMaterialAndInventoryIdIdBranchShopAndInventoryIdFirstDateAndEnable(
             Integer idMaterial, Integer idBranchShop, LocalDate firstDate, boolean enable);
+    Optional<Inventory> findByInventoryIdIdAndEnable(Integer id, boolean enable);
     Optional<Inventory> findByInventoryIdIdMaterialAndInventoryIdIdBranchShopAndInventoryIdFirstDateAndStatusAndEnable(
             Integer idMaterial, Integer idBranchShop, LocalDate firstDate, String status, boolean enable);
     List<Inventory> findByInventoryIdIdMaterialAndInventoryIdIdBranchShopAndEnable(
@@ -26,12 +27,14 @@ public interface InventoryRepository extends JpaRepository<Inventory, InventoryI
             " and ii.inventoryId.idBranchShop=?2 and ii.enable=?3)")
     Optional<Inventory> findByMaxFirstDateByIdMaterialAndIdBranchShopAndEnable(
             Integer idMaterial, Integer idBranchShop, boolean enable);
-//    @Query("select max(mmi.minMaxInventoryId.id) from MinMaxInventory mmi")
-//    Integer findMaxId();
+    @Query("select max(ii.inventoryId.id) from Inventory ii")
+    Integer findMaxId();
     List<Inventory> findAllByEnable(boolean enable);
     Page<Inventory> findAllByEnable(boolean enable, Pageable pageable);
-    List<Inventory> findByInventoryIdIdMaterial(Integer idMaterial);
-    List<Inventory> findByInventoryIdIdBranchShop(Integer idBranchShop);
+//    List<Inventory> findByInventoryIdIdMaterial(Integer idMaterial);
+//    List<Inventory> findByInventoryIdIdBranchShop(Integer idBranchShop);
     Page<Inventory> findByInventoryIdIdBranchShopAndEnable(
             Integer idBranchShop, boolean enable, Pageable pageable);
+    Page<Inventory> findByInventoryIdIdBranchShopAndStatusAndEnable(
+            Integer idBranchShop,String status, boolean enable, Pageable pageable);
 }

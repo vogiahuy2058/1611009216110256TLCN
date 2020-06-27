@@ -11,8 +11,10 @@ import java.time.LocalDate;
 public interface InvoiceService {
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER', 'ROLE_MANAGE_ALL_BRANCH')")
     ResponseDto getAllInvoiceByStatus(Integer status);
+    ResponseDto getAllInvoiceByStatusAndIdBranchShop(Integer status, Integer idBranchShop);
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER', 'ROLE_MANAGE_ALL_BRANCH')")
     ResponseDto getAllInvoiceStatus0();
+    ResponseDto getAllInvoiceStatus0ByBranchShop(Integer idBranchShop);
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER', 'ROLE_MANAGE_ALL_BRANCH')")
     ResponseDto createInvoice(InvoiceRequestDto invoiceRequestDto);
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER', 'ROLE_MANAGE_ALL_BRANCH')")
@@ -26,6 +28,8 @@ public interface InvoiceService {
     PagingResponseDto getAllInvoicePaging(int page, int size, String sort, String sortColumn);
     //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER', 'ROLE_MANAGE_ALL_BRANCH')")
     PagingResponseDto getAllInvoiceStatus2Paging(int page, int size, String sort, String sortColumn);
+    PagingResponseDto getAllInvoiceStatus2PagingByBranchShop(int page, int size, String sort,
+                                                             String sortColumn, Integer idBranchShop);
     //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER', 'ROLE_MANAGE_ALL_BRANCH')")
     ResponseDto getAllInvoiceByFilter(String fromDate, String toDate, Integer branchShopId);
     PagingResponseDto getAllInvoiceDateToDateByBranchShopPaging(int page, int size, String sort, String sortColumn,
