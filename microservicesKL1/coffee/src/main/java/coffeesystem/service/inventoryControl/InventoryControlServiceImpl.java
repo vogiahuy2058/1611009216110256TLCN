@@ -37,6 +37,54 @@ public class InventoryControlServiceImpl implements InventoryControlService{
     @Autowired
     BranchShopRepository branchShopRepository;
     public ResponseDto createInventoryControl(InventoryControlRequestDto requestDto){
+        if(!inventoryControlRepository.
+                findByInventoryIdIdMaterialAndInventoryIdIdBranchShopAndEnable(
+                        requestDto.getMaterialId(),
+                        requestDto.getBranchShopId(), true).isEmpty()){
+            throw new ExistException("Inventory control was existed");
+//            return new ResponseDto(HttpStatus.OK.value(), "Create successful", null);
+        }
+        else {
+//            if(!inventoryControlRepository.findByInventoryIdIdMaterialAndInventoryIdIdBranchShopAndEnable(requestDto.getMaterialId(),
+//                    requestDto.getBranchShopId(),true).isEmpty()){
+//                //status active nghia la nguyen lieu hien co so luong bao nhieu trong kho
+//                //chi co 1 nguyen lieu cua 1 chi nhanh co status = active
+//                //con lai cac dong khac status=completed
+//                List<InventoryControl> inventoryControlOld = inventoryControlRepository
+//                        .findAllByInventoryIdIdMaterialAndInventoryIdIdBranchShopAndStatusAndEnable(
+//                                requestDto.getMaterialId(), requestDto.getBranchShopId(), "active", true);
+//                inventoryControlOld.forEach(element->{
+//                    //set trang thai completed cho inventoryControl old
+//                    element.setStatus("completed");
+//                    inventoryControlRepository.save(element);
+//                });
+//
+//            }
+            InventoryControl inventoryControl = mapperObject.InventoryControlDtoToEntity(requestDto);
+            Material material = materialRepository.findByIdAndEnable(requestDto.getMaterialId(), true)
+                    .orElseThrow(()-> new NotFoundException("Material not found"));
+            BranchShop branchShop = branchShopRepository.findByIdAndEnable(requestDto.getBranchShopId(), true)
+                    .orElseThrow(()-> new NotFoundException("Branch shop not found"));
+            InventoryId inventoryId = new InventoryId();
+            inventoryId.setIdMaterial(requestDto.getMaterialId());
+            inventoryId.setIdBranchShop(requestDto.getBranchShopId());
+            inventoryId.setFirstDate(requestDto.getFirstDate());
+            Integer idOld = inventoryControlRepository.findMaxId();
+            if(idOld == null){
+                idOld = 0;
+            }
+            inventoryId.setId(idOld + 1);
+            inventoryControl.setInventoryId(inventoryId);
+            inventoryControl.setMaterial(material);
+            inventoryControl.setBranchShop(branchShop);
+            inventoryControlRepository.save(inventoryControl);
+
+            return new ResponseDto(HttpStatus.OK.value(), "Create successful", null);
+        }
+
+    }
+    public ResponseDto updateInventoryControl(InventoryControlRequestDto requestDto){
+
             if(!inventoryControlRepository.findByInventoryIdIdMaterialAndInventoryIdIdBranchShopAndEnable(requestDto.getMaterialId(),
                     requestDto.getBranchShopId(),true).isEmpty()){
                 //status active nghia la nguyen lieu hien co so luong bao nhieu trong kho
@@ -44,7 +92,7 @@ public class InventoryControlServiceImpl implements InventoryControlService{
                 //con lai cac dong khac status=completed
                 List<InventoryControl> inventoryControlOld = inventoryControlRepository
                         .findAllByInventoryIdIdMaterialAndInventoryIdIdBranchShopAndStatusAndEnable(
-                        requestDto.getMaterialId(), requestDto.getBranchShopId(), "active", true);
+                                requestDto.getMaterialId(), requestDto.getBranchShopId(), "active", true);
                 inventoryControlOld.forEach(element->{
                     //set trang thai completed cho inventoryControl old
                     element.setStatus("completed");
@@ -72,6 +120,7 @@ public class InventoryControlServiceImpl implements InventoryControlService{
             inventoryControlRepository.save(inventoryControl);
 
             return new ResponseDto(HttpStatus.OK.value(), "Create successful", null);
+
     }
 //    public ResponseDto editInventory(InventoryRequestDto inventoryRequestDto){
 //        //status = active moi sua duoc

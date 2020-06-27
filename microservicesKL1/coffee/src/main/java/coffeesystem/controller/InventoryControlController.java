@@ -22,6 +22,10 @@ public class InventoryControlController {
     public ResponseEntity<ResponseDto> createInventoryControl(@RequestBody InventoryControlRequestDto inventoryControlRequestDto){
         return ResponseEntity.ok(inventoryControlService.createInventoryControl(inventoryControlRequestDto));
     }
+    @PostMapping("/update")
+    public ResponseEntity<ResponseDto> UpdateInventoryControl(@RequestBody InventoryControlRequestDto inventoryControlRequestDto){
+        return ResponseEntity.ok(inventoryControlService.updateInventoryControl(inventoryControlRequestDto));
+    }
 
 //    @GetMapping("/get")
 ////    @HystrixCommand(fallbackMethod = "fallBackGetMinMaxInventoryById")
