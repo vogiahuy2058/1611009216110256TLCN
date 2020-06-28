@@ -89,7 +89,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-06-27T08:37:09+0700",
+    date = "2020-06-28T09:50:52+0700",
     comments = "version: 1.2.0.CR2, compiler: javac, environment: Java 1.8.0_231 (Oracle Corporation)"
 )
 @Component
@@ -1262,7 +1262,7 @@ public class MapperObjectImpl implements MapperObject {
     }
 
     @Override
-    public Inventory InventoryDtoToEntity1(InventoryRequestDto inventoryRequestDto) {
+    public Inventory InventoryDtoToEntity2(InventoryRequestDto inventoryRequestDto) {
         if ( inventoryRequestDto == null ) {
             return null;
         }
@@ -1271,7 +1271,6 @@ public class MapperObjectImpl implements MapperObject {
 
         inventory.setInventoryId( inventoryRequestDtoToInventoryId( inventoryRequestDto ) );
         inventory.setImportPeriod( inventoryRequestDto.getImportPeriod() );
-        inventory.setBacklogLastDate( inventoryRequestDto.getBacklogLastDate() );
 
         return inventory;
     }
@@ -1343,6 +1342,7 @@ public class MapperObjectImpl implements MapperObject {
         if ( idMaterial != null ) {
             inventoryControlResponseDto.setMaterialId( idMaterial );
         }
+        inventoryControlResponseDto.setStatus( inventoryControl.getStatus() );
         if ( inventoryControl.getCheckDate() != null ) {
             inventoryControlResponseDto.setCheckDate( DateTimeFormatter.ISO_LOCAL_DATE.format( inventoryControl.getCheckDate() ) );
         }

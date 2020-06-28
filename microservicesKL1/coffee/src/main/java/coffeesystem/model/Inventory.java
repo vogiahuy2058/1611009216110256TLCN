@@ -30,6 +30,8 @@ public class Inventory  extends Auditable<String>{
     private float backlogLastDate=0;
     //so luong ban duoc
     private float quantitySold=0;
+    private float costPrice;
+    private float priceSold;
     private String status = "active";
 
     @ManyToOne

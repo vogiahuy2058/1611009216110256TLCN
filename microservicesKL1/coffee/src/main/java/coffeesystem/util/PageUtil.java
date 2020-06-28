@@ -7,7 +7,7 @@ import org.springframework.data.domain.Sort;
 public class PageUtil {
     public static Pageable createPageable(int page, int size, String sort, String sortColumn) {
         Sort sortable;
-        if (sort.trim().equalsIgnoreCase("asc"))
+        if (sort.trim().equalsIgnoreCase("desc"))
             sortable = Sort.by(sortColumn).ascending();
         else
             sortable = Sort.by(sortColumn).descending();

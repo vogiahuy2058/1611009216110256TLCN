@@ -225,11 +225,17 @@ public interface MapperObject {
 //    @Mapping(target="inventoryId.firstDate",source = "firstDate")
 //    Inventory InventoryDtoToEntity(InventoryRequestDto inventoryRequestDto);
 //
-    @Mapping(target="inventoryId.idMaterial",source = "materialId")
+//    @Mapping(target="inventoryId.idMaterial",source = "materialId")
+//    @Mapping(target="inventoryId.idBranchShop",source = "branchShopId")
+//    @Mapping(target="inventoryId.firstDate",source = "firstDate")
+//    @Mapping(target="inventoryId.id",source = "id")
+//    Inventory InventoryDtoToEntity1(InventoryRequestDto inventoryRequestDto);
+
+        @Mapping(target="inventoryId.idMaterial",source = "materialId")
     @Mapping(target="inventoryId.idBranchShop",source = "branchShopId")
     @Mapping(target="inventoryId.firstDate",source = "firstDate")
     @Mapping(target="inventoryId.id",source = "id")
-    Inventory InventoryDtoToEntity1(InventoryRequestDto inventoryRequestDto);
+    Inventory InventoryDtoToEntity2(InventoryRequestDto inventoryRequestDto);
 
     @Mapping(target="materialId",source = "inventoryId.idMaterial")
     @Mapping(target="branchShopId",source = "inventoryId.idBranchShop")

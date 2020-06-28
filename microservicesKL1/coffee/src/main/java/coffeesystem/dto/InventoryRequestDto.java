@@ -20,8 +20,8 @@ public class InventoryRequestDto {
 //    private float backlogFirstDate;
     //so luong nhap trong ky
     private float importPeriod;
-    //ton cuoi ky
-    private float backlogLastDate;
+//    //ton cuoi ky
+//    private float backlogLastDate;
     //so luong ban duoc
 //    private float quantitySold;
 }

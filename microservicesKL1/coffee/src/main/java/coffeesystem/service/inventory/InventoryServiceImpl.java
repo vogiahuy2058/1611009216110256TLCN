@@ -38,6 +38,8 @@ public class InventoryServiceImpl implements InventoryService{
     @Autowired
     MaterialRepository materialRepository;
     @Autowired
+    MaterialPriceRepository materialPriceRepository;
+    @Autowired
     BranchShopRepository branchShopRepository;
     @Autowired
     InventoryControlRepository inventoryControlRepository;
@@ -77,11 +79,12 @@ public class InventoryServiceImpl implements InventoryService{
                         inventoryOld.getBacklogLastDate();
                 //set quantitySold cua inventory old
                 inventoryOld.setQuantitySold(quantitySold);
-
+                //set gia ban cua nguyen lieu=gia von * so luong ban
+                inventoryOld.setPriceSold(inventoryOld.getQuantitySold() * inventoryOld.getCostPrice());
                 inventoryRepository.save(inventoryOld);
                 backlogFirstDate = inventoryOld.getBacklogLastDate();
             }
-            Inventory inventory = mapperObject.InventoryDtoToEntity1(inventoryRequestDto);
+            Inventory inventory = mapperObject.InventoryDtoToEntity2(inventoryRequestDto);
             Material material = materialRepository.findByIdAndEnable(inventoryRequestDto.getMaterialId(), true)
                     .orElseThrow(()-> new NotFoundException("Material not found"));
             BranchShop branchShop = branchShopRepository.findByIdAndEnable(inventoryRequestDto.getBranchShopId(), true)
@@ -99,6 +102,11 @@ public class InventoryServiceImpl implements InventoryService{
             inventory.setMaterial(material);
             inventory.setBranchShop(branchShop);
             inventory.setBacklogFirstDate(backlogFirstDate);
+            //lay gia von cua nguyen lieu
+            MaterialPrice materialPrice = materialPriceRepository
+                    .findByMaterialPriceIdIdMaterialAndEnable(inventoryRequestDto.getMaterialId(), true)
+                    .orElseThrow(()-> new NotFoundException("Material is not have price"));
+            inventory.setCostPrice(materialPrice.getCostPrice());
             inventoryRepository.save(inventory);
 
             return new ResponseDto(HttpStatus.OK.value(), "Create successful", null);
@@ -114,7 +122,7 @@ public class InventoryServiceImpl implements InventoryService{
                         "active", true).
                 orElseThrow(()-> new NotFoundException("Inventory not found"));
         inventory.setImportPeriod(inventoryRequestDto.getImportPeriod());
-        inventory.setBacklogLastDate(inventory.getBacklogLastDate());
+//        inventory.setBacklogLastDate(inventory.getBacklogLastDate());
         inventoryRepository.save(inventory);
 
         return new ResponseDto(HttpStatus.OK.value(), "Edit successful", null);
@@ -136,6 +144,8 @@ public class InventoryServiceImpl implements InventoryService{
             inventoryResponseDto.setMaterialName(material.getName());
             inventoryResponseDto.setUnitName(material.getUnit().getName());
             inventoryResponseDto.setStatus(element.getStatus());
+            inventoryResponseDto.setCostPrice(element.getCostPrice());
+            inventoryResponseDto.setPriceSold(element.getPriceSold());
             inventoryResponseDto.setFirstDate(element.getInventoryId().getFirstDate()
                     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             if(element.getLastDate() == null){

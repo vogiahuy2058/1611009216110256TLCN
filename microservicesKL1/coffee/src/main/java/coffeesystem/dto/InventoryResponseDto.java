@@ -24,6 +24,8 @@ public class InventoryResponseDto {
     private float backlogLastDate;
     //so luong ban duoc
     private float quantitySold;
+    private float costPrice;
+    private float priceSold;
     private String status;
     private String materialName;
     private String branchShopName;

@@ -6,6 +6,7 @@ import coffeesystem.dto.ResponseDto;
 import coffeesystem.exception.NotFoundException;
 import coffeesystem.model.*;
 import coffeesystem.repository.*;
+import coffeesystem.service.InternalSC.InternalSCService;
 import coffeesystem.service.employee.EmployeeService;
 import coffeesystem.service.invoice.InvoiceService;
 import coffeesystem.service.minMaxInventory.MinMaxInventoryService;
@@ -48,6 +49,10 @@ public class BranchShopServiceImpl implements BranchShopService {
     MinMaxInventoryRepository minMaxInventoryRepository;
     @Autowired
     MinMaxInventoryService minMaxInventoryService;
+    @Autowired
+    InternalSCRepository internalSCRepository;
+    @Autowired
+    InternalSCService internalSCService;
     public ResponseDto createBranchShop(BranchShopDto branchShopDto){
         BranchShop branchShop = this.mapperObject.BranchShopDtoToEntity(branchShopDto);
         branchShopRepository.save(branchShop);
@@ -107,6 +112,11 @@ public class BranchShopServiceImpl implements BranchShopService {
         List<SupplyContract> supplyContracts = supplyContractRepository.findByBranchShopId(id);
         supplyContracts.forEach(element->{
             supplyContractService.deleteSupplyContract(element.getId());
+        });
+        //delete internal supply contract when branch shop was deleted
+        List<InternalSC> internalSCS = internalSCRepository.findByBranchShopId(id);
+        internalSCS.forEach(element->{
+            internalSCService.deleteInternalSC(element.getId());
         });
         //delete employee when branch shop was deleted
         List<Employee> employees = employeeRepository.findByBranchShopIdAndEnable(id, true);
