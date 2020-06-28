@@ -161,6 +161,22 @@ public class MinMaxInventoryServiceImpl implements MinMaxInventoryService{
         minMaxInventoryResponseDto.setUnitName(minMaxInventory.getMaterial().getUnit().getName());
         return new ResponseDto(HttpStatus.OK.value(), "Successful", minMaxInventoryResponseDto);
     }
+    //lay danh sach nguyen lieu da co min max
+    //chi lay id va name
+    @Transactional
+    public ResponseDto getMaterialHaveMinMaxByIdBranchShop(Integer idBranchShop){
+        List<MinMaxInventory> minMaxInventoryList = this.minMaxInventoryRepository.findByMinMaxInventoryIdIdBranchShopAndEnable(idBranchShop, true);
+        List<MaterialForMinMax> materialForMinMaxes = new ArrayList<>();
+        minMaxInventoryList.forEach(element->{
+            MaterialForMinMax materialForMinMax = new MaterialForMinMax();
+            Material material = materialRepository.findByIdAndEnable(element.getMinMaxInventoryId().getIdMaterial(), true)
+                    .orElseThrow(()-> new NotFoundException("Material id not found"));
+            materialForMinMax.setId(material.getId());
+            materialForMinMax.setName(material.getName());
+            materialForMinMaxes.add(materialForMinMax);
+        });
+        return new ResponseDto(HttpStatus.OK.value(), "All material have min max inventory", materialForMinMaxes);
+    }
     public ResponseDto deleteMinMaxInventory(Integer id){
         MinMaxInventory minMaxInventory = minMaxInventoryRepository.
                 findByMinMaxInventoryIdIdAndEnable(id, true)

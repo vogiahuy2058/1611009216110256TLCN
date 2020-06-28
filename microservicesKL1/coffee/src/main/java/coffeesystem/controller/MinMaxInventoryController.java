@@ -64,6 +64,11 @@ public class MinMaxInventoryController {
         return ResponseEntity.ok(this.minMaxInventoryService.getAllByBranchShopIdPaging(page, size, sort,
                 sortColumn, idBranchShop));
     }
+    @GetMapping("/get-material-have-min-max")
+//    @HystrixCommand(fallbackMethod = "fallBackGetAllMinMaxInventory")
+    public ResponseEntity<ResponseDto> getMaterialHaveMinMax(@RequestParam Integer idBranchShop){
+        return ResponseEntity.ok(this.minMaxInventoryService.getMaterialHaveMinMaxByIdBranchShop(idBranchShop));
+    }
     public ResponseEntity<PagingResponseDto> fallBackGetAllMinMaxInventoryPaging(int page, int size, String sort,
                                                                                   String sortColumn, Integer idBranchShop) {
         System.out.println("=======fallBackGetAllMinMaxInventoryPaging=========");
