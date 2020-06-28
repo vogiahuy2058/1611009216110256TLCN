@@ -32,6 +32,7 @@ public class SupplyContractDetail extends Auditable<String> {
     private float unitPrice;
     private float numberOfRequest;
     private float quantityReceived;
+    private boolean enable = true;
 
     @ManyToOne
     @JoinColumn(name = "unit_id")

@@ -31,6 +31,7 @@ public class InternalSCDetail extends Auditable<String>{
     private float numberOfRequest;
     private float quantityAllowed;
     private float quantityReceived;
+    private boolean enable = true;
 
     @ManyToOne
     @JoinColumn(name = "unit_id")

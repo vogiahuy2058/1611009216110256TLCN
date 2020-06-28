@@ -36,6 +36,7 @@ public class InventoryControlServiceImpl implements InventoryControlService{
     MaterialRepository materialRepository;
     @Autowired
     BranchShopRepository branchShopRepository;
+    DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public ResponseDto createInventoryControl(InventoryControlRequestDto requestDto){
         if(!inventoryControlRepository.
                 findByInventoryIdIdMaterialAndInventoryIdIdBranchShopAndEnable(
@@ -186,6 +187,19 @@ public class InventoryControlServiceImpl implements InventoryControlService{
             inventoryControlResponseDtos.add(inventoryControlResponseDto);
         });
         return new ResponseDto(HttpStatus.OK.value(), "All inventory", inventoryControlResponseDtos);
+    }
+
+
+    public ResponseDto deleteInventoryControl(Integer idMaterial, Integer idBranchShop, String firstDate){
+        LocalDate newFirstDate = LocalDate.parse(firstDate, dtf);
+        InventoryControl inventoryControl = this.inventoryControlRepository
+                .findByIdMaterialAndIdBranchShopAndFirstDateAndStatusActiveAndEnable(idMaterial,idBranchShop,
+                        newFirstDate, true)
+                .orElseThrow(()-> new NotFoundException("Inventory control not found"));
+        inventoryControl.setEnable(false);
+        inventoryControlRepository.save(inventoryControl);
+
+        return new ResponseDto(HttpStatus.OK.value(), "Delete successful", null);
     }
     @Transactional
     public ResponseDto getAllInventoryControl(){

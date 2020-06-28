@@ -5,6 +5,7 @@ import coffeesystem.model.SupplyContract;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
@@ -16,4 +17,6 @@ public interface InternalSCRepository extends JpaRepository<InternalSC, Integer>
     List<InternalSC> findByBranchShopId(Integer id);
     List<InternalSC> findAllByEnableAndStatus(boolean enable, Integer status);
     Optional<InternalSC> findByIdAndEnableAndStatus(Integer id, boolean enable, Integer status);
+    @Query("select max(isc.id) from InternalSC isc")
+    Integer findMaxId();
 }

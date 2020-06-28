@@ -125,5 +125,14 @@ public class InternalSCServiceImpl implements InternalSCService{
         internalSCRepository.save(internalSC);
         return new ResponseDto(HttpStatus.OK.value(), "Edit internal supply contract successful", null);
     }
+    @Override
+    @Transactional
+    public ResponseDto getMaxIdInternalSC() {
+        Integer idOld = internalSCRepository.findMaxId();
+        if(idOld == null){
+            idOld = 0;
+        }
+        return new ResponseDto(HttpStatus.OK.value(), "Max id", idOld);
+    }
 
 }

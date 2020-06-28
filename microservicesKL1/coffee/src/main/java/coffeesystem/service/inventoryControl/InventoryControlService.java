@@ -9,4 +9,5 @@ public interface InventoryControlService {
     ResponseDto getAllInventoryControlStatusActive();
     ResponseDto getAllInventoryControlByIdBranchShopStatusActive(Integer idBranchShop);
     ResponseDto getAllInventoryControl();
+    ResponseDto deleteInventoryControl(Integer idMaterial, Integer idBranchShop, String firstDate);
 }

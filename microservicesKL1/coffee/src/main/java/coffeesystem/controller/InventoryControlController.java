@@ -60,6 +60,14 @@ public class InventoryControlController {
     public ResponseEntity<ResponseDto> getAllInventoryControl(){
         return ResponseEntity.ok(this.inventoryControlService.getAllInventoryControl());
     }
+
+    @GetMapping("/delete")
+//    @HystrixCommand(fallbackMethod = "fallBackGetAllMinMaxInventory")
+    public ResponseEntity<ResponseDto> deleteInventoryControl(@RequestParam Integer idMaterial,
+                                                              @RequestParam Integer idBranchShop,
+                                                              @RequestParam String firstDate){
+        return ResponseEntity.ok(this.inventoryControlService.deleteInventoryControl(idMaterial, idBranchShop, firstDate));
+    }
 //    public ResponseEntity<ResponseDto> fallBackGetAllMinMaxInventory() {
 //        System.out.println("=======fallBackGetAllMinMaxInventory=========");
 //        return new ResponseEntity<ResponseDto>(HttpStatus.OK);

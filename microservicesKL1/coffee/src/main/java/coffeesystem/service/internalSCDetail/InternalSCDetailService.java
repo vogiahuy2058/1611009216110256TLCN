@@ -13,6 +13,7 @@ public interface InternalSCDetailService {
     ResponseDto editInternalSCDetail(InternalSCDetailRequestDto internalSCDetailRequestDto);
     ResponseDto editListInternalSCDetail(List<InternalSCDetailRequestDto> internalSCDetailRequestDtoList);
     ResponseDto deleteInternalSCDetail(Integer internalSCId, Integer materialId, Integer id);
+    ResponseDto deleteInternalSCDetail(Integer id);
     ResponseDto getInternalSCDetailByInternalSCId(Integer internalSCId);
     PagingResponseDto getInternalSCDetailByInternalSCPaging(
             int page, int size, String sort, String sortColumn, Integer internalSCId);

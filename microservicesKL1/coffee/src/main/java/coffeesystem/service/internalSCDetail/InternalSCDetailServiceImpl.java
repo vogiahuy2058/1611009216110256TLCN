@@ -64,7 +64,7 @@ public class InternalSCDetailServiceImpl implements InternalSCDetailService{
         Unit unit = unitRepository.findByNameAndEnable(internalSCDetailRequestDto.getUnitName(), true)
                 .orElseThrow(()-> new NotFoundException("Unit not found"));
         InternalSCDetail internalSCDetail =
-                internalSCDetailRepository.findByMaterialAndInternalSC(material, internalSC)
+                internalSCDetailRepository.findByMaterialAndInternalSCAndEnable(material, internalSC, true)
                         .orElseThrow(()-> new NotFoundException("Internal supply contract detail not found"));
 //        supplyContractDetail.setUnitPrice(detailDto.getUnitPrice());
         internalSCDetail.setNumberOfRequest(internalSCDetailRequestDto.getNumberOfRequest());
@@ -91,7 +91,7 @@ public class InternalSCDetailServiceImpl implements InternalSCDetailService{
                 .orElseThrow(()-> new NotFoundException("Internal supply contract not found"));
 
         InternalSCDetail internalSCDetail = internalSCDetailRepository.
-                findByMaterialAndInternalSCAndInternalSCDetailIdId(material, internalSC, id)
+                findByMaterialAndInternalSCAndInternalSCDetailIdIdAndEnable(material, internalSC, id, true)
                 .orElseThrow(()-> new NotFoundException("Internal supply contract detail detail not found"));
         internalSCDetailRepository.delete(internalSCDetail);
         return new ResponseDto(HttpStatus.OK.value(), "Delete internal supply contract detail successful", null);
@@ -102,7 +102,7 @@ public class InternalSCDetailServiceImpl implements InternalSCDetailService{
     public ResponseDto getInternalSCDetailByInternalSCId(Integer internalSCId) {
         InternalSC internalSC = internalSCRepository.findByIdAndEnable(internalSCId, true)
                 .orElseThrow(()-> new NotFoundException("Internal supply contract not found"));
-        List<InternalSCDetail> internalSCDetailList = internalSCDetailRepository.findByInternalSC(internalSC);
+        List<InternalSCDetail> internalSCDetailList = internalSCDetailRepository.findByInternalSCAndEnable(internalSC, true);
         List<InternalSCDetailResponseDto> internalSCDetailResponseDtos = new ArrayList<>();
         Integer serial = 0;
         for (InternalSCDetail element : internalSCDetailList) {
@@ -126,7 +126,7 @@ public class InternalSCDetailServiceImpl implements InternalSCDetailService{
         Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
         List<InternalSCDetailResponseDto> internalSCDetailResponseDtos = new ArrayList<>();
         Page<InternalSCDetail> internalSCDetailPage = internalSCDetailRepository.
-                findAllByInternalSC(internalSC, pageable);
+                findAllByInternalSCAndEnable(internalSC,true, pageable);
         Integer serial = 0;
 
         for (InternalSCDetail element : internalSCDetailPage) {
@@ -156,7 +156,7 @@ public class InternalSCDetailServiceImpl implements InternalSCDetailService{
                 .orElseThrow(()-> new NotFoundException("Internal supply contract has id: " + internalSCId + " and status: "
                         + status + " not found"));
         List<InternalSCDetail> internalSCDetailList =
-                internalSCDetailRepository.findByInternalSC(internalSC);
+                internalSCDetailRepository.findByInternalSCAndEnable(internalSC, true);
         List<InternalSCDetailResponseDto> internalSCDetailResponseDtos = new ArrayList<>();
         Integer serial = 0;
         for (InternalSCDetail element : internalSCDetailList) {
@@ -175,7 +175,7 @@ public class InternalSCDetailServiceImpl implements InternalSCDetailService{
     @Override
     @Transactional
     public ResponseDto getInternalSCDetailByID(Integer id) {
-        InternalSCDetail internalSCDetail = internalSCDetailRepository.findByInternalSCDetailIdId(id)
+        InternalSCDetail internalSCDetail = internalSCDetailRepository.findByInternalSCDetailIdIdAndEnable(id, true)
                 .orElseThrow(()-> new NotFoundException("Id not found"));
         InternalSCDetailResponseDto internalSCDetailResponseDto = mapperObject.InternalSCDetailEntityToDto(internalSCDetail);
         internalSCDetailResponseDto.setMaterialId(internalSCDetail.getInternalSCDetailId().getMaterialId());
@@ -185,6 +185,13 @@ public class InternalSCDetailServiceImpl implements InternalSCDetailService{
         internalSCDetailResponseDto.setSerial(1);
 //        supplyContractDetailResponseDto.setUnitName(supplyContractDetail.getUnit().getName());
         return new ResponseDto(HttpStatus.OK.value(), "Successful", internalSCDetailResponseDto );
+    }
+    public ResponseDto deleteInternalSCDetail(Integer id){
+        InternalSCDetail internalSCDetail = internalSCDetailRepository.findByInternalSCDetailIdIdAndEnable(id, true)
+                .orElseThrow(()-> new NotFoundException("Id internal supply contract not found!"));
+        internalSCDetail.setEnable(false);
+        internalSCDetailRepository.save(internalSCDetail);
+        return new ResponseDto(HttpStatus.OK.value(), "Delete internal supply contract detail successful", null);
     }
 
     @Override

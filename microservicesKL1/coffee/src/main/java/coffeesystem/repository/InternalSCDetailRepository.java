@@ -13,13 +13,14 @@ import java.util.List;
 import java.util.Optional;
 @Transactional(rollbackFor = Exception.class)
 public interface InternalSCDetailRepository extends JpaRepository<InternalSCDetail, InternalSCDetailId> {
-    Optional<InternalSCDetail> findByMaterialAndInternalSC
-            (Material material, InternalSC internalSC);
+    Optional<InternalSCDetail> findByMaterialAndInternalSCAndEnable
+            (Material material, InternalSC internalSC, boolean enable);
     @Query("select max(iscd.internalSCDetailId.id) from InternalSCDetail iscd")
     Integer findMaxId();
-    List<InternalSCDetail> findByInternalSC(InternalSC internalSC);
-    Optional<InternalSCDetail> findByMaterialAndInternalSCAndInternalSCDetailIdId(
-            Material material, InternalSC internalSC, Integer id);
-    Page<InternalSCDetail> findAllByInternalSC(InternalSC internalSC, Pageable pageable);
+    List<InternalSCDetail> findByInternalSCAndEnable(InternalSC internalSC, boolean enable);
+    Optional<InternalSCDetail> findByMaterialAndInternalSCAndInternalSCDetailIdIdAndEnable(
+            Material material, InternalSC internalSC, Integer id, boolean enable);
+    Page<InternalSCDetail> findAllByInternalSCAndEnable(InternalSC internalSC, boolean enable, Pageable pageable);
     Optional<InternalSCDetail> findByInternalSCDetailIdId(Integer id);
+    Optional<InternalSCDetail> findByInternalSCDetailIdIdAndEnable(Integer id, boolean enable);
 }

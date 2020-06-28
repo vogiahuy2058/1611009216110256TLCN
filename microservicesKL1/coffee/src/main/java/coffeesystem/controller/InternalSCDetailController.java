@@ -33,10 +33,8 @@ public class InternalSCDetailController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<ResponseDto> deleteSInternalSCDetail(@RequestParam Integer internalSCId,
-                                                                  @RequestParam Integer materialId,
-                                                                  @RequestParam Integer id){
-        return ResponseEntity.ok(internalSCDetailService.deleteInternalSCDetail(internalSCId, materialId, id));
+    public ResponseEntity<ResponseDto> deleteSInternalSCDetail(@RequestParam Integer id){
+        return ResponseEntity.ok(internalSCDetailService.deleteInternalSCDetail(id));
     }
     @GetMapping("/get-by-id-supplycontract")
 //    @HystrixCommand(fallbackMethod = "fallBackGetInternalSCDetailByInternalSCId")
