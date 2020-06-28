@@ -43,6 +43,12 @@ public class InventoryController {
                                                                                            @RequestParam Integer idBranchShop){
         return ResponseEntity.ok(this.inventoryService.getByIdMaterialAndIdBranchShop(idMaterial, idBranchShop));
     }
+    @GetMapping("/get-by-material-branchshop-active")
+    //    @HystrixCommand(fallbackMethod = "fallBackGetMinMaxInventoryById")
+    public ResponseEntity<ResponseDto> getInventoryByMaterialIdAndBranchShopIdAndStatusActive(@RequestParam Integer idMaterial,
+                                                                               @RequestParam Integer idBranchShop){
+        return ResponseEntity.ok(this.inventoryService.getByIdMaterialAndIdBranchShopStatusActive(idMaterial, idBranchShop));
+    }
     @GetMapping("/get-all")
 //    @HystrixCommand(fallbackMethod = "fallBackGetAllMinMaxInventory")
     public ResponseEntity<ResponseDto> getAllInventory(){

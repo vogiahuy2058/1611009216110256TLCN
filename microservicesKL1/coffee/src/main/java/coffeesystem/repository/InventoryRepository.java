@@ -21,6 +21,8 @@ public interface InventoryRepository extends JpaRepository<Inventory, InventoryI
             Integer idMaterial, Integer idBranchShop, LocalDate firstDate, String status, boolean enable);
     List<Inventory> findByInventoryIdIdMaterialAndInventoryIdIdBranchShopAndEnable(
             Integer idMaterial, Integer idBranchShop, boolean enable);
+    List<Inventory> findByInventoryIdIdMaterialAndInventoryIdIdBranchShopAndStatusAndEnable(
+            Integer idMaterial, Integer idBranchShop,  String status, boolean enable);
     @Query("select iii from Inventory iii where iii.inventoryId.idMaterial=?1 " +
             "and iii.inventoryId.idBranchShop=?2 and iii.enable=?3 and iii.inventoryId.firstDate=" +
             "(select max(ii.inventoryId.firstDate) from Inventory ii where ii.inventoryId.idMaterial=?1" +

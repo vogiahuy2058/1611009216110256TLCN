@@ -306,6 +306,37 @@ public class InventoryServiceImpl implements InventoryService{
         return new ResponseDto(HttpStatus.OK.value(), "All inventory", inventoryResponseDtos);
     }
     @Transactional
+    public ResponseDto getByIdMaterialAndIdBranchShopStatusActive(Integer materialId, Integer branchShopId){
+        List<Inventory> inventoryList = this.inventoryRepository.findByInventoryIdIdMaterialAndInventoryIdIdBranchShopAndStatusAndEnable(
+                materialId, branchShopId, "active",true);
+        List<InventoryResponseDto> inventoryResponseDtos = new ArrayList<>();
+        inventoryList.forEach(element->{
+            InventoryResponseDto inventoryResponseDto = mapperObject.InventoryEntityToDto(element);
+            Material material = materialRepository.findByIdAndEnable(element.getInventoryId().getIdMaterial(), true)
+                    .orElseThrow(()-> new NotFoundException("Material id not found"));
+            BranchShop branchShop = branchShopRepository.findByIdAndEnable(element.getInventoryId().getIdBranchShop(), true)
+                    .orElseThrow(()-> new NotFoundException("Branch shop id not found"));
+            inventoryResponseDto.setId(element.getInventoryId().getId());
+            inventoryResponseDto.setMaterialId(element.getInventoryId().getIdMaterial());
+            inventoryResponseDto.setBranchShopId(element.getInventoryId().getIdBranchShop());
+            inventoryResponseDto.setBranchShopName(branchShop.getName());
+            inventoryResponseDto.setMaterialName(material.getName());
+            inventoryResponseDto.setUnitName(material.getUnit().getName());
+            inventoryResponseDto.setStatus(element.getStatus());
+            inventoryResponseDto.setFirstDate(element.getInventoryId().getFirstDate()
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            if(element.getLastDate() == null){
+                inventoryResponseDto.setLastDate("null");
+            }
+            else {
+                inventoryResponseDto.setLastDate(element.getLastDate()
+                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            }
+            inventoryResponseDtos.add(inventoryResponseDto);
+        });
+        return new ResponseDto(HttpStatus.OK.value(), "All inventory", inventoryResponseDtos);
+    }
+    @Transactional
     public ResponseDto getByIdMaterialAndIdBranchShopAndFirstDate(
             Integer materialId, Integer branchShopId, String firstDate){
                 LocalDate newFirstDate = LocalDate.parse(firstDate, dtf);
