@@ -162,6 +162,32 @@ public class InventoryControlServiceImpl implements InventoryControlService{
         return new ResponseDto(HttpStatus.OK.value(), "All inventory", inventoryControlResponseDtos);
     }
     @Transactional
+    public ResponseDto getAllInventoryControlByIdBranchShopStatusActive(Integer idBranchShop){
+        List<InventoryControl> inventoryControlList = this.inventoryControlRepository
+                .findAllByInventoryIdIdBranchShopAndStatusAndEnable(idBranchShop, "active", true);
+        List<InventoryControlResponseDto> inventoryControlResponseDtos = new ArrayList<>();
+        inventoryControlList.forEach(element->{
+            InventoryControlResponseDto inventoryControlResponseDto = mapperObject.InventoryControlEntityToDto(element);
+            Material material = materialRepository.findByIdAndEnable(element.getInventoryId().getIdMaterial(), true)
+                    .orElseThrow(()-> new NotFoundException("Material id not found"));
+            BranchShop branchShop = branchShopRepository.findByIdAndEnable(element.getInventoryId().getIdBranchShop(), true)
+                    .orElseThrow(()-> new NotFoundException("Branch shop id not found"));
+            inventoryControlResponseDto.setId(element.getInventoryId().getId());
+            inventoryControlResponseDto.setMaterialId(element.getInventoryId().getIdMaterial());
+            inventoryControlResponseDto.setBranchShopId(element.getInventoryId().getIdBranchShop());
+            inventoryControlResponseDto.setBranchShopName(branchShop.getName());
+            inventoryControlResponseDto.setMaterialName(material.getName());
+            inventoryControlResponseDto.setUnitName(material.getUnit().getName());
+            inventoryControlResponseDto.setStatus(element.getStatus());
+            inventoryControlResponseDto.setFirstDate(element.getInventoryId().getFirstDate()
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            inventoryControlResponseDto.setCheckDate(element.getCheckDate()
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            inventoryControlResponseDtos.add(inventoryControlResponseDto);
+        });
+        return new ResponseDto(HttpStatus.OK.value(), "All inventory", inventoryControlResponseDtos);
+    }
+    @Transactional
     public ResponseDto getAllInventoryControl(){
         List<InventoryControl> inventoryControlList = this.inventoryControlRepository.findAllByEnable(true);
         List<InventoryControlResponseDto> inventoryControlResponseDtos = new ArrayList<>();

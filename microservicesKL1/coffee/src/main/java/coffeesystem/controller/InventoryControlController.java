@@ -50,6 +50,11 @@ public class InventoryControlController {
     public ResponseEntity<ResponseDto> getAllInventoryControlByStatusActive(){
         return ResponseEntity.ok(this.inventoryControlService.getAllInventoryControlStatusActive());
     }
+    @GetMapping("/get-all-id-branch-shop-status-active")
+//    @HystrixCommand(fallbackMethod = "fallBackGetAllMinMaxInventory")
+    public ResponseEntity<ResponseDto> getAllInventoryControlByIdBranchShopStatusActive(@RequestParam Integer idBranchShop){
+        return ResponseEntity.ok(this.inventoryControlService.getAllInventoryControlByIdBranchShopStatusActive(idBranchShop));
+    }
     @GetMapping("/get-all")
 //    @HystrixCommand(fallbackMethod = "fallBackGetAllMinMaxInventory")
     public ResponseEntity<ResponseDto> getAllInventoryControl(){
