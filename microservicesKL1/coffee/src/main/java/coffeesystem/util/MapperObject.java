@@ -207,10 +207,15 @@ public interface MapperObject {
     @Mapping(target="branchShop",source = "branchShop.name")
     InternalSCResponseDto InternalSCEntityToDto(InternalSC internalSC);
 
+//    @Mapping(target="internalSCDetailId.materialId",source = "materialId")
+//    @Mapping(target="internalSCDetailId.internalSCId",source = "internalSCId")
+//    @Mapping(target="internalSCDetailId.id",source = "id")
+//    InternalSCDetail InternalSCDetailDtoEntity(InternalSCDetailRequestDto internalSCDetailRequestDto);
+
     @Mapping(target="internalSCDetailId.materialId",source = "materialId")
     @Mapping(target="internalSCDetailId.internalSCId",source = "internalSCId")
     @Mapping(target="internalSCDetailId.id",source = "id")
-    InternalSCDetail InternalSCDetailDtoEntity(InternalSCDetailRequestDto internalSCDetailRequestDto);
+    InternalSCDetail InternalSCDetailDtoEntity1(InternalSCDetailRequestDto internalSCDetailRequestDto);
 
     @Mapping(target="materialId",source = "internalSCDetailId.materialId")
     @Mapping(target="internalSCId",source = "internalSCDetailId.internalSCId")

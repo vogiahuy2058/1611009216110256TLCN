@@ -25,12 +25,12 @@ public class InternalSC extends Auditable<String>{
     private boolean enable = true;
 
     //status=0: chua xu ly
-    //status=1: khong duyet yeu cau
-    //status=2: duyet yeu cau
-    //status=3: da in phieu xuat
-    //status=4: da xuat kho tong
-    //status=5: da nhan hang
-    //status=6: hoan thanh
+    //status=1: da gui
+    //status=2: da phan bo
+    //status=3: khong duyet yeu cau
+    //status=4: duyet yeu cau
+    //status=5: da xuat kho tong
+    //status=6: da nhan hang
     private Integer status;
     private LocalDate deliveryTime;
 

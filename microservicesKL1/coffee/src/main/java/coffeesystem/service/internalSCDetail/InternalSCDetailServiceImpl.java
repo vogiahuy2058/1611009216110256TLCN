@@ -32,7 +32,7 @@ public class InternalSCDetailServiceImpl implements InternalSCDetailService{
     UnitRepository unitRepository;
     public ResponseDto createInternalSCDetail(InternalSCDetailRequestDto internalSCDetailRequestDto){
         InternalSCDetail internalSCDetail =
-                this.mapperObject.InternalSCDetailDtoEntity(internalSCDetailRequestDto);
+                this.mapperObject.InternalSCDetailDtoEntity1(internalSCDetailRequestDto);
         InternalSC internalSC = internalSCRepository.findByIdAndEnable(
                 internalSCDetailRequestDto.getInternalSCId(), true)
                 .orElseThrow(()-> new NotFoundException("Internal supply contract not found"));

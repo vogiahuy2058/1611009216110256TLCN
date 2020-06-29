@@ -89,7 +89,7 @@ import org.springframework.stereotype.Component;
 
 @Generated(
     value = "org.mapstruct.ap.MappingProcessor",
-    date = "2020-06-28T09:50:52+0700",
+    date = "2020-06-29T14:55:30+0700",
     comments = "version: 1.2.0.CR2, compiler: javac, environment: Java 1.8.0_231 (Oracle Corporation)"
 )
 @Component
@@ -1189,7 +1189,7 @@ public class MapperObjectImpl implements MapperObject {
     }
 
     @Override
-    public InternalSCDetail InternalSCDetailDtoEntity(InternalSCDetailRequestDto internalSCDetailRequestDto) {
+    public InternalSCDetail InternalSCDetailDtoEntity1(InternalSCDetailRequestDto internalSCDetailRequestDto) {
         if ( internalSCDetailRequestDto == null ) {
             return null;
         }
@@ -1302,6 +1302,8 @@ public class MapperObjectImpl implements MapperObject {
         inventoryResponseDto.setImportPeriod( inventory.getImportPeriod() );
         inventoryResponseDto.setBacklogLastDate( inventory.getBacklogLastDate() );
         inventoryResponseDto.setQuantitySold( inventory.getQuantitySold() );
+        inventoryResponseDto.setCostPrice( inventory.getCostPrice() );
+        inventoryResponseDto.setPriceSold( inventory.getPriceSold() );
         inventoryResponseDto.setStatus( inventory.getStatus() );
 
         return inventoryResponseDto;
