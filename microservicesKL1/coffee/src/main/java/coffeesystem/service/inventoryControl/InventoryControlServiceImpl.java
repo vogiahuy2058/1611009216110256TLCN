@@ -165,7 +165,7 @@ public class InventoryControlServiceImpl implements InventoryControlService{
     @Transactional
     public ResponseDto getAllInventoryControlByIdBranchShopStatusActive(Integer idBranchShop){
         List<InventoryControl> inventoryControlList = this.inventoryControlRepository
-                .findAllByInventoryIdIdBranchShopAndStatusAndEnable(idBranchShop, "active", true);
+                .findAllByInventoryIdIdBranchShopAndStatusAndEnableOrderByMaterialDesc(idBranchShop, "active", true);
         List<InventoryControlResponseDto> inventoryControlResponseDtos = new ArrayList<>();
         inventoryControlList.forEach(element->{
             InventoryControlResponseDto inventoryControlResponseDto = mapperObject.InventoryControlEntityToDto(element);
@@ -203,7 +203,7 @@ public class InventoryControlServiceImpl implements InventoryControlService{
     }
     @Transactional
     public ResponseDto getAllInventoryControl(){
-        List<InventoryControl> inventoryControlList = this.inventoryControlRepository.findAllByEnable(true);
+        List<InventoryControl> inventoryControlList = this.inventoryControlRepository.findAllByEnableOrderByMaterialDesc(true);
         List<InventoryControlResponseDto> inventoryControlResponseDtos = new ArrayList<>();
         inventoryControlList.forEach(element->{
             InventoryControlResponseDto inventoryControlResponseDto = mapperObject.InventoryControlEntityToDto(element);
