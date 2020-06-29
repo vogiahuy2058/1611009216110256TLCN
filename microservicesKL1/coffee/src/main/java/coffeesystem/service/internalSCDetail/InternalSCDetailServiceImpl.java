@@ -1,6 +1,7 @@
 package coffeesystem.service.internalSCDetail;
 
 import coffeesystem.dto.*;
+import coffeesystem.exception.ExistException;
 import coffeesystem.exception.NotFoundException;
 import coffeesystem.model.*;
 import coffeesystem.model.embedding.InternalSCDetailId;
@@ -31,13 +32,19 @@ public class InternalSCDetailServiceImpl implements InternalSCDetailService{
     @Autowired
     UnitRepository unitRepository;
     public ResponseDto createInternalSCDetail(InternalSCDetailRequestDto internalSCDetailRequestDto){
-        InternalSCDetail internalSCDetail =
-                this.mapperObject.InternalSCDetailDtoEntity1(internalSCDetailRequestDto);
         InternalSC internalSC = internalSCRepository.findByIdAndEnable(
                 internalSCDetailRequestDto.getInternalSCId(), true)
                 .orElseThrow(()-> new NotFoundException("Internal supply contract not found"));
         Material material = materialRepository.findByIdAndEnable(internalSCDetailRequestDto.getMaterialId(), true)
                 .orElseThrow(()-> new NotFoundException("Material not found"));
+        if(internalSCDetailRepository.findByMaterialAndInternalSCAndEnable(material,
+                internalSC, true).isPresent()){
+            throw new ExistException("Internal supply contract detail was existed");
+//            return new ResponseDto(HttpStatus.OK.value(), "Create successful", null);
+        }
+        InternalSCDetail internalSCDetail =
+                this.mapperObject.InternalSCDetailDtoEntity1(internalSCDetailRequestDto);
+
         Unit unit = unitRepository.findByNameAndEnable(internalSCDetailRequestDto.getUnitName(), true)
                 .orElseThrow(()-> new NotFoundException("Unit not found"));
         InternalSCDetailId internalSCDetailId = new InternalSCDetailId();
