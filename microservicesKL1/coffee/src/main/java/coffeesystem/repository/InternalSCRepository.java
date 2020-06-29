@@ -14,6 +14,11 @@ public interface InternalSCRepository extends JpaRepository<InternalSC, Integer>
     List<InternalSC> findAllByEnable(boolean enable);
     Page<InternalSC> findAllByEnable(boolean enable, Pageable pageable);
     Optional<InternalSC> findByIdAndEnable(Integer id, boolean enable);
+//    @Query("select max(ii.id) from InternalSC ii  where ii in " +
+//            "(SELECT isc FROM InternalSC isc where isc.branchShop.id=?1 and isc.enable=?2 and isc.status=?3) " )
+//    Optional<InternalSC> findInternalSCHaveMaxIdByBranchShopIdAndEnableAndStatus(Integer id, boolean enable, Integer status);
+    @Query("select max(ii.id) from InternalSC ii  where ii.branchShop.id=?1 and ii.enable=?2 and ii.status=?3" )
+    Integer findMaxIdByBranchShopIdAndEnableAndStatus(Integer id, boolean enable, Integer status);
     List<InternalSC> findByBranchShopId(Integer id);
     List<InternalSC> findAllByEnableAndStatus(boolean enable, Integer status);
     Optional<InternalSC> findByIdAndEnableAndStatus(Integer id, boolean enable, Integer status);

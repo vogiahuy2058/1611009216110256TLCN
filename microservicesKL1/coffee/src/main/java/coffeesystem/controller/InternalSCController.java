@@ -56,6 +56,13 @@ public class InternalSCController {
         System.out.println("=======fallBackGetInternalSCById=========");
         return new ResponseEntity<ResponseDto>(HttpStatus.OK);
     }
+    @GetMapping("/get-max-id-by-bs-and-status")
+//    @HystrixCommand(fallbackMethod = "fallBackGetInternalSCById")
+    public ResponseEntity<ResponseDto> getInternalSCHaveMaxIdByIdBranchShopAndStatus(
+            @RequestParam Integer idBranchShop,
+            @RequestParam Integer status){
+        return ResponseEntity.ok(internalSCService.getInternalSCHaveMaxIdByIdBranchShopAndStatus(idBranchShop, status));
+    }
     @GetMapping("/get-all-date-to-date")
     @HystrixCommand(fallbackMethod = "fallBackGetInternalSCDateToDate")
     public ResponseEntity<ResponseDto> getAllInternalSCDateToDate(@RequestParam String fromDate,

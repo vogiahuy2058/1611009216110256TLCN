@@ -20,4 +20,5 @@ public interface InternalSCService {
     //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_MANAGE_ALL_BRANCH')")
     ResponseDto getAllInternalSCDateToDate(String fromDate, String toDate);
     ResponseDto getMaxIdInternalSC();
+    ResponseDto getInternalSCHaveMaxIdByIdBranchShopAndStatus(Integer idBranchShop, Integer status);
 }

@@ -67,6 +67,25 @@ public class InternalSCServiceImpl implements InternalSCService{
     }
 
     @Transactional
+    public ResponseDto getInternalSCHaveMaxIdByIdBranchShopAndStatus(Integer idBranchShop, Integer status){
+//        InternalSC internalSC = internalSCRepository
+//                .findInternalSCHaveMaxIdByBranchShopIdAndEnableAndStatus(idBranchShop, true, status)
+//                .orElseThrow(()->
+//                        new NotFoundException("Not found internal supply contract have id branch shop = " +
+//                                idBranchShop + " and status = " + status));
+        Integer maxId = internalSCRepository.findMaxIdByBranchShopIdAndEnableAndStatus(idBranchShop,true, status);
+        InternalSC internalSC = internalSCRepository.findByIdAndEnable(maxId, true)
+                .orElseThrow(()-> new NotFoundException("Max id not found"));
+        InternalSCResponseDto internalSCResponseDto =
+                mapperObject.InternalSCEntityToDto(internalSC);
+        internalSCResponseDto.setDate(internalSC.getDateCreate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        internalSCResponseDto.setDeliveryTime(internalSC.getDeliveryTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        internalSCResponseDto.setBranchShop(internalSC.getBranchShop().getName());
+        return new ResponseDto(HttpStatus.OK.value(), "Internal supply contract have id branch shop = " +
+                idBranchShop + " and status = " + status, internalSCResponseDto);
+    }
+
+    @Transactional
     public PagingResponseDto getAllInternalSCPaging(int page, int size, String sort, String sortColumn){
         Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
         List<InternalSCResponseDto> internalSCResponseDtos = new ArrayList<>();
