@@ -109,7 +109,7 @@ public class SupplyContractDetailServiceImpl implements SupplyContractDetailServ
             supplyContractDetailResponseDto.setMaterialId(element.getSupplyContractDetailId().getMaterialId());
             supplyContractDetailResponseDto.setSupplyContractId(element.getSupplyContractDetailId().getSupplyContractId());
             supplyContractDetailResponseDto.setMaterialName(element.getMaterial().getName());
-//            supplyContractDetailResponseDto.setUnitName(element.getUnit().getName());
+            supplyContractDetailResponseDto.setUnitName(element.getUnit().getName());
             supplyContractDetailResponseDto.setSerial(serial + 1);
             serial = serial + 1;
             supplyContractDetailResponseDtos.add(supplyContractDetailResponseDto);
@@ -132,7 +132,7 @@ public class SupplyContractDetailServiceImpl implements SupplyContractDetailServ
             supplyContractDetailResponseDto.setMaterialId(element.getSupplyContractDetailId().getMaterialId());
             supplyContractDetailResponseDto.setSupplyContractId(element.getSupplyContractDetailId().getSupplyContractId());
             supplyContractDetailResponseDto.setMaterialName(element.getMaterial().getName());
-//            supplyContractDetailResponseDto.setUnitName(element.getUnit().getName());
+            supplyContractDetailResponseDto.setUnitName(element.getUnit().getName());
             supplyContractDetailResponseDto.setSerial(serial + 1);
             serial = serial + 1;
             supplyContractDetailResponseDtos.add(supplyContractDetailResponseDto);
@@ -161,7 +161,7 @@ public class SupplyContractDetailServiceImpl implements SupplyContractDetailServ
             supplyContractDetailResponseDto.setMaterialId(element.getSupplyContractDetailId().getMaterialId());
             supplyContractDetailResponseDto.setSupplyContractId(element.getSupplyContractDetailId().getSupplyContractId());
             supplyContractDetailResponseDto.setMaterialName(element.getMaterial().getName());
-//            supplyContractDetailResponseDto.setUnitName(element.getUnit().getName());
+            supplyContractDetailResponseDto.setUnitName(element.getUnit().getName());
             supplyContractDetailResponseDto.setSerial(serial + 1);
             serial = serial + 1;
             supplyContractDetailResponseDtos.add(supplyContractDetailResponseDto);
@@ -178,7 +178,7 @@ public class SupplyContractDetailServiceImpl implements SupplyContractDetailServ
         supplyContractDetailResponseDto.setSupplyContractId(supplyContractDetail.getSupplyContractDetailId().getSupplyContractId());
         supplyContractDetailResponseDto.setMaterialName(supplyContractDetail.getMaterial().getName());
         supplyContractDetailResponseDto.setSerial(1);
-//        supplyContractDetailResponseDto.setUnitName(supplyContractDetail.getUnit().getName());
+        supplyContractDetailResponseDto.setUnitName(supplyContractDetail.getUnit().getName());
         return new ResponseDto(HttpStatus.OK.value(), "Successful", supplyContractDetailResponseDto );
     }
     public ResponseDto getMaxIdSupplyContractDetail(){

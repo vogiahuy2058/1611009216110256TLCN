@@ -117,7 +117,7 @@ public class InternalSCDetailServiceImpl implements InternalSCDetailService{
             internalSCDetailResponseDto.setMaterialId(element.getInternalSCDetailId().getMaterialId());
             internalSCDetailResponseDto.setInternalSCId(element.getInternalSCDetailId().getInternalSCId());
             internalSCDetailResponseDto.setMaterialName(element.getMaterial().getName());
-//            supplyContractDetailResponseDto.setUnitName(element.getUnit().getName());
+            internalSCDetailResponseDto.setUnitName(element.getUnit().getName());
             internalSCDetailResponseDto.setSerial(serial + 1);
             serial = serial + 1;
             internalSCDetailResponseDtos.add(internalSCDetailResponseDto);
@@ -141,7 +141,7 @@ public class InternalSCDetailServiceImpl implements InternalSCDetailService{
             internalSCDetailResponseDto.setMaterialId(element.getInternalSCDetailId().getMaterialId());
             internalSCDetailResponseDto.setInternalSCId(element.getInternalSCDetailId().getInternalSCId());
             internalSCDetailResponseDto.setMaterialName(element.getMaterial().getName());
-//            supplyContractDetailResponseDto.setUnitName(element.getUnit().getName());
+            internalSCDetailResponseDto.setUnitName(element.getUnit().getName());
             internalSCDetailResponseDto.setSerial(serial + 1);
             serial = serial + 1;
             internalSCDetailResponseDtos.add(internalSCDetailResponseDto);
@@ -171,7 +171,7 @@ public class InternalSCDetailServiceImpl implements InternalSCDetailService{
             internalSCDetailResponseDto.setMaterialId(element.getInternalSCDetailId().getMaterialId());
             internalSCDetailResponseDto.setInternalSCId(element.getInternalSCDetailId().getInternalSCId());
             internalSCDetailResponseDto.setMaterialName(element.getMaterial().getName());
-//            supplyContractDetailResponseDto.setUnitName(element.getUnit().getName());
+            internalSCDetailResponseDto.setUnitName(element.getUnit().getName());
             internalSCDetailResponseDto.setSerial(serial + 1);
             serial = serial + 1;
             internalSCDetailResponseDtos.add(internalSCDetailResponseDto);
@@ -190,7 +190,7 @@ public class InternalSCDetailServiceImpl implements InternalSCDetailService{
         internalSCDetailResponseDto.setMaterialName(internalSCDetail.getMaterial().getName());
 
         internalSCDetailResponseDto.setSerial(1);
-//        supplyContractDetailResponseDto.setUnitName(supplyContractDetail.getUnit().getName());
+        internalSCDetailResponseDto.setUnitName(internalSCDetail.getUnit().getName());
         return new ResponseDto(HttpStatus.OK.value(), "Successful", internalSCDetailResponseDto );
     }
     public ResponseDto deleteInternalSCDetail(Integer id){
