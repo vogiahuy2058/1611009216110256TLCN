@@ -75,14 +75,34 @@ public class InternalSCServiceImpl implements InternalSCService{
 //                                idBranchShop + " and status = " + status));
         Integer maxId = internalSCRepository.findMaxIdByBranchShopIdAndEnableAndStatus(idBranchShop,true, status);
         InternalSC internalSC = internalSCRepository.findByIdAndEnable(maxId, true)
-                .orElseThrow(()-> new NotFoundException("Max id not found"));
-        InternalSCResponseDto internalSCResponseDto =
-                mapperObject.InternalSCEntityToDto(internalSC);
-        internalSCResponseDto.setDate(internalSC.getDateCreate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        internalSCResponseDto.setDeliveryTime(internalSC.getDeliveryTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        internalSCResponseDto.setBranchShop(internalSC.getBranchShop().getName());
-        return new ResponseDto(HttpStatus.OK.value(), "Internal supply contract have id branch shop = " +
-                idBranchShop + " and status = " + status, internalSCResponseDto);
+                .orElse(null);
+        List<InternalSC> internalSCList = new ArrayList<>();
+        List<InternalSCResponseDto> internalSCResponseDtos = new ArrayList<>();
+        if(internalSC == null){
+            return new ResponseDto(HttpStatus.OK.value(), "Internal supply contract have id branch shop = " +
+                    idBranchShop + " and status = " + status, null);
+
+        }else {
+            internalSCList.add(internalSC);
+            internalSCList.forEach(element->{
+                InternalSCResponseDto internalSCResponseDto =
+                        mapperObject.InternalSCEntityToDto(element);
+                internalSCResponseDto.setDate(element.getDateCreate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                internalSCResponseDto.setDeliveryTime(element.getDeliveryTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                internalSCResponseDto.setBranchShop(element.getBranchShop().getName());
+                internalSCResponseDtos.add(internalSCResponseDto);
+            });
+            return new ResponseDto(HttpStatus.OK.value(), "Internal supply contract have id branch shop = " +
+                    idBranchShop + " and status = " + status, internalSCResponseDtos);
+        }
+
+
+//        InternalSCResponseDto internalSCResponseDto =
+//                mapperObject.InternalSCEntityToDto(internalSC);
+//        internalSCResponseDto.setDate(internalSC.getDateCreate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+//        internalSCResponseDto.setDeliveryTime(internalSC.getDeliveryTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+//        internalSCResponseDto.setBranchShop(internalSC.getBranchShop().getName());
+
     }
 
     @Transactional
