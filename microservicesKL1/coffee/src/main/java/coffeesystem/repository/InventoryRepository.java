@@ -37,7 +37,7 @@ public interface InventoryRepository extends JpaRepository<Inventory, InventoryI
 //    List<Inventory> findByInventoryIdIdBranchShop(Integer idBranchShop);
     Page<Inventory> findByInventoryIdIdBranchShopAndEnableOrderByInventoryIdDesc(
             Integer idBranchShop, boolean enable, Pageable pageable);
-    List<Inventory> findByInventoryIdIdBranchShopAndEnableOrderByStatusDescInventoryIdDesc(
+    List<Inventory> findByInventoryIdIdBranchShopAndEnableOrderByStatusAscInventoryIdDesc(
             Integer idBranchShop, boolean enable);
     Page<Inventory> findByInventoryIdIdBranchShopAndStatusAndEnable(
             Integer idBranchShop,String status, boolean enable, Pageable pageable);

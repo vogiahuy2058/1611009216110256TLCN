@@ -241,7 +241,7 @@ public class InventoryServiceImpl implements InventoryService{
 
 
         List<Inventory> inventoryList = inventoryRepository
-                .findByInventoryIdIdBranchShopAndEnableOrderByStatusDescInventoryIdDesc(branchShopId, true);
+                .findByInventoryIdIdBranchShopAndEnableOrderByStatusAscInventoryIdDesc(branchShopId, true);
         List<InventoryResponseDto> inventoryResponseDtos = new ArrayList<>();
         inventoryList.forEach(element->{
             InventoryResponseDto inventoryResponseDto = mapperObject.InventoryEntityToDto(element);
