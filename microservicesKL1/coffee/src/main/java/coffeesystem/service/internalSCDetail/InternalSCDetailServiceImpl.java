@@ -109,7 +109,7 @@ public class InternalSCDetailServiceImpl implements InternalSCDetailService{
     public ResponseDto getInternalSCDetailByInternalSCId(Integer internalSCId) {
         InternalSC internalSC = internalSCRepository.findByIdAndEnable(internalSCId, true)
                 .orElseThrow(()-> new NotFoundException("Internal supply contract not found"));
-        List<InternalSCDetail> internalSCDetailList = internalSCDetailRepository.findByInternalSCAndEnableOrderByInternalSCDetailIdDesc(internalSC, true);
+        List<InternalSCDetail> internalSCDetailList = internalSCDetailRepository.findByInternalSCAndEnableOrderByLastModifiedDateDesc(internalSC, true);
         List<InternalSCDetailResponseDto> internalSCDetailResponseDtos = new ArrayList<>();
         Integer serial = 0;
         for (InternalSCDetail element : internalSCDetailList) {
@@ -163,7 +163,7 @@ public class InternalSCDetailServiceImpl implements InternalSCDetailService{
                 .orElseThrow(()-> new NotFoundException("Internal supply contract has id: " + internalSCId + " and status: "
                         + status + " not found"));
         List<InternalSCDetail> internalSCDetailList =
-                internalSCDetailRepository.findByInternalSCAndEnableOrderByInternalSCDetailIdDesc(internalSC, true);
+                internalSCDetailRepository.findByInternalSCAndEnableOrderByLastModifiedDateDesc(internalSC, true);
         List<InternalSCDetailResponseDto> internalSCDetailResponseDtos = new ArrayList<>();
         Integer serial = 0;
         for (InternalSCDetail element : internalSCDetailList) {
