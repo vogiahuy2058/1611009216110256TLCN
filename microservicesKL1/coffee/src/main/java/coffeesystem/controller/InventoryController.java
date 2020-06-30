@@ -74,7 +74,7 @@ public class InventoryController {
     }
     @GetMapping("/get-by-branch-shop-id-paging")
 //    @HystrixCommand(fallbackMethod = "fallBackGetAllMinMaxInventoryPaging")
-    public ResponseEntity<PagingResponseDto> getMinMaxInventoryByBranchShopIdPaging(
+    public ResponseEntity<PagingResponseDto> getInventoryByBranchShopIdPaging(
             @RequestParam(name = "page", required = false, defaultValue = "0") int page,
             @RequestParam(name = "size", required = false, defaultValue = "10") int size,
             @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
@@ -88,9 +88,13 @@ public class InventoryController {
         System.out.println("=======fallBackGetAllMinMaxInventoryPaging=========");
         return new ResponseEntity<PagingResponseDto>(HttpStatus.OK);
     }
+    @GetMapping("/get-by-branch-shop-id")
+    public ResponseEntity<ResponseDto> getInventoryByBranchShopId(@RequestParam Integer idBranchShop){
+        return ResponseEntity.ok(this.inventoryService.getAllByBranchShopId(idBranchShop));
+    }
     @GetMapping("/get-by-branch-shop-id-status-paging")
 //    @HystrixCommand(fallbackMethod = "fallBackGetAllMinMaxInventoryPaging")
-    public ResponseEntity<PagingResponseDto> getMinMaxInventoryByBranchShopIdAndStatusPaging(
+    public ResponseEntity<PagingResponseDto> getInventoryByBranchShopIdAndStatusPaging(
             @RequestParam(name = "page", required = false, defaultValue = "0") int page,
             @RequestParam(name = "size", required = false, defaultValue = "10") int size,
             @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,

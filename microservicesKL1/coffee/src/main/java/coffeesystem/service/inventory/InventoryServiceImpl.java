@@ -129,7 +129,7 @@ public class InventoryServiceImpl implements InventoryService{
     }
     @Transactional
     public ResponseDto getAllInventory(){
-        List<Inventory> inventoryList = this.inventoryRepository.findAllByEnable(true);
+        List<Inventory> inventoryList = this.inventoryRepository.findAllByEnableOrderByInventoryIdDesc(true);
         List<InventoryResponseDto> inventoryResponseDtos = new ArrayList<>();
         inventoryList.forEach(element->{
             InventoryResponseDto inventoryResponseDto = mapperObject.InventoryEntityToDto(element);
@@ -202,7 +202,9 @@ public class InventoryServiceImpl implements InventoryService{
 
         Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
         List<InventoryResponseDto> inventoryResponseDtos = new ArrayList<>();
-        Page<Inventory> inventoryPage = inventoryRepository.findByInventoryIdIdBranchShopAndEnable(branchShopId, true, pageable);
+        Page<Inventory> inventoryPage = inventoryRepository
+                .findByInventoryIdIdBranchShopAndEnableOrderByInventoryIdDesc(branchShopId,
+                        true, pageable);
 
         inventoryPage.forEach(element->{
             InventoryResponseDto inventoryResponseDto = mapperObject.InventoryEntityToDto(element);
@@ -232,6 +234,39 @@ public class InventoryServiceImpl implements InventoryService{
         return new PagingResponseDto<>(
                 inventoryResponseDtoPage.getContent(), inventoryResponseDtoPage.getTotalElements(),
                 inventoryResponseDtoPage.getTotalPages(), inventoryResponseDtoPage.getPageable());
+
+    }
+    @Transactional
+    public ResponseDto getAllByBranchShopId(Integer branchShopId){
+
+
+        List<Inventory> inventoryList = inventoryRepository
+                .findByInventoryIdIdBranchShopAndEnableOrderByStatusDescInventoryIdDesc(branchShopId, true);
+        List<InventoryResponseDto> inventoryResponseDtos = new ArrayList<>();
+        inventoryList.forEach(element->{
+            InventoryResponseDto inventoryResponseDto = mapperObject.InventoryEntityToDto(element);
+            Material material = materialRepository.findByIdAndEnable(element.getInventoryId().getIdMaterial(), true)
+                    .orElseThrow(()-> new NotFoundException("Material id not found"));
+            BranchShop branchShop = branchShopRepository.findByIdAndEnable(element.getInventoryId().getIdBranchShop(), true)
+                    .orElseThrow(()-> new NotFoundException("Branch shop id not found"));
+            inventoryResponseDto.setId(element.getInventoryId().getId());
+            inventoryResponseDto.setMaterialId(element.getInventoryId().getIdMaterial());
+            inventoryResponseDto.setBranchShopId(element.getInventoryId().getIdBranchShop());
+            inventoryResponseDto.setBranchShopName(branchShop.getName());
+            inventoryResponseDto.setMaterialName(material.getName());
+            inventoryResponseDto.setUnitName(material.getUnit().getName());
+            inventoryResponseDto.setStatus(element.getStatus());
+            inventoryResponseDto.setFirstDate(element.getInventoryId().getFirstDate()
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            if(element.getLastDate() == null){
+                inventoryResponseDto.setLastDate("null");
+            }
+            else {
+                inventoryResponseDto.setLastDate(element.getLastDate()
+                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            }
+            inventoryResponseDtos.add(inventoryResponseDto);});
+        return new ResponseDto(HttpStatus.OK.value(), "All inventory", inventoryResponseDtos);
 
     }
     @Transactional
