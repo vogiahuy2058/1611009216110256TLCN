@@ -47,7 +47,7 @@ public class InternalSCServiceImpl implements InternalSCService{
             InternalSCResponseDto internalSCResponseDto =
                     mapperObject.InternalSCEntityToDto(element);
             internalSCResponseDto.setDate(element.getDateCreate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-            internalSCResponseDto.setDeliveryTime(element.getDeliveryTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+//            internalSCResponseDto.setDeliveryTime(element.getDeliveryTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             internalSCResponseDto.setBranchShop(element.getBranchShop().getName());
             if(element.getDeliveryTime() == null){
                 internalSCResponseDto.setDeliveryTime("null");
@@ -68,7 +68,7 @@ public class InternalSCServiceImpl implements InternalSCService{
         InternalSCResponseDto internalSCResponseDto =
                 mapperObject.InternalSCEntityToDto(internalSC);
         internalSCResponseDto.setDate(internalSC.getDateCreate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-        internalSCResponseDto.setDeliveryTime(internalSC.getDeliveryTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+//        internalSCResponseDto.setDeliveryTime(internalSC.getDeliveryTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         internalSCResponseDto.setBranchShop(internalSC.getBranchShop().getName());
         if(internalSC.getDeliveryTime() == null){
             internalSCResponseDto.setDeliveryTime("null");
@@ -88,10 +88,7 @@ public class InternalSCServiceImpl implements InternalSCService{
 //                        new NotFoundException("Not found internal supply contract have id branch shop = " +
 //                                idBranchShop + " and status = " + status));
         Integer maxId = internalSCRepository.findMaxIdByBranchShopIdAndEnableAndStatus(idBranchShop,true, status);
-//        if(maxId == null){
-//            return new ResponseDto(HttpStatus.OK.value(), "Internal supply contract have id branch shop = " +
-//                    idBranchShop + " and status = " + status, null);
-//        }
+
         InternalSC internalSC = internalSCRepository.findByIdAndEnable(maxId, true)
                 .orElse(null);
         List<InternalSC> internalSCList = new ArrayList<>();
@@ -106,7 +103,7 @@ public class InternalSCServiceImpl implements InternalSCService{
                 InternalSCResponseDto internalSCResponseDto =
                         mapperObject.InternalSCEntityToDto(element);
                 internalSCResponseDto.setDate(element.getDateCreate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-                internalSCResponseDto.setDeliveryTime(element.getDeliveryTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+//                internalSCResponseDto.setDeliveryTime(element.getDeliveryTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
                 internalSCResponseDto.setBranchShop(element.getBranchShop().getName());
                 if(element.getDeliveryTime() == null){
                     internalSCResponseDto.setDeliveryTime("null");
@@ -139,7 +136,7 @@ public class InternalSCServiceImpl implements InternalSCService{
             InternalSCResponseDto internalSCResponseDto =
                     mapperObject.InternalSCEntityToDto(element);
             internalSCResponseDto.setDate(element.getDateCreate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-            internalSCResponseDto.setDeliveryTime(element.getDeliveryTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+//            internalSCResponseDto.setDeliveryTime(element.getDeliveryTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             internalSCResponseDto.setBranchShop(element.getBranchShop().getName());
             if(element.getDeliveryTime() == null){
                 internalSCResponseDto.setDeliveryTime("null");
@@ -168,7 +165,7 @@ public class InternalSCServiceImpl implements InternalSCService{
                 InternalSCResponseDto internalSCResponseDto =
                         mapperObject.InternalSCEntityToDto(element);
                 internalSCResponseDto.setDate(element.getDateCreate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
-                internalSCResponseDto.setDeliveryTime(element.getDeliveryTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+//                internalSCResponseDto.setDeliveryTime(element.getDeliveryTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
                 internalSCResponseDto.setBranchShop(element.getBranchShop().getName());
                 if(element.getDeliveryTime() == null){
                     internalSCResponseDto.setDeliveryTime("null");
