@@ -88,10 +88,10 @@ public class InternalSCServiceImpl implements InternalSCService{
 //                        new NotFoundException("Not found internal supply contract have id branch shop = " +
 //                                idBranchShop + " and status = " + status));
         Integer maxId = internalSCRepository.findMaxIdByBranchShopIdAndEnableAndStatus(idBranchShop,true, status);
-        if(maxId == null){
-            return new ResponseDto(HttpStatus.OK.value(), "Internal supply contract have id branch shop = " +
-                    idBranchShop + " and status = " + status, null);
-        }
+//        if(maxId == null){
+//            return new ResponseDto(HttpStatus.OK.value(), "Internal supply contract have id branch shop = " +
+//                    idBranchShop + " and status = " + status, null);
+//        }
         InternalSC internalSC = internalSCRepository.findByIdAndEnable(maxId, true)
                 .orElse(null);
         List<InternalSC> internalSCList = new ArrayList<>();
