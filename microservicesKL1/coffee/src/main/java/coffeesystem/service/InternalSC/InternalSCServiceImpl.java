@@ -49,6 +49,13 @@ public class InternalSCServiceImpl implements InternalSCService{
             internalSCResponseDto.setDate(element.getDateCreate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             internalSCResponseDto.setDeliveryTime(element.getDeliveryTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             internalSCResponseDto.setBranchShop(element.getBranchShop().getName());
+            if(element.getDeliveryTime() == null){
+                internalSCResponseDto.setDeliveryTime("null");
+            }
+            else {
+                internalSCResponseDto.setDeliveryTime(element.getDeliveryTime()
+                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            }
             internalSCResponseDtos.add(internalSCResponseDto);
         });
         return new ResponseDto(HttpStatus.OK.value(), "All internal supply contract", internalSCResponseDtos);
@@ -63,6 +70,13 @@ public class InternalSCServiceImpl implements InternalSCService{
         internalSCResponseDto.setDate(internalSC.getDateCreate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         internalSCResponseDto.setDeliveryTime(internalSC.getDeliveryTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         internalSCResponseDto.setBranchShop(internalSC.getBranchShop().getName());
+        if(internalSC.getDeliveryTime() == null){
+            internalSCResponseDto.setDeliveryTime("null");
+        }
+        else {
+            internalSCResponseDto.setDeliveryTime(internalSC.getDeliveryTime()
+                    .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        }
         return new ResponseDto(HttpStatus.OK.value(), "Get internalsupply contract by id: "+id, internalSCResponseDto);
     }
 
@@ -94,6 +108,13 @@ public class InternalSCServiceImpl implements InternalSCService{
                 internalSCResponseDto.setDate(element.getDateCreate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
                 internalSCResponseDto.setDeliveryTime(element.getDeliveryTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
                 internalSCResponseDto.setBranchShop(element.getBranchShop().getName());
+                if(element.getDeliveryTime() == null){
+                    internalSCResponseDto.setDeliveryTime("null");
+                }
+                else {
+                    internalSCResponseDto.setDeliveryTime(element.getDeliveryTime()
+                            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                }
                 internalSCResponseDtos.add(internalSCResponseDto);
             });
             return new ResponseDto(HttpStatus.OK.value(), "Internal supply contract have id branch shop = " +
@@ -120,6 +141,13 @@ public class InternalSCServiceImpl implements InternalSCService{
             internalSCResponseDto.setDate(element.getDateCreate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             internalSCResponseDto.setDeliveryTime(element.getDeliveryTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             internalSCResponseDto.setBranchShop(element.getBranchShop().getName());
+            if(element.getDeliveryTime() == null){
+                internalSCResponseDto.setDeliveryTime("null");
+            }
+            else {
+                internalSCResponseDto.setDeliveryTime(element.getDeliveryTime()
+                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            }
             internalSCResponseDtos.add(internalSCResponseDto);});
         Page<InternalSCResponseDto> internalSCResponseDtoPage = new PageImpl<>(internalSCResponseDtos, pageable,
                 internalSCPage.getTotalElements() );
@@ -142,6 +170,13 @@ public class InternalSCServiceImpl implements InternalSCService{
                 internalSCResponseDto.setDate(element.getDateCreate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
                 internalSCResponseDto.setDeliveryTime(element.getDeliveryTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
                 internalSCResponseDto.setBranchShop(element.getBranchShop().getName());
+                if(element.getDeliveryTime() == null){
+                    internalSCResponseDto.setDeliveryTime("null");
+                }
+                else {
+                    internalSCResponseDto.setDeliveryTime(element.getDeliveryTime()
+                            .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+                }
                 internalSCResponseDtos.add(internalSCResponseDto);
             }
 
