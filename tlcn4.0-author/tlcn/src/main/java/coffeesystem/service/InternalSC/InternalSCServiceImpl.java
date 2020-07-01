@@ -226,24 +226,33 @@ public class InternalSCServiceImpl implements InternalSCService{
                     .findByInternalSCAndEnableOrderByLastModifiedDateDesc(internalSC, true);
 
             internalSCDetailList.forEach(internalSCDetail -> {
+                if(materialDto1List.size() == 0){
+                    MaterialDto1 materialDto1New = new MaterialDto1();
+                    materialDto1New.setId(internalSCDetail.getInternalSCDetailId().getMaterialId());
+                    materialDto1New.setName(internalSCDetail.getMaterial().getName());
+                    materialDto1New.setTotalNumberOfRequest(internalSCDetail.getNumberOfRequest());
+                    materialDto1List.add(materialDto1New);
+                }else {
+                    materialDto1List.forEach(materialDto1 -> {
+                        //voi moi nguyen lieu trong chi tiet hop dong cung cap,
+                        // lay id nguyen lieu do ra so sanh voi moi nguyen lieu trong materialDto1List
+                        //neu nguyen lieu do da co trong materialDto1List:cong don totalNumberOfReques
+                        //nguoc lai add 1 materialDto1 vao materialDto1List
+                        if (materialDto1.getId() == internalSCDetail.getInternalSCDetailId().getMaterialId()){
+                            float oldTotal = materialDto1.getTotalNumberOfRequest();
+                            materialDto1.setTotalNumberOfRequest(oldTotal + internalSCDetail.getNumberOfRequest());
+                        }
+                        else if(materialDto1.getId() != internalSCDetail.getInternalSCDetailId().getMaterialId()){
+                            MaterialDto1 materialDto1New = new MaterialDto1();
+                            materialDto1New.setId(internalSCDetail.getInternalSCDetailId().getMaterialId());
+                            materialDto1New.setName(internalSCDetail.getMaterial().getName());
+                            materialDto1New.setTotalNumberOfRequest(internalSCDetail.getNumberOfRequest());
+                            materialDto1List.add(materialDto1New);
+                        }
+                    });
+                }
 
-                materialDto1List.forEach(materialDto1 -> {
-                    //voi moi nguyen lieu trong chi tiet hop dong cung cap,
-                    // lay id nguyen lieu do ra so sanh voi moi nguyen lieu trong materialDto1List
-                    //neu nguyen lieu do da co trong materialDto1List:cong don totalNumberOfReques
-                    //nguoc lai add 1 materialDto1 vao materialDto1List
-                    if (materialDto1.getId() == internalSCDetail.getInternalSCDetailId().getMaterialId()){
-                        float oldTotal = materialDto1.getTotalNumberOfRequest();
-                        materialDto1.setTotalNumberOfRequest(oldTotal + internalSCDetail.getNumberOfRequest());
-                    }
-                    else if(materialDto1.getId() != internalSCDetail.getInternalSCDetailId().getMaterialId()){
-                        MaterialDto1 materialDto1New = new MaterialDto1();
-                        materialDto1New.setId(internalSCDetail.getInternalSCDetailId().getMaterialId());
-                        materialDto1New.setName(internalSCDetail.getMaterial().getName());
-                        materialDto1New.setTotalNumberOfRequest(internalSCDetail.getNumberOfRequest());
-                        materialDto1List.add(materialDto1New);
-                    }
-                });
+
 
             });
 
