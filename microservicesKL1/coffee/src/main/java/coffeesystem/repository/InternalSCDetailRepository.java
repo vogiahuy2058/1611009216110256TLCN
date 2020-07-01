@@ -23,4 +23,5 @@ public interface InternalSCDetailRepository extends JpaRepository<InternalSCDeta
     Page<InternalSCDetail> findAllByInternalSCAndEnable(InternalSC internalSC, boolean enable, Pageable pageable);
     Optional<InternalSCDetail> findByInternalSCDetailIdId(Integer id);
     Optional<InternalSCDetail> findByInternalSCDetailIdIdAndEnable(Integer id, boolean enable);
+
 }

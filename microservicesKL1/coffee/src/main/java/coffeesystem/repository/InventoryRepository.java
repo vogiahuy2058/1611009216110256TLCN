@@ -31,7 +31,7 @@ public interface InventoryRepository extends JpaRepository<Inventory, InventoryI
             Integer idMaterial, Integer idBranchShop, boolean enable);
     @Query("select max(ii.inventoryId.id) from Inventory ii")
     Integer findMaxId();
-    List<Inventory> findAllByEnableOrderByInventoryIdDesc(boolean enable);
+    List<Inventory> findAllByEnableOrderByStatusAscInventoryIdDesc(boolean enable);
     Page<Inventory> findAllByEnable(boolean enable, Pageable pageable);
 //    List<Inventory> findByInventoryIdIdMaterial(Integer idMaterial);
 //    List<Inventory> findByInventoryIdIdBranchShop(Integer idBranchShop);

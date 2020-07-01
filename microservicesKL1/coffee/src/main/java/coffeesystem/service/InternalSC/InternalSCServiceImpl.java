@@ -4,7 +4,9 @@ import coffeesystem.dto.*;
 import coffeesystem.exception.NotFoundException;
 import coffeesystem.model.BranchShop;
 import coffeesystem.model.InternalSC;
+import coffeesystem.model.InternalSCDetail;
 import coffeesystem.repository.BranchShopRepository;
+import coffeesystem.repository.InternalSCDetailRepository;
 import coffeesystem.repository.InternalSCRepository;
 import coffeesystem.util.MapperObject;
 import coffeesystem.util.PageUtil;
@@ -29,6 +31,8 @@ public class InternalSCServiceImpl implements InternalSCService{
     InternalSCRepository internalSCRepository;
     @Autowired
     BranchShopRepository branchShopRepository;
+    @Autowired
+    InternalSCDetailRepository internalSCDetailRepository;
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public ResponseDto createInternalSC(InternalSCRequestDto internalSCRequestDto){
         InternalSC internalSC = this.mapperObject.InternalSCDtoToEntity(internalSCRequestDto);
@@ -208,6 +212,44 @@ public class InternalSCServiceImpl implements InternalSCService{
             idOld = 0;
         }
         return new ResponseDto(HttpStatus.OK.value(), "Max id", idOld);
+    }
+    @Transactional
+    public ResponseDto getTotalNumberOfRequestMaterial(List<InternalSCRequestDto1> internalSCRequestDto1s){
+        List<MaterialDto1> materialDto1List = new ArrayList<>();
+        internalSCRequestDto1s.forEach(internalSCRequestDto1 -> {
+            //dua tren id tim ra hđcc noi bo
+            InternalSC internalSC = internalSCRepository.findByIdAndEnable(internalSCRequestDto1.getId(), true)
+                    .orElseThrow(()-> new NotFoundException("Internal supply contract have id = "
+                    + internalSCRequestDto1.getId() + " not found"));
+            //lay chi tiet hdcc noi bo cua hdcc do
+            List<InternalSCDetail> internalSCDetailList = internalSCDetailRepository
+                    .findByInternalSCAndEnableOrderByLastModifiedDateDesc(internalSC, true);
+
+            internalSCDetailList.forEach(internalSCDetail -> {
+
+                materialDto1List.forEach(materialDto1 -> {
+                    //voi moi nguyen lieu trong chi tiet hop dong cung cap,
+                    // lay id nguyen lieu do ra so sanh voi moi nguyen lieu trong materialDto1List
+                    //neu nguyen lieu do da co trong materialDto1List:cong don totalNumberOfReques
+                    //nguoc lai add 1 materialDto1 vao materialDto1List
+                    if (materialDto1.getId() == internalSCDetail.getInternalSCDetailId().getMaterialId()){
+                        float oldTotal = materialDto1.getTotalNumberOfRequest();
+                        materialDto1.setTotalNumberOfRequest(oldTotal + internalSCDetail.getNumberOfRequest());
+                    }
+                    else if(materialDto1.getId() != internalSCDetail.getInternalSCDetailId().getMaterialId()){
+                        MaterialDto1 materialDto1New = new MaterialDto1();
+                        materialDto1New.setId(internalSCDetail.getInternalSCDetailId().getMaterialId());
+                        materialDto1New.setName(internalSCDetail.getMaterial().getName());
+                        materialDto1New.setTotalNumberOfRequest(internalSCDetail.getNumberOfRequest());
+                        materialDto1List.add(materialDto1New);
+                    }
+                });
+
+            });
+
+        });
+        return new ResponseDto(HttpStatus.OK.value(), "Total number of request " +
+                "material of list internal supply contract", materialDto1List);
     }
 
 }

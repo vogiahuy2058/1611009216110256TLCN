@@ -129,7 +129,7 @@ public class InventoryServiceImpl implements InventoryService{
     }
     @Transactional
     public ResponseDto getAllInventory(){
-        List<Inventory> inventoryList = this.inventoryRepository.findAllByEnableOrderByInventoryIdDesc(true);
+        List<Inventory> inventoryList = this.inventoryRepository.findAllByEnableOrderByStatusAscInventoryIdDesc(true);
         List<InventoryResponseDto> inventoryResponseDtos = new ArrayList<>();
         inventoryList.forEach(element->{
             InventoryResponseDto inventoryResponseDto = mapperObject.InventoryEntityToDto(element);

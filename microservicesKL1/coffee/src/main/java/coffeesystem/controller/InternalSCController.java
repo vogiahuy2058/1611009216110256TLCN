@@ -1,6 +1,7 @@
 package coffeesystem.controller;
 
 import coffeesystem.dto.InternalSCRequestDto;
+import coffeesystem.dto.InternalSCRequestDto1;
 import coffeesystem.dto.PagingResponseDto;
 import coffeesystem.dto.ResponseDto;
 import coffeesystem.service.InternalSC.InternalSCService;
@@ -10,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:4200")
@@ -73,6 +76,11 @@ public class InternalSCController {
     public ResponseEntity<ResponseDto> fallBackGetInternalSCDateToDate(String fromDate, String toDate) {
         System.out.println("=======fallBackGetInternalSCDateToDate=========");
         return new ResponseEntity<ResponseDto>(HttpStatus.OK);
+    }
+    @GetMapping("/get-total-number-of-request-by-list-iscd")
+//    @HystrixCommand(fallbackMethod = "fallBackGetInternalSCById")
+    public ResponseEntity<ResponseDto> getTotalNumberOfRequestMaterial(@RequestBody List<InternalSCRequestDto1> internalSCRequestDto1s){
+        return ResponseEntity.ok(internalSCService.getTotalNumberOfRequestMaterial(internalSCRequestDto1s));
     }
     @PutMapping("/delete")
     public ResponseEntity<ResponseDto> deleteSInternalSC(@RequestParam Integer id){

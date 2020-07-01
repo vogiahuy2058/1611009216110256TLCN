@@ -1,8 +1,11 @@
 package coffeesystem.service.InternalSC;
 
 import coffeesystem.dto.InternalSCRequestDto;
+import coffeesystem.dto.InternalSCRequestDto1;
 import coffeesystem.dto.PagingResponseDto;
 import coffeesystem.dto.ResponseDto;
+
+import java.util.List;
 
 public interface InternalSCService {
     //chua sua phan quyen
@@ -21,4 +24,5 @@ public interface InternalSCService {
     ResponseDto getAllInternalSCDateToDate(String fromDate, String toDate);
     ResponseDto getMaxIdInternalSC();
     ResponseDto getInternalSCHaveMaxIdByIdBranchShopAndStatus(Integer idBranchShop, Integer status);
+    ResponseDto getTotalNumberOfRequestMaterial(List<InternalSCRequestDto1> internalSCRequestDto1s);
 }
