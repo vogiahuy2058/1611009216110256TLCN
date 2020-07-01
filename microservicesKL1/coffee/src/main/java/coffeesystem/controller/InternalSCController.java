@@ -77,7 +77,7 @@ public class InternalSCController {
         System.out.println("=======fallBackGetInternalSCDateToDate=========");
         return new ResponseEntity<ResponseDto>(HttpStatus.OK);
     }
-    @GetMapping("/get-total-number-of-request-by-list-iscd")
+    @PostMapping("/get-total-number-of-request-by-list-iscd")
 //    @HystrixCommand(fallbackMethod = "fallBackGetInternalSCById")
     public ResponseEntity<ResponseDto> getTotalNumberOfRequestMaterial(@RequestBody List<InternalSCRequestDto1> internalSCRequestDto1s){
         return ResponseEntity.ok(internalSCService.getTotalNumberOfRequestMaterial(internalSCRequestDto1s));
