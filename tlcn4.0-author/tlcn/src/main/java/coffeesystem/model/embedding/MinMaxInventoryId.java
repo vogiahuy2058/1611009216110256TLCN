@@ -1,0 +1,38 @@
+package coffeesystem.model.embedding;
+
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+import javax.persistence.Column;
+import javax.persistence.Embeddable;
+import java.io.Serializable;
+import java.util.Objects;
+
+@Embeddable
+@Getter
+@Setter
+@NoArgsConstructor
+public class MinMaxInventoryId implements Serializable {
+    @Column(name = "id")
+    private Integer id;
+    @Column(name = "id_material")
+    private Integer idMaterial;
+    @Column(name = "id_branch_shop")
+    private Integer idBranchShop;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        MinMaxInventoryId that = (MinMaxInventoryId) o;
+        return id.equals(that.id) &&
+                idMaterial.equals(that.idMaterial) &&
+                idBranchShop.equals(that.idBranchShop);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, idMaterial, idBranchShop);
+    }
+}
