@@ -60,30 +60,36 @@ public class InventoryServiceImpl implements InventoryService{
                         inventoryRequestDto.getMaterialId(), inventoryRequestDto.getBranchShopId(), true)
                         .orElseThrow(()-> new NotFoundException("Inventory not found"));
 
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(Date.valueOf(inventoryRequestDto.getFirstDate()));
-                calendar.add(calendar.DATE, -1);
-                System.out.println(calendar);
-                Instant instant = calendar.toInstant();
-                LocalDate lastDate = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalDate();
-                //cap nhat last date cua inventory old
-                inventoryOld.setLastDate(lastDate);
-                //set trang thai completed cho inventory old
-                inventoryOld.setStatus("completed");
-                //set so luong con lai cua bang kiem kho qua bang ton
-                InventoryControl inventoryControl = inventoryControlRepository
-                        .findByIdMaterialAndIdBranchShopAndStatusActiveAndEnable(inventoryRequestDto.getMaterialId(),
-                                inventoryRequestDto.getBranchShopId(), true)
-                        .orElseThrow(()-> new NotFoundException("Inventory control not found"));
-                inventoryOld.setBacklogLastDate(inventoryControl.getRemainingAmount());
-                float quantitySold = inventoryOld.getBacklogFirstDate() + inventoryOld.getImportPeriod() -
-                        inventoryOld.getBacklogLastDate();
-                //set quantitySold cua inventory old
-                inventoryOld.setQuantitySold(quantitySold);
-                //set gia ban cua nguyen lieu=gia von * so luong ban
-                inventoryOld.setPriceSold(inventoryOld.getQuantitySold() * inventoryOld.getCostPrice());
-                inventoryRepository.save(inventoryOld);
-                backlogFirstDate = inventoryOld.getBacklogLastDate();
+                //neu nhu ton kho cua nguyen lieu cua chi nhanh khong bi dong ky
+                //thi cap nhat inventoryOld
+                //con neu da bi dong ky thi tao moi luon
+                if(inventoryOld.getStatus().equals("active")){
+                    Calendar calendar = Calendar.getInstance();
+                    calendar.setTime(Date.valueOf(inventoryRequestDto.getFirstDate()));
+                    calendar.add(calendar.DATE, -1);
+                    System.out.println(calendar);
+                    Instant instant = calendar.toInstant();
+                    LocalDate lastDate = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalDate();
+                    //cap nhat last date cua inventory old
+                    inventoryOld.setLastDate(lastDate);
+                    //set trang thai completed cho inventory old
+                    inventoryOld.setStatus("completed");
+                    //set so luong con lai cua bang kiem kho qua bang ton
+                    InventoryControl inventoryControl = inventoryControlRepository
+                            .findByIdMaterialAndIdBranchShopAndStatusActiveAndEnable(inventoryRequestDto.getMaterialId(),
+                                    inventoryRequestDto.getBranchShopId(), true)
+                            .orElseThrow(()-> new NotFoundException("Inventory control not found"));
+                    inventoryOld.setBacklogLastDate(inventoryControl.getRemainingAmount());
+                    float quantitySold = inventoryOld.getBacklogFirstDate() + inventoryOld.getImportPeriod() -
+                            inventoryOld.getBacklogLastDate();
+                    //set quantitySold cua inventory old
+                    inventoryOld.setQuantitySold(quantitySold);
+                    //set gia ban cua nguyen lieu=gia von * so luong ban
+                    inventoryOld.setPriceSold(inventoryOld.getQuantitySold() * inventoryOld.getCostPrice());
+                    inventoryRepository.save(inventoryOld);
+                    backlogFirstDate = inventoryOld.getBacklogLastDate();
+                }
+
             }
             Inventory inventory = mapperObject.InventoryDtoToEntity2(inventoryRequestDto);
             Material material = materialRepository.findByIdAndEnable(inventoryRequestDto.getMaterialId(), true)
@@ -135,7 +141,7 @@ public class InventoryServiceImpl implements InventoryService{
 
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(Date.valueOf(inventoryRequestDto.getFirstDate()));
-        calendar.add(calendar.DATE, -1);
+//        calendar.add(calendar.DATE, -1);
         System.out.println(calendar);
         Instant instant = calendar.toInstant();
         LocalDate lastDate = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalDate();
