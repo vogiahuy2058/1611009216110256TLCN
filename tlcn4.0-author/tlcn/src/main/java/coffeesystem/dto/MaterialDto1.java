@@ -12,5 +12,5 @@ import lombok.Setter;
 public class MaterialDto1 {
     private Integer id;
     private String name;
-    private float totalNumberOfRequest;
+    private float totalQuantityAllow;
 }
