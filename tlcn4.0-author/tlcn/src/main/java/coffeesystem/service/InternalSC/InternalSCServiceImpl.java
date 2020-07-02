@@ -230,7 +230,7 @@ public class InternalSCServiceImpl implements InternalSCService{
                     MaterialDto1 materialDto1New = new MaterialDto1();
                     materialDto1New.setId(internalSCDetail.getInternalSCDetailId().getMaterialId());
                     materialDto1New.setName(internalSCDetail.getMaterial().getName());
-                    materialDto1New.setTotalNumberOfRequest(internalSCDetail.getNumberOfRequest());
+                    materialDto1New.setTotalQuantityAllow(internalSCDetail.getQuantityAllowed());
                     materialDto1List.add(materialDto1New);
                 }else {
                     boolean coTimRa = false;
@@ -240,8 +240,8 @@ public class InternalSCServiceImpl implements InternalSCService{
                         //neu nguyen lieu do da co trong materialDto1List:cong don totalNumberOfReques
                         //nguoc lai add 1 materialDto1 vao materialDto1List
                         if (materialDto1List.get(ii).getId() == internalSCDetail.getInternalSCDetailId().getMaterialId()){
-                            float oldTotal = materialDto1List.get(ii).getTotalNumberOfRequest();
-                            materialDto1List.get(ii).setTotalNumberOfRequest(oldTotal + internalSCDetail.getNumberOfRequest());
+                            float oldTotal = materialDto1List.get(ii).getTotalQuantityAllow();
+                            materialDto1List.get(ii).setTotalQuantityAllow(oldTotal + internalSCDetail.getQuantityAllowed());
                             coTimRa = true;
                             break;
                         }
@@ -250,7 +250,7 @@ public class InternalSCServiceImpl implements InternalSCService{
                         MaterialDto1 materialDto1New = new MaterialDto1();
                         materialDto1New.setId(internalSCDetail.getInternalSCDetailId().getMaterialId());
                         materialDto1New.setName(internalSCDetail.getMaterial().getName());
-                        materialDto1New.setTotalNumberOfRequest(internalSCDetail.getNumberOfRequest());
+                        materialDto1New.setTotalQuantityAllow(internalSCDetail.getQuantityAllowed());
                         materialDto1List.add(materialDto1New);
                     }
                 }
@@ -260,7 +260,7 @@ public class InternalSCServiceImpl implements InternalSCService{
             });
 
         });
-        return new ResponseDto(HttpStatus.OK.value(), "Total number of request " +
+        return new ResponseDto(HttpStatus.OK.value(), "Total quantity allow " +
                 "material of list internal supply contract", materialDto1List);
     }
 
