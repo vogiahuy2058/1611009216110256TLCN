@@ -11,6 +11,7 @@ public interface InventoryService {
     ResponseDto getAllInventory();
     PagingResponseDto getAllInventoryPaging(int page, int size, String sort, String sortColumn);
     ResponseDto editInventory(InventoryRequestDto inventoryRequestDto);
+    ResponseDto endOfPeriod(InventoryRequestDto inventoryRequestDto);
     ResponseDto deleteInventory(Integer id);
     ResponseDto getByIdMaterialAndIdBranchShop(Integer materialId, Integer branchShopId);
     ResponseDto getByIdMaterialAndIdBranchShopStatusActive(Integer materialId, Integer branchShopId);

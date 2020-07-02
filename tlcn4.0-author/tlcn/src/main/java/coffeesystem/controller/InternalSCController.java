@@ -71,6 +71,13 @@ public class InternalSCController {
                                                                       @RequestParam String toDate){
         return  ResponseEntity.ok(this.internalSCService.getAllInternalSCDateToDate(fromDate, toDate));
     }
+    @GetMapping("/get-by-id-branch-shop-and-status")
+//    @HystrixCommand(fallbackMethod = "fallBackGetInternalSCDateToDate")
+    public ResponseEntity<ResponseDto> getByIdBranchShopAndStatus(@RequestParam Integer idBranchShop,
+                                                                  @RequestParam Integer status){
+        return  ResponseEntity.ok(this.internalSCService
+                .getAllInternalSCByBranchShopAndStatus(idBranchShop, status));
+    }
 
     public ResponseEntity<ResponseDto> fallBackGetInternalSCDateToDate(String fromDate, String toDate) {
         System.out.println("=======fallBackGetInternalSCDateToDate=========");
@@ -79,7 +86,12 @@ public class InternalSCController {
     @PostMapping("/get-total-number-of-request-by-list-iscd")
 //    @HystrixCommand(fallbackMethod = "fallBackGetInternalSCById")
     public ResponseEntity<ResponseDto> getTotalNumberOfRequestMaterial(@RequestBody List<InternalSCRequestDto1> internalSCRequestDto1s){
-        return ResponseEntity.ok(internalSCService.getTotalNumberOfRequestMaterial(internalSCRequestDto1s));
+        return ResponseEntity.ok(internalSCService.getTotalNumberOfRequestAndTotalQuantityAllowMaterial(internalSCRequestDto1s));
+    }
+    @GetMapping("/get-branch-shop-status1-date-create-now")
+//    @HystrixCommand(fallbackMethod = "fallBackGetInternalSCDateToDate")
+    public ResponseEntity<ResponseDto> getBranchShopExistInInternalSC(){
+        return  ResponseEntity.ok(this.internalSCService.getBranchShopExistInInternalSC());
     }
     @PutMapping("/delete")
     public ResponseEntity<ResponseDto> deleteSInternalSC(@RequestParam Integer id){

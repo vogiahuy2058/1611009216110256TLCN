@@ -26,7 +26,10 @@ public interface InventoryControlRepository extends JpaRepository<InventoryContr
             "and ic.inventoryId.idBranchShop=?2 and ic.inventoryId.firstDate=?3 and ic.enable=?4 and ic.status='active'")
     Optional<InventoryControl> findByIdMaterialAndIdBranchShopAndFirstDateAndStatusActiveAndEnable(
             Integer idMaterial, Integer idBranchShop, LocalDate firstDate, boolean enable);
-
+    @Query(" select ic from InventoryControl  ic where ic.inventoryId.idMaterial=?1 " +
+            "and ic.inventoryId.idBranchShop=?2  and ic.enable=?3 and ic.status='active'")
+    Optional<InventoryControl> findByIdMaterialAndIdBranchShopAndStatusActiveAndEnable(
+            Integer idMaterial, Integer idBranchShop, boolean enable);
     List<InventoryControl> findByInventoryIdIdMaterialAndInventoryIdIdBranchShopAndEnable(
             Integer idMaterial, Integer idBranchShop, boolean enable);
     @Query("select iii from InventoryControl iii where iii.inventoryId.idMaterial=?1 " +

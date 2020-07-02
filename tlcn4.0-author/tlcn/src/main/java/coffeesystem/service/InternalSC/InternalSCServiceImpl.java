@@ -2,9 +2,7 @@ package coffeesystem.service.InternalSC;
 
 import coffeesystem.dto.*;
 import coffeesystem.exception.NotFoundException;
-import coffeesystem.model.BranchShop;
-import coffeesystem.model.InternalSC;
-import coffeesystem.model.InternalSCDetail;
+import coffeesystem.model.*;
 import coffeesystem.repository.BranchShopRepository;
 import coffeesystem.repository.InternalSCDetailRepository;
 import coffeesystem.repository.InternalSCRepository;
@@ -82,6 +80,28 @@ public class InternalSCServiceImpl implements InternalSCService{
                     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         }
         return new ResponseDto(HttpStatus.OK.value(), "Get internalsupply contract by id: "+id, internalSCResponseDto);
+    }
+    @Transactional
+    public ResponseDto getAllInternalSCByBranchShopAndStatus(Integer idBranchShop, Integer status){
+        List<InternalSC> internalSCS = internalSCRepository.findByBranchShopIdAndStatusAndEnable(
+                idBranchShop, status,true);
+        List<InternalSCResponseDto> internalSCResponseDtos = new ArrayList<>();
+        internalSCS.forEach(element->{
+            InternalSCResponseDto internalSCResponseDto =
+                    mapperObject.InternalSCEntityToDto(element);
+            internalSCResponseDto.setDate(element.getDateCreate().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+//            internalSCResponseDto.setDeliveryTime(element.getDeliveryTime().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            internalSCResponseDto.setBranchShop(element.getBranchShop().getName());
+            if(element.getDeliveryTime() == null){
+                internalSCResponseDto.setDeliveryTime("null");
+            }
+            else {
+                internalSCResponseDto.setDeliveryTime(element.getDeliveryTime()
+                        .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            }
+            internalSCResponseDtos.add(internalSCResponseDto);
+        });
+        return new ResponseDto(HttpStatus.OK.value(), "All internal supply contract", internalSCResponseDtos);
     }
 
     @Transactional
@@ -184,26 +204,7 @@ public class InternalSCServiceImpl implements InternalSCService{
         });
         return new ResponseDto(HttpStatus.OK.value(), "All internal supply contract date to date", internalSCResponseDtos);
     }
-    public ResponseDto deleteInternalSC(Integer id){
-        InternalSC internalSC = internalSCRepository.findByIdAndEnable(id, true)
-                .orElseThrow(()-> new NotFoundException("Id not found!"));
-        internalSC.setEnable(false);
-        internalSCRepository.save(internalSC);
-        return new ResponseDto(HttpStatus.OK.value(), "Delete internal supply contract successful", null);
-    }
 
-    public ResponseDto editInternalSC(InternalSCRequestDto internalSCRequestDto){
-        InternalSC internalSC = internalSCRepository.findByIdAndEnable(internalSCRequestDto.getId(), true)
-                .orElseThrow(()-> new NotFoundException("Id not found!"));
-        BranchShop branchShop = branchShopRepository.findByNameAndEnable(internalSCRequestDto.getBranchShop(),
-                true).orElseThrow(()-> new NotFoundException("Branch shop not found"));
-        internalSC.setBranchShop(branchShop);
-        internalSC.setDateCreate(internalSCRequestDto.getDate());
-        internalSC.setDeliveryTime(internalSCRequestDto.getDeliveryTime());
-        internalSC.setStatus(internalSCRequestDto.getStatus());
-        internalSCRepository.save(internalSC);
-        return new ResponseDto(HttpStatus.OK.value(), "Edit internal supply contract successful", null);
-    }
     @Override
     @Transactional
     public ResponseDto getMaxIdInternalSC() {
@@ -214,7 +215,7 @@ public class InternalSCServiceImpl implements InternalSCService{
         return new ResponseDto(HttpStatus.OK.value(), "Max id", idOld);
     }
     @Transactional
-    public ResponseDto getTotalNumberOfRequestMaterial(List<InternalSCRequestDto1> internalSCRequestDto1s){
+    public ResponseDto getTotalNumberOfRequestAndTotalQuantityAllowMaterial(List<InternalSCRequestDto1> internalSCRequestDto1s){
         List<MaterialDto1> materialDto1List = new ArrayList<>();
         internalSCRequestDto1s.forEach(internalSCRequestDto1 -> {
             //dua tren id tim ra hđcc noi bo
@@ -266,6 +267,49 @@ public class InternalSCServiceImpl implements InternalSCService{
         });
         return new ResponseDto(HttpStatus.OK.value(), "Total quantity allow " +
                 "material of list internal supply contract", materialDto1List);
+    }
+    @Transactional
+    public ResponseDto getBranchShopExistInInternalSC(){
+        List<BranchShopDto> branchShopDtos = new ArrayList<>();
+        //lay danh sach nguyen lieu len
+        List<BranchShop> branchShopsToFind = branchShopRepository.findAllByEnable(true);
+        branchShopsToFind.forEach(branchShop -> {//voi moi chi nhanh, tim xem no co trong hdcc co statu=1 va
+            //date create nho hon today
+            List<InternalSC> internalSCList = this.internalSCRepository
+                    .findByBranchShopIdAndStatusAndDateCreateLessThanAndEnable(
+                            branchShop.getId(), 1, LocalDate.now(),true);
+            if(!internalSCList.isEmpty()){
+                BranchShopDto branchShopDto = new BranchShopDto();
+                branchShopDto.setId(branchShop.getId());
+                branchShopDto.setName(branchShop.getName());
+                branchShopDto.setAddress(branchShop.getAddress());
+                branchShopDtos.add(branchShopDto);
+            }
+
+        });
+
+        return new ResponseDto(HttpStatus.OK.value(), "All branch shop existed in internal supply contract",
+                branchShopDtos);
+    }
+    public ResponseDto deleteInternalSC(Integer id){
+        InternalSC internalSC = internalSCRepository.findByIdAndEnable(id, true)
+                .orElseThrow(()-> new NotFoundException("Id not found!"));
+        internalSC.setEnable(false);
+        internalSCRepository.save(internalSC);
+        return new ResponseDto(HttpStatus.OK.value(), "Delete internal supply contract successful", null);
+    }
+
+    public ResponseDto editInternalSC(InternalSCRequestDto internalSCRequestDto){
+        InternalSC internalSC = internalSCRepository.findByIdAndEnable(internalSCRequestDto.getId(), true)
+                .orElseThrow(()-> new NotFoundException("Id not found!"));
+        BranchShop branchShop = branchShopRepository.findByNameAndEnable(internalSCRequestDto.getBranchShop(),
+                true).orElseThrow(()-> new NotFoundException("Branch shop not found"));
+        internalSC.setBranchShop(branchShop);
+        internalSC.setDateCreate(internalSCRequestDto.getDate());
+        internalSC.setDeliveryTime(internalSCRequestDto.getDeliveryTime());
+        internalSC.setStatus(internalSCRequestDto.getStatus());
+        internalSCRepository.save(internalSC);
+        return new ResponseDto(HttpStatus.OK.value(), "Edit internal supply contract successful", null);
     }
 
 }

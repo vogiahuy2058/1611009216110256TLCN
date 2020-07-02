@@ -8,6 +8,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,8 +24,11 @@ public interface InternalSCRepository extends JpaRepository<InternalSC, Integer>
     Integer findMaxIdByBranchShopIdAndEnableAndStatus(Integer id, boolean enable, Integer status);
     List<InternalSC> findById(List<Integer> id);
     List<InternalSC> findByBranchShopId(Integer id);
+    List<InternalSC> findByBranchShopIdAndStatusAndEnable(Integer id, Integer status, boolean enable);
     List<InternalSC> findAllByEnableAndStatus(boolean enable, Integer status);
     Optional<InternalSC> findByIdAndEnableAndStatus(Integer id, boolean enable, Integer status);
+//    @Query("select isc from InternalSC isc where isc.status=?1 and isc.enable=?2 and isc.")
+    List<InternalSC> findByBranchShopIdAndStatusAndDateCreateLessThanAndEnable(Integer id, Integer status,LocalDate dateCreate, boolean enable);
     @Query("select max(isc.id) from InternalSC isc")
     Integer findMaxId();
 }
