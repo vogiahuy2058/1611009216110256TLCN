@@ -230,6 +230,7 @@ public class InternalSCServiceImpl implements InternalSCService{
                     MaterialDto1 materialDto1New = new MaterialDto1();
                     materialDto1New.setId(internalSCDetail.getInternalSCDetailId().getMaterialId());
                     materialDto1New.setName(internalSCDetail.getMaterial().getName());
+                    materialDto1New.setTotalNumberOfRequest(internalSCDetail.getNumberOfRequest());
                     materialDto1New.setTotalQuantityAllow(internalSCDetail.getQuantityAllowed());
                     materialDto1List.add(materialDto1New);
                 }else {
@@ -240,8 +241,10 @@ public class InternalSCServiceImpl implements InternalSCService{
                         //neu nguyen lieu do da co trong materialDto1List:cong don totalNumberOfReques
                         //nguoc lai add 1 materialDto1 vao materialDto1List
                         if (materialDto1List.get(ii).getId() == internalSCDetail.getInternalSCDetailId().getMaterialId()){
-                            float oldTotal = materialDto1List.get(ii).getTotalQuantityAllow();
-                            materialDto1List.get(ii).setTotalQuantityAllow(oldTotal + internalSCDetail.getQuantityAllowed());
+                            float oldTotalAllow = materialDto1List.get(ii).getTotalQuantityAllow();
+                            float oldTotalRequest = materialDto1List.get(ii).getTotalNumberOfRequest();
+                            materialDto1List.get(ii).setTotalQuantityAllow(oldTotalAllow + internalSCDetail.getQuantityAllowed());
+                            materialDto1List.get(ii).setTotalNumberOfRequest(oldTotalRequest + internalSCDetail.getNumberOfRequest());
                             coTimRa = true;
                             break;
                         }
@@ -251,6 +254,7 @@ public class InternalSCServiceImpl implements InternalSCService{
                         materialDto1New.setId(internalSCDetail.getInternalSCDetailId().getMaterialId());
                         materialDto1New.setName(internalSCDetail.getMaterial().getName());
                         materialDto1New.setTotalQuantityAllow(internalSCDetail.getQuantityAllowed());
+                        materialDto1New.setTotalNumberOfRequest(internalSCDetail.getNumberOfRequest());
                         materialDto1List.add(materialDto1New);
                     }
                 }
