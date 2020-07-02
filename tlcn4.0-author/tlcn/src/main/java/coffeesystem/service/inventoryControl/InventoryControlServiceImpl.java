@@ -253,6 +253,26 @@ public class InventoryControlServiceImpl implements InventoryControlService{
         });
         return new ResponseDto(HttpStatus.OK.value(), "All inventory", inventoryControlResponseDtos);
     }
+    @Transactional
+    public ResponseDto getMaterialExistInInventoryControlByIdBranchShop(Integer branchShopId){
+        List<MaterialForMinMax> materialForMinMaxes = new ArrayList<>();
+        //lay danh sach nguyen lieu len
+        List<Material> materialList = materialRepository.findAllByEnable(true);
+        materialList.forEach(material -> {//voi moi nguyen lieu, tim xem no co ton kho khong
+            List<InventoryControl> inventoryControlList = this.inventoryControlRepository
+                    .findByInventoryIdIdMaterialAndInventoryIdIdBranchShopAndEnable(
+                            material.getId(), branchShopId,true);
+            if(!inventoryControlList.isEmpty()){
+                MaterialForMinMax materialForMinMax = new MaterialForMinMax();
+                materialForMinMax.setId(material.getId());
+                materialForMinMax.setName(material.getName());
+                materialForMinMaxes.add(materialForMinMax);
+            }
+
+        });
+
+        return new ResponseDto(HttpStatus.OK.value(), "All material existed in inventory", materialForMinMaxes);
+    }
 
 
 }
