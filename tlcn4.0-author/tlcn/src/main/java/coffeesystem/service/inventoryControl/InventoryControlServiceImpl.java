@@ -216,18 +216,6 @@ public class InventoryControlServiceImpl implements InventoryControlService{
         return new ResponseDto(HttpStatus.OK.value(), "All inventory", inventoryControlResponseDtos);
     }
 
-    public ResponseDto editStatusInventoryControl(Integer idMaterial,
-                                                  Integer idBranchShop, String firstDate, String status){
-        LocalDate newFirstDate = LocalDate.parse(firstDate, dtf);
-        InventoryControl inventoryControl = this.inventoryControlRepository
-                .findByIdMaterialAndIdBranchShopAndFirstDateAndStatusActiveAndEnable(idMaterial,idBranchShop,
-                        newFirstDate, true)
-                .orElseThrow(()-> new NotFoundException("Inventory control not found"));
-        inventoryControl.setStatus(status);
-        inventoryControlRepository.save(inventoryControl);
-
-        return new ResponseDto(HttpStatus.OK.value(), "Edit status successful", null);
-    }
     public ResponseDto deleteInventoryControl(Integer idMaterial, Integer idBranchShop, String firstDate){
         LocalDate newFirstDate = LocalDate.parse(firstDate, dtf);
         InventoryControl inventoryControl = this.inventoryControlRepository

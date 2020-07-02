@@ -72,17 +72,9 @@ public class InventoryControlController {
     public ResponseEntity<ResponseDto> getAllInventoryControl(@RequestParam Integer idBranchShop){
         return ResponseEntity.ok(this.inventoryControlService.getMaterialExistInInventoryControlByIdBranchShop(idBranchShop));
     }
-    @GetMapping("/edit-status")
-//    @HystrixCommand(fallbackMethod = "fallBackGetAllMinMaxInventory")
-    public ResponseEntity<ResponseDto> editStatusInventoryControl(@RequestParam Integer idMaterial,
-                                                              @RequestParam Integer idBranchShop,
-                                                              @RequestParam String firstDate,
-                                                              @RequestParam String status){
-        return ResponseEntity.ok(this.inventoryControlService.editStatusInventoryControl(
-                idMaterial, idBranchShop, firstDate, status));
-    }
+   
 
-    @GetMapping("/delete")
+    @PutMapping("/delete")
 //    @HystrixCommand(fallbackMethod = "fallBackGetAllMinMaxInventory")
     public ResponseEntity<ResponseDto> deleteInventoryControl(@RequestParam Integer idMaterial,
                                                               @RequestParam Integer idBranchShop,
