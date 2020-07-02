@@ -46,5 +46,6 @@ public interface InventoryControlRepository extends JpaRepository<InventoryContr
             Integer idMaterial, Integer idBranchShop,String status, boolean enable);
     List<InventoryControl> findAllByStatusAndEnable(String status, boolean enable);
     List<InventoryControl> findAllByInventoryIdIdBranchShopAndStatusAndEnableOrderByMaterialDesc(Integer idBranchShop, String status, boolean enable);
+
     Page<InventoryControl> findAllByStatusAndEnable(String status, boolean enable, Pageable pageable);
 }
