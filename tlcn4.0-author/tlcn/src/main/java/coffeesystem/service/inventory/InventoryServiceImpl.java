@@ -45,13 +45,6 @@ public class InventoryServiceImpl implements InventoryService{
     InventoryControlRepository inventoryControlRepository;
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public ResponseDto createInventory(InventoryRequestDto inventoryRequestDto){
-        if(inventoryRepository.
-                findByInventoryIdIdMaterialAndInventoryIdIdBranchShopAndInventoryIdFirstDateAndEnable(
-                        inventoryRequestDto.getMaterialId(),
-                        inventoryRequestDto.getBranchShopId(), inventoryRequestDto.getFirstDate(), true).isPresent()){
-            throw new ExistException("Inventory was existed");
-//            return new ResponseDto(HttpStatus.OK.value(), "Create successful", null);
-        } else {
 
             float backlogFirstDate = 0;
             if(!inventoryRepository.findByInventoryIdIdMaterialAndInventoryIdIdBranchShopAndEnable(inventoryRequestDto.getMaterialId(),
@@ -64,14 +57,21 @@ public class InventoryServiceImpl implements InventoryService{
                 //thi cap nhat inventoryOld
                 //con neu da bi dong ky thi tao moi luon
                 if(inventoryOld.getStatus().equals("active")){
-                    Calendar calendar = Calendar.getInstance();
-                    calendar.setTime(Date.valueOf(inventoryRequestDto.getFirstDate()));
-                    calendar.add(calendar.DATE, -1);
-                    System.out.println(calendar);
-                    Instant instant = calendar.toInstant();
-                    LocalDate lastDate = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalDate();
-                    //cap nhat last date cua inventory old
-                    inventoryOld.setLastDate(lastDate);
+                    //neu trong 1 ngay tao ton kho cho nguyen lieu cua chi nhanh them lan nua
+                    //thi ngay cuoi ky se la ngay dau ky luon (khong lay ngay dau ky tiep theo -1)
+                    if(inventoryOld.getInventoryId().getFirstDate() == inventoryRequestDto.getFirstDate()){
+                        inventoryOld.setLastDate(inventoryOld.getInventoryId().getFirstDate());
+                    }else {
+                        Calendar calendar = Calendar.getInstance();
+                        calendar.setTime(Date.valueOf(inventoryRequestDto.getFirstDate()));
+                        calendar.add(calendar.DATE, -1);
+                        System.out.println(calendar);
+                        Instant instant = calendar.toInstant();
+                        LocalDate lastDate = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalDate();
+                        //cap nhat last date cua inventory old
+                        inventoryOld.setLastDate(lastDate);
+                    }
+
                     //set trang thai completed cho inventory old
                     inventoryOld.setStatus("completed");
                     //set so luong con lai cua bang kiem kho qua bang ton
@@ -117,7 +117,6 @@ public class InventoryServiceImpl implements InventoryService{
             inventoryRepository.save(inventory);
 
             return new ResponseDto(HttpStatus.OK.value(), "Create successful", null);
-        }
 
     }
     public ResponseDto editInventory(InventoryRequestDto inventoryRequestDto){
