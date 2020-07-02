@@ -20,4 +20,5 @@ public interface InventoryService {
     PagingResponseDto getAllByBranchShopIdAndStatusPaging(int page, int size, String sort,
                                                           String sortColumn, Integer branchShopId, String status);
     ResponseDto getByIdMaterialAndIdBranchShopAndFirstDate(Integer materialId, Integer branchShopId, String firstDate);
+    ResponseDto getMaterialExistInInventoryByIdBranchShop(Integer branchShopId);
 }

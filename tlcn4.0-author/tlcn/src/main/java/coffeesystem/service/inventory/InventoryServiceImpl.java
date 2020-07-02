@@ -403,6 +403,26 @@ public class InventoryServiceImpl implements InventoryService{
 
         return new ResponseDto(HttpStatus.OK.value(), "All inventory", inventoryResponseDto);
     }
+    @Transactional
+    public ResponseDto getMaterialExistInInventoryByIdBranchShop(Integer branchShopId){
+        List<MaterialForMinMax> materialForMinMaxes = new ArrayList<>();
+        //lay danh sach nguyen lieu len
+        List<Material> materialList = materialRepository.findAllByEnable(true);
+        materialList.forEach(material -> {//voi moi nguyen lieu, tim xem no co ton kho khong
+            List<Inventory> inventoryList = this.inventoryRepository
+                    .findByInventoryIdIdMaterialAndInventoryIdIdBranchShopAndEnable(
+                            material.getId(), branchShopId,true);
+            if(!inventoryList.isEmpty()){
+                MaterialForMinMax materialForMinMax = new MaterialForMinMax();
+                materialForMinMax.setId(material.getId());
+                materialForMinMax.setName(material.getName());
+                materialForMinMaxes.add(materialForMinMax);
+            }
+
+        });
+
+        return new ResponseDto(HttpStatus.OK.value(), "All material existed in inventory", materialForMinMaxes);
+    }
     public ResponseDto deleteInventory(Integer id){
         Inventory inventory = inventoryRepository.
                 findByInventoryIdIdAndEnable(id, true)
