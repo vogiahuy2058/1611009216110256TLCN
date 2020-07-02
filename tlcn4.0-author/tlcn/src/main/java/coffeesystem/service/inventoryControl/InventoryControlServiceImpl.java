@@ -7,6 +7,7 @@ import coffeesystem.model.*;
 import coffeesystem.model.embedding.InventoryId;
 import coffeesystem.repository.*;
 import coffeesystem.service.customer.CustomerService;
+import coffeesystem.service.inventory.InventoryService;
 import coffeesystem.util.MapperObject;
 import coffeesystem.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +37,8 @@ public class InventoryControlServiceImpl implements InventoryControlService{
     MaterialRepository materialRepository;
     @Autowired
     BranchShopRepository branchShopRepository;
+    @Autowired
+    InventoryService inventoryService;
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public ResponseDto createInventoryControl(InventoryControlRequestDto requestDto){
         if(!inventoryControlRepository.
@@ -119,6 +122,17 @@ public class InventoryControlServiceImpl implements InventoryControlService{
             inventoryControl.setMaterial(material);
             inventoryControl.setBranchShop(branchShop);
             inventoryControlRepository.save(inventoryControl);
+
+            // neu remaining amount == 0 thi dong ky
+            if(requestDto.getRemainingAmount() == 0){
+                InventoryRequestDto inventoryRequestDto = new InventoryRequestDto();
+                inventoryRequestDto.setFirstDate(requestDto.getCheckDate());
+                inventoryRequestDto.setMaterialId(requestDto.getMaterialId());
+                inventoryRequestDto.setBranchShopId(requestDto.getBranchShopId());
+                inventoryRequestDto.setId(0);
+                inventoryRequestDto.setImportPeriod(0);
+                inventoryService.endOfPeriod(inventoryRequestDto);
+            }
 
             return new ResponseDto(HttpStatus.OK.value(), "Create successful", null);
 

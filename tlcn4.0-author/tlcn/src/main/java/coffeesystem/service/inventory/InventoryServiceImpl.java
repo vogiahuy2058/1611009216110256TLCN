@@ -52,12 +52,14 @@ public class InventoryServiceImpl implements InventoryService{
             throw new ExistException("Inventory was existed");
 //            return new ResponseDto(HttpStatus.OK.value(), "Create successful", null);
         } else {
+
             float backlogFirstDate = 0;
             if(!inventoryRepository.findByInventoryIdIdMaterialAndInventoryIdIdBranchShopAndEnable(inventoryRequestDto.getMaterialId(),
                     inventoryRequestDto.getBranchShopId(),true).isEmpty()){
                 Inventory inventoryOld = inventoryRepository.findByMaxFirstDateByIdMaterialAndIdBranchShopAndEnable(
                         inventoryRequestDto.getMaterialId(), inventoryRequestDto.getBranchShopId(), true)
                         .orElseThrow(()-> new NotFoundException("Inventory not found"));
+
                 Calendar calendar = Calendar.getInstance();
                 calendar.setTime(Date.valueOf(inventoryRequestDto.getFirstDate()));
                 calendar.add(calendar.DATE, -1);
@@ -70,9 +72,8 @@ public class InventoryServiceImpl implements InventoryService{
                 inventoryOld.setStatus("completed");
                 //set so luong con lai cua bang kiem kho qua bang ton
                 InventoryControl inventoryControl = inventoryControlRepository
-                        .findByIdMaterialAndIdBranchShopAndFirstDateAndStatusActiveAndEnable(inventoryOld.getInventoryId().getIdMaterial(),
-                                inventoryOld.getInventoryId().getIdBranchShop(),
-                                inventoryOld.getInventoryId().getFirstDate(), true)
+                        .findByIdMaterialAndIdBranchShopAndStatusActiveAndEnable(inventoryRequestDto.getMaterialId(),
+                                inventoryRequestDto.getBranchShopId(), true)
                         .orElseThrow(()-> new NotFoundException("Inventory control not found"));
                 inventoryOld.setBacklogLastDate(inventoryControl.getRemainingAmount());
                 float quantitySold = inventoryOld.getBacklogFirstDate() + inventoryOld.getImportPeriod() -
@@ -126,6 +127,36 @@ public class InventoryServiceImpl implements InventoryService{
         inventoryRepository.save(inventory);
 
         return new ResponseDto(HttpStatus.OK.value(), "Edit successful", null);
+    }
+    public ResponseDto endOfPeriod(InventoryRequestDto inventoryRequestDto){
+        Inventory inventoryOld = inventoryRepository.findByMaxFirstDateByIdMaterialAndIdBranchShopAndEnable(
+                inventoryRequestDto.getMaterialId(), inventoryRequestDto.getBranchShopId(), true)
+                .orElseThrow(()-> new NotFoundException("Inventory not found"));
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(Date.valueOf(inventoryRequestDto.getFirstDate()));
+        calendar.add(calendar.DATE, -1);
+        System.out.println(calendar);
+        Instant instant = calendar.toInstant();
+        LocalDate lastDate = LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalDate();
+        //cap nhat last date cua inventory old
+        inventoryOld.setLastDate(lastDate);
+        //set trang thai completed cho inventory old
+        inventoryOld.setStatus("completed");
+        //set so luong con lai cua bang kiem kho qua bang ton
+        InventoryControl inventoryControl = inventoryControlRepository
+                .findByIdMaterialAndIdBranchShopAndStatusActiveAndEnable(inventoryRequestDto.getMaterialId(),
+                        inventoryRequestDto.getBranchShopId(), true)
+                .orElseThrow(()-> new NotFoundException("Inventory control not found"));
+        inventoryOld.setBacklogLastDate(inventoryControl.getRemainingAmount());
+        float quantitySold = inventoryOld.getBacklogFirstDate() + inventoryOld.getImportPeriod() -
+                inventoryOld.getBacklogLastDate();
+        //set quantitySold cua inventory old
+        inventoryOld.setQuantitySold(quantitySold);
+        //set gia ban cua nguyen lieu=gia von * so luong ban
+        inventoryOld.setPriceSold(inventoryOld.getQuantitySold() * inventoryOld.getCostPrice());
+        inventoryRepository.save(inventoryOld);
+        return new ResponseDto(HttpStatus.OK.value(), "End of period", null);
     }
     @Transactional
     public ResponseDto getAllInventory(){
@@ -423,6 +454,7 @@ public class InventoryServiceImpl implements InventoryService{
 
         return new ResponseDto(HttpStatus.OK.value(), "All material existed in inventory", materialForMinMaxes);
     }
+
     public ResponseDto deleteInventory(Integer id){
         Inventory inventory = inventoryRepository.
                 findByInventoryIdIdAndEnable(id, true)
