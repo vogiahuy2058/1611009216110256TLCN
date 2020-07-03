@@ -214,34 +214,38 @@ public class InternalSCServiceImpl implements InternalSCService{
         }
         return new ResponseDto(HttpStatus.OK.value(), "Max id", idOld);
     }
+
     @Transactional
-    public ResponseDto getTotalNumberOfRequestAndTotalQuantityAllowMaterial(List<InternalSCRequestDto1> internalSCRequestDto1s){
+    public ResponseDto getTotalMaterialInInternalSCStatus1DateLessThanNowByIdBranchShop(Integer idBranchShop){
         List<MaterialDto1> materialDto1List = new ArrayList<>();
-        internalSCRequestDto1s.forEach(internalSCRequestDto1 -> {
+        List<InternalSC> internalSCList = this.internalSCRepository
+                .findByBranchShopIdAndStatusAndDateCreateLessThanAndEnable(
+                        idBranchShop, 1, LocalDate.now(),true);
+        internalSCList.forEach(element -> {
             //dua tren id tim ra hđcc noi bo
-            InternalSC internalSC = internalSCRepository.findByIdAndEnable(internalSCRequestDto1.getId(), true)
-                    .orElseThrow(()-> new NotFoundException("Internal supply contract have id = "
-                    + internalSCRequestDto1.getId() + " not found"));
+            InternalSC internalSC = internalSCRepository.findByIdAndEnable(element.getId(), true)
+                    .orElseThrow(() -> new NotFoundException("Internal supply contract have id = "
+                            + element.getId() + " not found"));
             //lay chi tiet hdcc noi bo cua hdcc do
             List<InternalSCDetail> internalSCDetailList = internalSCDetailRepository
                     .findByInternalSCAndEnableOrderByLastModifiedDateDesc(internalSC, true);
 
             internalSCDetailList.forEach(internalSCDetail -> {
-                if(materialDto1List.size() == 0){
+                if (materialDto1List.size() == 0) {
                     MaterialDto1 materialDto1New = new MaterialDto1();
                     materialDto1New.setId(internalSCDetail.getInternalSCDetailId().getMaterialId());
                     materialDto1New.setName(internalSCDetail.getMaterial().getName());
                     materialDto1New.setTotalNumberOfRequest(internalSCDetail.getNumberOfRequest());
                     materialDto1New.setTotalQuantityAllow(internalSCDetail.getQuantityAllowed());
                     materialDto1List.add(materialDto1New);
-                }else {
+                } else {
                     boolean coTimRa = false;
-                    for(int ii = 0; ii<materialDto1List.size(); ii++){
+                    for (int ii = 0; ii < materialDto1List.size(); ii++) {
                         //voi moi nguyen lieu trong chi tiet hop dong cung cap,
                         // lay id nguyen lieu do ra so sanh voi moi nguyen lieu trong materialDto1List
                         //neu nguyen lieu do da co trong materialDto1List:cong don totalNumberOfReques
                         //nguoc lai add 1 materialDto1 vao materialDto1List
-                        if (materialDto1List.get(ii).getId() == internalSCDetail.getInternalSCDetailId().getMaterialId()){
+                        if (materialDto1List.get(ii).getId() == internalSCDetail.getInternalSCDetailId().getMaterialId()) {
                             float oldTotalAllow = materialDto1List.get(ii).getTotalQuantityAllow();
                             float oldTotalRequest = materialDto1List.get(ii).getTotalNumberOfRequest();
                             materialDto1List.get(ii).setTotalQuantityAllow(oldTotalAllow + internalSCDetail.getQuantityAllowed());
@@ -250,7 +254,7 @@ public class InternalSCServiceImpl implements InternalSCService{
                             break;
                         }
                     }
-                    if(coTimRa == false){
+                    if (coTimRa == false) {
                         MaterialDto1 materialDto1New = new MaterialDto1();
                         materialDto1New.setId(internalSCDetail.getInternalSCDetailId().getMaterialId());
                         materialDto1New.setName(internalSCDetail.getMaterial().getName());
@@ -261,11 +265,64 @@ public class InternalSCServiceImpl implements InternalSCService{
                 }
 
 
+            });
+
+        });
+        return new ResponseDto(HttpStatus.OK.value(), "Total quantity material " +
+                "of internal sc by branch shop id and status 1 and date create less than now", materialDto1List);
+    }
+    @Transactional
+    public ResponseDto getTotalNumberOfRequestAndTotalQuantityAllowMaterial(List<InternalSCRequestDto1> internalSCRequestDto1s) {
+        List<MaterialDto1> materialDto1List = new ArrayList<>();
+        internalSCRequestDto1s.forEach(internalSCRequestDto1 -> {
+            //dua tren id tim ra hđcc noi bo
+            InternalSC internalSC = internalSCRepository.findByIdAndEnable(internalSCRequestDto1.getId(), true)
+                    .orElseThrow(() -> new NotFoundException("Internal supply contract have id = "
+                            + internalSCRequestDto1.getId() + " not found"));
+            //lay chi tiet hdcc noi bo cua hdcc do
+            List<InternalSCDetail> internalSCDetailList = internalSCDetailRepository
+                    .findByInternalSCAndEnableOrderByLastModifiedDateDesc(internalSC, true);
+
+            internalSCDetailList.forEach(internalSCDetail -> {
+                if (materialDto1List.size() == 0) {
+                    MaterialDto1 materialDto1New = new MaterialDto1();
+                    materialDto1New.setId(internalSCDetail.getInternalSCDetailId().getMaterialId());
+                    materialDto1New.setName(internalSCDetail.getMaterial().getName());
+                    materialDto1New.setTotalNumberOfRequest(internalSCDetail.getNumberOfRequest());
+                    materialDto1New.setTotalQuantityAllow(internalSCDetail.getQuantityAllowed());
+                    materialDto1List.add(materialDto1New);
+                } else {
+                    boolean coTimRa = false;
+                    for (int ii = 0; ii < materialDto1List.size(); ii++) {
+                        //voi moi nguyen lieu trong chi tiet hop dong cung cap,
+                        // lay id nguyen lieu do ra so sanh voi moi nguyen lieu trong materialDto1List
+                        //neu nguyen lieu do da co trong materialDto1List:cong don totalNumberOfReques
+                        //nguoc lai add 1 materialDto1 vao materialDto1List
+                        if (materialDto1List.get(ii).getId() == internalSCDetail.getInternalSCDetailId().getMaterialId()) {
+                            float oldTotalAllow = materialDto1List.get(ii).getTotalQuantityAllow();
+                            float oldTotalRequest = materialDto1List.get(ii).getTotalNumberOfRequest();
+                            materialDto1List.get(ii).setTotalQuantityAllow(oldTotalAllow + internalSCDetail.getQuantityAllowed());
+                            materialDto1List.get(ii).setTotalNumberOfRequest(oldTotalRequest + internalSCDetail.getNumberOfRequest());
+                            coTimRa = true;
+                            break;
+                        }
+                    }
+                    if (coTimRa == false) {
+                        MaterialDto1 materialDto1New = new MaterialDto1();
+                        materialDto1New.setId(internalSCDetail.getInternalSCDetailId().getMaterialId());
+                        materialDto1New.setName(internalSCDetail.getMaterial().getName());
+                        materialDto1New.setTotalQuantityAllow(internalSCDetail.getQuantityAllowed());
+                        materialDto1New.setTotalNumberOfRequest(internalSCDetail.getNumberOfRequest());
+                        materialDto1List.add(materialDto1New);
+                    }
+                }
+
 
             });
 
         });
         return new ResponseDto(HttpStatus.OK.value(), "Total quantity allow " +
+                "and total number of request " +
                 "material of list internal supply contract", materialDto1List);
     }
     @Transactional

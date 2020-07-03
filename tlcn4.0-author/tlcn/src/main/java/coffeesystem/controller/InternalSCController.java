@@ -83,6 +83,13 @@ public class InternalSCController {
         System.out.println("=======fallBackGetInternalSCDateToDate=========");
         return new ResponseEntity<ResponseDto>(HttpStatus.OK);
     }
+    @GetMapping("/get-total-material-internalsc-status1-date-less-than-now-by-branch-shop-id")
+//    @HystrixCommand(fallbackMethod = "fallBackGetInternalSCDateToDate")
+    public ResponseEntity<ResponseDto> getTotalMaterialInInternalSCStatus1DateLessThanNowByIdBranchShop(
+            @RequestParam Integer idBranchShop){
+        return  ResponseEntity.ok(this.internalSCService
+                .getTotalMaterialInInternalSCStatus1DateLessThanNowByIdBranchShop(idBranchShop));
+    }
     @PostMapping("/get-total-number-of-request-by-list-iscd")
 //    @HystrixCommand(fallbackMethod = "fallBackGetInternalSCById")
     public ResponseEntity<ResponseDto> getTotalNumberOfRequestMaterial(@RequestBody List<InternalSCRequestDto1> internalSCRequestDto1s){

@@ -27,4 +27,5 @@ public interface InternalSCService {
     ResponseDto getTotalNumberOfRequestAndTotalQuantityAllowMaterial(List<InternalSCRequestDto1> internalSCRequestDto1s);
     ResponseDto getBranchShopExistInInternalSC();
     ResponseDto getAllInternalSCByBranchShopAndStatus(Integer idBranchShop, Integer status);
+    ResponseDto getTotalMaterialInInternalSCStatus1DateLessThanNowByIdBranchShop(Integer idBranchShop);
 }
