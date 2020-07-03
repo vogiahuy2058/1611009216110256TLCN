@@ -3,9 +3,11 @@ package coffeesystem.service.InternalSC;
 import coffeesystem.dto.*;
 import coffeesystem.exception.NotFoundException;
 import coffeesystem.model.*;
+import coffeesystem.model.embedding.InternalSCDetailId;
 import coffeesystem.repository.BranchShopRepository;
 import coffeesystem.repository.InternalSCDetailRepository;
 import coffeesystem.repository.InternalSCRepository;
+import coffeesystem.repository.MaterialRepository;
 import coffeesystem.util.MapperObject;
 import coffeesystem.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +18,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.sql.Date;
+import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 @Service
@@ -31,6 +38,8 @@ public class InternalSCServiceImpl implements InternalSCService{
     BranchShopRepository branchShopRepository;
     @Autowired
     InternalSCDetailRepository internalSCDetailRepository;
+    @Autowired
+    MaterialRepository materialRepository;
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public ResponseDto createInternalSC(InternalSCRequestDto internalSCRequestDto){
         InternalSC internalSC = this.mapperObject.InternalSCDtoToEntity(internalSCRequestDto);
@@ -326,11 +335,11 @@ public class InternalSCServiceImpl implements InternalSCService{
                 "material of list internal supply contract", materialDto1List);
     }
     @Transactional
-    public ResponseDto getBranchShopExistInInternalSC(){
+    public ResponseDto getBranchShopExistInInternalSCStatus1DateLessThanNow(){
         List<BranchShopDto> branchShopDtos = new ArrayList<>();
-        //lay danh sach nguyen lieu len
+        //lay danh sach chi nhanh len
         List<BranchShop> branchShopsToFind = branchShopRepository.findAllByEnable(true);
-        branchShopsToFind.forEach(branchShop -> {//voi moi chi nhanh, tim xem no co trong hdcc co statu=1 va
+        branchShopsToFind.forEach(branchShop -> {//voi moi chi nhanh, tim xem no co trong hdcc co status=1 va
             //date create nho hon today
             List<InternalSC> internalSCList = this.internalSCRepository
                     .findByBranchShopIdAndStatusAndDateCreateLessThanAndEnable(
@@ -347,6 +356,123 @@ public class InternalSCServiceImpl implements InternalSCService{
 
         return new ResponseDto(HttpStatus.OK.value(), "All branch shop existed in internal supply contract",
                 branchShopDtos);
+    }
+    @Transactional
+    public ResponseDto createNewInternalSCStatus1DateLessThanNow(){
+        //lay danh sach chi nhanh co trong hdccnb status=1 va date create nho hon today
+        List<BranchShop> branchShops = new ArrayList<>();
+        //lay danh sach chi nhanh len
+        List<BranchShop> branchShopsToFind = branchShopRepository.findAllByEnable(true);
+        branchShopsToFind.forEach(branchShop -> {//voi moi chi nhanh, tim xem no co trong hdcc co status=1 va
+            //date create nho hon today
+            List<InternalSC> internalSCList = this.internalSCRepository
+                    .findByBranchShopIdAndStatusAndDateCreateLessThanAndEnable(
+                            branchShop.getId(), 1, LocalDate.now(),true);
+            if(!internalSCList.isEmpty()){
+                BranchShop branchShopNew =branchShop;
+                branchShops.add(branchShopNew);
+            }
+
+        });
+        //voi moi chi nhanh, tinh tong so luong nguyen lieu cua cac hdccnb status=1 va date create nho hon today
+        branchShops.forEach(bsToGetTotalMaterial->{
+            List<MaterialDto1> materialDto1List = new ArrayList<>();
+            List<InternalSC> internalSCList = this.internalSCRepository
+                    .findByBranchShopIdAndStatusAndDateCreateLessThanAndEnable(
+                            bsToGetTotalMaterial.getId(), 1, LocalDate.now(),true);
+            internalSCList.forEach(element -> {
+                //dua tren id tim ra hđcc noi bo
+                InternalSC internalSC = internalSCRepository.findByIdAndEnable(element.getId(), true)
+                        .orElseThrow(() -> new NotFoundException("Internal supply contract have id = "
+                                + element.getId() + " not found"));
+                //lay chi tiet hdcc noi bo cua hdcc do
+                List<InternalSCDetail> internalSCDetailList = internalSCDetailRepository
+                        .findByInternalSCAndEnableOrderByLastModifiedDateDesc(internalSC, true);
+
+                internalSCDetailList.forEach(internalSCDetail -> {
+                    if (materialDto1List.size() == 0) {
+                        MaterialDto1 materialDto1New = new MaterialDto1();
+                        materialDto1New.setId(internalSCDetail.getInternalSCDetailId().getMaterialId());
+                        materialDto1New.setName(internalSCDetail.getMaterial().getName());
+                        materialDto1New.setTotalNumberOfRequest(internalSCDetail.getNumberOfRequest());
+                        materialDto1New.setTotalQuantityAllow(internalSCDetail.getQuantityAllowed());
+                        materialDto1List.add(materialDto1New);
+                    } else {
+                        boolean coTimRa = false;
+                        for (int ii = 0; ii < materialDto1List.size(); ii++) {
+                            //voi moi nguyen lieu trong chi tiet hop dong cung cap,
+                            // lay id nguyen lieu do ra so sanh voi moi nguyen lieu trong materialDto1List
+                            //neu nguyen lieu do da co trong materialDto1List:cong don totalNumberOfReques
+                            //nguoc lai add 1 materialDto1 vao materialDto1List
+                            if (materialDto1List.get(ii).getId() == internalSCDetail.getInternalSCDetailId().getMaterialId()) {
+                                float oldTotalAllow = materialDto1List.get(ii).getTotalQuantityAllow();
+                                float oldTotalRequest = materialDto1List.get(ii).getTotalNumberOfRequest();
+                                materialDto1List.get(ii).setTotalQuantityAllow(oldTotalAllow + internalSCDetail.getQuantityAllowed());
+                                materialDto1List.get(ii).setTotalNumberOfRequest(oldTotalRequest + internalSCDetail.getNumberOfRequest());
+                                coTimRa = true;
+                                break;
+                            }
+                        }
+                        if (coTimRa == false) {
+                            MaterialDto1 materialDto1New = new MaterialDto1();
+                            materialDto1New.setId(internalSCDetail.getInternalSCDetailId().getMaterialId());
+                            materialDto1New.setName(internalSCDetail.getMaterial().getName());
+                            materialDto1New.setTotalQuantityAllow(internalSCDetail.getQuantityAllowed());
+                            materialDto1New.setTotalNumberOfRequest(internalSCDetail.getNumberOfRequest());
+                            materialDto1List.add(materialDto1New);
+                        }
+                    }
+
+
+                });
+
+            });
+            //tao hdcc noi bo moi
+            InternalSC internalSC = new InternalSC();
+            Integer idOldInternalSC = internalSCRepository.findMaxId();
+            internalSC.setId(idOldInternalSC + 1);
+            internalSC.setDateCreate(LocalDate.now());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(Date.valueOf(LocalDate.now()));
+            calendar.add(calendar.DATE, 1);
+            System.out.println(calendar);
+            Instant instant = calendar.toInstant();
+            //delivery time = date create + 1
+            internalSC.setDeliveryTime(LocalDateTime.ofInstant(instant, ZoneId.systemDefault()).toLocalDate());
+            internalSC.setEnable(true);
+            internalSC.setStatus(7);
+            internalSC.setBranchShop(bsToGetTotalMaterial);
+            internalSCRepository.save(internalSC);
+            //voi moi nguyen lieu trong list total
+            //tao chi tiet hdcc noi bo moi
+            materialDto1List.forEach(materialDto1 -> {
+                InternalSCDetail internalSCDetail = new InternalSCDetail();
+                InternalSCDetailId internalSCDetailId = new InternalSCDetailId();
+                Integer idOldInternalSCDetail = internalSCDetailRepository.findMaxId();
+                if(idOldInternalSCDetail == null){
+                    idOldInternalSCDetail = 0;
+                }
+                InternalSC latestInternalSC = internalSCRepository.findByIdAndEnable(
+                        internalSCRepository.findMaxId(), true).get();
+                Material material = materialRepository.findByIdAndEnable(materialDto1.getId(), true).get();
+                internalSCDetailId.setId(idOldInternalSCDetail+1);
+                internalSCDetailId.setInternalSCId(latestInternalSC.getId());
+                internalSCDetailId.setMaterialId(material.getId());
+                internalSCDetail.setInternalSCDetailId(internalSCDetailId);
+                internalSCDetail.setInternalSC(latestInternalSC);
+                internalSCDetail.setMaterial(material);
+                internalSCDetail.setEnable(true);
+                internalSCDetail.setNumberOfRequest(materialDto1.getTotalNumberOfRequest());
+                internalSCDetail.setQuantityAllowed(materialDto1.getTotalQuantityAllow());
+                internalSCDetail.setQuantityReceived(materialDto1.getTotalQuantityAllow());
+                internalSCDetail.setUnit(material.getUnit());
+                internalSCDetailRepository.save(internalSCDetail);
+            });
+
+        });
+        return new ResponseDto(HttpStatus.OK.value(), "Create new internal supply contract " +
+                "status = 1 create date less than now successful", null);
+
     }
     public ResponseDto deleteInternalSC(Integer id){
         InternalSC internalSC = internalSCRepository.findByIdAndEnable(id, true)

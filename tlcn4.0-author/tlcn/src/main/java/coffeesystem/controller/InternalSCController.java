@@ -24,6 +24,10 @@ public class InternalSCController {
     public ResponseEntity<ResponseDto> createInternalSC(@RequestBody InternalSCRequestDto internalSCRequestDto){
         return ResponseEntity.ok(internalSCService.createInternalSC(internalSCRequestDto));
     }
+    @PostMapping("/create-new-internalsc-status1-date-less-than-now")
+    public ResponseEntity<ResponseDto> createNewInternalSCStatus1DateLessThanNow(){
+        return ResponseEntity.ok(internalSCService.createNewInternalSCStatus1DateLessThanNow());
+    }
     @GetMapping("/get-all-paging")
 //    @HystrixCommand(fallbackMethod = "fallBackGetAllInternalSCPaging")
     public ResponseEntity<PagingResponseDto> getAllInternalSCPaging(
@@ -98,7 +102,7 @@ public class InternalSCController {
     @GetMapping("/get-branch-shop-status1-date-create-now")
 //    @HystrixCommand(fallbackMethod = "fallBackGetInternalSCDateToDate")
     public ResponseEntity<ResponseDto> getBranchShopExistInInternalSC(){
-        return  ResponseEntity.ok(this.internalSCService.getBranchShopExistInInternalSC());
+        return  ResponseEntity.ok(this.internalSCService.getBranchShopExistInInternalSCStatus1DateLessThanNow());
     }
     @PutMapping("/delete")
     public ResponseEntity<ResponseDto> deleteSInternalSC(@RequestParam Integer id){
