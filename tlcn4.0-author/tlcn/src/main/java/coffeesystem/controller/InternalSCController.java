@@ -28,6 +28,10 @@ public class InternalSCController {
     public ResponseEntity<ResponseDto> createNewInternalSCStatus1DateLessThanNow(){
         return ResponseEntity.ok(internalSCService.createNewInternalSCStatus1DateLessThanNow());
     }
+    @PostMapping("/create-new-internalsc-status8to3-date-less-than-now")
+    public ResponseEntity<ResponseDto> createNewInternalSCStatus8To3DateLessThanNow(){
+        return ResponseEntity.ok(internalSCService.createNewInternalSCStatus8To3DateLessThanNow());
+    }
     @GetMapping("/get-all-paging")
 //    @HystrixCommand(fallbackMethod = "fallBackGetAllInternalSCPaging")
     public ResponseEntity<PagingResponseDto> getAllInternalSCPaging(

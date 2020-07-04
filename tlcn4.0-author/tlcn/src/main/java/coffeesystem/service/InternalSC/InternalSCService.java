@@ -30,4 +30,5 @@ public interface InternalSCService {
     ResponseDto getAllInternalSCByBranchShopAndStatus(Integer idBranchShop, Integer status);
     ResponseDto getTotalMaterialInInternalSCStatus1DateLessThanNowByIdBranchShop(Integer idBranchShop);
     ResponseDto createNewInternalSCStatus1DateLessThanNow();
+    ResponseDto createNewInternalSCStatus8To3DateLessThanNow();
 }

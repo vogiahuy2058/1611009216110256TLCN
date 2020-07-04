@@ -27,12 +27,14 @@ public class InternalSC extends Auditable<String>{
     //status=0: chua xu ly
     //status=1: da gui
     //status=2: da phan bo
-    //status=3: khong duyet yeu cau
+    //status=3: cho xuat hang
     //status=4: duyet yeu cau
     //status=5: da xuat kho tong
     //status=6: da nhan hang
-    //status=7: da ghep
-    //status=8: chờ phân phối
+    //status=7: chờ phân phối
+    //status=8:
+    //status=9: da ghep
+    //status=10: da tong hop
     private Integer status;
     private LocalDate deliveryTime;
 
