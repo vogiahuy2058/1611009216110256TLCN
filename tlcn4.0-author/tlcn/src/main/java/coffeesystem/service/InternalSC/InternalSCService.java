@@ -16,6 +16,7 @@ public interface InternalSCService {
     ResponseDto deleteInternalSC(Integer id);
     //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT')")
     ResponseDto editInternalSC(InternalSCRequestDto internalSCRequestDto);
+    ResponseDto editListInternalSC(List<InternalSCRequestDto1> internalSCRequestDto1List);
     //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_MANAGE_ALL_BRANCH')")
     ResponseDto getInternalSCById(Integer id);
     //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_MANAGE_ALL_BRANCH')")

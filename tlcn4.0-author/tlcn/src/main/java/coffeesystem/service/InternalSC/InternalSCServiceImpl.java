@@ -496,5 +496,20 @@ public class InternalSCServiceImpl implements InternalSCService{
         internalSCRepository.save(internalSC);
         return new ResponseDto(HttpStatus.OK.value(), "Edit internal supply contract successful", null);
     }
+    public ResponseDto editListInternalSC(List<InternalSCRequestDto1> internalSCRequestDto1List){
+        internalSCRequestDto1List.forEach(element->{
+            InternalSC internalSC = internalSCRepository.findByIdAndEnable(element.getId(), true)
+                    .orElseThrow(()-> new NotFoundException("Id not found!"));
+            BranchShop branchShop = branchShopRepository.findByNameAndEnable(element.getBranchShop(),
+                    true).orElseThrow(()-> new NotFoundException("Branch shop not found"));
+            internalSC.setBranchShop(branchShop);
+            internalSC.setDateCreate(element.getDate());
+            internalSC.setDeliveryTime(element.getDeliveryTime());
+            internalSC.setStatus(element.getStatus());
+            internalSCRepository.save(internalSC);
+        });
+        return new ResponseDto(HttpStatus.OK.value(), "Edit list internal supply contract successful", null);
+
+    }
 
 }

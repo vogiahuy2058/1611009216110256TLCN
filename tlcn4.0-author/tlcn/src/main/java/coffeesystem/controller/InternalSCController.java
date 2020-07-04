@@ -112,6 +112,10 @@ public class InternalSCController {
     public ResponseEntity<ResponseDto> editInternalSC(@RequestBody InternalSCRequestDto internalSCRequestDto){
         return ResponseEntity.ok(internalSCService.editInternalSC(internalSCRequestDto));
     }
+    @PutMapping("/edit-list")
+    public ResponseEntity<ResponseDto> editListInternalSC(@RequestBody List<InternalSCRequestDto1> internalSCRequestDtoList1){
+        return ResponseEntity.ok(internalSCService.editListInternalSC(internalSCRequestDtoList1));
+    }
     @GetMapping("/get-max-id")
     public ResponseEntity<ResponseDto> getMaxInternalSCId(){
 
