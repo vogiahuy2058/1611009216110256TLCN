@@ -359,27 +359,29 @@ public class InternalSCServiceImpl implements InternalSCService{
     }
     @Transactional
     public ResponseDto createNewInternalSCStatus1DateLessThanNow(){
-        //lay danh sach chi nhanh co trong hdccnb status=1 va date create nho hon today
+        //lay danh sach chi nhanh co trong hdccnb status=8 va date create nho hon today
         List<BranchShop> branchShops = new ArrayList<>();
         //lay danh sach chi nhanh len
         List<BranchShop> branchShopsToFind = branchShopRepository.findAllByEnable(true);
-        branchShopsToFind.forEach(branchShop -> {//voi moi chi nhanh, tim xem no co trong hdcc co status=1 va
+        branchShopsToFind.forEach(branchShop -> {//voi moi chi nhanh, tim xem no co trong hdcc co status=8 va
             //date create nho hon today
             List<InternalSC> internalSCList = this.internalSCRepository
                     .findByBranchShopIdAndStatusAndDateCreateLessThanAndEnable(
-                            branchShop.getId(), 1, LocalDate.now(),true);
+                            branchShop.getId(), 8, LocalDate.now(),true);
             if(!internalSCList.isEmpty()){
                 BranchShop branchShopNew =branchShop;
                 branchShops.add(branchShopNew);
             }
 
         });
-        //voi moi chi nhanh, tinh tong so luong nguyen lieu cua cac hdccnb status=1 va date create nho hon today
+        //voi moi chi nhanh, tinh tong so luong nguyen lieu cua cac hdccnb status=8
+        // va date create nho hon today
+        //va tao ra hop dong cung cap moi, cho tong nguyen lieu vao tung cthdcc
         branchShops.forEach(bsToGetTotalMaterial->{
             List<MaterialDto1> materialDto1List = new ArrayList<>();
             List<InternalSC> internalSCList = this.internalSCRepository
                     .findByBranchShopIdAndStatusAndDateCreateLessThanAndEnable(
-                            bsToGetTotalMaterial.getId(), 1, LocalDate.now(),true);
+                            bsToGetTotalMaterial.getId(), 8, LocalDate.now(),true);
             internalSCList.forEach(element -> {
                 //dua tren id tim ra hđcc noi bo
                 InternalSC internalSC = internalSCRepository.findByIdAndEnable(element.getId(), true)
