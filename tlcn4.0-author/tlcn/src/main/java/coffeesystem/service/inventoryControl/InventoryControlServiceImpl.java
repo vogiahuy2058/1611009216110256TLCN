@@ -139,20 +139,22 @@ public class InventoryControlServiceImpl implements InventoryControlService{
             return new ResponseDto(HttpStatus.OK.value(), "Create successful", null);
 
     }
-//    public ResponseDto editInventory(InventoryRequestDto inventoryRequestDto){
-//        //status = active moi sua duoc
-//        Inventory inventory = inventoryRepository.
-//                findByInventoryIdIdMaterialAndInventoryIdIdBranchShopAndInventoryIdFirstDateAndStatusAndEnable(
-//                        inventoryRequestDto.getMaterialId(),
-//                        inventoryRequestDto.getBranchShopId(), inventoryRequestDto.getFirstDate(),
-//                        "active", true).
-//                orElseThrow(()-> new NotFoundException("Inventory not found"));
-//        inventory.setImportPeriod(inventoryRequestDto.getImportPeriod());
-//        inventory.setBacklogLastDate(inventory.getBacklogLastDate());
-//        inventoryRepository.save(inventory);
-//
-//        return new ResponseDto(HttpStatus.OK.value(), "Edit successful", null);
-//    }
+    public ResponseDto editInventoryControl(InventoryControlRequestDto requestDto){
+        //status = active moi sua duoc
+        List<InventoryControl> inventoryControlList = inventoryControlRepository.
+                findByInventoryIdIdMaterialAndInventoryIdIdBranchShopAndInventoryIdFirstDateAndStatusAndEnable(
+                        requestDto.getMaterialId(),
+                        requestDto.getBranchShopId(), requestDto.getFirstDate(),
+                        "active", true);
+        inventoryControlList.forEach(element->{
+            element.setCheckDate(requestDto.getCheckDate());
+            element.setRemainingAmount(requestDto.getRemainingAmount());
+            element.setVirtualRemainingAmount(requestDto.getVirtualRemainingAmount());
+            inventoryControlRepository.save(element);
+        });
+
+        return new ResponseDto(HttpStatus.OK.value(), "Edit successful", null);
+    }
     @Transactional
     public ResponseDto getAllInventoryControlStatusActive(){
         List<InventoryControl> inventoryControlList = this.inventoryControlRepository.findAllByStatusAndEnable("active", true);
