@@ -20,6 +20,7 @@ public class InventoryControl  extends Auditable<String>{
     private InventoryId inventoryId;
     private LocalDate checkDate;
     private float remainingAmount;
+    private float virtualRemainingAmount;
 
     private String status = "active";
 

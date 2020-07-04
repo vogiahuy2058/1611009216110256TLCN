@@ -18,4 +18,5 @@ public class InventoryControlRequestDto {
     private Integer branchShopId;
     private LocalDate checkDate;
     private float remainingAmount;
+    private float virtualRemainingAmount;
 }

@@ -19,6 +19,7 @@ public class InventoryControlResponseDto {
     private String status;
     private String checkDate;
     private float remainingAmount;
+    private float virtualRemainingAmount;
     private String materialName;
     private String branchShopName;
     private String unitName;

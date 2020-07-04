@@ -64,7 +64,7 @@ public class InventoryControlServiceImpl implements InventoryControlService{
 //                });
 //
 //            }
-            InventoryControl inventoryControl = mapperObject.InventoryControlDtoToEntity(requestDto);
+            InventoryControl inventoryControl = mapperObject.InventoryControlDtoToEntity1(requestDto);
             Material material = materialRepository.findByIdAndEnable(requestDto.getMaterialId(), true)
                     .orElseThrow(()-> new NotFoundException("Material not found"));
             BranchShop branchShop = branchShopRepository.findByIdAndEnable(requestDto.getBranchShopId(), true)
@@ -81,6 +81,7 @@ public class InventoryControlServiceImpl implements InventoryControlService{
             inventoryControl.setInventoryId(inventoryId);
             inventoryControl.setMaterial(material);
             inventoryControl.setBranchShop(branchShop);
+            inventoryControl.setVirtualRemainingAmount(requestDto.getRemainingAmount());
             inventoryControlRepository.save(inventoryControl);
 
             return new ResponseDto(HttpStatus.OK.value(), "Create successful", null);
@@ -104,7 +105,7 @@ public class InventoryControlServiceImpl implements InventoryControlService{
                 });
 
             }
-            InventoryControl inventoryControl = mapperObject.InventoryControlDtoToEntity(requestDto);
+            InventoryControl inventoryControl = mapperObject.InventoryControlDtoToEntity1(requestDto);
             Material material = materialRepository.findByIdAndEnable(requestDto.getMaterialId(), true)
                     .orElseThrow(()-> new NotFoundException("Material not found"));
             BranchShop branchShop = branchShopRepository.findByIdAndEnable(requestDto.getBranchShopId(), true)
@@ -121,6 +122,7 @@ public class InventoryControlServiceImpl implements InventoryControlService{
             inventoryControl.setInventoryId(inventoryId);
             inventoryControl.setMaterial(material);
             inventoryControl.setBranchShop(branchShop);
+            inventoryControl.setVirtualRemainingAmount(requestDto.getRemainingAmount());
             inventoryControlRepository.save(inventoryControl);
 
             // neu remaining amount == 0 thi dong ky
@@ -156,7 +158,7 @@ public class InventoryControlServiceImpl implements InventoryControlService{
         List<InventoryControl> inventoryControlList = this.inventoryControlRepository.findAllByStatusAndEnable("active", true);
         List<InventoryControlResponseDto> inventoryControlResponseDtos = new ArrayList<>();
         inventoryControlList.forEach(element->{
-            InventoryControlResponseDto inventoryControlResponseDto = mapperObject.InventoryControlEntityToDto(element);
+            InventoryControlResponseDto inventoryControlResponseDto = mapperObject.InventoryControlEntityToDto1(element);
             Material material = materialRepository.findByIdAndEnable(element.getInventoryId().getIdMaterial(), true)
                     .orElseThrow(()-> new NotFoundException("Material id not found"));
             BranchShop branchShop = branchShopRepository.findByIdAndEnable(element.getInventoryId().getIdBranchShop(), true)
@@ -168,6 +170,7 @@ public class InventoryControlServiceImpl implements InventoryControlService{
             inventoryControlResponseDto.setMaterialName(material.getName());
             inventoryControlResponseDto.setUnitName(material.getUnit().getName());
             inventoryControlResponseDto.setStatus(element.getStatus());
+            inventoryControlResponseDto.setVirtualRemainingAmount(element.getVirtualRemainingAmount());
             inventoryControlResponseDto.setFirstDate(element.getInventoryId().getFirstDate()
                     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             inventoryControlResponseDto.setCheckDate(element.getCheckDate()
@@ -182,7 +185,7 @@ public class InventoryControlServiceImpl implements InventoryControlService{
                 .findAllByInventoryIdIdBranchShopAndStatusAndEnableOrderByMaterialDesc(idBranchShop, "active", true);
         List<InventoryControlResponseDto> inventoryControlResponseDtos = new ArrayList<>();
         inventoryControlList.forEach(element->{
-            InventoryControlResponseDto inventoryControlResponseDto = mapperObject.InventoryControlEntityToDto(element);
+            InventoryControlResponseDto inventoryControlResponseDto = mapperObject.InventoryControlEntityToDto1(element);
             Material material = materialRepository.findByIdAndEnable(element.getInventoryId().getIdMaterial(), true)
                     .orElseThrow(()-> new NotFoundException("Material id not found"));
             BranchShop branchShop = branchShopRepository.findByIdAndEnable(element.getInventoryId().getIdBranchShop(), true)
@@ -194,6 +197,7 @@ public class InventoryControlServiceImpl implements InventoryControlService{
             inventoryControlResponseDto.setMaterialName(material.getName());
             inventoryControlResponseDto.setUnitName(material.getUnit().getName());
             inventoryControlResponseDto.setStatus(element.getStatus());
+            inventoryControlResponseDto.setVirtualRemainingAmount(element.getVirtualRemainingAmount());
             inventoryControlResponseDto.setFirstDate(element.getInventoryId().getFirstDate()
                     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             inventoryControlResponseDto.setCheckDate(element.getCheckDate()
@@ -209,7 +213,7 @@ public class InventoryControlServiceImpl implements InventoryControlService{
                         idMaterial, idBranchShop, "active", true);
         List<InventoryControlResponseDto> inventoryControlResponseDtos = new ArrayList<>();
         inventoryControlList.forEach(element->{
-            InventoryControlResponseDto inventoryControlResponseDto = mapperObject.InventoryControlEntityToDto(element);
+            InventoryControlResponseDto inventoryControlResponseDto = mapperObject.InventoryControlEntityToDto1(element);
             Material material = materialRepository.findByIdAndEnable(element.getInventoryId().getIdMaterial(), true)
                     .orElseThrow(()-> new NotFoundException("Material id not found"));
             BranchShop branchShop = branchShopRepository.findByIdAndEnable(element.getInventoryId().getIdBranchShop(), true)
@@ -221,6 +225,7 @@ public class InventoryControlServiceImpl implements InventoryControlService{
             inventoryControlResponseDto.setMaterialName(material.getName());
             inventoryControlResponseDto.setUnitName(material.getUnit().getName());
             inventoryControlResponseDto.setStatus(element.getStatus());
+            inventoryControlResponseDto.setVirtualRemainingAmount(element.getVirtualRemainingAmount());
             inventoryControlResponseDto.setFirstDate(element.getInventoryId().getFirstDate()
                     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             inventoryControlResponseDto.setCheckDate(element.getCheckDate()
@@ -246,7 +251,7 @@ public class InventoryControlServiceImpl implements InventoryControlService{
         List<InventoryControl> inventoryControlList = this.inventoryControlRepository.findAllByEnableOrderByMaterialDesc(true);
         List<InventoryControlResponseDto> inventoryControlResponseDtos = new ArrayList<>();
         inventoryControlList.forEach(element->{
-            InventoryControlResponseDto inventoryControlResponseDto = mapperObject.InventoryControlEntityToDto(element);
+            InventoryControlResponseDto inventoryControlResponseDto = mapperObject.InventoryControlEntityToDto1(element);
             Material material = materialRepository.findByIdAndEnable(element.getInventoryId().getIdMaterial(), true)
                     .orElseThrow(()-> new NotFoundException("Material id not found"));
             BranchShop branchShop = branchShopRepository.findByIdAndEnable(element.getInventoryId().getIdBranchShop(), true)
@@ -258,6 +263,7 @@ public class InventoryControlServiceImpl implements InventoryControlService{
             inventoryControlResponseDto.setMaterialName(material.getName());
             inventoryControlResponseDto.setUnitName(material.getUnit().getName());
             inventoryControlResponseDto.setStatus(element.getStatus());
+            inventoryControlResponseDto.setVirtualRemainingAmount(element.getVirtualRemainingAmount());
             inventoryControlResponseDto.setFirstDate(element.getInventoryId().getFirstDate()
                     .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
             inventoryControlResponseDto.setCheckDate(element.getCheckDate()
