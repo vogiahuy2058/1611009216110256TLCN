@@ -149,9 +149,14 @@ public class MinMaxInventoryServiceImpl implements MinMaxInventoryService{
     }
     @Transactional
     public ResponseDto getMinMaxByIdMaterialAndIdBranchShop(Integer materialId, Integer branchShopId){
+        if(!minMaxInventoryRepository.
+                findByMinMaxInventoryIdIdMaterialAndMinMaxInventoryIdIdBranchShopAndEnable(materialId, branchShopId, true)
+                .isPresent()){
+            return new ResponseDto(HttpStatus.OK.value(), "Successful", null);
+        }
         MinMaxInventory minMaxInventory = minMaxInventoryRepository.
                 findByMinMaxInventoryIdIdMaterialAndMinMaxInventoryIdIdBranchShopAndEnable(materialId, branchShopId, true)
-                .orElseThrow(()-> new NotFoundException("Min max inventory not found"));
+                .get();
         MinMaxInventoryResponseDto minMaxInventoryResponseDto = mapperObject.MinMaxInventoryEntityToDto(minMaxInventory);
         minMaxInventoryResponseDto.setId(minMaxInventory.getMinMaxInventoryId().getId());
         minMaxInventoryResponseDto.setMaterialId(minMaxInventory.getMinMaxInventoryId().getIdMaterial());
