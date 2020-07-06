@@ -38,6 +38,11 @@ public class MaterialController {
     public ResponseEntity<ResponseDto> getAllMaterial(){
         return  ResponseEntity.ok(this.materialService.getAllMaterial());
     }
+    @GetMapping("/get-all-id-name")
+//    @HystrixCommand(fallbackMethod = "fallBackGetAllMaterial")
+    public ResponseEntity<ResponseDto> getAllMaterialShowIdAndName(){
+        return  ResponseEntity.ok(this.materialService.getAllMaterialShowIdAndName());
+    }
     public ResponseEntity<ResponseDto> fallBackGetAllMaterial() {
         System.out.println("=======fallBackGetAllMaterial=========");
         return new ResponseEntity<ResponseDto>(HttpStatus.OK);

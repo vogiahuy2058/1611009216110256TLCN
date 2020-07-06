@@ -1,14 +1,10 @@
 package coffeesystem.service.inventory;
 
-import coffeesystem.controller.InvoiceController;
 import coffeesystem.dto.*;
-import coffeesystem.exception.ExistException;
 import coffeesystem.exception.NotFoundException;
 import coffeesystem.model.*;
 import coffeesystem.model.embedding.InventoryId;
-import coffeesystem.model.embedding.MinMaxInventoryId;
 import coffeesystem.repository.*;
-import coffeesystem.service.inventoryControl.InventoryControlService;
 import coffeesystem.util.MapperObject;
 import coffeesystem.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -441,7 +437,7 @@ public class InventoryServiceImpl implements InventoryService{
     }
     @Transactional
     public ResponseDto getMaterialExistInInventoryByIdBranchShop(Integer branchShopId){
-        List<MaterialForMinMax> materialForMinMaxes = new ArrayList<>();
+        List<IdNameDto> idNameDtos = new ArrayList<>();
         //lay danh sach nguyen lieu len
         List<Material> materialList = materialRepository.findAllByEnable(true);
         materialList.forEach(material -> {//voi moi nguyen lieu, tim xem no co ton kho khong
@@ -449,15 +445,15 @@ public class InventoryServiceImpl implements InventoryService{
                     .findByInventoryIdIdMaterialAndInventoryIdIdBranchShopAndEnable(
                             material.getId(), branchShopId,true);
             if(!inventoryList.isEmpty()){
-                MaterialForMinMax materialForMinMax = new MaterialForMinMax();
-                materialForMinMax.setId(material.getId());
-                materialForMinMax.setName(material.getName());
-                materialForMinMaxes.add(materialForMinMax);
+                IdNameDto idNameDto = new IdNameDto();
+                idNameDto.setId(material.getId());
+                idNameDto.setName(material.getName());
+                idNameDtos.add(idNameDto);
             }
 
         });
 
-        return new ResponseDto(HttpStatus.OK.value(), "All material existed in inventory", materialForMinMaxes);
+        return new ResponseDto(HttpStatus.OK.value(), "All material existed in inventory", idNameDtos);
     }
 
     public ResponseDto deleteInventory(Integer id){

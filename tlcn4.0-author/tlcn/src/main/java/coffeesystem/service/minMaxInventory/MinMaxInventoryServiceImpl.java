@@ -18,7 +18,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -171,16 +170,16 @@ public class MinMaxInventoryServiceImpl implements MinMaxInventoryService{
     @Transactional
     public ResponseDto getMaterialHaveMinMaxByIdBranchShop(Integer idBranchShop){
         List<MinMaxInventory> minMaxInventoryList = this.minMaxInventoryRepository.findByMinMaxInventoryIdIdBranchShopAndEnable(idBranchShop, true);
-        List<MaterialForMinMax> materialForMinMaxes = new ArrayList<>();
+        List<IdNameDto> idNameDtos = new ArrayList<>();
         minMaxInventoryList.forEach(element->{
-            MaterialForMinMax materialForMinMax = new MaterialForMinMax();
+            IdNameDto idNameDto = new IdNameDto();
             Material material = materialRepository.findByIdAndEnable(element.getMinMaxInventoryId().getIdMaterial(), true)
                     .orElseThrow(()-> new NotFoundException("Material id not found"));
-            materialForMinMax.setId(material.getId());
-            materialForMinMax.setName(material.getName());
-            materialForMinMaxes.add(materialForMinMax);
+            idNameDto.setId(material.getId());
+            idNameDto.setName(material.getName());
+            idNameDtos.add(idNameDto);
         });
-        return new ResponseDto(HttpStatus.OK.value(), "All material have min max inventory", materialForMinMaxes);
+        return new ResponseDto(HttpStatus.OK.value(), "All material have min max inventory", idNameDtos);
     }
     public ResponseDto deleteMinMaxInventory(Integer id){
         MinMaxInventory minMaxInventory = minMaxInventoryRepository.

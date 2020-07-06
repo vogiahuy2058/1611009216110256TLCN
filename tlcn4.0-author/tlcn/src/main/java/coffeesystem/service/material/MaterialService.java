@@ -10,6 +10,7 @@ public interface MaterialService {
     ResponseDto createMaterial(MaterialDto materialDto);
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CHEF', 'ROLE_MANAGE_ALL_BRANCH')")
     ResponseDto getAllMaterial();
+    ResponseDto getAllMaterialShowIdAndName();
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGE_ALL_BRANCH')")
     ResponseDto deleteMaterial(Integer id);
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_MANAGE_ALL_BRANCH')")

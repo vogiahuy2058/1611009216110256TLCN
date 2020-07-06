@@ -9,7 +9,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class MaterialForMinMax {
+public class IdNameDto {
     private Integer id;
     private String name;
 }

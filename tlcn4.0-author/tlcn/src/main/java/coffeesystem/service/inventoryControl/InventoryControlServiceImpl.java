@@ -6,26 +6,16 @@ import coffeesystem.exception.NotFoundException;
 import coffeesystem.model.*;
 import coffeesystem.model.embedding.InventoryId;
 import coffeesystem.repository.*;
-import coffeesystem.service.customer.CustomerService;
 import coffeesystem.service.inventory.InventoryService;
 import coffeesystem.util.MapperObject;
-import coffeesystem.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.sql.Date;
-import java.time.Instant;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
 @Service
 public class InventoryControlServiceImpl implements InventoryControlService{
@@ -276,7 +266,7 @@ public class InventoryControlServiceImpl implements InventoryControlService{
     }
     @Transactional
     public ResponseDto getMaterialExistInInventoryControlByIdBranchShop(Integer branchShopId){
-        List<MaterialForMinMax> materialForMinMaxes = new ArrayList<>();
+        List<IdNameDto> idNameDtos = new ArrayList<>();
         //lay danh sach nguyen lieu len
         List<Material> materialList = materialRepository.findAllByEnable(true);
         materialList.forEach(material -> {//voi moi nguyen lieu, tim xem no co ton kho khong
@@ -284,15 +274,15 @@ public class InventoryControlServiceImpl implements InventoryControlService{
                     .findByInventoryIdIdMaterialAndInventoryIdIdBranchShopAndEnable(
                             material.getId(), branchShopId,true);
             if(!inventoryControlList.isEmpty()){
-                MaterialForMinMax materialForMinMax = new MaterialForMinMax();
-                materialForMinMax.setId(material.getId());
-                materialForMinMax.setName(material.getName());
-                materialForMinMaxes.add(materialForMinMax);
+                IdNameDto idNameDto = new IdNameDto();
+                idNameDto.setId(material.getId());
+                idNameDto.setName(material.getName());
+                idNameDtos.add(idNameDto);
             }
 
         });
 
-        return new ResponseDto(HttpStatus.OK.value(), "All material existed in inventory", materialForMinMaxes);
+        return new ResponseDto(HttpStatus.OK.value(), "All material existed in inventory", idNameDtos);
     }
 
 

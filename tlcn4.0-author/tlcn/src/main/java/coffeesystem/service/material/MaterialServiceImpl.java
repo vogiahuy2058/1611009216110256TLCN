@@ -1,5 +1,6 @@
 package coffeesystem.service.material;
 
+import coffeesystem.dto.IdNameDto;
 import coffeesystem.dto.MaterialDto;
 import coffeesystem.dto.PagingResponseDto;
 import coffeesystem.dto.ResponseDto;
@@ -65,6 +66,18 @@ public class MaterialServiceImpl implements MaterialService {
             materialDtos.add(materialDto);
         });
         return new ResponseDto(HttpStatus.OK.value(), "All material", materialDtos);
+    }
+    @Transactional
+    public ResponseDto getAllMaterialShowIdAndName(){
+        List<Material> materials = materialRepository.findAllByEnable(true);
+        List<IdNameDto> idNameDtos = new ArrayList<>();
+        materials.forEach(element->{
+            IdNameDto idNameDto = new IdNameDto();
+            idNameDto.setId(element.getId());
+            idNameDto.setName(element.getName());
+            idNameDtos.add(idNameDto);
+        });
+        return new ResponseDto(HttpStatus.OK.value(), "All material", idNameDtos);
     }
     @Transactional
     @Override
