@@ -24,4 +24,5 @@ public interface CustomerService {
     ResponseDto getCustomerById(Integer id);
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN','ROLE_ACCOUNTANT', 'ROLE_HR', 'ROLE_CASHIER', 'ROLE_BRANCH_MANAGER', 'ROLE_MANAGE_ALL_BRANCH')")
     PagingResponseDto getAllCustomerPaging(int page, int size, String sort, String sortColumn);
+    ResponseDto getCustomerByPhone(String phone);
 }

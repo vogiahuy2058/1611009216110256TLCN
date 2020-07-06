@@ -52,6 +52,12 @@ public class CustomerController {
 
         return ResponseEntity.ok(customerService.getCustomerById(id));
     }
+    @GetMapping("/get-by-phone")
+//    @HystrixCommand(fallbackMethod = "fallBackGetCustomerById")
+    public ResponseEntity<ResponseDto> getCustomerByPhone(@RequestParam String phone){
+
+        return ResponseEntity.ok(customerService.getCustomerByPhone(phone));
+    }
     public ResponseEntity<ResponseDto> fallBackGetCustomerById(Integer id) {
         System.out.println("=======fallBackGetCustomerById=========");
         return new ResponseEntity<ResponseDto>(HttpStatus.OK);

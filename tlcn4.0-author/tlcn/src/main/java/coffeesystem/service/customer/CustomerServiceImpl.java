@@ -90,6 +90,19 @@ public class CustomerServiceImpl implements CustomerService{
         customerResponseDto.setCustomerType(customer.getCustomerType().getName());
         return new ResponseDto(HttpStatus.OK.value(), "Successful", customerResponseDto);
     }
+    @Transactional
+    public ResponseDto getCustomerByPhone(String phone){
+        if(!customerRepository.findByPhoneAndEnable(phone, true).isPresent()){
+            return new ResponseDto(HttpStatus.OK.value(), "Successful", null);
+        }
+        Customer customer = customerRepository.findByPhoneAndEnable(phone, true)
+                .orElseThrow(()-> new NotFoundException("Id not found"));
+
+        CustomerResponseDto customerResponseDto = mapperObject.CustomerEntityToDto(customer);
+        customerResponseDto.setBirthDay(customer.getBirthDay().format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+        customerResponseDto.setCustomerType(customer.getCustomerType().getName());
+        return new ResponseDto(HttpStatus.OK.value(), "Successful", customerResponseDto);
+    }
     public ResponseDto deleteCustomer(Integer id){
         Customer customer = customerRepository.findByIdAndEnable(id, true)
                 .orElseThrow(()-> new NotFoundException("Id not found!"));

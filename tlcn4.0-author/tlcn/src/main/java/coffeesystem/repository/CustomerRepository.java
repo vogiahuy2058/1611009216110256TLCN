@@ -17,6 +17,7 @@ public interface CustomerRepository extends JpaRepository<Customer, Integer> {
     List<Customer> findAllByEnable(boolean enable);
     Page<Customer> findAllByEnable(boolean enable, Pageable pageable);
     Optional<Customer> findByPhone(String phone);
+    Optional<Customer> findByPhoneAndEnable(String phone, boolean enable);
     Optional<Customer> findByIdAndEnable(Integer id, boolean enable);
     List<Customer> findByCustomerTypeId(Integer id);
 
