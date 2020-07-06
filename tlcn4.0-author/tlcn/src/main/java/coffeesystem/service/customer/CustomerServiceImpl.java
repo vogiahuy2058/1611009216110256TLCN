@@ -124,6 +124,7 @@ public class CustomerServiceImpl implements CustomerService{
         customer.setBirthDay(customerRequestDto.getBirthDay());
         customer.setPhone(customerRequestDto.getPhone());
         customer.setSex(customerRequestDto.isSex());
+        customer.setTotalPurchase(customerRequestDto.getTotalPurchase());
         CustomerType customerType = customerTypeRepository.findByNameAndEnable(customerRequestDto.getCustomerType(), true)
                 .orElseThrow(()-> new NotFoundException("Customer type not found"));
         customer.setCustomerType(customerType);
