@@ -51,6 +51,12 @@ public class BranchShopController {
 //        return ResponseEntity.ok(branchShopService.hystrixBranchShop());
         return new ResponseEntity<ResponseDto>(HttpStatus.OK);
     }
+
+    @GetMapping("/get-all-filter-id-name")
+//    @HystrixCommand(fallbackMethod = "fallBackGetAllBranchShop")
+    public ResponseEntity<ResponseDto> getAllBranchShopFilterIdName(){
+        return  ResponseEntity.ok(this.branchShopService.getAllBranchShopFilterIdName());
+    }
     @GetMapping("/get")
 //    @HystrixCommand(fallbackMethod = "fallBackGetBranchShopById")
     public ResponseEntity<ResponseDto> getBranchShopById(@RequestParam Integer id){

@@ -1,6 +1,7 @@
 package coffeesystem.service.branchShop;
 
 import coffeesystem.dto.BranchShopDto;
+import coffeesystem.dto.IdNameDto;
 import coffeesystem.dto.PagingResponseDto;
 import coffeesystem.dto.ResponseDto;
 import coffeesystem.exception.NotFoundException;
@@ -72,6 +73,18 @@ public class BranchShopServiceImpl implements BranchShopService {
             branchShopDtos.add(branchShopDto);
         });
         return new ResponseDto(HttpStatus.OK.value(), "All branch shop",branchShopDtos);
+    }
+    @Transactional
+    public ResponseDto getAllBranchShopFilterIdName(){
+        List<BranchShop> branchShops = branchShopRepository.findAllByEnable(true);
+        List<IdNameDto> idNameDtos = new ArrayList<>();
+        branchShops.forEach(element->{
+            IdNameDto idNameDto = new IdNameDto();
+            idNameDto.setId(element.getId());
+            idNameDto.setName(element.getName());
+            idNameDtos.add(idNameDto);
+        });
+        return new ResponseDto(HttpStatus.OK.value(), "All branch shop",idNameDtos);
     }
     @Transactional
     @Override

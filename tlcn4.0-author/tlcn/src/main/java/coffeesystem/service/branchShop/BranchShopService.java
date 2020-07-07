@@ -13,6 +13,7 @@ public interface BranchShopService {
     PagingResponseDto getAllBranchShopPaging(int page, int size, String sort, String sortColumn);
 //    @PreAuthorize("hasAnyRole('ROLE_MANAGE_ALL_BRANCH','ROLE_ACCOUNTANT', 'ROLE_ADMIN', 'ROLE_CASHIER', 'ROLE_HR')")
     ResponseDto getAllBranchShop();
+    ResponseDto getAllBranchShopFilterIdName();
 //    @PreAuthorize("hasAnyRole('ROLE_MANAGE_ALL_BRANCH','ROLE_ACCOUNTANT', 'ROLE_ADMIN')")
     ResponseDto deleteBranchShop(Integer id);
 //    @PreAuthorize("hasAnyRole('ROLE_MANAGE_ALL_BRANCH','ROLE_ACCOUNTANT', 'ROLE_ADMIN')")
