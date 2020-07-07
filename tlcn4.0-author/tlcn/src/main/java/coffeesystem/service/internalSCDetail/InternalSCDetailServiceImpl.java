@@ -31,6 +31,8 @@ public class InternalSCDetailServiceImpl implements InternalSCDetailService{
     InternalSCDetailRepository internalSCDetailRepository;
     @Autowired
     UnitRepository unitRepository;
+    @Autowired
+    MaterialPriceRepository materialPriceRepository;
     public ResponseDto createInternalSCDetail(InternalSCDetailRequestDto internalSCDetailRequestDto){
         InternalSC internalSC = internalSCRepository.findByIdAndEnable(
                 internalSCDetailRequestDto.getInternalSCId(), true)
@@ -110,19 +112,44 @@ public class InternalSCDetailServiceImpl implements InternalSCDetailService{
         InternalSC internalSC = internalSCRepository.findByIdAndEnable(internalSCId, true)
                 .orElseThrow(()-> new NotFoundException("Internal supply contract not found"));
         List<InternalSCDetail> internalSCDetailList = internalSCDetailRepository.findByInternalSCAndEnableOrderByLastModifiedDateDesc(internalSC, true);
-        List<InternalSCDetailResponseDto> internalSCDetailResponseDtos = new ArrayList<>();
+        List<InternalSCDetailResponseDto1> internalSCDetailResponseDto2s = new ArrayList<>();
         Integer serial = 0;
         for (InternalSCDetail element : internalSCDetailList) {
-            InternalSCDetailResponseDto internalSCDetailResponseDto = mapperObject.InternalSCDetailEntityToDto(element);
-            internalSCDetailResponseDto.setMaterialId(element.getInternalSCDetailId().getMaterialId());
-            internalSCDetailResponseDto.setInternalSCId(element.getInternalSCDetailId().getInternalSCId());
-            internalSCDetailResponseDto.setMaterialName(element.getMaterial().getName());
-            internalSCDetailResponseDto.setUnitName(element.getUnit().getName());
-            internalSCDetailResponseDto.setSerial(serial + 1);
+            InternalSCDetailResponseDto1 internalSCDetailResponseDto1 = mapperObject.InternalSCDetailEntityToDto1(element);
+            internalSCDetailResponseDto1.setMaterialId(element.getInternalSCDetailId().getMaterialId());
+            internalSCDetailResponseDto1.setInternalSCId(element.getInternalSCDetailId().getInternalSCId());
+            internalSCDetailResponseDto1.setMaterialName(element.getMaterial().getName());
+            internalSCDetailResponseDto1.setUnitName(element.getUnit().getName());
+            internalSCDetailResponseDto1.setSerial(serial + 1);
             serial = serial + 1;
-            internalSCDetailResponseDtos.add(internalSCDetailResponseDto);
+            MaterialPrice materialPrice = materialPriceRepository
+                    .findByMaterialPriceIdIdMaterialAndEnable(element.getInternalSCDetailId().getMaterialId(), true)
+                    .orElseThrow(()-> new NotFoundException("Material price not found"));
+            internalSCDetailResponseDto1.setPrice(materialPrice.getCostPrice());
+            internalSCDetailResponseDto1.setTotalPrice(materialPrice.getCostPrice() * element.getQuantityAllowed());
+            internalSCDetailResponseDto2s.add(internalSCDetailResponseDto1);
         }
-        return new ResponseDto(HttpStatus.OK.value(), "Successful", internalSCDetailResponseDtos);
+        return new ResponseDto(HttpStatus.OK.value(), "Successful", internalSCDetailResponseDto2s);
+    }
+
+    @Transactional
+    public ResponseDto getInternalSCDetailByInternalSCIdFilter(Integer internalSCId) {
+        InternalSC internalSC = internalSCRepository.findByIdAndEnable(internalSCId, true)
+                .orElseThrow(()-> new NotFoundException("Internal supply contract not found"));
+        List<InternalSCDetail> internalSCDetailList = internalSCDetailRepository.findByInternalSCAndEnableOrderByLastModifiedDateDesc(internalSC, true);
+        List<InternalSCDetailResponseDto2> internalSCDetailResponseDto2s = new ArrayList<>();
+        Integer serial = 0;
+        for (InternalSCDetail element : internalSCDetailList) {
+            InternalSCDetailResponseDto2 internalSCDetailResponseDto2 = mapperObject.InternalSCDetailEntityToDto2(element);
+            internalSCDetailResponseDto2.setId(element.getInternalSCDetailId().getId());
+            internalSCDetailResponseDto2.setMaterialName(element.getMaterial().getName());
+            internalSCDetailResponseDto2.setUnitName(element.getUnit().getName());
+            internalSCDetailResponseDto2.setSerial(serial + 1);
+            serial = serial + 1;
+            internalSCDetailResponseDto2.setQuantityAllowed(element.getQuantityAllowed());
+            internalSCDetailResponseDto2s.add(internalSCDetailResponseDto2);
+        }
+        return new ResponseDto(HttpStatus.OK.value(), "Successful", internalSCDetailResponseDto2s);
     }
 
     @Override

@@ -47,6 +47,12 @@ public class InternalSCDetailController {
         return new ResponseEntity<ResponseDto>(HttpStatus.OK);
     }
 
+    @GetMapping("/get-by-id-supplycontract-excel")
+//    @HystrixCommand(fallbackMethod = "fallBackGetInternalSCDetailByInternalSCId")
+    public ResponseEntity<ResponseDto> getInternalSCDetailByInternalSCIdExcel(@RequestParam Integer internalSCId){
+
+        return ResponseEntity.ok(internalSCDetailService.getInternalSCDetailByInternalSCIdFilter(internalSCId));
+    }
     @GetMapping("/get-by-id-supplycontract-paging")
 //    @HystrixCommand(fallbackMethod = "fallBackGetAllInternalSCDetailPaging")
     public ResponseEntity<PagingResponseDto> getInternalSCDetailBySInternalSCIdPaging(

@@ -15,6 +15,7 @@ public class InternalSCResponseDto {
     private Integer id;
     private String date;
 //    private float totalPrice;
+    private Integer idBranchShop;
     private String branchShop;
 //    private String supplier;
     private Integer status;

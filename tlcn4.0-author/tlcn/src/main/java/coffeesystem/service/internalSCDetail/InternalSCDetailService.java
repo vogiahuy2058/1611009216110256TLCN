@@ -15,6 +15,7 @@ public interface InternalSCDetailService {
     ResponseDto deleteInternalSCDetail(Integer internalSCId, Integer materialId, Integer id);
     ResponseDto deleteInternalSCDetail(Integer id);
     ResponseDto getInternalSCDetailByInternalSCId(Integer internalSCId);
+    ResponseDto getInternalSCDetailByInternalSCIdFilter(Integer internalSCId);
     PagingResponseDto getInternalSCDetailByInternalSCPaging(
             int page, int size, String sort, String sortColumn, Integer internalSCId);
     ResponseDto getInternalSCDetailByInternalSCIdAndStatus(Integer internalSCId, Integer status);

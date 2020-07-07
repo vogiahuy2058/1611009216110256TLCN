@@ -222,6 +222,14 @@ public interface MapperObject {
     @Mapping(target="id",source = "internalSCDetailId.id")
     InternalSCDetailResponseDto InternalSCDetailEntityToDto(InternalSCDetail internalSCDetail);
 
+    @Mapping(target="materialId",source = "internalSCDetailId.materialId")
+    @Mapping(target="internalSCId",source = "internalSCDetailId.internalSCId")
+    @Mapping(target="id",source = "internalSCDetailId.id")
+    InternalSCDetailResponseDto1 InternalSCDetailEntityToDto1(InternalSCDetail internalSCDetail);
+
+
+    @Mapping(target="id",source = "internalSCDetailId.id")
+    InternalSCDetailResponseDto2 InternalSCDetailEntityToDto2(InternalSCDetail internalSCDetail);
     Demo DemoDtoToEntity(DemoDto demoDto);
     DemoDto DemoEntityToDto(Demo demo);
 
