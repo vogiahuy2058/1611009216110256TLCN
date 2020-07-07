@@ -22,4 +22,5 @@ public interface InventoryService {
                                                           String sortColumn, Integer branchShopId, String status);
     ResponseDto getByIdMaterialAndIdBranchShopAndFirstDate(Integer materialId, Integer branchShopId, String firstDate);
     ResponseDto getMaterialExistInInventoryByIdBranchShop(Integer branchShopId);
+    ResponseDto getUnitExistInInventoryByIdBranchShop(Integer branchShopId);
 }

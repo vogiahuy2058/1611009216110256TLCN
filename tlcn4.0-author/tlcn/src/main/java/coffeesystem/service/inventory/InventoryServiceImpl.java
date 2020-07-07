@@ -455,6 +455,46 @@ public class InventoryServiceImpl implements InventoryService{
 
         return new ResponseDto(HttpStatus.OK.value(), "All material existed in inventory", idNameDtos);
     }
+    @Transactional
+    public ResponseDto getUnitExistInInventoryByIdBranchShop(Integer branchShopId){
+        List<IdNameDto> idNameDtos = new ArrayList<>();
+        //lay danh sach material len
+        List<Material> materialList = materialRepository.findAllByEnable(true);
+        materialList.forEach(material -> {//voi moi material, tim xem no co ton kho khong
+            List<Inventory> inventoryList = this.inventoryRepository
+                    .findByInventoryIdIdMaterialAndInventoryIdIdBranchShopAndEnable(
+                            material.getId(), branchShopId,true);
+
+            if(!inventoryList.isEmpty()){
+                if(idNameDtos.size() == 0){
+                    IdNameDto idNameDto = new IdNameDto();
+                    idNameDto.setId(material.getUnit().getId());
+                    idNameDto.setName(material.getUnit().getName());
+                    idNameDtos.add(idNameDto);
+                }else {
+                    boolean coTimRa = false;
+                    for (int ii = 0; ii < idNameDtos.size(); ii++) {
+                      //neu da them unit do vao idNameDtos thi khong them nua
+                        if (idNameDtos.get(ii).getId() == (material.getUnit().getId())) {
+                            coTimRa = true;
+                            break;
+                        }
+                    }
+                    if (coTimRa == false) {
+                        IdNameDto idNameDto = new IdNameDto();
+                        idNameDto.setId(material.getUnit().getId());
+                        idNameDto.setName(material.getUnit().getName());
+                        idNameDtos.add(idNameDto);
+                    }
+                }
+
+
+            }
+
+        });
+
+        return new ResponseDto(HttpStatus.OK.value(), "All material existed in inventory", idNameDtos);
+    }
 
     public ResponseDto deleteInventory(Integer id){
         Inventory inventory = inventoryRepository.

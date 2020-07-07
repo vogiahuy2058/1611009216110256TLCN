@@ -105,8 +105,13 @@ public class InventoryController {
     }
     @GetMapping("/get-material-existed-in-inventory")
 //    @HystrixCommand(fallbackMethod = "fallBackGetAllMinMaxInventory")
-    public ResponseEntity<ResponseDto> getAllInventoryControl(@RequestParam Integer idBranchShop){
+    public ResponseEntity<ResponseDto> getMaterialExistedInInventory(@RequestParam Integer idBranchShop){
         return ResponseEntity.ok(this.inventoryService.getMaterialExistInInventoryByIdBranchShop(idBranchShop));
+    }
+    @GetMapping("/get-unit-existed-in-inventory")
+//    @HystrixCommand(fallbackMethod = "fallBackGetAllMinMaxInventory")
+    public ResponseEntity<ResponseDto> getUnitExistedInInventory(@RequestParam Integer idBranchShop){
+        return ResponseEntity.ok(this.inventoryService.getUnitExistInInventoryByIdBranchShop(idBranchShop));
     }
     @PutMapping("/delete")
     public ResponseEntity<ResponseDto> deleteInventory(@RequestParam Integer id){
