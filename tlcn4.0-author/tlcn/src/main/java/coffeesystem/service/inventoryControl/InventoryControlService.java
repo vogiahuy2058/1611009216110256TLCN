@@ -12,5 +12,6 @@ public interface InventoryControlService {
     ResponseDto getAllInventoryControl();
     ResponseDto getInventoryControlByIdMaterialIdBranchShopStatusActive(Integer idMaterial,Integer idBranchShop);
     ResponseDto getMaterialExistInInventoryControlByIdBranchShop(Integer branchShopId);
+    ResponseDto getUnitExistInInventoryByIdBranchShop(Integer branchShopId);
     ResponseDto deleteInventoryControl(Integer idMaterial, Integer idBranchShop, String firstDate);
 }

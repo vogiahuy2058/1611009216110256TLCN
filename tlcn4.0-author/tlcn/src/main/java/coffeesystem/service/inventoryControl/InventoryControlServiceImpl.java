@@ -226,6 +226,46 @@ public class InventoryControlServiceImpl implements InventoryControlService{
         });
         return new ResponseDto(HttpStatus.OK.value(), "All inventory", inventoryControlResponseDtos);
     }
+    @Transactional
+    public ResponseDto getUnitExistInInventoryByIdBranchShop(Integer branchShopId){
+        List<IdNameDto> idNameDtos = new ArrayList<>();
+        //lay danh sach material len
+        List<Material> materialList = materialRepository.findAllByEnable(true);
+        materialList.forEach(material -> {//voi moi material, tim xem no co ton kho khong
+            List<InventoryControl> inventoryControlList = this.inventoryControlRepository
+                    .findByInventoryIdIdMaterialAndInventoryIdIdBranchShopAndEnable(
+                            material.getId(), branchShopId,true);
+
+            if(!inventoryControlList.isEmpty()){
+                if(idNameDtos.size() == 0){
+                    IdNameDto idNameDto = new IdNameDto();
+                    idNameDto.setId(material.getUnit().getId());
+                    idNameDto.setName(material.getUnit().getName());
+                    idNameDtos.add(idNameDto);
+                }else {
+                    boolean coTimRa = false;
+                    for (int ii = 0; ii < idNameDtos.size(); ii++) {
+                        //neu da them unit do vao idNameDtos thi khong them nua
+                        if (idNameDtos.get(ii).getId() == (material.getUnit().getId())) {
+                            coTimRa = true;
+                            break;
+                        }
+                    }
+                    if (coTimRa == false) {
+                        IdNameDto idNameDto = new IdNameDto();
+                        idNameDto.setId(material.getUnit().getId());
+                        idNameDto.setName(material.getUnit().getName());
+                        idNameDtos.add(idNameDto);
+                    }
+                }
+
+
+            }
+
+        });
+
+        return new ResponseDto(HttpStatus.OK.value(), "All material existed in inventory control", idNameDtos);
+    }
 
     public ResponseDto deleteInventoryControl(Integer idMaterial, Integer idBranchShop, String firstDate){
         LocalDate newFirstDate = LocalDate.parse(firstDate, dtf);
@@ -284,6 +324,5 @@ public class InventoryControlServiceImpl implements InventoryControlService{
 
         return new ResponseDto(HttpStatus.OK.value(), "All material existed in inventory", idNameDtos);
     }
-
 
 }
