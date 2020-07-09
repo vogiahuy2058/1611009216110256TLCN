@@ -16,5 +16,5 @@ public class DrinkPriceRequestDto {
     private Integer drinkId;
     private LocalDate date;
     private float price;
-    private float initialPrice;
+//    private float initialPrice;
 }

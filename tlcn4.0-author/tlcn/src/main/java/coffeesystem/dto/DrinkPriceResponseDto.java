@@ -16,5 +16,5 @@ public class DrinkPriceResponseDto {
     private String date;
     private String drinkName;
     private float price;
-    private float initialPrice;
+//    private float initialPrice;
 }

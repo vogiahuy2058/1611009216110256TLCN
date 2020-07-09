@@ -20,7 +20,7 @@ public class DrinkPrice extends Auditable<String>{
     @EmbeddedId
     private DrinkPriceId drinkPriceId;
     private float price;
-    private float initialPrice;
+//    private float initialPrice;
     private boolean enable = true;
     @ManyToOne
     @JoinColumn(name = "drink_drink_id")

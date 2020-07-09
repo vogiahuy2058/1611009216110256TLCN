@@ -163,12 +163,12 @@ public interface MapperObject {
     @Mapping(target="drinkPriceId.idDrink",source = "drinkId")
     @Mapping(target="drinkPriceId.date",source = "date")
     @Mapping(target="drinkPriceId.id",source = "id")
-    DrinkPrice DrinkPriceDtoToEntity(DrinkPriceRequestDto drinkPriceRequestDto);
+    DrinkPrice DrinkPriceDtoToEntity2(DrinkPriceRequestDto drinkPriceRequestDto);
 
     @Mapping(target="drinkId",source = "drinkPriceId.idDrink")
     @Mapping(target="date",source = "drinkPriceId.date")
     @Mapping(target="id",source = "drinkPriceId.id")
-    DrinkPriceResponseDto DrinkPriceEntityToDto1(DrinkPrice drinkPrice);
+    DrinkPriceResponseDto DrinkPriceEntityToDto2(DrinkPrice drinkPrice);
 
     @Mapping(target="materialPriceId.idMaterial",source = "materialId")
     @Mapping(target="materialPriceId.firstDate",source = "firstDate")

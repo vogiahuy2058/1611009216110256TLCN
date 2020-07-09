@@ -46,7 +46,7 @@ public class DrinkPriceServiceImpl implements DrinkPriceService{
             drinkPriceRepository.save(drinkPriceOld);
         }
 
-        DrinkPrice drinkPrice = mapperObject.DrinkPriceDtoToEntity(drinkPriceRequestDto);
+        DrinkPrice drinkPrice = mapperObject.DrinkPriceDtoToEntity2(drinkPriceRequestDto);
         Drink drink = drinkRepository.findByIdAndEnable(drinkPriceRequestDto.getDrinkId(), true)
                 .orElseThrow(()-> new NotFoundException("Drink not found"));
         DrinkPriceId drinkPriceId = new DrinkPriceId();
@@ -68,13 +68,13 @@ public class DrinkPriceServiceImpl implements DrinkPriceService{
                 .orElseThrow(()-> new NotFoundException("Id drink not found"));
 //        drinkPrice.setEnable(false);
 //        drinkPriceRepository.save(drinkPrice);
-
-        if(drinkPriceRequestDto.getInitialPrice() == 0){
-            drinkPriceRequestDto.setInitialPrice(drinkPrice.getInitialPrice());
-        }
-        if(drinkPriceRequestDto.getPrice() == 0){
-            drinkPriceRequestDto.setPrice(drinkPrice.getPrice());
-        }
+//
+//        if(drinkPriceRequestDto.getInitialPrice() == 0){
+//            drinkPriceRequestDto.setInitialPrice(drinkPrice.getInitialPrice());
+//        }
+//        if(drinkPriceRequestDto.getPrice() == 0){
+//            drinkPriceRequestDto.setPrice(drinkPrice.getPrice());
+//        }
         createPriceOfDrink(drinkPriceRequestDto);
         return new ResponseDto(HttpStatus.OK.value(), "Change price successful", null);
 
@@ -85,7 +85,7 @@ public class DrinkPriceServiceImpl implements DrinkPriceService{
                 .orElseThrow(()-> new NotFoundException("Id drink not found"));
         Drink drink = drinkRepository.findByIdAndEnable(drinkId, true)
                 .orElseThrow(()-> new NotFoundException("Dink id not found"));
-        DrinkPriceResponseDto drinkPriceResponseDto = mapperObject.DrinkPriceEntityToDto1(drinkPrice);
+        DrinkPriceResponseDto drinkPriceResponseDto = mapperObject.DrinkPriceEntityToDto2(drinkPrice);
         drinkPriceResponseDto.setId(drinkPrice.getDrinkPriceId().getId());
         drinkPriceResponseDto.setDrinkId(drinkPrice.getDrinkPriceId().getIdDrink());
         drinkPriceResponseDto.setDate(drinkPrice.getDrinkPriceId().getDate()
@@ -98,7 +98,7 @@ public class DrinkPriceServiceImpl implements DrinkPriceService{
         List<DrinkPrice> drinkPriceList = this.drinkPriceRepository.findAllByEnable(true);
         List<DrinkPriceResponseDto> drinkPriceResponseDtos = new ArrayList<>();
         drinkPriceList.forEach(element->{
-            DrinkPriceResponseDto drinkPriceResponseDto = mapperObject.DrinkPriceEntityToDto1(element);
+            DrinkPriceResponseDto drinkPriceResponseDto = mapperObject.DrinkPriceEntityToDto2(element);
             Drink drink = drinkRepository.findByIdAndEnable(element.getDrinkPriceId().getIdDrink(), true)
                     .orElseThrow(()-> new NotFoundException("Dink id not found"));
             drinkPriceResponseDto.setId(element.getDrinkPriceId().getId());
@@ -118,7 +118,7 @@ public class DrinkPriceServiceImpl implements DrinkPriceService{
         Page<DrinkPrice> drinkPricePage = drinkPriceRepository.findAllByEnable(true, pageable);
 
         drinkPricePage.forEach(element->{
-            DrinkPriceResponseDto drinkPriceResponseDto = mapperObject.DrinkPriceEntityToDto1(element);
+            DrinkPriceResponseDto drinkPriceResponseDto = mapperObject.DrinkPriceEntityToDto2(element);
             Drink drink = drinkRepository.findByIdAndEnable(element.getDrinkPriceId().getIdDrink(), true)
                     .orElseThrow(()-> new NotFoundException("Dink id not found"));
             drinkPriceResponseDto.setId(element.getDrinkPriceId().getId());
