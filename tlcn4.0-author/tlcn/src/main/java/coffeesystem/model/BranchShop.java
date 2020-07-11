@@ -41,5 +41,7 @@ public class BranchShop extends Auditable<String>{
     private Set<InternalSC> internalSCS;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "branchShop", cascade = CascadeType.ALL)
     private Set<Inventory> inventories;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "branchShop", cascade = CascadeType.ALL)
+    private Set<AmountMaterialUsed> amountMaterialUseds;
 
 }

@@ -156,4 +156,8 @@ public class InvoiceController {
     public ResponseEntity<ResponseDto> deleteInvoiceStatusFalse(){
         return ResponseEntity.ok(invoiceService.deleteInvoiceStatus0());
     }
+    @PutMapping("/update-amount-material-used")
+    public ResponseEntity<ResponseDto> updateAmountMaterialUse(@RequestParam Integer idInvoice){
+        return ResponseEntity.ok(invoiceService.updateAmountMaterialUsed(idInvoice));
+    }
 }

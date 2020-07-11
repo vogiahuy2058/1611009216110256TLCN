@@ -40,5 +40,6 @@ public interface InvoiceService {
     ResponseDto getFullInvoiceById(Integer InvoiceId);
     //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER', 'ROLE_MANAGE_ALL_BRANCH')")
     ResponseDto getMaxIdInvoice();
+    ResponseDto updateAmountMaterialUsed(Integer invoiceId);
 
 }

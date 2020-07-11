@@ -5,6 +5,7 @@ import coffeesystem.dto.*;
 import coffeesystem.exception.NotFoundException;
 import coffeesystem.model.*;
 import coffeesystem.repository.*;
+import coffeesystem.service.amountMaterialUsed.AmountMaterialUsedService;
 import coffeesystem.util.MapperObject;
 import coffeesystem.util.PageUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,6 +47,12 @@ public class InvoiceServiceImpl implements InvoiceService{
     EmployeeRepository employeeRepository;
     @Autowired
     InvoiceDetailRepository invoiceDetailRepository;
+    @Autowired
+    RecipeRepository recipeRepository;
+    @Autowired
+    DrinkRepository drinkRepository;
+    @Autowired
+    AmountMaterialUsedService amountMaterialUsedService;
     ZoneId zoneId = ZoneId.of("Asia/Ho_Chi_Minh");
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm");
@@ -789,5 +796,24 @@ public class InvoiceServiceImpl implements InvoiceService{
             idOld = 0;
         }
         return new ResponseDto(HttpStatus.OK.value(), "Max id", idOld);
+    }
+    public ResponseDto updateAmountMaterialUsed(Integer invoiceId){
+        Invoice invoice = invoiceRepository.findByIdAndEnable(invoiceId, true).get();
+        List<InvoiceDetail> invoiceDetailList = invoiceDetailRepository.findByInvoice(invoice);
+        invoiceDetailList.forEach(invoiceDetail -> {
+            List<Recipe> recipeList = recipeRepository.findByDrinkIdAndEnable(
+                    invoiceDetail.getInvoiceDetailId().getDrinkId(), true);
+            recipeList.forEach(recipe -> {
+                amountMaterialUsedService.updateAmountMaterialUsed(
+                        invoice.getBranchShop().getId(), recipe.getMaterial().getId(),
+                        //luong nguyen lieu min * so ly thuc uong cua chi tiet hoa don
+                        recipe.getMinAmount()*invoiceDetail.getAmount(),
+                        //luong nguyen lieu max * so ly thuc uong cua chi tiet hoa don
+                        recipe.getMaxAmount()* invoiceDetail.getAmount()
+                );
+            });
+        });
+        return new ResponseDto(HttpStatus.OK.value(), "Update amount material used" +
+                " successful", null);
     }
 }

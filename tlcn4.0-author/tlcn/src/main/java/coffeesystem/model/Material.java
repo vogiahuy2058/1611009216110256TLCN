@@ -34,6 +34,8 @@ public class Material extends Auditable<String>{
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "material", cascade = CascadeType.ALL)
     private Set<Recipe> recipes;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "material", cascade = CascadeType.ALL)
+    private Set<AmountMaterialUsed> amountMaterialUseds;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "material", cascade = CascadeType.ALL)
     private Set<SupplyContractDetail> supplyContractDetails;

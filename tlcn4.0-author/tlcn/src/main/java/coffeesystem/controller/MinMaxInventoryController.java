@@ -20,7 +20,7 @@ public class MinMaxInventoryController {
 
     @GetMapping("/get")
 //    @HystrixCommand(fallbackMethod = "fallBackGetMinMaxInventoryById")
-    public ResponseEntity<ResponseDto> getMinMaxInventoryByMaterialIđAnBranchShopId(@RequestParam Integer idMaterial,
+    public ResponseEntity<ResponseDto> getMinMaxInventoryByMaterialIdAndBranchShopId(@RequestParam Integer idMaterial,
                                                                       @RequestParam Integer idBranchShop){
         return ResponseEntity.ok(this.minMaxInventoryService.getMinMaxByIdMaterialAndIdBranchShop(idMaterial, idBranchShop));
     }
