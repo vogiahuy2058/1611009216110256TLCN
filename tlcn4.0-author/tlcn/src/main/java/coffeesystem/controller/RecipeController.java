@@ -1,6 +1,7 @@
 package coffeesystem.controller;
 
-import coffeesystem.dto.RecipeDto;
+import coffeesystem.dto.PagingResponseDto;
+import coffeesystem.dto.RecipeRequestDto;
 import coffeesystem.dto.ResponseDto;
 import coffeesystem.service.recipe.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +15,17 @@ public class RecipeController {
     @Autowired
     RecipeService recipeService;
     @PostMapping("/create")
-    public ResponseEntity<ResponseDto> createRecipe(@RequestBody RecipeDto recipeDto){
-        return ResponseEntity.ok(recipeService.createRecipe(recipeDto));
+    public ResponseEntity<ResponseDto> createRecipe(@RequestBody RecipeRequestDto recipeRequestDto){
+        return ResponseEntity.ok(recipeService.createRecipe(recipeRequestDto));
     }
-//    @GetMapping("/get-all")
-//    public ResponseEntity<PagingResponseDto> getAllRecipePaging(
-//            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
-//            @RequestParam(name = "size", required = false, defaultValue = "10") int size,
-//            @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
-//            @RequestParam(name = "column", required = false, defaultValue = "drink") String sortColumn){
-//        return ResponseEntity.ok(this.recipeService.getAllRecipePaging(page, size, sort, sortColumn));
-//    }
+    @GetMapping("/get-all-paging")
+    public ResponseEntity<PagingResponseDto> getAllRecipePaging(
+            @RequestParam(name = "page", required = false, defaultValue = "0") int page,
+            @RequestParam(name = "size", required = false, defaultValue = "10") int size,
+            @RequestParam(name = "sort", required = false, defaultValue = "ASC") String sort,
+            @RequestParam(name = "column", required = false, defaultValue = "recipeId.drinkId") String sortColumn){
+        return ResponseEntity.ok(this.recipeService.getAllRecipePaging(page, size, sort, sortColumn));
+    }
 
     @GetMapping("/get-all")
     public ResponseEntity<ResponseDto> getAllRecipe(){
@@ -32,15 +33,15 @@ public class RecipeController {
     }
 
     @GetMapping("/get-by-drink")
-    public ResponseEntity<ResponseDto> getRecipeByDrink(@RequestParam Integer id){
-        return ResponseEntity.ok(recipeService.getRecipeByDrinkIdId(id));
+    public ResponseEntity<ResponseDto> getRecipeByDrink(@RequestParam Integer idDrink){
+        return ResponseEntity.ok(recipeService.getRecipeByDrinkIdId(idDrink));
     }
     @PutMapping("/delete")
-    public ResponseEntity<ResponseDto> deleteRecipe(@RequestParam Integer drinkId, Integer materialId){
-        return ResponseEntity.ok(recipeService.deleteRecipe(drinkId, materialId));
+    public ResponseEntity<ResponseDto> deleteRecipe(@RequestParam Integer idDrink){
+        return ResponseEntity.ok(recipeService.deleteRecipe(idDrink));
     }
     @PutMapping("/edit")
-    public ResponseEntity<ResponseDto> editDrinkType(@RequestBody RecipeDto recipeDto){
-        return ResponseEntity.ok(recipeService.editRecipe(recipeDto));
+    public ResponseEntity<ResponseDto> editDrinkType(@RequestBody RecipeRequestDto recipeRequestDto){
+        return ResponseEntity.ok(recipeService.editRecipe(recipeRequestDto));
     }
 }

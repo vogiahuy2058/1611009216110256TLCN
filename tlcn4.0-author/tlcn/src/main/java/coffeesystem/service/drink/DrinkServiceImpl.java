@@ -143,8 +143,7 @@ public class DrinkServiceImpl implements DrinkService {
         //delete recipe when drink was deleted
         List<Recipe> recipes = recipeRepository.findByDrinkId(id);
         recipes.forEach(element->{
-            recipeService.deleteRecipe(element.getDrink().getId(),
-                    element.getMaterial().getId());
+            recipeService.deleteRecipe(element.getRecipeId().getId());
         });
         ///delete drink price when drink was deleted
         if(drinkPriceRepository.findByDrinkPriceIdIdDrinkAndEnable(id, true).isPresent()){

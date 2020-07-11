@@ -1,7 +1,8 @@
 package coffeesystem.service.recipe;
 
 import coffeesystem.dto.PagingResponseDto;
-import coffeesystem.dto.RecipeDto;
+import coffeesystem.dto.RecipeRequestDto;
+import coffeesystem.dto.RecipeResponseDto;
 import coffeesystem.dto.ResponseDto;
 import coffeesystem.exception.NotFoundException;
 import coffeesystem.model.Drink;
@@ -37,93 +38,100 @@ public class RecipeServiceImpl implements RecipeService{
     DrinkPriceRepository drinkPriceRepository;
     @Autowired
     UnitRepository unitRepository;
-    public ResponseDto createRecipe(RecipeDto recipeDto){
-        Recipe recipe = this.mapperObject.RecipeDtoToEntity(recipeDto);
-        Drink drink = drinkRepository.findByNameAndEnable(recipeDto.getDrink(),true)
+    public ResponseDto createRecipe(RecipeRequestDto recipeRequestDto){
+        Recipe recipe = this.mapperObject.RecipeDtoToEntity1(recipeRequestDto);
+        Drink drink = drinkRepository.findByIdAndEnable(recipeRequestDto.getDrinkId(),true)
                 .orElseThrow(()-> new NotFoundException("Drink not found"));
-        Material material = materialRepository.findByNameAndEnable(recipeDto.getMaterial(), true)
+        Material material = materialRepository.findByIdAndEnable(recipeRequestDto.getMaterialId(), true)
                 .orElseThrow(()-> new NotFoundException("Material not found"));
-        Unit unit = unitRepository.findByNameAndEnable(recipeDto.getUnit(), true)
-                .orElseThrow(()-> new NotFoundException("Unit not found"));
+
         RecipeId recipeId = new RecipeId();
+        Integer idOld = recipeRepository.findMaxId();
+        if(idOld == null){
+            idOld = 0;
+        }
+        recipeId.setId(idOld + 1);
         recipeId.setDrinkId(drink.getId());
         recipeId.setMaterialId(material.getId());
         recipe.setRecipeId(recipeId);
         recipe.setMaterial(material);
         recipe.setDrink(drink);
-        recipe.setUnit(unit);
         recipeRepository.save(recipe);
-//        DrinkPrice drinkPrice = drinkPriceRepository.findByDrinkPriceIdIdAndEnable(drink.getId(), true)
-//                .orElseThrow(()-> new NotFoundException("Drink not found"));
-//        drinkPrice.setInitialPrice(initialPrice);
+
         return new ResponseDto(HttpStatus.OK.value(), "Create recipe successful", null);
     }
     @Transactional
     public ResponseDto getAllRecipe(){
         List<Recipe> recipes = recipeRepository.findAllByEnable(true);
-        List<RecipeDto> recipeDtos = new ArrayList<>();
+        List<RecipeResponseDto> recipeResponseDtos = new ArrayList<>();
         recipes.forEach(element->{
-            RecipeDto recipeDto = mapperObject.RecipeEntityToDto(element);
-            recipeDto.setDrink(element.getDrink().getName());
-            recipeDto.setMaterial(element.getMaterial().getName());
-            recipeDtos.add(recipeDto);
+            RecipeResponseDto recipeResponseDto = mapperObject.RecipeEntityToDto2(element);
+            recipeResponseDto.setId(element.getRecipeId().getId());
+            recipeResponseDto.setDrinkId(element.getDrink().getId());
+            recipeResponseDto.setMaterialId(element.getMaterial().getId());
+            recipeResponseDto.setDrinkName(element.getDrink().getName());
+            recipeResponseDto.setMaterialName(element.getMaterial().getName());
+            recipeResponseDto.setUnitName(element.getMaterial().getUnit().getName());
+            recipeResponseDtos.add(recipeResponseDto);
         });
-        return new ResponseDto(HttpStatus.OK.value(), "All recipes", recipeDtos);
+        return new ResponseDto(HttpStatus.OK.value(), "All recipes", recipeResponseDtos);
     }
     @Transactional
     @Override
     public PagingResponseDto getAllRecipePaging(int page, int size, String sort, String sortColumn) {
         Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
-        List<RecipeDto> recipeDtos = new ArrayList<>();
+        List<RecipeResponseDto> recipeResponseDtos = new ArrayList<>();
         Page<Recipe> recipePage = recipeRepository.findAllByEnable(true, pageable);
         recipePage.forEach(element->{
-            RecipeDto recipeDto = mapperObject.RecipeEntityToDto(element);
-            recipeDto.setDrink(element.getDrink().getName());
-            recipeDto.setMaterial(element.getMaterial().getName());
-            recipeDtos.add(recipeDto);});
-        Page<RecipeDto> recipeDtoPage = new PageImpl<>(recipeDtos, pageable,
+            RecipeResponseDto recipeResponseDto = mapperObject.RecipeEntityToDto2(element);
+            recipeResponseDto.setId(element.getRecipeId().getId());
+            recipeResponseDto.setDrinkId(element.getDrink().getId());
+            recipeResponseDto.setMaterialId(element.getMaterial().getId());
+            recipeResponseDto.setDrinkName(element.getDrink().getName());
+            recipeResponseDto.setMaterialName(element.getMaterial().getName());
+            recipeResponseDto.setUnitName(element.getMaterial().getUnit().getName());
+            recipeResponseDtos.add(recipeResponseDto);});
+        Page<RecipeResponseDto> recipeResponseDtoPage = new PageImpl<>(recipeResponseDtos, pageable,
                 recipePage.getTotalElements() );
         return new PagingResponseDto<>(
-                recipeDtoPage.getContent(), recipeDtoPage.getTotalElements(), recipeDtoPage.getTotalPages(),
-                recipeDtoPage.getPageable());
+                recipeResponseDtoPage.getContent(), recipeResponseDtoPage.getTotalElements(),
+                recipeResponseDtoPage.getTotalPages(),
+                recipeResponseDtoPage.getPageable());
     }
-    public ResponseDto deleteRecipe(Integer drinkId, Integer materialId){
-        Drink drink = drinkRepository.findByIdAndEnable(drinkId, true)
-                .orElseThrow(()-> new NotFoundException("Drink not found"));
-        Material material = materialRepository.findByIdAndEnable(materialId, true)
-                .orElseThrow(()-> new NotFoundException("Material not found"));
-        Recipe recipe = recipeRepository.findByDrinkAndMaterial(drink, material)
-                .orElseThrow(()-> new NotFoundException("Recipe not found"));
-        recipe.setEnable(false);
-        recipeRepository.save(recipe);
+    public ResponseDto deleteRecipe(Integer idDrink){
+
+        List<Recipe> recipeList = recipeRepository.findByDrinkIdAndEnable(idDrink, true);
+        recipeList.forEach(element->{
+            element.setEnable(false);
+            recipeRepository.save(element);
+        });
+
         return new ResponseDto(HttpStatus.OK.value(),
                 "Delete recipe successful", null);
     }
-    public ResponseDto editRecipe(RecipeDto recipeDto){
-        Drink drink = drinkRepository.findByNameAndEnable(recipeDto.getDrink(), true)
-                .orElseThrow(()-> new NotFoundException("Drink not found"));
-        Material material = materialRepository.findByNameAndEnable(recipeDto.getMaterial(), true)
-                .orElseThrow(()-> new NotFoundException("Material not found"));
-        Unit unit = unitRepository.findByNameAndEnable(recipeDto.getUnit(), true)
-                .orElseThrow(()-> new NotFoundException("Unit not found"));
-        Recipe recipe = recipeRepository.findByDrinkAndMaterial(drink, material)
+    public ResponseDto editRecipe(RecipeRequestDto recipeRequestDto){
+        Recipe recipe = recipeRepository.findByRecipeIdIdAndEnable(recipeRequestDto.getId(), true)
                 .orElseThrow(()-> new NotFoundException("Recipe not found"));
-        recipe.setAmount(recipeDto.getAmount());
-        recipe.setUnit(unit);
-        recipe.setMaterial(material);
+        recipe.setMinAmount(recipeRequestDto.getMinAmount());
+        recipe.setMaxAmount(recipeRequestDto.getMaxAmount());
         recipeRepository.save(recipe);
         return new ResponseDto(HttpStatus.OK.value(), "Edit recipe successful", null);
     }
     @Transactional
-    public ResponseDto getRecipeByDrinkIdId(Integer id){
-        List<Recipe> recipe = recipeRepository.findByDrinkIdAndEnable(id, true);
-        List<RecipeDto> recipeDtos = new ArrayList<>();
-        recipe.forEach(element->{
-            RecipeDto recipeDto = mapperObject.RecipeEntityToDto(element);
-            recipeDto.setDrink(element.getDrink().getName());
-            recipeDto.setMaterial(element.getMaterial().getName());
-            recipeDtos.add(recipeDto);
+    public ResponseDto getRecipeByDrinkIdId(Integer idDrink){
+        List<Recipe> recipes = recipeRepository.findByDrinkIdAndEnable(idDrink,true);
+        List<RecipeResponseDto> recipeResponseDtos = new ArrayList<>();
+        recipes.forEach(element->{
+            RecipeResponseDto recipeResponseDto = mapperObject.RecipeEntityToDto2(element);
+            recipeResponseDto.setId(element.getRecipeId().getId());
+            recipeResponseDto.setDrinkId(element.getDrink().getId());
+            recipeResponseDto.setMaterialId(element.getMaterial().getId());
+            recipeResponseDto.setDrinkName(element.getDrink().getName());
+            recipeResponseDto.setMaterialName(element.getMaterial().getName());
+            recipeResponseDto.setUnitName(element.getMaterial().getUnit().getName());
+            recipeResponseDtos.add(recipeResponseDto);
         });
-        return new ResponseDto(HttpStatus.OK.value(), "All recipes", recipeDtos);
+        return new ResponseDto(HttpStatus.OK.value(), "Recipe of drink have id : " + idDrink,
+                recipeResponseDtos);
     }
 }

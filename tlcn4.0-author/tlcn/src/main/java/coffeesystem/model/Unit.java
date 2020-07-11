@@ -24,8 +24,7 @@ public class Unit extends Auditable<String> {
     private boolean enable = true;
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "unit", cascade = CascadeType.ALL)
     private Set<Material> materials;
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "unit", cascade = CascadeType.ALL)
-    private Set<Recipe> recipes;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "unit", cascade = CascadeType.ALL)
     private Set<SupplyContractDetail> supplyContractDetails;
 

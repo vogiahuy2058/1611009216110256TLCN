@@ -9,11 +9,14 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class RecipeDto {
-    private double amount;
-    private String unit;
+public class RecipeRequestDto {
+    private Integer id;
+    private Integer materialId;
+    private Integer drinkId;
+    private float minAmount;
+    private float maxAmount;
 
-    private String material;
-    private String drink;
+
+
 
 }

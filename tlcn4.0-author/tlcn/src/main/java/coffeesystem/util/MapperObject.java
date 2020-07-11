@@ -138,16 +138,13 @@ public interface MapperObject {
 //    @Mapping(target="date",source = "dateCreate")
     SupplyContractResponseDto SupplyContractEntityToDto1(SupplyContract supplyContract);
 
-    @Mapping(target="material.name",source = "material")
-    @Mapping(target="drink.name",source = "drink")
-    @Mapping(target="unit.name",source = "unit")
-    Recipe RecipeDtoToEntity(RecipeDto recipeDto);
 
-    @Mapping(target="material",source = "material.name")
-    @Mapping(target="drink",source = "drink.name")
-    @Mapping(target="unit",source = "unit.name")
-    RecipeDto RecipeEntityToDto(Recipe recipe);
-
+    @Mapping(target="material.id",source = "materialId")
+    @Mapping(target="drink.id",source = "drinkId")
+    Recipe RecipeDtoToEntity1(RecipeRequestDto recipeRequestDto);
+    @Mapping(target="materialId",source = "material.id")
+    @Mapping(target="drinkId",source = "drink.id")
+    RecipeResponseDto RecipeEntityToDto2(Recipe recipe);
     @Mapping(target="supplyContractDetailId.materialId",source = "materialId")
     @Mapping(target="supplyContractDetailId.supplyContractId",source = "supplyContractId")
     @Mapping(target="supplyContractDetailId.id",source = "id")

@@ -111,8 +111,7 @@ public class MaterialServiceImpl implements MaterialService {
         //delete recipe when material was deleted
         List<Recipe> recipes = recipeRepository.findByMaterialId(id);
         recipes.forEach(element->{
-            recipeService.deleteRecipe(element.getDrink().getId(),
-                    element.getMaterial().getId());
+            recipeService.deleteRecipe(element.getRecipeId().getId());
         });
 
         ///delete material price when material was deleted

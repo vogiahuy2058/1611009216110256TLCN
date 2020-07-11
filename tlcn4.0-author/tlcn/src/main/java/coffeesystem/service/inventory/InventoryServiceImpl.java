@@ -12,6 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,6 +41,7 @@ public class InventoryServiceImpl implements InventoryService{
     @Autowired
     InventoryControlRepository inventoryControlRepository;
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
     public ResponseDto createInventory(InventoryRequestDto inventoryRequestDto){
 
             float backlogFirstDate = 0;
