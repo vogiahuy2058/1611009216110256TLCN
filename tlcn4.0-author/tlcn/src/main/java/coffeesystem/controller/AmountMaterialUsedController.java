@@ -14,11 +14,17 @@ public class AmountMaterialUsedController {
     @Autowired
     AmountMaterialUsedService amountMaterialUsedService;
     @PostMapping("/create")
-    public ResponseEntity<ResponseDto> createAmountMaterialUsed(@RequestParam Integer idBranchShop,
+    public ResponseEntity<ResponseDto> createAmountMaterialUsed(@RequestParam Integer id,
+                                                                @RequestParam Integer idBranchShop,
                                                                 @RequestParam Integer idMaterial,
                                                                 @RequestParam String checkDate){
-        return ResponseEntity.ok(amountMaterialUsedService.createAmountMaterialUsed(
+        return ResponseEntity.ok(amountMaterialUsedService.createAmountMaterialUsed(id,
                 idBranchShop, idMaterial, checkDate));
+    }
+    @GetMapping("/get-max-id")
+    public ResponseEntity<ResponseDto> getMaxInvoiceId(){
+
+        return ResponseEntity.ok(amountMaterialUsedService.getMaxIdAMU());
     }
     @GetMapping("/get-amount-of-material-used-status-active")
     public ResponseEntity<ResponseDto> getAmountMaterialUsedStatusActive(@RequestParam Integer idBranchShop,

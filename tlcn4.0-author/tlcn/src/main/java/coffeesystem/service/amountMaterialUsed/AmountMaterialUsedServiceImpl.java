@@ -31,7 +31,7 @@ public class AmountMaterialUsedServiceImpl implements AmountMaterialUsedService{
     @Autowired
     BranchShopRepository branchShopRepository;
     DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-    public ResponseDto createAmountMaterialUsed(Integer idBranchShop,
+    public ResponseDto createAmountMaterialUsed(Integer id, Integer idBranchShop,
                                                            Integer idMaterial,
                                                            String checkDate){
         LocalDate newCheckDate = LocalDate.parse(checkDate, dtf);
@@ -54,11 +54,11 @@ public class AmountMaterialUsedServiceImpl implements AmountMaterialUsedService{
         amountMaterialUsedId.setIdMaterial(idMaterial);
         amountMaterialUsedId.setIdBranchShop(idBranchShop);
         amountMaterialUsedId.setCheckDate(newCheckDate);
-        Integer idOld = amuRepository.findMaxId();
-        if(idOld == null){
-            idOld = 0;
-        }
-        amountMaterialUsedId.setId(idOld + 1);
+//        Integer idOld = amuRepository.findMaxId();
+//        if(idOld == null){
+//            idOld = 0;
+//        }
+        amountMaterialUsedId.setId(id);
         amountMaterialUsed.setAmountMaterialUsedId(amountMaterialUsedId);
         amountMaterialUsed.setMaterial(material);
         amountMaterialUsed.setBranchShop(branchShop);
@@ -105,5 +105,12 @@ public class AmountMaterialUsedServiceImpl implements AmountMaterialUsedService{
         responseDto.setTotalMaxAmount(amountMaterialUsed.getTotalMaxAmount());
         responseDto.setTotalAverageAmount(amountMaterialUsed.getTotalAverageAmount());
         return new ResponseDto(HttpStatus.OK.value(), "Amount of material used", responseDto);
+    }
+    public ResponseDto getMaxIdAMU(){
+        Integer idOld = amuRepository.findMaxId();
+        if(idOld == null){
+            idOld = 0;
+        }
+        return new ResponseDto(HttpStatus.OK.value(), "Max id", idOld);
     }
 }
