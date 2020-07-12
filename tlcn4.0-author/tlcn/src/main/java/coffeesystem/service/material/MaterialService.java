@@ -20,4 +20,5 @@ public interface MaterialService {
     //    ResponseDto changePrice(Integer id, float newPrice);
 //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CHEF', 'ROLE_MANAGE_ALL_BRANCH')")
     PagingResponseDto getAllMaterialPaging(int page, int size, String sort, String sortColumn);
+    ResponseDto getMaxIdMaterial();
 }

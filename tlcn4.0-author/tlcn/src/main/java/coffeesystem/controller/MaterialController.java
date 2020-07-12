@@ -57,6 +57,11 @@ public class MaterialController {
         System.out.println("=======fallBackGetMaterialById=========");
         return new ResponseEntity<ResponseDto>(HttpStatus.OK);
     }
+    @GetMapping("/get-max-id")
+    public ResponseEntity<ResponseDto> getMaxInvoiceId(){
+
+        return ResponseEntity.ok(materialService.getMaxIdMaterial());
+    }
     @PutMapping("/delete")
     public ResponseEntity<ResponseDto> deleteMaterial(@RequestParam Integer id){
         return ResponseEntity.ok(materialService.deleteMaterial(id));

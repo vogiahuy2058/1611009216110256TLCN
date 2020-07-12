@@ -148,5 +148,12 @@ public class MaterialServiceImpl implements MaterialService {
         materialRepository.save(material);
         return new ResponseDto(HttpStatus.OK.value(), "Edit material successful", null);
     }
+    public ResponseDto getMaxIdMaterial(){
+        Integer idOld = materialRepository.findMaxId();
+        if(idOld == null){
+            idOld = 0;
+        }
+        return new ResponseDto(HttpStatus.OK.value(), "Max id", idOld);
+    }
 
 }
