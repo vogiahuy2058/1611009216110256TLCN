@@ -19,5 +19,6 @@ public class AmountMaterialUsedResponseDto {
     private Integer idBranchShop;
     private float totalMinAmount;
     private float totalMaxAmount;
+    private float totalAverageAmount;
 
 }

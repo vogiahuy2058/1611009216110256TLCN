@@ -21,6 +21,7 @@ public class AmountMaterialUsed {
     private AmountMaterialUsedId amountMaterialUsedId;
     private float totalMinAmount;
     private float totalMaxAmount;
+    private float totalAverageAmount;
     private String status = "active";
     @ManyToOne
     @MapsId("idMaterial")

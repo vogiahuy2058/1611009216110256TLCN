@@ -64,20 +64,24 @@ public class AmountMaterialUsedServiceImpl implements AmountMaterialUsedService{
         amountMaterialUsed.setBranchShop(branchShop);
         amountMaterialUsed.setTotalMinAmount(0);
         amountMaterialUsed.setTotalMaxAmount(0);
+        amountMaterialUsed.setTotalAverageAmount(0);
         amuRepository.save(amountMaterialUsed);
         return new ResponseDto(HttpStatus.OK.value(), "Create successful", null);
     }
     public void updateAmountMaterialUsed(Integer idBranchShop,
                                                     Integer idMaterial,
                                                     float newMinAmount,
-                                                    float newMaxAmount){
+                                                    float newMaxAmount,
+                                         float newAverageAmount){
         AmountMaterialUsed amountMaterialUsed = amuRepository
                 .findByMaterialIdAndAmountMaterialUsedIdIdBranchShopAndStatus(
                 idMaterial, idBranchShop, "active").get();
         float oldTotalMinAmount = amountMaterialUsed.getTotalMinAmount();
         float oldTotalMaxAmount = amountMaterialUsed.getTotalMaxAmount();
+        float oldTotalAverageAmount = amountMaterialUsed.getTotalAverageAmount();
         amountMaterialUsed.setTotalMinAmount(oldTotalMinAmount + newMinAmount);
         amountMaterialUsed.setTotalMaxAmount(oldTotalMaxAmount + newMaxAmount);
+        amountMaterialUsed.setTotalAverageAmount(oldTotalAverageAmount + newAverageAmount);
         amuRepository.save(amountMaterialUsed);
     }
     public ResponseDto getAmountMaterialUsedStatusActive(Integer idBranchShop,
@@ -99,6 +103,7 @@ public class AmountMaterialUsedServiceImpl implements AmountMaterialUsedService{
                 .format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
         responseDto.setTotalMinAmount(amountMaterialUsed.getTotalMinAmount());
         responseDto.setTotalMaxAmount(amountMaterialUsed.getTotalMaxAmount());
+        responseDto.setTotalAverageAmount(amountMaterialUsed.getTotalAverageAmount());
         return new ResponseDto(HttpStatus.OK.value(), "Amount of material used", responseDto);
     }
 }

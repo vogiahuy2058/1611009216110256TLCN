@@ -809,7 +809,8 @@ public class InvoiceServiceImpl implements InvoiceService{
                         //luong nguyen lieu min * so ly thuc uong cua chi tiet hoa don
                         recipe.getMinAmount()*invoiceDetail.getAmount(),
                         //luong nguyen lieu max * so ly thuc uong cua chi tiet hoa don
-                        recipe.getMaxAmount()* invoiceDetail.getAmount()
+                        recipe.getMaxAmount()* invoiceDetail.getAmount(),
+                        recipe.getAverageAmount()* invoiceDetail.getAmount()
                 );
             });
         });

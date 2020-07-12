@@ -25,6 +25,10 @@ public interface DrinkRepository extends JpaRepository<Drink, Integer> {
     List<Drink> findDrinkHavePriceByDrinkType(String name);
     @Query("select d from Drink d where d.id  in " +
             "(SELECT dp.drinkPriceId.idDrink FROM DrinkPrice dp) " +
+            "and d.drinkType.name=?1 and d.enable=true")
+    List<Drink> findDrinkHavePriceAndHaveRecipeByDrinkType(String name);
+    @Query("select d from Drink d where d.id  in " +
+            "(SELECT dp.drinkPriceId.idDrink FROM DrinkPrice dp) " +
             "and d.enable=true")
     List<Drink> findAllDrinkHavePrice();
 }
