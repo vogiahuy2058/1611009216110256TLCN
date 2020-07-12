@@ -22,7 +22,7 @@ public class AmountMaterialUsedController {
                 idBranchShop, idMaterial, checkDate));
     }
     @GetMapping("/get-max-id")
-    public ResponseEntity<ResponseDto> getMaxInvoiceId(){
+    public ResponseEntity<ResponseDto> getMaxAmountMaterialUsedId(){
 
         return ResponseEntity.ok(amountMaterialUsedService.getMaxIdAMU());
     }

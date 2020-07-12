@@ -58,7 +58,7 @@ public class MaterialController {
         return new ResponseEntity<ResponseDto>(HttpStatus.OK);
     }
     @GetMapping("/get-max-id")
-    public ResponseEntity<ResponseDto> getMaxInvoiceId(){
+    public ResponseEntity<ResponseDto> getMaxMaterialId(){
 
         return ResponseEntity.ok(materialService.getMaxIdMaterial());
     }
