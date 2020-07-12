@@ -31,5 +31,6 @@ public class Recipe extends Auditable<String> {
     private boolean enable = true;
     private float minAmount;
     private float maxAmount;
+    private float averageAmount;
 
 }

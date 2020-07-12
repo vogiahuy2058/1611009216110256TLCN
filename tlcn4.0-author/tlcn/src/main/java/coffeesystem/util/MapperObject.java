@@ -124,6 +124,14 @@ public interface MapperObject {
     @Mapping(target="unit",source = "unit.name")
     MaterialDto MaterialEntityToDto(Material material);
 
+    @Mapping(target="materialType.name",source = "materialType")
+    @Mapping(target="unit.name",source = "unit")
+    Material MaterialDtoToEntity1(MaterialDto materialDto);
+
+    @Mapping(target="materialType",source = "materialType.name")
+    @Mapping(target="unit",source = "unit.name")
+    MaterialDto MaterialEntityToDto1(Material material);
+
     @Mapping(target="branchShop.name",source = "branchShop")
     @Mapping(target="supplier.name",source = "supplier")
     @Mapping(target="dateCreate",source = "date")

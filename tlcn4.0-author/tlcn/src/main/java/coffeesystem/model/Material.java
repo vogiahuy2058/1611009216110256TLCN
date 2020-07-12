@@ -23,10 +23,10 @@ public class Material extends Auditable<String>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-//    @NaturalId
     private String name;
-//    private float inventory;
+
     private boolean enable = true;
+    private float inventoryQuota;
 
     @ManyToOne
     @JoinColumn(name = "material_type_id")

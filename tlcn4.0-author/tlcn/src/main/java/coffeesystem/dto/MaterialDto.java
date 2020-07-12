@@ -16,6 +16,7 @@ import java.util.Date;
 public class MaterialDto {
     private Integer id;
     private String name;
+    private float inventoryQuota;
 //    private float inventory;
 //    private float minInventory;
 //    private float maxInventory;

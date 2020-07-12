@@ -56,6 +56,7 @@ public class RecipeServiceImpl implements RecipeService{
         recipe.setRecipeId(recipeId);
         recipe.setMaterial(material);
         recipe.setDrink(drink);
+        recipe.setAverageAmount((recipeRequestDto.getMaxAmount() + recipeRequestDto.getMinAmount())/2);
         recipeRepository.save(recipe);
 
         return new ResponseDto(HttpStatus.OK.value(), "Create recipe successful", null);

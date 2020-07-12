@@ -45,7 +45,7 @@ public class MaterialServiceImpl implements MaterialService {
     @Autowired
     MinMaxInventoryService minMaxInventoryService;
     public ResponseDto createMaterial(MaterialDto materialDto){
-        Material material = this.mapperObject.MaterialDtoToEntity(materialDto);
+        Material material = this.mapperObject.MaterialDtoToEntity1(materialDto);
         MaterialType materialType = materialTypeRepository.findByNameAndEnable(materialDto.getMaterialType(), true)
                 .orElseThrow(()-> new NotFoundException("Material type not found"));
         Unit unit = unitRepository.findByNameAndEnable(materialDto.getUnit(), true)
@@ -60,7 +60,7 @@ public class MaterialServiceImpl implements MaterialService {
         List<Material> materials = materialRepository.findAllByEnable(true);
         List<MaterialDto> materialDtos = new ArrayList<>();
         materials.forEach(element->{
-            MaterialDto materialDto = mapperObject.MaterialEntityToDto(element);
+            MaterialDto materialDto = mapperObject.MaterialEntityToDto1(element);
             materialDto.setUnit(element.getUnit().getName());
             materialDto.setMaterialType(element.getMaterialType().getName());
             materialDtos.add(materialDto);
@@ -86,7 +86,7 @@ public class MaterialServiceImpl implements MaterialService {
         List<MaterialDto> materialDtos = new ArrayList<>();
         Page<Material> materialPage = materialRepository.findAllByEnable(true, pageable);
         materialPage.forEach(element->{
-            MaterialDto materialDto = mapperObject.MaterialEntityToDto(element);
+            MaterialDto materialDto = mapperObject.MaterialEntityToDto1(element);
             materialDto.setMaterialType(element.getMaterialType().getName());
             materialDto.setUnit(element.getUnit().getName());
             materialDtos.add(materialDto);});
@@ -100,7 +100,7 @@ public class MaterialServiceImpl implements MaterialService {
     public ResponseDto getMaterialById(Integer id){
         Material material = materialRepository.findByIdAndEnable(id, true)
                 .orElseThrow(()-> new NotFoundException("Id not found"));
-        MaterialDto materialDto = mapperObject.MaterialEntityToDto(material);
+        MaterialDto materialDto = mapperObject.MaterialEntityToDto1(material);
         materialDto.setUnit(material.getUnit().getName());
         materialDto.setMaterialType(material.getMaterialType().getName());
         return new ResponseDto(HttpStatus.OK.value(), "Successful", materialDto);
