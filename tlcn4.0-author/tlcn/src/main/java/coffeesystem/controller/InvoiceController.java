@@ -136,6 +136,13 @@ public class InvoiceController {
         System.out.println("=======fallBackGetFullInvoice=========");
         return new ResponseEntity<ResponseDto>(HttpStatus.OK);
     }
+    @GetMapping("/get-sales-statistics")
+//    @HystrixCommand(fallbackMethod = "fallBackGetFullInvoice")
+    public ResponseEntity<ResponseDto> getSalesStatistics(@RequestParam String fromDate,
+                                                          @RequestParam String toDate){
+
+        return ResponseEntity.ok(invoiceService.getSalesStatistics(fromDate, toDate));
+    }
 
     @GetMapping("/get-max-id")
     public ResponseEntity<ResponseDto> getMaxInvoiceId(){

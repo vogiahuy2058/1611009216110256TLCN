@@ -46,6 +46,7 @@ public interface InvoiceRepository extends JpaRepository<Invoice, Integer> {
     List<Invoice> findByEnableAndPaymentStatusAndBranchShopIdAndDate(
             boolean enable, Integer status, Integer id,
             ZonedDateTime fromDate, ZonedDateTime toDate);
+
     Page<Invoice> findAllByEnableAndStatusAndBranchShopId(
             boolean enable, Integer status, Integer id, Pageable pageable);
     Page<Invoice> findAll(Pageable pageable);

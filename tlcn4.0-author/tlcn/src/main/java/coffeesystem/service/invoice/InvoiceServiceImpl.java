@@ -13,20 +13,18 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Date;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -819,11 +817,32 @@ public class InvoiceServiceImpl implements InvoiceService{
                 " successful", null);
     }
 
-//    public ResponseDto salesStatistics(String fromDate, String toDate){
-//        //tính tong doanh thu cua chi nhanh
-//        List<BranchShop> branchShopList = branchShopRepository.findAllByEnable(true);
-//        branchShopList.forEach();
-//
-//    }
+    public ResponseDto getSalesStatistics(String fromDate, String toDate){
+        ZonedDateTime newFromDate = LocalDateTime.parse(fromDate,
+                DateTimeFormatter.ISO_DATE_TIME).atZone(zoneId);
+        ZonedDateTime newToDate = LocalDateTime.parse(toDate,
+                DateTimeFormatter.ISO_DATE_TIME).atZone(zoneId);
+        List<BranchShopStatisticsDto> branchShopStatisticsDtos = new ArrayList<>();
+        //tính tong doanh thu cua chi nhanh
+        List<BranchShop> branchShopList = branchShopRepository.findAllByEnable(true);
+        branchShopList.forEach(branchShop -> {
+            BranchShopStatisticsDto branchShopStatisticsDto = new BranchShopStatisticsDto();
+            branchShopStatisticsDto.setId(branchShop.getId());
+            branchShopStatisticsDto.setName(branchShop.getName());
+            branchShopStatisticsDto.setTotalPrice(0);
+            branchShopStatisticsDto.setRealPay(0);
+            List<Invoice> invoiceList = invoiceRepository.findByEnableAndPaymentStatusAndBranchShopIdAndDate(
+                    true, 2, branchShop.getId(), newFromDate, newToDate);
+            invoiceList.forEach(invoice -> {
+                branchShopStatisticsDto.setTotalPrice(branchShopStatisticsDto.getTotalPrice() +
+                        invoice.getTotalPrice());
+                branchShopStatisticsDto.setRealPay(branchShopStatisticsDto.getRealPay() +
+                        invoice.getRealPay());
+            });
+            branchShopStatisticsDtos.add(branchShopStatisticsDto);
+        });
+        Collections.sort(branchShopStatisticsDtos, new TotalPriceComparator());
+        return new ResponseDto(HttpStatus.OK.value(), "List sales statistics", branchShopStatisticsDtos);
+    }
 
 }
