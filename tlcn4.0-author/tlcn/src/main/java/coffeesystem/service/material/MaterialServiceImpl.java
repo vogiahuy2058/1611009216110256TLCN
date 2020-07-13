@@ -139,6 +139,7 @@ public class MaterialServiceImpl implements MaterialService {
         Material material = materialRepository.findByIdAndEnable(materialDto.getId(), true)
                 .orElseThrow(()-> new NotFoundException("Id not found!"));
         material.setName(materialDto.getName());
+        material.setInventoryQuota(materialDto.getInventoryQuota());
         MaterialType materialType = materialTypeRepository.findByNameAndEnable(materialDto.getMaterialType(), true)
                 .orElseThrow(()-> new NotFoundException("Material not found"));
         Unit unit = unitRepository.findByNameAndEnable(materialDto.getUnit(), true)
