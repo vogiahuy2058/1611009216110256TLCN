@@ -32,4 +32,8 @@ public class AmountMaterialUsedController {
         return ResponseEntity.ok(amountMaterialUsedService.getAmountMaterialUsedStatusActive(
                 idBranchShop, idMaterial));
     }
+    @GetMapping("/get-recommend-inventory")
+    public ResponseEntity<ResponseDto> getRecommendInventory(@RequestParam Integer idBranchShop){
+        return ResponseEntity.ok(amountMaterialUsedService.getRecommendInventoryControl(idBranchShop));
+    }
 }

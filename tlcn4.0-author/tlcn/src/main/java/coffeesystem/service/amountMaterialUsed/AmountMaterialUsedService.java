@@ -7,5 +7,6 @@ public interface AmountMaterialUsedService {
     void updateAmountMaterialUsed(Integer idBranchShop, Integer idMaterial,
                                   float newMinAmount,float newMaxAmount, float newAverageAmount);
     ResponseDto getAmountMaterialUsedStatusActive(Integer idBranchShop, Integer idMaterial);
+    ResponseDto getRecommendInventoryControl(Integer idBranchShop);
     ResponseDto getMaxIdAMU();
 }

@@ -1,6 +1,8 @@
 package coffeesystem.service.amountMaterialUsed;
 
 import coffeesystem.dto.AmountMaterialUsedResponseDto;
+import coffeesystem.dto.IdNameDto;
+import coffeesystem.dto.MaterialDto2;
 import coffeesystem.dto.ResponseDto;
 import coffeesystem.exception.NotFoundException;
 import coffeesystem.model.*;
@@ -20,7 +22,9 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 @Service
 public class AmountMaterialUsedServiceImpl implements AmountMaterialUsedService{
@@ -105,6 +109,31 @@ public class AmountMaterialUsedServiceImpl implements AmountMaterialUsedService{
         responseDto.setTotalMaxAmount(amountMaterialUsed.getTotalMaxAmount());
         responseDto.setTotalAverageAmount(amountMaterialUsed.getTotalAverageAmount());
         return new ResponseDto(HttpStatus.OK.value(), "Amount of material used", responseDto);
+    }
+    public ResponseDto getRecommendInventoryControl(Integer idBranchShop){
+        List<Material> materialList = materialRepository.findAllByEnable(true);
+        List<MaterialDto2> materialDto2List = new ArrayList<>();
+        materialList.forEach(material -> {
+            if(amuRepository.findByMaterialIdAndAmountMaterialUsedIdIdBranchShopAndStatus(
+                    material.getId(), idBranchShop, "active").isPresent()){
+                AmountMaterialUsed amountMaterialUsed = amuRepository.findByMaterialIdAndAmountMaterialUsedIdIdBranchShopAndStatus(
+                        material.getId(), idBranchShop, "active").get();
+                if(amountMaterialUsed.getTotalAverageAmount() >= material.getInventoryQuota()){
+                    MaterialDto2 materialDto2 = new MaterialDto2();
+                    materialDto2.setId(material.getId());
+                    materialDto2.setName(material.getName());
+                    materialDto2.setMaterialType(material.getMaterialType().getName());
+                    materialDto2.setUnitName(material.getUnit().getName());
+                    materialDto2.setRemainingAmount(null);
+                    materialDto2List.add(materialDto2);
+
+                }
+            }
+
+        });
+
+
+        return new ResponseDto(HttpStatus.OK.value(), "List recommend inventory control", materialDto2List);
     }
     public ResponseDto getMaxIdAMU(){
         Integer idOld = amuRepository.findMaxId();
