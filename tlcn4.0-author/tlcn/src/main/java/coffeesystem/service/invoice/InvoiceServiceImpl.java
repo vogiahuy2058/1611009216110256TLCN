@@ -766,7 +766,8 @@ public class InvoiceServiceImpl implements InvoiceService{
         invoice.setVat(invoiceRequestDto.getVat());
         invoice.setTotalPrice(invoiceRequestDto.getTotalPrice());
         invoice.setTotalDiscount(invoiceRequestDto.getTotalDiscount());
-//        invoice.setDate(ZonedDateTime.parse(invoiceRequestDto.getDate().withZoneSameInstant(zoneId).toString()));
+        ZonedDateTime now = ZonedDateTime.now();
+        invoice.setDate(now.withZoneSameInstant(zoneId));
         invoice.setNumberPosition(invoiceRequestDto.getNumberPosition());
         invoice.setStatus(invoiceRequestDto.getStatus());
         invoice.setRealPay(invoiceRequestDto.getRealPay());
@@ -817,4 +818,12 @@ public class InvoiceServiceImpl implements InvoiceService{
         return new ResponseDto(HttpStatus.OK.value(), "Update amount material used" +
                 " successful", null);
     }
+
+//    public ResponseDto salesStatistics(String fromDate, String toDate){
+//        //tính tong doanh thu cua chi nhanh
+//        List<BranchShop> branchShopList = branchShopRepository.findAllByEnable(true);
+//        branchShopList.forEach();
+//
+//    }
+
 }
