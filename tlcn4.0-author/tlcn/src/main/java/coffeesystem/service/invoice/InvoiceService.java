@@ -38,7 +38,8 @@ public interface InvoiceService {
                                                          String fromDate, String toDate, Integer branchShopId);
     //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER', 'ROLE_MANAGE_ALL_BRANCH')")
     ResponseDto getFullInvoiceById(Integer InvoiceId);
-    ResponseDto getSalesStatistics(String fromDate, String toDate);
+    PagingResponseDto getSalesStatistics(int page, int size, String sort,
+                                         String sortColumn,String fromDate, String toDate);
     //    @PreAuthorize("hasAnyRole('ROLE_ADMIN', 'ROLE_ACCOUNTANT', 'ROLE_BRANCH_MANAGER', 'ROLE_CASHIER', 'ROLE_MANAGE_ALL_BRANCH')")
     ResponseDto getMaxIdInvoice();
     ResponseDto updateAmountMaterialUsed(Integer invoiceId);

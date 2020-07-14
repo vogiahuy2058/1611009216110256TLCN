@@ -817,32 +817,65 @@ public class InvoiceServiceImpl implements InvoiceService{
                 " successful", null);
     }
 
-    public ResponseDto getSalesStatistics(String fromDate, String toDate){
-        ZonedDateTime newFromDate = LocalDateTime.parse(fromDate,
-                DateTimeFormatter.ISO_DATE_TIME).atZone(zoneId);
-        ZonedDateTime newToDate = LocalDateTime.parse(toDate,
-                DateTimeFormatter.ISO_DATE_TIME).atZone(zoneId);
+    public PagingResponseDto getSalesStatistics(int page, int size, String sort,
+                                          String sortColumn,String fromDate, String toDate){
+
+        Pageable pageable = PageUtil.createPageable(page, size, sort, sortColumn);
         List<BranchShopStatisticsDto> branchShopStatisticsDtos = new ArrayList<>();
         //tính tong doanh thu cua chi nhanh
-        List<BranchShop> branchShopList = branchShopRepository.findAllByEnable(true);
-        branchShopList.forEach(branchShop -> {
-            BranchShopStatisticsDto branchShopStatisticsDto = new BranchShopStatisticsDto();
-            branchShopStatisticsDto.setId(branchShop.getId());
-            branchShopStatisticsDto.setName(branchShop.getName());
-            branchShopStatisticsDto.setTotalPrice(0);
-            branchShopStatisticsDto.setRealPay(0);
-            List<Invoice> invoiceList = invoiceRepository.findByEnableAndPaymentStatusAndBranchShopIdAndDate(
-                    true, 2, branchShop.getId(), newFromDate, newToDate);
-            invoiceList.forEach(invoice -> {
-                branchShopStatisticsDto.setTotalPrice(branchShopStatisticsDto.getTotalPrice() +
-                        invoice.getTotalPrice());
-                branchShopStatisticsDto.setRealPay(branchShopStatisticsDto.getRealPay() +
-                        invoice.getRealPay());
-            });
-            branchShopStatisticsDtos.add(branchShopStatisticsDto);
-        });
+        Page<BranchShop> branchShopPage = branchShopRepository.findAllByEnable(true, pageable);
+
+        if(fromDate.equals("nulldate") && toDate.equals("nulldate")){
+            branchShopPage.forEach(branchShop->{
+
+                BranchShopStatisticsDto branchShopStatisticsDto = new BranchShopStatisticsDto();
+                branchShopStatisticsDto.setId(branchShop.getId());
+                branchShopStatisticsDto.setName(branchShop.getName());
+                branchShopStatisticsDto.setTotalPrice(0);
+                branchShopStatisticsDto.setRealPay(0);
+                List<Invoice> invoiceList = invoiceRepository.findByEnableAndStatusAndBranchShopId(
+                        true, 2, branchShop.getId());
+                invoiceList.forEach(invoice -> {
+                    branchShopStatisticsDto.setTotalPrice(branchShopStatisticsDto.getTotalPrice() +
+                            invoice.getTotalPrice());
+                    branchShopStatisticsDto.setRealPay(branchShopStatisticsDto.getRealPay() +
+                            invoice.getRealPay());
+                });
+                branchShopStatisticsDtos.add(branchShopStatisticsDto);});
+        }else {
+            ZonedDateTime newFromDate = LocalDateTime.parse(fromDate,
+                    DateTimeFormatter.ISO_DATE_TIME).atZone(zoneId);
+            ZonedDateTime newToDate = LocalDateTime.parse(toDate,
+                    DateTimeFormatter.ISO_DATE_TIME).atZone(zoneId);
+            branchShopPage.forEach(branchShop->{
+
+                BranchShopStatisticsDto branchShopStatisticsDto = new BranchShopStatisticsDto();
+                branchShopStatisticsDto.setId(branchShop.getId());
+                branchShopStatisticsDto.setName(branchShop.getName());
+                branchShopStatisticsDto.setTotalPrice(0);
+                branchShopStatisticsDto.setRealPay(0);
+                List<Invoice> invoiceList = invoiceRepository.findByEnableAndPaymentStatusAndBranchShopIdAndDate(
+                        true, 2, branchShop.getId(), newFromDate, newToDate);
+                invoiceList.forEach(invoice -> {
+                    branchShopStatisticsDto.setTotalPrice(branchShopStatisticsDto.getTotalPrice() +
+                            invoice.getTotalPrice());
+                    branchShopStatisticsDto.setRealPay(branchShopStatisticsDto.getRealPay() +
+                            invoice.getRealPay());
+                });
+                branchShopStatisticsDtos.add(branchShopStatisticsDto);});
+        }
+
         Collections.sort(branchShopStatisticsDtos, new TotalPriceComparator());
-        return new ResponseDto(HttpStatus.OK.value(), "List sales statistics", branchShopStatisticsDtos);
+
+        Page<BranchShopStatisticsDto> branchShopStatisticsDtoPage = new PageImpl<>(branchShopStatisticsDtos, pageable,
+                branchShopPage.getTotalElements());
+        return new PagingResponseDto<>(
+                branchShopStatisticsDtoPage.getContent(), branchShopStatisticsDtoPage.getTotalElements(),
+                branchShopStatisticsDtoPage.getTotalPages(),
+                branchShopStatisticsDtoPage.getPageable());
+
+
+
     }
 
 }
