@@ -372,8 +372,8 @@ public class InternalSCServiceImpl implements InternalSCService{
         branchShopsToFind.forEach(branchShop -> {//voi moi chi nhanh, tim xem no co trong hdcc co status=8 va
             //date create nho hon today
             List<InternalSC> internalSCList = this.internalSCRepository
-                    .findByBranchShopIdAndStatusAndDateCreateLessThanAndEnable(
-                            branchShop.getId(), 8, LocalDate.now(),true);
+                    .findByBranchShopIdAndStatusAndEnable(
+                            branchShop.getId(), 8,true);
             if(!internalSCList.isEmpty()){
                 BranchShop branchShopNew =branchShop;
                 branchShops.add(branchShopNew);
@@ -386,8 +386,8 @@ public class InternalSCServiceImpl implements InternalSCService{
         branchShops.forEach(bsToGetTotalMaterial->{
             List<MaterialDto1> materialDto1List = new ArrayList<>();
             List<InternalSC> internalSCList = this.internalSCRepository
-                    .findByBranchShopIdAndStatusAndDateCreateLessThanAndEnable(
-                            bsToGetTotalMaterial.getId(), 8, LocalDate.now(),true);
+                    .findByBranchShopIdAndStatusAndEnable(
+                            bsToGetTotalMaterial.getId(), 8,true);
             internalSCList.forEach(element -> {
                 //dua tren id tim ra hđcc noi bo
                 InternalSC internalSC = internalSCRepository.findByIdAndEnable(element.getId(), true)
